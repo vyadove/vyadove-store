@@ -168,6 +168,9 @@ const CartDropdown = () => {
                                                                 cartTotal={
                                                                     item.price
                                                                 }
+                                                                originalPrice={
+                                                                    item.originalPrice
+                                                                }
                                                                 style="tight"
                                                                 currencyCode={
                                                                     "usd"

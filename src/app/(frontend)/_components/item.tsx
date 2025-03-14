@@ -115,6 +115,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
 				>
 					<LineItemPrice
 						cartTotal={item.price * item.quantity}
+						originalPrice={item.originalPrice}
 						style="tight"
 						currencyCode={currencyCode}
 					/>

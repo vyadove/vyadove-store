@@ -4,14 +4,14 @@ import PreviewPrice from "./price";
 import Thumbnail from "./thumbnail";
 
 export default async function ProductPreview({
-	product,
-	isFeatured,
+    product,
+    isFeatured,
 }: {
-	product: any;
-	isFeatured?: boolean;
+    product: any;
+    isFeatured?: boolean;
 }) {
-	const cheapestPrice = "$10.00";
-	return (
+    const { price, originalPrice } = product.variants?.[0] || {};
+    return (
         <Link href={`/products/${product.handle}`} className="group">
             <div data-testid="product-wrapper">
                 <Thumbnail
@@ -28,9 +28,10 @@ export default async function ProductPreview({
                         {product.title}
                     </Text>
                     <div className="flex items-center gap-x-2">
-                        {cheapestPrice && (
-                            <PreviewPrice price={cheapestPrice} />
-                        )}
+                        <PreviewPrice
+                            price={price}
+                            originalPrice={originalPrice}
+                        />
                     </div>
                 </div>
             </div>

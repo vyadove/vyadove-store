@@ -100,9 +100,18 @@ export const Products: CollectionConfig = {
                     label: "Image",
                 },
                 {
-                    name: "price",
-                    type: "number",
-                    required: true,
+                    type: "row",
+                    fields: [
+                        {
+                            name: "price",
+                            type: "number",
+                            required: true,
+                        },
+                        {
+                            name: "originalPrice",
+                            type: "number",
+                        },
+                    ],
                 },
                 {
                     name: "options",
