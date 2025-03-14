@@ -1,0 +1,24 @@
+{
+    "errors": [
+        {
+            "name": "ValidationError",
+            "data": {
+                "id": 3,
+                "collection": "products",
+                "errors": [
+                    {
+                        "label": "Variants 2 > Gallery",
+                        "message": "This relationship field has the following invalid relationships: null 0",
+                        "path": "variants.1.gallery"
+                    },
+                    {
+                        "label": "Variants 3 > Gallery",
+                        "message": "This relationship field has the following invalid relationships: null 0",
+                        "path": "variants.2.gallery"
+                    }
+                ]
+            },
+            "message": "The following fields are invalid: Variants 2 > Gallery, Variants 3 > Gallery"
+        }
+    ]
+}
