@@ -14,7 +14,6 @@ import StoreSettings from "./globals/store-settings";
 import { Variants } from "./collections/Variants";
 import { Options } from "./collections/Options";
 import { plugins } from "./plugins";
-import { Refunds } from "./collections/Refunds";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -28,7 +27,7 @@ export default buildConfig({
             baseDir: path.resolve(dirname),
         },
     },
-    collections: [Orders, ...catalog, Users, Media, Refunds],
+    collections: [Orders, ...catalog, Users, Media],
     globals: [StoreSettings],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || "",
