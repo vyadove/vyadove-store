@@ -73,7 +73,6 @@ export interface Config {
     options: Option;
     users: User;
     media: Media;
-    refunds: Refund;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -87,7 +86,6 @@ export interface Config {
     options: OptionsSelect<false> | OptionsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    refunds: RefundsSelect<false> | RefundsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -150,7 +148,6 @@ export interface Order {
     id?: string | null;
   }[];
   totalAmount: number;
-  refund?: (number | null) | Refund;
   currency: string;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
   orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'canceled';
@@ -251,6 +248,7 @@ export interface Product {
     vid?: string | null;
     imageUrl?: string | null;
     price: number;
+    originalPrice?: number | null;
     options?:
       | {
           option: string;
@@ -308,18 +306,6 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "refunds".
- */
-export interface Refund {
-  id: number;
-  order?: (number | null) | Order;
-  user?: (number | null) | User;
-  amount: string;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -390,10 +376,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
-      } | null)
-    | ({
-        relationTo: 'refunds';
-        value: number | Refund;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -460,7 +442,6 @@ export interface OrdersSelect<T extends boolean = true> {
         id?: T;
       };
   totalAmount?: T;
-  refund?: T;
   currency?: T;
   paymentStatus?: T;
   orderStatus?: T;
@@ -504,6 +485,7 @@ export interface ProductsSelect<T extends boolean = true> {
         vid?: T;
         imageUrl?: T;
         price?: T;
+        originalPrice?: T;
         options?:
           | T
           | {
@@ -578,17 +560,6 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "refunds_select".
- */
-export interface RefundsSelect<T extends boolean = true> {
-  order?: T;
-  user?: T;
-  amount?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

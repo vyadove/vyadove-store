@@ -79,15 +79,6 @@ export const Orders: CollectionConfig = {
             min: 0,
         },
         {
-            label: "Refund",
-            name: "refund",
-            type: "relationship",
-            relationTo: "refunds",
-            admin: {
-                position: "sidebar",
-            },
-        },
-        {
             name: "currency",
             type: "text",
             required: true,
