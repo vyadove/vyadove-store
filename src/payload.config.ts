@@ -28,6 +28,14 @@ export default buildConfig({
         importMap: {
             baseDir: path.resolve(dirname),
         },
+        
+        components: {
+            beforeDashboard: [
+                {
+                    path: "@/custom/Dashboard.tsx",
+                }
+            ],
+        },
     },
     collections: [Orders, ...catalog, Users, Media, Policies],
     globals: [StoreSettings],
@@ -45,5 +53,5 @@ export default buildConfig({
     plugins,
     onInit: async (payload) => {
         await createDefaultPolicies(payload);
-    }
+    },
 });
