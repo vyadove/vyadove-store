@@ -1,4 +1,4 @@
-import type { Media, Product } from "@/payload-types";
+import type { Product } from "@/payload-types";
 
 export const mapProducts = (products: Product[]) => {
     return products.map((product) => ({
@@ -8,7 +8,7 @@ export const mapProducts = (products: Product[]) => {
             imageUrl:
                 variant.imageUrl ||
                 (typeof variant.gallery?.[0] === "object"
-                    ? (variant.gallery[0] as Media).url
+                    ? variant.gallery[0].url
                     : undefined),
         })),
     }));
