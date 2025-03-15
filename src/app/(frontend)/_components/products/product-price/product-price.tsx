@@ -1,12 +1,18 @@
 import type { Product } from "@/payload-types";
 import { clx } from "@medusajs/ui";
+import getSymbolFromCurrency from "currency-symbol-map";
 
 type ProductPriceProps = {
     variant?: Product["variants"][0];
     showFrom: boolean;
+	currency?: string | null;
 };
 
-export default function ProductPrice({ variant, showFrom }: ProductPriceProps) {
+export default function ProductPrice({
+    variant,
+    showFrom,
+	currency
+}: ProductPriceProps) {
     if (!variant) return null;
 
     const { price, originalPrice } = variant;
@@ -24,7 +30,8 @@ export default function ProductPrice({ variant, showFrom }: ProductPriceProps) {
             >
                 {showFrom && "From "}
                 <span data-testid="product-price" data-value={price}>
-                    ${price}
+                    {getSymbolFromCurrency(currency || "USD")}
+                    {price}
                 </span>
             </span>
             {isOnSale && (
@@ -36,7 +43,8 @@ export default function ProductPrice({ variant, showFrom }: ProductPriceProps) {
                             data-testid="original-product-price"
                             data-value={originalPrice}
                         >
-                            ${originalPrice}
+                            {getSymbolFromCurrency(currency || "USD")}
+                            {originalPrice}
                         </span>
                     </p>
                     <span className="text-ui-fg-interactive">

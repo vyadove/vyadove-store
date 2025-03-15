@@ -1,11 +1,15 @@
 import { Text, clx } from "@medusajs/ui";
+import getSymbolFromCurrency from "currency-symbol-map";
+import { convertToLocale } from "../_util/money";
 
 export default async function PreviewPrice({
     price,
     originalPrice,
+	currency,
 }: {
     price: any;
     originalPrice?: any;
+	currency?: string;
 }) {
     return (
         <>
@@ -14,7 +18,10 @@ export default async function PreviewPrice({
                     className="line-through text-ui-fg-muted"
                     data-testid="original-price"
                 >
-                    ${originalPrice}
+                    {convertToLocale({
+                        amount: originalPrice,
+                        currency_code: currency || "USD",
+                    })}
                 </Text>
             )}
             <Text
@@ -23,7 +30,10 @@ export default async function PreviewPrice({
                 })}
                 data-testid="price"
             >
-                ${price}
+                {convertToLocale({
+                    amount: price,
+                    currency_code: currency || "USD",
+                })}
             </Text>
         </>
     );

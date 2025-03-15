@@ -4,10 +4,8 @@ import React from "react";
 import { convertToLocale } from "../_util/money";
 import { useCart } from "react-use-cart";
 
-const CartTotals = ({ order }: { order: { totalAmount: number } }) => {
+const CartTotals = ({ order, currencyCode }: { order: { totalAmount: number }; currencyCode: string }) => {
     const { cartTotal } = useCart();
-
-    const currency_code = "usd";
     const tax_total = 0;
     const shipping_subtotal = 0;
 
@@ -24,7 +22,7 @@ const CartTotals = ({ order }: { order: { totalAmount: number } }) => {
                     >
                         {convertToLocale({
                             amount: cartTotal ?? 0,
-                            currency_code,
+                            currency_code: currencyCode,
                         })}
                     </span>
                 </div>
@@ -36,7 +34,7 @@ const CartTotals = ({ order }: { order: { totalAmount: number } }) => {
                     >
                         {convertToLocale({
                             amount: shipping_subtotal ?? 0,
-                            currency_code,
+                            currency_code: currencyCode,
                         })}
                     </span>
                 </div>
@@ -45,7 +43,7 @@ const CartTotals = ({ order }: { order: { totalAmount: number } }) => {
                     <span data-testid="cart-taxes" data-value={tax_total || 0}>
                         {convertToLocale({
                             amount: tax_total ?? 0,
-                            currency_code,
+                            currency_code: currencyCode,
                         })}
                     </span>
                 </div>
@@ -60,7 +58,7 @@ const CartTotals = ({ order }: { order: { totalAmount: number } }) => {
                 >
                     {convertToLocale({
                         amount: order.totalAmount ?? 0,
-                        currency_code,
+                        currency_code: currencyCode,
                     })}
                 </span>
             </div>

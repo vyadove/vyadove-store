@@ -4,6 +4,8 @@ import { admins, anyone } from "@/access/roles";
 import { handleField } from "@/fields/slug";
 import { description } from "@/fields/description";
 import { groups } from "./groups";
+import { fetchExchangeRates } from "@/utilities/fetch-exchange-rates";
+import decimal from "decimal.js";
 
 export const Products: CollectionConfig = {
     slug: "products",
@@ -18,31 +20,32 @@ export const Products: CollectionConfig = {
         group: groups.catalog,
         defaultColumns: ["title", "variants", "collections"],
     },
-    // hooks: {
-    //     beforeRead: [
-    //         async (context) => {
-    //             for (const variant of context.doc.variants) {
-    //                 if (!variant.imageUrl && variant.gallery?.[0]) {
-    //                     try {
-    //                         console.log("variant.gallery[0]", variant.gallery[0]);
-    //                         const imageDoc = await context.req.payload.findByID(
-    //                             {
-    //                                 collection: "media",
-    //                                 id: variant.gallery[0], // Ensure it's defined
-    //                             }
-    //                         );
+    hooks: {
+        beforeRead: [
+            async ({ doc, req }) => {
+                const exchangeRates = await fetchExchangeRates();
+                const storeSettings = await req.payload.findGlobal({
+                    slug: "store-settings",
+                });
+                const rate =
+                    exchangeRates.rates[storeSettings.currency || "USD"];
+                for (const variant of doc.variants) {
+                    variant.originalPrice =
+                        variant.originalPrice &&
+                        new decimal(variant.originalPrice)
+                            .mul(rate)
+                            .toNumber()
+                            .toFixed(2);
 
-    //                         if (imageDoc) {
-    //                             variant.imageUrl = imageDoc.url;
-    //                         }
-    //                     } catch (error) {
-    //                         console.error("Error fetching image:", error);
-    //                     }
-    //                 }
-    //             }
-    //         },
-    //     ],
-    // },
+                    variant.price = new decimal(variant.price)
+                        .mul(rate)
+                        .toNumber()
+                        .toFixed(2);
+                }
+                doc.currency = storeSettings.currency;
+            },
+        ],
+    },
     fields: [
         {
             name: "pid",
@@ -55,6 +58,13 @@ export const Products: CollectionConfig = {
             name: "title",
             type: "text",
             required: true,
+        },
+        {
+            name: "currency",
+            type: "text",
+            admin: {
+                disabled: true,
+            },
         },
         description(),
         {

@@ -35,7 +35,7 @@ const ItemsTemplate = () => {
                             <Item
                                 key={item.id}
                                 item={item}
-                                currencyCode={"usd"}
+                                currencyCode={item.currency}
                             />
                         );
                     })}

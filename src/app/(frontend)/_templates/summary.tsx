@@ -29,9 +29,15 @@ const Summary = () => {
                 Summary
             </Heading>
             <Divider />
-            <CartTotals order={{
-                totalAmount: items.reduce((acc, item: any) => acc + item.price * item.quantity, 0),
-            }} />
+            <CartTotals
+                currencyCode={items[0].currency}
+                order={{
+                    totalAmount: items.reduce(
+                        (acc, item: any) => acc + item.price * item.quantity,
+                        0
+                    ),
+                }}
+            />
             <Button
                 className="w-full h-10"
                 onClick={handleClick}

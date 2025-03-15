@@ -46,7 +46,7 @@ export default function OrderCompletedTemplate({
                         Summary
                     </Heading>
                     <Items order={order} />
-                    <CartTotals order={order} />
+                    <CartTotals order={order} currencyCode="usd" />
                     <ShippingDetails order={order} />
                     <PaymentDetails order={order} />
                     <Help />

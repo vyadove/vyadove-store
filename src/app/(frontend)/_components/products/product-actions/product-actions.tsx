@@ -64,6 +64,7 @@ export default function ProductActions({
                 : product.variants[0].gallery,
             productName: product.title,
             handle: product.handle,
+            currency: product.currency,
             id: `${selectedVariant.id}`,
         };
 
@@ -105,6 +106,7 @@ export default function ProductActions({
             <ProductPrice
                 variant={selectedVariant}
                 showFrom={product.variants.length > 1 && !allOptionsSelected}
+                currency={product.currency}
             />
 
             <Button
