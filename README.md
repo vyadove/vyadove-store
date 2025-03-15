@@ -1,3 +1,12 @@
+<p align="center">
+  <a href="https://shoplyjs.com">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/e9cf8706-f7e3-42e9-9402-982a4cc991a1">
+    <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/e0ac3683-7121-4360-89c3-ccf10a34e479">
+    </picture>
+  </a>
+</p>
+
 # ShoplyJS is a Payload CMS starter template
 
 ShoplyJS is a Payload CMS starter template that provides a fully functional e-commerce store with a modern user interface. It is built using Next.js, Tailwind CSS, and Payload CMS.
