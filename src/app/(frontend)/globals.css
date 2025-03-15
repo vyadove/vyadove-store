@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @plugin 'tailwindcss-radix';
 @config "../../../tailwind.config.js";
+@plugin '@tailwindcss/typography';
 
 [role="button"],
 button {

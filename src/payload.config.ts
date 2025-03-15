@@ -14,6 +14,8 @@ import StoreSettings from "./globals/StoreSettings";
 import { Variants } from "./collections/Variants";
 import { Options } from "./collections/Options";
 import { plugins } from "./plugins";
+import { Policies } from "./collections/Policies";
+import { populatePolicies as createDefaultPolicies } from "./app/services/policies";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -27,7 +29,7 @@ export default buildConfig({
             baseDir: path.resolve(dirname),
         },
     },
-    collections: [Orders, ...catalog, Users, Media],
+    collections: [Orders, ...catalog, Users, Media, Policies],
     globals: [StoreSettings],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || "",
@@ -41,4 +43,7 @@ export default buildConfig({
     }),
     sharp,
     plugins,
+    onInit: async (payload) => {
+        await createDefaultPolicies(payload);
+    }
 });
