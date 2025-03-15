@@ -10,7 +10,7 @@ import { Media } from "./collections/Media";
 import { Collections } from "./collections/Collections";
 import { Products } from "./collections/Products";
 import { Orders } from "./collections/Orders";
-import StoreSettings from "./globals/store-settings";
+import StoreSettings from "./globals/StoreSettings";
 import { Variants } from "./collections/Variants";
 import { Options } from "./collections/Options";
 import { plugins } from "./plugins";
