@@ -1,11 +1,5 @@
-<p align="center">
-  <a href="https://shoplyjs.com">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/e9cf8706-f7e3-42e9-9402-982a4cc991a1">
-    <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/e0ac3683-7121-4360-89c3-ccf10a34e479">
-    </picture>
-  </a>
-</p>
+<img width="1509" alt="image" src="https://github.com/user-attachments/assets/1e6e7a8f-6744-4a19-939c-a1cf30a6d4c3" />
+
 
 # ShoplyJS is a Payload CMS starter template
 
