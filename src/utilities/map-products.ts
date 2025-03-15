@@ -11,5 +11,5 @@ export const mapProducts = (products: Product[]) => {
                     ? variant.gallery[0].url
                     : undefined),
         })),
-    }));
+    })).filter((product) => product.visible);
 };

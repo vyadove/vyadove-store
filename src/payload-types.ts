@@ -229,6 +229,7 @@ export interface Product {
   pid?: string | null;
   title: string;
   currency?: string | null;
+  visible?: boolean | null;
   description?: {
     root: {
       type: string;
@@ -509,6 +510,7 @@ export interface ProductsSelect<T extends boolean = true> {
   pid?: T;
   title?: T;
   currency?: T;
+  visible?: T;
   description?: T;
   collections?: T;
   handle?: T;

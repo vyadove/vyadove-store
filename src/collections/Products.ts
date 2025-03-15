@@ -66,6 +66,15 @@ export const Products: CollectionConfig = {
                 disabled: true,
             },
         },
+        {
+            label: "Visibility",
+            name: "visible",
+            type: "checkbox",
+            admin: {
+                position: "sidebar",
+            },
+            defaultValue: true,
+        },
         description(),
         {
             label: "Tags",
