@@ -1,5 +1,4 @@
 import { Text, clx } from "@medusajs/ui";
-import getSymbolFromCurrency from "currency-symbol-map";
 import { convertToLocale } from "../_util/money";
 
 export default async function PreviewPrice({

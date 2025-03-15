@@ -1,6 +1,6 @@
+import { convertToLocale } from "@/app/(frontend)/_util/money";
 import type { Product } from "@/payload-types";
 import { clx } from "@medusajs/ui";
-import getSymbolFromCurrency from "currency-symbol-map";
 
 type ProductPriceProps = {
     variant?: Product["variants"][0];
@@ -30,8 +30,10 @@ export default function ProductPrice({
             >
                 {showFrom && "From "}
                 <span data-testid="product-price" data-value={price}>
-                    {getSymbolFromCurrency(currency || "USD")}
-                    {price}
+                    {convertToLocale({
+                        amount: price,
+                        currency_code: currency || "USD",
+                    })}
                 </span>
             </span>
             {isOnSale && (
@@ -43,8 +45,10 @@ export default function ProductPrice({
                             data-testid="original-product-price"
                             data-value={originalPrice}
                         >
-                            {getSymbolFromCurrency(currency || "USD")}
-                            {originalPrice}
+                            {convertToLocale({
+                                amount: originalPrice,
+                                currency_code: currency || "USD",
+                            })}
                         </span>
                     </p>
                     <span className="text-ui-fg-interactive">
