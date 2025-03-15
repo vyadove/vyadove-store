@@ -101,7 +101,13 @@ export default async function Footer({
                 <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
                     <Text className="txt-compact-small">
                         © {new Date().getFullYear()} {storeSettings?.name}. All
-                        rights reserved.
+                        rights reserved.{" "}
+                        <Link
+                            href="/policy/privacy-policy"
+                            className="hover:underline"
+                        >
+                            Privacy Policy
+                        </Link>
                     </Text>
                     <ShoplyCTA />
                 </div>
