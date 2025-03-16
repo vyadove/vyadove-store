@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import InteractiveLink from "../_components/interactive-link";
 
 export const metadata: Metadata = {

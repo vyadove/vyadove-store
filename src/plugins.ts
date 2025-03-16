@@ -21,5 +21,6 @@ export const plugins: Plugin[] = [
         cjEmailAddress: process.env.CJ_EMAIL_ADDRESS || "",
         cjRefreshToken: process.env.CJ_REFRESH_TOKEN,
         cjApiKey: process.env.CJ_PASSWORD || "",
-    }),
+    })
 ];
+
