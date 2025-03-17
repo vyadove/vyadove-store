@@ -1,10 +1,15 @@
-import { HeroSection, Media } from "@/payload-types";
-import { Github } from "@medusajs/icons";
+import { Media } from "@/payload-types";
 import { Button, Heading } from "@medusajs/ui";
 import Link from "next/link";
 
 type HeroProps = {
-    hero: HeroSection["type"][0];
+    hero: {
+        backgroundImage: Media;
+        title: string;
+        subtitle: string;
+        ctaButtonLink: string;
+        ctaButtonText: string;
+    };
 };
 
 const Hero = ({ hero }: HeroProps) => {

@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import CollectionTemplate from "@/app/(frontend)/_templates/collections";
 import type { SortOptions } from "@/app/(frontend)/_util/sort-options";
@@ -7,59 +6,12 @@ import config from "@payload-config";
 import { mapProducts } from "@/utilities/map-products";
 
 type Props = {
-    params: Promise<{ handle: string; countryCode: string }>;
+    params: Promise<{ handle: string; }>;
     searchParams: Promise<{
         page?: string;
         sortBy?: SortOptions;
     }>;
 };
-
-export async function generateStaticParams() {
-    const collections = [
-        {
-            id: 1,
-            handle: "collection-1",
-            title: "Collection 1",
-        },
-        {
-            id: 2,
-            handle: "collection-2",
-            title: "Collection 2",
-        },
-    ];
-
-    if (!collections) {
-        return [];
-    }
-
-    const collectionHandles = collections.map(
-        (collection: any) => collection.handle
-    );
-
-    return collectionHandles.map((handle: string | undefined) => ({
-        handle,
-    }));
-}
-
-export async function generateMetadata(props: Props): Promise<Metadata> {
-    const params = await props.params;
-    const collection = {
-        id: 1,
-        handle: "collection-1",
-        title: "Collection 1",
-    };
-
-    if (!collection) {
-        notFound();
-    }
-
-    const metadata = {
-        title: `${collection.title} | Medusa Store`,
-        description: `${collection.title} collection`,
-    } as Metadata;
-
-    return metadata;
-}
 
 export default async function CollectionPage(props: Props) {
     const searchParams = await props.searchParams;
@@ -100,7 +52,6 @@ export default async function CollectionPage(props: Props) {
             collection={collection}
             page={page}
             sortBy={sortBy}
-            countryCode={params.countryCode}
         />
     );
 }
