@@ -4,6 +4,7 @@ import PaginatedProducts from "./paginated-product";
 import type { SortOptions } from "../_util/sort-options";
 import RefinementList from "../_components/refinement-list";
 import SkeletonProductGrid from "../_components/skeleton-product-grid";
+import { Product } from "@/payload-types";
 
 const StoreTemplate = ({
 	sortBy,
@@ -15,8 +16,8 @@ const StoreTemplate = ({
 }: {
 	sortBy?: SortOptions;
 	page?: string;
-	products?: any[];
-	totalPages?: number;
+	products: Product[];
+	totalPages: number;
 	collectionId?: string;
 	productsIds?: string[];
 }) => {
@@ -37,10 +38,8 @@ const StoreTemplate = ({
 					<PaginatedProducts
 						sortBy={sort}
 						page={pageNumber}
-						collectionId={collectionId}
 						productsIds={productsIds}
-						products={products} // Pass the list of products
-						// totalPages={totalPages} // Pass the total pages count
+						products={products}
 					/>
 				</Suspense>
 			</div>
