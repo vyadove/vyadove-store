@@ -26,7 +26,7 @@ export default async function HomePage() {
 
     return (
         <>
-            <Hero hero={hero} />
+            <Hero hero={hero as any} />
             <div className="py-12">
                 <ul className="flex flex-col gap-x-6">
                     <FeaturedProducts collections={featuredCollections.docs} />
