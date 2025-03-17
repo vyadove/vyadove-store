@@ -16,6 +16,7 @@ import { Options } from "./collections/Options";
 import { plugins } from "./plugins";
 import { Policies } from "./collections/Policies";
 import { populatePolicies as createDefaultPolicies } from "./app/services/policies";
+import { GiftCards } from "./collections/GiftCards";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -37,7 +38,7 @@ export default buildConfig({
             ],
         },
     },
-    collections: [Orders, ...catalog, Users, Media, Policies],
+    collections: [Orders, ...catalog, Users, Media, Policies, GiftCards],
     globals: [StoreSettings],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || "",
