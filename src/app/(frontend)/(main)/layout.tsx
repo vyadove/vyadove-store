@@ -5,9 +5,9 @@ import { Providers } from "@/providers/providers";
 import { getStoreSettings } from "@/app/services/store-settings";
 
 export const metadata: Metadata = {
-    title: "Shoplyjs Payload CMS Starter Template",
+    title: "ShopLoad Payload CMS Starter Template",
     description:
-        "A performant frontend ecommerce starter template with Payload and ShoplyJS.",
+        "A performant frontend ecommerce starter template with Payload and ShopLoad.",
 };
 
 export default async function PageLayout(props: { children: React.ReactNode }) {

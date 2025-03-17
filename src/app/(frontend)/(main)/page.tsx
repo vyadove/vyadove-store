@@ -5,9 +5,9 @@ import { getPayload } from "payload";
 import config from "@payload-config";
 
 export const metadata: Metadata = {
-    title: "ShoplyJS Ecommerce Starter Template",
+    title: "ShopLoad Ecommerce Starter Template",
     description:
-        "A performant frontend ecommerce starter template with Payload CMS and ShoplyJS.",
+        "A performant frontend ecommerce starter template with Payload CMS and ShopLoad.",
 };
 
 export default async function HomePage() {

@@ -16,7 +16,7 @@ const StoreSettings: GlobalConfig = {
         {
             name: "name",
             type: "text",
-            defaultValue: "ShoplyJS",
+            defaultValue: "ShopLoad",
         },
         {
             name: "currency",
