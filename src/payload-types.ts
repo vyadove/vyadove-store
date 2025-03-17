@@ -74,7 +74,7 @@ export interface Config {
     users: User;
     media: Media;
     policies: Policy;
-    pages: Page;
+    'gift-cards': GiftCard;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -89,7 +89,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     policies: PoliciesSelect<false> | PoliciesSelect<true>;
-    pages: PagesSelect<false> | PagesSelect<true>;
+    'gift-cards': GiftCardsSelect<false> | GiftCardsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -376,42 +376,19 @@ export interface Policy {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
+ * via the `definition` "gift-cards".
  */
-export interface Page {
+export interface GiftCard {
   id: number;
-  title: string;
-  handle?: string | null;
-  type: 'home' | 'category' | 'custom';
+  code: string;
+  value: number;
+  customer?: (number | null) | User;
   /**
-   * Select products to feature in a homepage carousel.
+   * Date gift card will expire
    */
-  featuredProducts?: (number | Product)[] | null;
-  layout?:
-    | (
-        | {
-            image?: (number | null) | Media;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'banner';
-          }
-        | {
-            text?: string | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'promotion';
-          }
-        | {
-            products?: (number | Product)[] | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'productCarousel';
-          }
-      )[]
-    | null;
+  expiryDate?: string | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -453,8 +430,8 @@ export interface PayloadLockedDocument {
         value: number | Policy;
       } | null)
     | ({
-        relationTo: 'pages';
-        value: number | Page;
+        relationTo: 'gift-cards';
+        value: number | GiftCard;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -655,41 +632,15 @@ export interface PoliciesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages_select".
+ * via the `definition` "gift-cards_select".
  */
-export interface PagesSelect<T extends boolean = true> {
-  title?: T;
-  handle?: T;
-  type?: T;
-  featuredProducts?: T;
-  layout?:
-    | T
-    | {
-        banner?:
-          | T
-          | {
-              image?: T;
-              id?: T;
-              blockName?: T;
-            };
-        promotion?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-              blockName?: T;
-            };
-        productCarousel?:
-          | T
-          | {
-              products?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
+export interface GiftCardsSelect<T extends boolean = true> {
+  code?: T;
+  value?: T;
+  customer?: T;
+  expiryDate?: T;
   updatedAt?: T;
   createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
