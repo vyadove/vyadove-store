@@ -8,9 +8,17 @@ import SkeletonProductGrid from "../_components/skeleton-product-grid";
 const StoreTemplate = ({
 	sortBy,
 	page,
+	products,
+	totalPages,
+	collectionId,
+	productsIds,
 }: {
 	sortBy?: SortOptions;
 	page?: string;
+	products?: any[];
+	totalPages?: number;
+	collectionId?: string;
+	productsIds?: string[];
 }) => {
 	const pageNumber = page ? Number.parseInt(page) : 1;
 	const sort = sortBy || "created_at";
@@ -26,7 +34,14 @@ const StoreTemplate = ({
 					<h1 data-testid="store-page-title">All products</h1>
 				</div>
 				<Suspense fallback={<SkeletonProductGrid />}>
-					<PaginatedProducts sortBy={sort} page={pageNumber} />
+					<PaginatedProducts
+						sortBy={sort}
+						page={pageNumber}
+						collectionId={collectionId}
+						productsIds={productsIds}
+						products={products} // Pass the list of products
+						// totalPages={totalPages} // Pass the total pages count
+					/>
 				</Suspense>
 			</div>
 		</div>

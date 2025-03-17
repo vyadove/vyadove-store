@@ -18,13 +18,13 @@ export default async function PaginatedProducts({
 	page,
 	collectionId,
 	productsIds,
-	collection,
+	products,
 }: {
 	sortBy?: SortOptions;
 	page: number;
 	collectionId?: string;
 	productsIds?: string[];
-	collection?: any;
+	products?: any[];
 }) {
 	const queryParams: PaginatedProductsParams = {
 		limit: 12,
@@ -42,7 +42,7 @@ export default async function PaginatedProducts({
 		queryParams["order"] = "created_at";
 	}
 
-	const totalPages = Math.ceil(collection?.products.length / PRODUCT_LIMIT);
+	const totalPages = Math.ceil(products.length / PRODUCT_LIMIT);
 
 	return (
 		<>
@@ -50,7 +50,7 @@ export default async function PaginatedProducts({
 				className="grid grid-cols-2 w-full small:grid-cols-3 medium:grid-cols-4 gap-x-6 gap-y-8"
 				data-testid="products-list"
 			>
-				{collection?.products.map((p: Product) => {
+				{products.map((p: Product) => {
 					return (
 						<li key={p.id}>
 							<ProductPreview product={p} />
