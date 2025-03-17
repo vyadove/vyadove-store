@@ -877,27 +877,27 @@ export interface StoreSetting {
  */
 export interface HeroSection {
   id: number;
-  type?:
-    | (
-        | {
-            title: string;
-            subtitle?: string | null;
-            backgroundImage?: (number | null) | Media;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'hero';
-          }
-        | {
-            title: string;
-            subtitle?: string | null;
-            featuredProducts?: (number | Media)[] | null;
-            backgroundImage?: (number | null) | Media;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'carousel';
-          }
-      )[]
-    | null;
+  type: (
+    | {
+        title: string;
+        subtitle?: string | null;
+        ctaButtonText?: string | null;
+        ctaButtonLink?: string | null;
+        backgroundImage?: (number | null) | Media;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'hero';
+      }
+    | {
+        title: string;
+        subtitle?: string | null;
+        featuredProducts?: (number | Media)[] | null;
+        backgroundImage?: (number | null) | Media;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'carousel';
+      }
+  )[];
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -989,6 +989,8 @@ export interface HeroSectionSelect<T extends boolean = true> {
           | {
               title?: T;
               subtitle?: T;
+              ctaButtonText?: T;
+              ctaButtonLink?: T;
               backgroundImage?: T;
               id?: T;
               blockName?: T;
