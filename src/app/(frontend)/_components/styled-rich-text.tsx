@@ -9,9 +9,8 @@ import Link from "next/link";
 type StyledRichTextProps = {
     data?: SerializedEditorState | null;
     properties?: {
-        dateYear: number;
-        storeName: string;
-    };
+        [key: string]: string | number;
+    }
 };
 
 const createJSXConverters =

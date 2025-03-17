@@ -15,6 +15,16 @@ const HeroBlock: Block = {
             type: "text",
         },
         {
+            name: "ctaButtonText",
+            label: "CTA Button Text",
+            type: "text",
+        },
+        {
+            name: "ctaButtonLink",
+            label: "CTA Button Link",
+            type: "text",
+        },
+        {
             name: "backgroundImage",
             type: "upload",
             relationTo: "media",
@@ -44,14 +54,14 @@ const CarouselBlock: Block = {
             name: "backgroundImage",
             type: "upload",
             relationTo: "media",
-        }
+        },
     ],
 };
 
 export const HeroSection: GlobalConfig = {
     slug: "hero-section",
     admin: {
-        group: groups.settings,
+        group: groups.customizations,
     },
     access: {
         read: admins,
@@ -61,10 +71,9 @@ export const HeroSection: GlobalConfig = {
         {
             name: "type",
             type: "blocks",
-            blocks: [
-                HeroBlock,
-                CarouselBlock,
-            ],
+            blocks: [HeroBlock, CarouselBlock],
+            required: true,
+            maxRows: 1,
         },
     ],
 };
