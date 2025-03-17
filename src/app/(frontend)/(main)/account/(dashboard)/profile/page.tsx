@@ -1,8 +1,5 @@
 "use client";
 
-import { Metadata } from "next";
-
-import { notFound } from "next/navigation";
 import ProfileBillingAddress from "@/app/(frontend)/_components/profile-billing-address";
 import ProfileName from "@/app/(frontend)/_components/profile/name";
 import ProfileEmail from "@/app/(frontend)/_components/profile/email";
