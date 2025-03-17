@@ -80,6 +80,9 @@ importers:
       payload:
         specifier: ^3.26.0
         version: 3.26.0(graphql@16.10.0)(typescript@5.7.3)
+      rate-limiter-flexible:
+        specifier: ^6.1.0
+        version: 6.1.0
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -4737,6 +4740,9 @@ packages:
         optional: true
       '@types/react-dom':
         optional: true
+
+  rate-limiter-flexible@6.1.0:
+    resolution: {integrity: sha512-CqdTzIj9srODfTP1QKZyHn9BSq4SbOel9+Mun1Qt+SmYSgXDEYPa18yKKHTt5Q+4eqCK+psSLpCuYsbAu5MwGA==}
 
   rc@1.2.8:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
@@ -10968,6 +10974,8 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.0.7
       '@types/react-dom': 19.0.3(@types/react@19.0.7)
+
+  rate-limiter-flexible@6.1.0: {}
 
   rc@1.2.8:
     dependencies:

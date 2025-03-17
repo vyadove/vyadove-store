@@ -39,6 +39,7 @@
         "lodash": "^4.17.21",
         "next": "15.1.5",
         "payload": "^3.26.0",
+        "rate-limiter-flexible": "^6.1.0",
         "react": "19.0.0",
         "react-dom": "19.0.0",
         "react-use-cart": "^1.14.0",
