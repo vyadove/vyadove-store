@@ -3,7 +3,10 @@ import { Text, clx } from "@medusajs/ui";
 import Link from "next/link";
 import { getPayload } from "payload";
 import config from "@payload-config";
-import ShoplyCTA from "../_components/shoply-cta";
+
+import { ShoplyIcon } from "../_components/icons/shoply-icon";
+import { PayloadIcon } from "@payloadcms/ui";
+import { StyledRichText } from "../_components/styled-rich-text";
 
 export default async function Footer({
     storeSettings,
@@ -11,6 +14,13 @@ export default async function Footer({
     storeSettings: StoreSetting;
 }) {
     const payload = await getPayload({ config });
+    const footer = await payload.findGlobal({
+        slug: "footer",
+    });
+    const basicFooter = footer.type?.find(
+        (f) => f.blockType === "basic-footer"
+    );
+
     const collectionsPayload = await payload.find({
         collection: "collections",
         limit: 6,
@@ -32,33 +42,31 @@ export default async function Footer({
                         </Link>
                     </div>
                     <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
-                        {
-                            <div className="flex flex-col gap-y-2">
-                                <span className="txt-small-plus txt-ui-fg-base">
-                                    Collections
-                                </span>
-                                <ul
-                                    className={clx(
-                                        "grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small",
-                                        {
-                                            "grid-cols-2":
-                                                (collections?.length || 0) > 3,
-                                        }
-                                    )}
-                                >
-                                    {collections.map((c) => (
-                                        <li key={c.id}>
-                                            <Link
-                                                className="hover:text-ui-fg-base"
-                                                href={`/collections/${c.handle}`}
-                                            >
-                                                {c.title}
-                                            </Link>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        }
+                        <div className="flex flex-col gap-y-2">
+                            <span className="txt-small-plus txt-ui-fg-base">
+                                Collections
+                            </span>
+                            <ul
+                                className={clx(
+                                    "grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small",
+                                    {
+                                        "grid-cols-2":
+                                            (collections?.length || 0) > 3,
+                                    }
+                                )}
+                            >
+                                {collections.map((c) => (
+                                    <li key={c.id}>
+                                        <Link
+                                            className="hover:text-ui-fg-base"
+                                            href={`/collections/${c.handle}`}
+                                        >
+                                            {c.title}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                         <div className="flex flex-col gap-y-2">
                             <span className="txt-small-plus txt-ui-fg-base">
                                 {storeSettings?.name}
@@ -99,17 +107,35 @@ export default async function Footer({
                     </div>
                 </div>
                 <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
-                    <Text className="txt-compact-small">
-                        © {new Date().getFullYear()} {storeSettings?.name}. All
-                        rights reserved.{" "}
+                    <div className="txt-compact-small">
+                        <StyledRichText
+                            data={basicFooter?.copyright}
+                            properties={{
+                                storeName: storeSettings?.name || "",
+                                dateYear: new Date().getFullYear(),
+                            }}
+                        />
+                    </div>
+                    <div className="flex gap-x-2 txt-compact-small-plus items-center">
+                        <StyledRichText data={basicFooter?.poweredBy} />
                         <Link
-                            href="/policy/privacy-policy"
-                            className="hover:underline"
+                            href="https://shoplyjs.com"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="-mr-1"
                         >
-                            Privacy Policy
+                            <ShoplyIcon fill="#9ca3af" />
                         </Link>
-                    </Text>
-                    <ShoplyCTA />
+                        &{" "}
+                        <Link
+                            href="https://payloadcms.com/"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="size-4"
+                        >
+                            <PayloadIcon fill="#9ca3af" />
+                        </Link>
+                    </div>
                 </div>
             </div>
         </footer>

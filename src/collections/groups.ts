@@ -4,4 +4,5 @@ export const groups = {
 	content: "Content",
 	customers: "Customers",
 	settings: "Settings",
+	customization: "Customization",
 };
