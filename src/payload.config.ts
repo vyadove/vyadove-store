@@ -17,6 +17,8 @@ import { plugins } from "./plugins";
 import { Policies } from "./collections/Policies";
 import { populatePolicies as createDefaultPolicies } from "./app/services/policies";
 import { GiftCards } from "./collections/GiftCards";
+import { HeroSection } from "./globals/HeroSection";
+import { Footer } from "./globals/Footer";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -39,7 +41,7 @@ export default buildConfig({
         },
     },
     collections: [Orders, ...catalog, Users, Media, Policies, GiftCards],
-    globals: [StoreSettings],
+    globals: [StoreSettings, HeroSection, Footer],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || "",
     typescript: {
