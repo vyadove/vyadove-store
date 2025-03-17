@@ -1,5 +1,5 @@
 import config from "@payload-config";
-import { getPayload } from "payload";
+import { getPayload, Sort } from "payload";
 
 export const getVariants = async (variantIds: string[]) => {
     const payload = await getPayload({ config });
@@ -55,4 +55,63 @@ export const getProducts = async (args: { [key: string]: string }) => {
         },
     });
     return products.docs;
+};
+
+export const getPaginatedProducts = async ({
+    limit = 12,
+    page = 1,
+    collectionId,
+    productsIds,
+    sortBy,
+}: {
+    limit?: number;
+    page?: number;
+    collectionId?: string;
+    productsIds?: string[];
+    sortBy?: string;
+}) => {
+    const payload = await getPayload({ config });
+
+    let where = {};
+
+    if (collectionId) {
+        where = {
+            ...where,
+            "collection.id": {
+                equals: collectionId,
+            },
+        };
+    }
+
+    if (productsIds && productsIds.length > 0) {
+        where = {
+            ...where,
+            id: {
+                in: productsIds,
+            },
+        };
+    }
+
+    const [sortName, sortDirection] = sortBy?.split("_") || [];
+
+    const sort =
+        sortDirection === "asc"
+            ? `variants.[0].${sortName}`
+            : `-variants.[0].${sortName}`;
+
+    const products = await payload.find({
+        collection: "products",
+        limit,
+        page,
+        where,
+        sort
+    });
+
+    return {
+        docs: products.docs,
+        total: products.totalDocs,
+        limit: products.limit,
+        page: products.page,
+        // pages: products.pages,
+    };
 };

@@ -13,6 +13,11 @@ export const metadata: Metadata = {
 export default async function HomePage() {
     const payload = await getPayload({ config });
 
+    const heroSection = await payload.findGlobal({
+        slug: "hero-section",
+    });
+    const hero = heroSection.type?.find((f) => f.blockType === "hero");
+
     const featuredCollections = await payload.find({
         collection: "collections",
         limit: 3,
@@ -21,7 +26,7 @@ export default async function HomePage() {
 
     return (
         <>
-            <Hero />
+            <Hero hero={hero} />
             <div className="py-12">
                 <ul className="flex flex-col gap-x-6">
                     <FeaturedProducts collections={featuredCollections.docs} />
