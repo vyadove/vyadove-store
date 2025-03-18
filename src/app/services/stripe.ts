@@ -44,8 +44,8 @@ export const createCheckoutSession = async (
         payment_method_types: ["card"],
         line_items: lineItems,
         mode: "payment",
-        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/order/confirmed/{CHECKOUT_SESSION_ID}`,
-        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cart?canceled=true`,
+        success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/order/confirmed/{CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/cart?canceled=true`,
         metadata: {
             cartItemCount: lineItems.length.toString(),
             orderId: orderId,
