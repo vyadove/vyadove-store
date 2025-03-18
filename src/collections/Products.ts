@@ -4,8 +4,6 @@ import { admins, anyone } from "@/access/roles";
 import { handleField } from "@/fields/slug";
 import { description } from "@/fields/description";
 import { groups } from "./groups";
-
-
 export const Products: CollectionConfig = {
     slug: "products",
     access: {
@@ -18,6 +16,16 @@ export const Products: CollectionConfig = {
         useAsTitle: "title",
         group: groups.catalog,
         defaultColumns: ["title", "variants", "collections"],
+    },
+    hooks: {
+        beforeRead: [
+            async ({ doc, req }) => {
+                const storeSettings = await req.payload.findGlobal({
+                    slug: "store-settings",
+                });
+                doc.currency = storeSettings.currency;
+            },
+        ],
     },
     fields: [
         {
