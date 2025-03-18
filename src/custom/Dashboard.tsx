@@ -1,8 +1,9 @@
-import { getPayload, type AdminViewServerProps } from "payload";
+import { BasePayload, getPayload, type AdminViewServerProps } from "payload";
 import React from "react";
 import { Card, CardBody, CardFooter, CardHeader } from "./card";
 import config from "@payload-config";
 import SalesChart from "./sales-chart";
+import { Order } from "@/payload-types";
 
 const baseClass = "dashboard";
 
@@ -26,7 +27,11 @@ const calculatePercentageChange = (
 };
 
 // Helper: Fetch orders within a date range
-const fetchOrders = async (payload: any, startDate: Date, endDate: Date) => {
+const fetchOrders = async (
+    payload: BasePayload,
+    startDate: Date,
+    endDate: Date
+) => {
     const result = await payload.find({
         collection: "orders",
         where: {
@@ -35,6 +40,7 @@ const fetchOrders = async (payload: any, startDate: Date, endDate: Date) => {
                 less_than: endDate.toISOString(),
             },
         },
+        sort: "createdAt",
         pagination: false,
     });
     return result.docs;
@@ -95,19 +101,19 @@ const Dashboard = async (props: AdminViewServerProps) => {
     const lastMetrics = computeMetrics(lastOrders);
 
     // Generate chart data from real order history
-    const salesData = currentOrders.map((order: any) => ({
+    const salesData = currentOrders.map((order: Order) => ({
         date: new Date(order.createdAt).toLocaleDateString("en-US", {
             month: "short",
             day: "numeric",
         }),
         revenue: order.totalAmount,
-        orders: 1, // Each order represents 1 sale
-        profit: order.totalAmount * 0.05, // Profit margin calculation
+        orders: 1,
+        profit: +(order.totalAmount * 0.05).toFixed(2),
     }));
 
     return (
         <>
-            <h2 className={`${baseClass}__label`}>Dashboard</h2>
+            <h2 className={`${baseClass}__label`}>ShopNex</h2>
             <ul
                 className={`${baseClass}__card-list`}
                 style={{ gridTemplateColumns: "repeat(4, 1fr)" }}
