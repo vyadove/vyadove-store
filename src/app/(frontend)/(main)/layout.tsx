@@ -5,9 +5,9 @@ import { Providers } from "@/providers/providers";
 import { getStoreSettings } from "@/app/services/store-settings";
 
 export const metadata: Metadata = {
-    title: "ShopLoad Payload CMS Starter Template",
+    title: "Shopnex Payload CMS Starter Template",
     description:
-        "A performant frontend ecommerce starter template with Payload and ShopLoad.",
+        "A performant frontend ecommerce starter template with Payload and Shopnex.",
 };
 
 export default async function PageLayout(props: { children: React.ReactNode }) {

@@ -25,18 +25,19 @@ const dirname = path.dirname(filename);
 const catalog = [Collections, Products, Variants, Options];
 
 export default buildConfig({
+    telemetry: false,
     admin: {
         suppressHydrationWarning: false,
         user: Users.slug,
         importMap: {
             baseDir: path.resolve(dirname),
         },
-        
+
         components: {
             beforeDashboard: [
                 {
                     path: "@/custom/Dashboard.tsx",
-                }
+                },
             ],
         },
     },

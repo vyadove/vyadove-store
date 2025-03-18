@@ -1,11 +1,10 @@
-import type { CollectionConfig, FilterOptionsProps } from "payload";
+import type { CollectionConfig } from "payload";
 
 import { admins, anyone } from "@/access/roles";
 import { handleField } from "@/fields/slug";
 import { description } from "@/fields/description";
 import { groups } from "./groups";
-import { fetchExchangeRates } from "@/utilities/fetch-exchange-rates";
-import decimal from "decimal.js";
+
 
 export const Products: CollectionConfig = {
     slug: "products",
@@ -19,32 +18,6 @@ export const Products: CollectionConfig = {
         useAsTitle: "title",
         group: groups.catalog,
         defaultColumns: ["title", "variants", "collections"],
-    },
-    hooks: {
-        beforeRead: [
-            async ({ doc, req }) => {
-                const exchangeRates = await fetchExchangeRates();
-                const storeSettings = await req.payload.findGlobal({
-                    slug: "store-settings",
-                });
-                const rate =
-                    exchangeRates.rates[storeSettings.currency || "USD"];
-                for (const variant of doc.variants) {
-                    variant.originalPrice =
-                        variant.originalPrice &&
-                        new decimal(variant.originalPrice)
-                            .mul(rate)
-                            .toNumber()
-                            .toFixed(2);
-
-                    variant.price = new decimal(variant.price)
-                        .mul(rate)
-                        .toNumber()
-                        .toFixed(2);
-                }
-                doc.currency = storeSettings.currency;
-            },
-        ],
     },
     fields: [
         {

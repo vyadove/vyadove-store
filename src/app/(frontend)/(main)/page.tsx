@@ -5,9 +5,9 @@ import { getPayload } from "payload";
 import config from "@payload-config";
 
 export const metadata: Metadata = {
-    title: "ShopLoad Ecommerce Starter Template",
+    title: "Shopnex Ecommerce Starter Template",
     description:
-        "A performant frontend ecommerce starter template with Payload CMS and ShopLoad.",
+        "A performant frontend ecommerce starter template with Payload CMS and Shopnex.",
 };
 
 export default async function HomePage() {

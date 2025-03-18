@@ -1,18 +1,18 @@
 <img width="1509" alt="image" src="https://github.com/user-attachments/assets/1e6e7a8f-6744-4a19-939c-a1cf30a6d4c3" />
 
 
-# ShopLoad is a Payload CMS starter template
+# Shopnex is a Payload CMS starter template
 
-ShopLoad is a Payload CMS starter template that provides a fully functional e-commerce store with a modern user interface. It is built using Next.js, Tailwind CSS, and Payload CMS.
+Shopnex is a Payload CMS starter template that provides a fully functional e-commerce store with a modern user interface. It is built using Next.js, Tailwind CSS, and Payload CMS.
 
 ## Getting Started
 
-To get started with ShopLoad, follow these steps:
+To get started with Shopnex, follow these steps:
 
 1. Fork the repository and clone it to your local machine:
 
 ```bash
-git clone https://github.com/medusajs/shopload.git
+git clone https://github.com/shplyjs/shopnex.git
 ```
 
 2. Install the dependencies:
@@ -37,4 +37,4 @@ Contributions are welcome! If you find a bug or have a suggestion, please open a
 
 ## License
 
-ShopLoad is licensed under the MIT License.
+Shopnex is licensed under the MIT License.
