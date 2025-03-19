@@ -1,4 +1,14 @@
 <img width="1050" alt="image" src="https://github.com/user-attachments/assets/6c39f978-865f-4c26-a4a6-5ee0894c392b" />
+<br/>
+<br/>
+
+![License](https://img.shields.io/github/license/shoplyjs/shopnex) 
+![Build](https://img.shields.io/github/actions/workflow/status/shoplyjs/shopnex/ci.yaml) 
+![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen) 
+![Last Commit](https://img.shields.io/github/last-commit/shoplyjs/shopnex) 
+<a href="https://discord.gg/shopnex">
+  <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
+</a>
 
 # ShopNex is a Payload CMS starter template
 
@@ -6,9 +16,9 @@ Shopnex is a Payload CMS starter template that provides a fully functional e-com
 
 ## Getting Started
 
-To get started with Shopnex, follow these steps:
+Follow these simple steps to get ShopNex up and running:
 
-1. Fork the repository and clone, install dependencies.
+1. **Clone** and install dependencies using pnpm or other package managers.
 
 ```bash
 git clone https://github.com/shplyjs/shopnex.git
@@ -23,18 +33,21 @@ pnpm install
 pnpm dev
 ```
 
-## ✨ Features
-- Beautiful Storefront on Next.js
-- Integration with Stripe Checkout for payments
-- CJ Dropshipping Product synchronization
-- Google OAuth for authentication
-- Branding and customization
+✨ Features
+Analytics Dashboard with a sales chart to track performance
+Beautiful Storefront powered by Next.js and Tailwind CSS
+Stripe Checkout Integration for seamless payments
+CJ Dropshipping integration for automatic product synchronization
+Google OAuth Authentication for secure login
+Customer & Order Management to manage your store operations
+Custom Branding & UI Customization to match your brand identity
 
+## 🛠️ Contributing
+We welcome contributions! If you find any bugs or have ideas for improvements, feel free to:
 
-## Contributing
+- Open an issue to report bugs or request features.
+- Submit a pull request with your improvements.
+<p>Make sure to check the existing issues and PRs before creating new ones.</p>
 
-Contributions are welcome! If you find a bug or have a suggestion, please open an issue or submit a pull request on the GitHub repository.
-
-## License
-
+## 📄 License
 Shopnex is licensed under the MIT License.
