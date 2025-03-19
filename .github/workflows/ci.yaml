@@ -3,16 +3,17 @@ name: Node.js CI
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
+      - main # Trigger on push to the main branch
   pull_request:
     branches:
-      - main  # Trigger on pull requests to the main branch
+      - main # Trigger on pull requests to the main branch
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # The OS to run the workflow on
+    runs-on: ubuntu-latest
 
     steps:
+      - uses: pnpm/action-setup@v4
       # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v2
@@ -21,11 +22,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'  # Set Node.js version to 18
-
-      # Install pnpm
-      - name: Install pnpm
-        run: npm install -g pnpm  # Install pnpm globally
+          node-version: "18" # Set Node.js version to 18
 
       # Install dependencies using pnpm
       - name: Install dependencies
