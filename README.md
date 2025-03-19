@@ -33,14 +33,15 @@ pnpm install
 pnpm dev
 ```
 
-✨ Features
-Analytics Dashboard with a sales chart to track performance
-Beautiful Storefront powered by Next.js and Tailwind CSS
-Stripe Checkout Integration for seamless payments
-CJ Dropshipping integration for automatic product synchronization
-Google OAuth Authentication for secure login
-Customer & Order Management to manage your store operations
-Custom Branding & UI Customization to match your brand identity
+## ✨ Features
+- [x] Analytics Dashboard with a sales chart to track performance
+- [x] Beautiful Storefront powered by Next.js and Tailwind CSS
+- [x] Stripe Checkout Integration for seamless payments
+- [x] CJ Dropshipping integration for automatic product synchronization
+- [x] Google OAuth Authentication for secure login
+- [x] Customer & Order Management to manage your store operations
+- [x] Custom Branding & UI Customization to match your brand identity
+
 
 ## 🛠️ Contributing
 We welcome contributions! If you find any bugs or have ideas for improvements, feel free to:
