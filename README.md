@@ -9,15 +9,10 @@ Shopnex is a Payload CMS starter template that provides a fully functional e-com
 
 To get started with Shopnex, follow these steps:
 
-1. Fork the repository and clone it to your local machine:
+1. Fork the repository and clone, install dependencies.
 
 ```bash
 git clone https://github.com/shplyjs/shopnex.git
-```
-
-2. Install the dependencies:
-
-```bash
 pnpm install
 ```
 
@@ -29,7 +24,13 @@ pnpm install
 pnpm dev
 ```
 
-5. Open your browser and navigate to http://localhost:3000.
+## ✨ Features
+- Beautiful Storefront on Next.js
+- Integration with Stripe Checkout for payments
+- CJ Dropshipping Product synchronization
+- Google OAuth for authentication
+- Branding and customization
+
 
 ## Contributing
 
