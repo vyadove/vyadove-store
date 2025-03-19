@@ -1,7 +1,6 @@
-<img width="1509" alt="image" src="https://github.com/user-attachments/assets/1e6e7a8f-6744-4a19-939c-a1cf30a6d4c3" />
+<img width="1050" alt="image" src="https://github.com/user-attachments/assets/6c39f978-865f-4c26-a4a6-5ee0894c392b" />
 
-
-# Shopnex is a Payload CMS starter template
+# ShopNex is a Payload CMS starter template
 
 Shopnex is a Payload CMS starter template that provides a fully functional e-commerce store with a modern user interface. It is built using Next.js, Tailwind CSS, and Payload CMS.
 
