@@ -10,11 +10,11 @@
   <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
 </a>
 
-# ShopNex is a Payload CMS starter template
+# ShopNex is a Payload CMS E-commerce template
 
-Shopnex is a Payload CMS starter template that provides a fully functional e-commerce store with a modern user interface. It is built using Next.js, Tailwind CSS, and Payload CMS.
+Shopnex is a Payload CMS E-commerce template that provides a fully functional e-commerce store with a modern user interface. Its comes with a beautiful design, a powerful admin dashboard, and a wide range of features to help you build and manage your online store.
 
-## Getting Started
+## 🚀 Getting Started
 
 Follow these simple steps to get ShopNex up and running:
 
