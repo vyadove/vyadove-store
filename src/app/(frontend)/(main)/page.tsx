@@ -10,6 +10,8 @@ export const metadata: Metadata = {
         "A performant frontend ecommerce starter template with Payload CMS and Shopnex.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
     const payload = await getPayload({ config });
 
