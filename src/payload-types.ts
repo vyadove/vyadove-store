@@ -75,6 +75,7 @@ export interface Config {
     media: Media;
     policies: Policy;
     'gift-cards': GiftCard;
+    'plugins-space': PluginsSpace;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -90,6 +91,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     policies: PoliciesSelect<false> | PoliciesSelect<true>;
     'gift-cards': GiftCardsSelect<false> | GiftCardsSelect<true>;
+    'plugins-space': PluginsSpaceSelect<false> | PluginsSpaceSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -396,6 +398,18 @@ export interface GiftCard {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plugins-space".
+ */
+export interface PluginsSpace {
+  id: number;
+  pluginName?: string | null;
+  displayName?: string | null;
+  pluginVersion?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -436,6 +450,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'gift-cards';
         value: number | GiftCard;
+      } | null)
+    | ({
+        relationTo: 'plugins-space';
+        value: number | PluginsSpace;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -643,6 +661,17 @@ export interface GiftCardsSelect<T extends boolean = true> {
   value?: T;
   customer?: T;
   expiryDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plugins-space_select".
+ */
+export interface PluginsSpaceSelect<T extends boolean = true> {
+  pluginName?: T;
+  displayName?: T;
+  pluginVersion?: T;
   updatedAt?: T;
   createdAt?: T;
 }

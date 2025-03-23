@@ -3,6 +3,7 @@ import { stripePlugin } from "@payloadcms/plugin-stripe";
 import { paymentSucceeded } from "./stripe/webhooks/payment-succeeded";
 import { paymentCanceled } from "./stripe/webhooks/payment-canceled";
 import { cjPlugin } from "@shoplyjs/cj-plugin";
+import { storePlugin } from "@shopnex/store-plugin";
 
 export const plugins: Plugin[] = [
     stripePlugin({
@@ -21,6 +22,6 @@ export const plugins: Plugin[] = [
         cjEmailAddress: process.env.CJ_EMAIL_ADDRESS || "",
         cjRefreshToken: process.env.CJ_REFRESH_TOKEN,
         cjApiKey: process.env.CJ_PASSWORD || "",
-    })
+    }),
+    storePlugin({}),
 ];
-
