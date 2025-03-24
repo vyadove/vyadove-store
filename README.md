@@ -10,9 +10,9 @@
   <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
 </a>
 
-# ShopNex is a Payload CMS E-commerce template
+# ShopNex is a Payload CMS eCommerce template
 
-Shopnex is a Payload CMS E-commerce template that provides a fully functional e-commerce store with a modern user interface. Its comes with a beautiful design, a powerful admin dashboard, and a wide range of features to help you build and manage your online store.
+Shopnex is a Payload CMS eCommerce template that provides a fully functional eCommerce store with a modern user interface. Its comes with a beautiful design, a powerful admin dashboard, and a wide range of features to help you build and manage your online store.
 
 ## 🚀 Getting Started
 
@@ -41,13 +41,14 @@ pnpm dev
 - [x] Google OAuth Authentication for secure login
 - [x] Customer & Order Management to manage your store operations
 - [x] Custom Branding & UI Customization to match your brand identity
-
+- [x] Plugin marketplace for easy integration of third-party services
 
 ## 🛠️ Contributing
 We welcome contributions! If you find any bugs or have ideas for improvements, feel free to:
 
 - Open an issue to report bugs or request features.
 - Submit a pull request with your improvements.
+- Join our [Discord](https://discord.gg/6NTt49jguY) community for discussions and support.
 <p>Make sure to check the existing issues and PRs before creating new ones.</p>
 
 ## 📄 License
