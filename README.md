@@ -2,10 +2,10 @@
 <br/>
 <br/>
 
-![License](https://img.shields.io/github/license/shoplyjs/shopnex) 
-![Build](https://img.shields.io/github/actions/workflow/status/shoplyjs/shopnex/ci.yaml) 
+![License](https://img.shields.io/github/license/shopnex-ai/shopnex) 
+![Build](https://img.shields.io/github/actions/workflow/status/shopnex-ai/shopnex/ci.yaml) 
 ![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen) 
-![Last Commit](https://img.shields.io/github/last-commit/shoplyjs/shopnex) 
+![Last Commit](https://img.shields.io/github/last-commit/shopnex-ai/shopnex) 
 <a href="https://discord.gg/6NTt49jguY">
   <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
 </a>
