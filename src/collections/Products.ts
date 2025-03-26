@@ -4,6 +4,7 @@ import { admins, anyone } from "@/access/roles";
 import { handleField } from "@/fields/slug";
 import { description } from "@/fields/description";
 import { groups } from "./groups";
+
 export const Products: CollectionConfig = {
     slug: "products",
     access: {
