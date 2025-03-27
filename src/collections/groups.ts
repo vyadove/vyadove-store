@@ -1,8 +1,8 @@
 export const groups = {
-    catalog: "Catalog",
+    catalog: "Products",
     orders: "Orders",
     content: "Content",
     customers: "Customers",
     settings: "Settings",
-    customizations: "Customizations",
+    customizations: "Design",
 };
