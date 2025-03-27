@@ -39,6 +39,7 @@ export default buildConfig({
                     path: "@/custom/Dashboard.tsx",
                 },
             ],
+            Nav: "@/custom/Nav/Nav.tsx",
         },
     },
     collections: [Orders, ...catalog, Users, Media, Policies, GiftCards],

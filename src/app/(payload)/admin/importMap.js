@@ -24,6 +24,7 @@ import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0
 import { default as default_ff3cd8d65216dba8a1f24ce4259e4b3e } from '@/custom/custom-image-cell'
 import { PluginEditView as PluginEditView_57ab7ef8acde5e865fd68d3a08a07070 } from '@shopnex/store-plugin/client'
 import { PluginListView as PluginListView_57ab7ef8acde5e865fd68d3a08a07070 } from '@shopnex/store-plugin/client'
+import { default as default_812c24049b5448b453bfca1935697b37 } from '@/custom/Nav/Nav.tsx'
 import { default as default_a557470189c46dd24c338de7d7685cac } from '@/custom/Dashboard.tsx'
 
 export const importMap = {
@@ -53,5 +54,6 @@ export const importMap = {
   "@/custom/custom-image-cell#default": default_ff3cd8d65216dba8a1f24ce4259e4b3e,
   "@shopnex/store-plugin/client#PluginEditView": PluginEditView_57ab7ef8acde5e865fd68d3a08a07070,
   "@shopnex/store-plugin/client#PluginListView": PluginListView_57ab7ef8acde5e865fd68d3a08a07070,
+  "@/custom/Nav/Nav.tsx#default": default_812c24049b5448b453bfca1935697b37,
   "@/custom/Dashboard.tsx#default": default_a557470189c46dd24c338de7d7685cac
 }
