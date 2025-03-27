@@ -4,7 +4,7 @@ import currency from "currency-codes";
 
 const StoreSettings: GlobalConfig = {
     slug: "store-settings",
-    label: "General",
+    label: "Settings",
     access: {
         read: anyone,
         update: admins,

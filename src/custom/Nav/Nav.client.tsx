@@ -10,6 +10,11 @@ import { usePathname } from "next/navigation";
 import { getNavIcon } from "./navIconMap";
 import { Home } from "lucide-react";
 import { getTranslation } from "@payloadcms/translations";
+import {
+    getActiveGroup,
+    getSortedGroups,
+    getFilteredEntities,
+} from "./nav-utils";
 
 type NavProps = {
     groups: NavGroupType[];
@@ -19,26 +24,15 @@ const baseClass = "nav";
 
 export const NavClient = ({ groups }: NavProps) => {
     const pathname = usePathname();
-
     const {
         config: {
             routes: { admin: adminRoute },
         },
     } = useConfig();
-
     const { i18n } = useTranslation();
 
-    const activeGroup = pathname
-        .replace(adminRoute, "")
-        .replace("/collections", "")
-        .replace("/globals", "")
-        .split("/")[1];
-
-    const sortedGroups = groups.sort((a, b) => {
-        if (a.label === "Settings") return 1;
-        if (b.label === "Settings") return -1;
-        return 0;
-    });
+    const activeGroup = getActiveGroup(pathname, adminRoute);
+    const sortedGroups = getSortedGroups(groups);
 
     return (
         <div className="menu">
@@ -52,22 +46,28 @@ export const NavClient = ({ groups }: NavProps) => {
                 </Link>
             </li>
             {sortedGroups.map(({ entities, label: groupLabel }, key) => {
-                const Icon = getNavIcon(groupLabel.toLowerCase() as any);
                 const groupSlug = groupLabel.toLowerCase();
+                const Icon = getNavIcon(groupSlug as any);
                 const selectedGroup =
-                    entities.find((el) => el.slug === groupSlug) || entities[0];
+                    entities.find(
+                        (el) =>
+                            el.slug === groupSlug ||
+                            (el.label as string)?.toLowerCase?.() === groupSlug
+                    ) || entities[0];
                 const isActiveGroup = entities.find(
                     (el) => el.slug === activeGroup
                 );
-                const filteredEntities = entities.filter(
-                    (el) => el.slug !== activeGroup
+                const filteredEntities = getFilteredEntities(
+                    entities,
+                    selectedGroup.slug
                 );
+
                 return (
                     <li className="group" key={key}>
                         <Link
                             href={formatAdminURL({
                                 adminRoute,
-                                path: `/collections/${selectedGroup?.slug}`,
+                                path: `/${selectedGroup.type === EntityType.collection ? "collections" : "globals"}/${selectedGroup?.slug}`,
                             })}
                             className={`${baseClass}__link group-toggle`}
                         >
@@ -77,21 +77,16 @@ export const NavClient = ({ groups }: NavProps) => {
                         {isActiveGroup &&
                             filteredEntities.map(({ type, slug, label }) => {
                                 let href: string | null = null;
-                                let id: string;
                                 if (type === EntityType.collection) {
                                     href = formatAdminURL({
                                         adminRoute,
                                         path: `/collections/${slug}`,
                                     });
-                                    id = `nav-${slug}`;
-                                }
-
-                                if (type === EntityType.global) {
+                                } else if (type === EntityType.global) {
                                     href = formatAdminURL({
                                         adminRoute,
                                         path: `/globals/${slug}`,
                                     });
-                                    id = `nav-global-${slug}`;
                                 }
                                 return (
                                     <Link
