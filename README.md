@@ -1,4 +1,5 @@
-<img width="1050" alt="image" src="https://github.com/user-attachments/assets/6c39f978-865f-4c26-a4a6-5ee0894c392b" />
+![shopnex](https://github.com/user-attachments/assets/d14a5926-dc54-486b-92c9-8bdc7133abb7)
+
 <br/>
 <br/>
 
