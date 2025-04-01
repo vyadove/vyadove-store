@@ -49,8 +49,8 @@ const OrderCard = ({ order }: OrderCardProps) => {
                         >
                             <Thumbnail
                                 thumbnail={
-                                    i.product.variants[0]?.imageUrl ||
-                                    i.product.variants[0]?.gallery?.[0]?.url
+                                    i.product?.variants[0]?.imageUrl ||
+                                    i.product?.variants[0]?.gallery?.[0]?.url
                                 }
                                 images={[]}
                                 size="full"

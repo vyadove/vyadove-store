@@ -75,3 +75,21 @@ export const getOrder = async (orderId: string) => {
         return null;
     }
 };
+
+export const getOrders = async () => {
+    try {
+        const payload = await getPayload({ config: config });
+        const orders = await payload.find({
+            collection: "orders",
+        });
+
+        if (!orders.docs.length) {
+            return [];
+        }
+
+        return orders.docs;
+    } catch (error) {
+        console.error("Error retrieving orders:", error);
+        return [];
+    }
+};

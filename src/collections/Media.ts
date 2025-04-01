@@ -1,5 +1,6 @@
 import type { CollectionConfig } from "payload";
 import { groups } from "./groups";
+import { admins, anyone } from "@/access/roles";
 
 export const Media: CollectionConfig = {
 	slug: "media",
@@ -7,7 +8,10 @@ export const Media: CollectionConfig = {
 		group: groups.content,
 	},
 	access: {
-		read: () => true,
+		read: anyone,
+		create: admins,
+		update: admins,
+		delete: admins,
 	},
 	fields: [
 		{

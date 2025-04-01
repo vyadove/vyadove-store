@@ -30,8 +30,7 @@ export default function Profile() {
 				<Divider />
 				<ProfilePhone customer={user} />
 				<Divider />
-				{/* <ProfilePassword customer={customer} />
-        <Divider /> */}
+
 				<ProfileBillingAddress customer={user} regions={[]} />
 			</div>
 		</div>

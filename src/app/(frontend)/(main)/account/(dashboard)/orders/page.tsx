@@ -5,6 +5,7 @@ import OrderOverview from "@/app/(frontend)/_components/order-overview";
 import Divider from "@/app/(frontend)/_components/divider";
 import { getPayload } from "payload";
 import config from "@payload-config";
+import { getOrders } from "@/app/services/orders";
 
 export const metadata: Metadata = {
 	title: "Orders",
@@ -12,15 +13,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Orders() {
-	const payload = await getPayload({ config: config })
-	const ordersResult = await payload.find({
-		collection: "orders",
-		limit: 10,
-		sort: "createdAt",
-	})
-	const orders = ordersResult.docs
+	const orders =  await getOrders()
 
-	if (!orders) {
+	if (!orders.length) {
 		notFound();
 	}
 

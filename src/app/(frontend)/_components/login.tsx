@@ -1,8 +1,7 @@
-import { useActionState } from "react";
 import Input from "./input";
-import ErrorMessage from "./error-message";
 import { SubmitButton } from "./submit-button";
 import { useAuth } from "../_providers/auth";
+import { useRouter } from "next/navigation";
 
 enum LOGIN_VIEW {
 	SIGN_IN = "sign-in",
@@ -15,6 +14,7 @@ type Props = {
 
 const Login = ({ setCurrentView }: Props) => {
 	const { login } = useAuth();
+	const router = useRouter()
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -24,6 +24,7 @@ const Login = ({ setCurrentView }: Props) => {
 			password: string;
 		};
 		await login(data);
+		router.refresh()
 	};
 
 	return (
