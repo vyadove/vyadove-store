@@ -27,7 +27,7 @@ const Nav = async (props: ServerProps) => {
     } = props;
     const {
         admin: {
-            components: { logout },
+            components: { afterNavLinks, beforeNavLinks, logout },
         },
         collections,
         globals,
@@ -80,7 +80,41 @@ const Nav = async (props: ServerProps) => {
 
     return (
         <NavWrapper baseClass={baseClass}>
+            {RenderServerComponent({
+                clientProps: {
+                    documentSubViewType,
+                    viewType,
+                },
+                Component: beforeNavLinks,
+                importMap: payload.importMap,
+                serverProps: {
+                    i18n,
+                    locale,
+                    params,
+                    payload,
+                    permissions,
+                    searchParams,
+                    user,
+                },
+            })}
             <NavClient groups={groups} />
+            {RenderServerComponent({
+                clientProps: {
+                    documentSubViewType,
+                    viewType,
+                },
+                Component: afterNavLinks,
+                importMap: payload.importMap,
+                serverProps: {
+                    i18n,
+                    locale,
+                    params,
+                    payload,
+                    permissions,
+                    searchParams,
+                    user,
+                },
+            })}
             <div className={`${baseClass}__controls`}>{LogoutComponent}</div>
         </NavWrapper>
     );
