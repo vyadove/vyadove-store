@@ -19,15 +19,15 @@
         "@medusajs/icons": "^2.5.1",
         "@medusajs/ui": "^4.0.6",
         "@medusajs/ui-preset": "^2.5.1",
-        "@payloadcms/db-sqlite": "^3.26.0",
-        "@payloadcms/next": "^3.26.0",
-        "@payloadcms/plugin-stripe": "^3.26.0",
-        "@payloadcms/richtext-lexical": "^3.26.0",
-        "@payloadcms/translations": "3.26.0",
-        "@payloadcms/ui": "^3.26.0",
+        "@payloadcms/db-sqlite": "3.31.0",
+        "@payloadcms/next": "3.31.0",
+        "@payloadcms/plugin-stripe": "3.31.0",
+        "@payloadcms/richtext-lexical": "3.31.0",
+        "@payloadcms/translations": "3.31.0",
+        "@payloadcms/ui": "3.31.0",
         "@radix-ui/react-accordion": "^1.2.3",
         "@shoplyjs/cj-plugin": "1.0.2",
-        "@shopnex/store-plugin": "^1.0.10",
+        "@shopnex/store-plugin": "1.0.12",
         "@tailwindcss/postcss": "^4.0.9",
         "@tailwindcss/typography": "^0.5.16",
         "axios": "^1.8.2",
@@ -41,7 +41,7 @@
         "lodash": "^4.17.21",
         "lucide-react": "^0.484.0",
         "next": "15.1.5",
-        "payload": "^3.26.0",
+        "payload": "3.31.0",
         "rate-limiter-flexible": "^6.1.0",
         "react": "19.0.0",
         "react-dom": "19.0.0",
@@ -71,7 +71,7 @@
     },
     "engines": {
         "node": "^18.20.2 || >=20.9.0",
-        "pnpm": "^9"
+        "pnpm": "^10"
     },
     "pnpm": {
         "onlyBuiltDependencies": [

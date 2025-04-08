@@ -54,6 +54,7 @@ export type SupportedTimezones =
   | 'Asia/Singapore'
   | 'Asia/Tokyo'
   | 'Asia/Seoul'
+  | 'Australia/Brisbane'
   | 'Australia/Sydney'
   | 'Pacific/Guam'
   | 'Pacific/Noumea'
@@ -346,6 +347,7 @@ export interface Variant {
 export interface Option {
   id: number;
   product: number | Product;
+  product2?: (number | null) | Product;
   option: string;
   values: {
     value: string;
@@ -595,6 +597,7 @@ export interface VariantsSelect<T extends boolean = true> {
  */
 export interface OptionsSelect<T extends boolean = true> {
   product?: T;
+  product2?: T;
   option?: T;
   values?:
     | T
