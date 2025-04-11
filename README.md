@@ -22,7 +22,7 @@ Follow these simple steps to get ShopNex up and running:
 1. **Clone** and **install dependencies** using pnpm or other package managers.
 
 ```bash
-git clone https://github.com/shplyjs/shopnex.git
+git clone https://github.com/shopnex-ai/shopnex.git
 pnpm install
 ```
 
@@ -35,14 +35,14 @@ pnpm dev
 ```
 
 ## ✨ Features
-- [x] Analytics Dashboard with a sales chart to track performance
-- [x] Beautiful Storefront powered by Next.js and Tailwind CSS
-- [x] Stripe Checkout Integration for seamless payments
-- [x] CJ Dropshipping integration
-- [x] Google OAuth Authentication for secure login
-- [x] Customer & Order Management to manage your store operations
-- [x] Custom Branding & UI Customization to match your brand identity
-- [x] Plugin marketplace for easy integration of third-party services
+- 📊 Track performance with a sales chart
+- 🛍️ Built using Next.js & Tailwind CSS
+- 💳 Seamless and secure payment experience
+- 📦 Effortless product sourcing and fulfillment
+- 🔐 Secure login with your Google account
+- 📁 Manage customers, orders, and store operations easily
+- 🎨 Make the store truly yours with flexible design options
+- 🧩 Integrate third-party tools with just a few clicks
 
 ## 🛠️ Contributing
 We welcome contributions! If you find any bugs or have ideas for improvements, feel free to:
