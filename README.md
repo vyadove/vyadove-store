@@ -35,14 +35,21 @@ pnpm dev
 ```
 
 ## ✨ Features
-📊 Track performance with a sales chart<br>
-🛍️ Built using Next.js & Tailwind CSS<br>
-💳 Seamless and secure payment experience<br>
-📦 Effortless product sourcing and fulfillment<br>
-🔐 Secure login with your Google account<br>
-📁 Manage customers, orders, and store operations easily<br>
-🎨 Make the store truly yours with flexible design options<br>
-🧩 Integrate third-party tools with just a few clicks<br>
+- 📊 Analytics Dashboard - Track performance with a sales chart
+
+- 🛍️ Beautiful Storefront Built using Next.js & Tailwind CSS
+
+- 💳 Stripe Checkout Integration - Seamless and secure payment experience
+
+- 📦 CJ Dropshipping Integration - Effortless product sourcing and fulfillment
+
+- 🔐 Google OAuth Authentication - Secure login with your Google account
+
+- 📁 Customer & Order Management - Manage customers, orders, and store operations easily
+
+- 🎨 Custom Branding & UI Customization - Make the store truly yours with flexible design options
+
+- 🧩 Plugin Marketplace - Integrate third-party tools with just a few clicks
 
 ## 🛠️ Contributing
 We welcome contributions! If you find any bugs or have ideas for improvements, feel free to:
