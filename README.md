@@ -37,7 +37,7 @@ pnpm dev
 ## ✨ Features
 - 📊 Analytics Dashboard - Track performance with a sales chart
 
-- 🛍️ Beautiful Storefront Built using Next.js & Tailwind CSS
+- 🛍️ Beautiful Storefront - Built using Next.js & Tailwind CSS
 
 - 💳 Stripe Checkout Integration - Seamless and secure payment experience
 
