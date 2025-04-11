@@ -22,7 +22,7 @@ Follow these simple steps to get ShopNex up and running:
 1. **Clone** and **install dependencies** using pnpm or other package managers.
 
 ```bash
-git clone https://github.com/shplyjs/shopnex.git
+git clone https://github.com/shopnex-ai/shopnex.git
 pnpm install
 ```
 
@@ -35,21 +35,28 @@ pnpm dev
 ```
 
 ## ✨ Features
-- [x] Analytics Dashboard with a sales chart to track performance
-- [x] Beautiful Storefront powered by Next.js and Tailwind CSS
-- [x] Stripe Checkout Integration for seamless payments
-- [x] CJ Dropshipping integration
-- [x] Google OAuth Authentication for secure login
-- [x] Customer & Order Management to manage your store operations
-- [x] Custom Branding & UI Customization to match your brand identity
-- [x] Plugin marketplace for easy integration of third-party services
+- 📊 Analytics Dashboard - Track performance with a sales chart
+
+- 🛍️ Beautiful Storefront - Built using Next.js & Tailwind CSS
+
+- 💳 Stripe Checkout Integration - Seamless and secure payment experience
+
+- 📦 CJ Dropshipping Integration - Effortless product sourcing and fulfillment
+
+- 🔐 Google OAuth Authentication - Secure login with your Google account
+
+- 📁 Customer & Order Management - Manage customers, orders, and store operations easily
+
+- 🎨 Custom Branding & UI Customization - Make the store truly yours with flexible design options
+
+- 🧩 Plugin Marketplace - Integrate third-party tools with just a few clicks
 
 ## 🛠️ Contributing
 We welcome contributions! If you find any bugs or have ideas for improvements, feel free to:
 
 - Open an issue to report bugs or request features.
 - Submit a pull request with your improvements.
-- Join our [Discord](https://discord.gg/6NTt49jguY) community for discussions and support.
+- Join our [Discord](https://discord.gg/MFc9x7vdXK) community for discussions and support.
 <p>Make sure to check the existing issues and PRs before creating new ones.</p>
 
 ## 📄 License
