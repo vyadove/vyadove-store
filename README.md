@@ -49,7 +49,7 @@ We welcome contributions! If you find any bugs or have ideas for improvements, f
 
 - Open an issue to report bugs or request features.
 - Submit a pull request with your improvements.
-- Join our [Discord](https://discord.gg/6NTt49jguY) community for discussions and support.
+- Join our [Discord](https://discord.gg/MFc9x7vdXK) community for discussions and support.
 <p>Make sure to check the existing issues and PRs before creating new ones.</p>
 
 ## 📄 License
