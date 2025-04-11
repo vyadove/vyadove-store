@@ -11,8 +11,6 @@ import { Collections } from "./collections/Collections";
 import { Products } from "./collections/Products";
 import { Orders } from "./collections/Orders";
 import StoreSettings from "./globals/StoreSettings";
-import { Variants } from "./collections/Variants";
-import { Options } from "./collections/Options";
 import { plugins } from "./plugins";
 import { Policies } from "./collections/Policies";
 import { populatePolicies as createDefaultPolicies } from "./app/services/policies";
@@ -22,7 +20,7 @@ import { Footer } from "./globals/Footer";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
-const catalog = [Collections, Products, Variants, Options];
+const catalog = [Collections, Products];
 
 export default buildConfig({
     telemetry: false,
@@ -31,6 +29,7 @@ export default buildConfig({
         user: Users.slug,
         importMap: {
             baseDir: path.resolve(dirname),
+            autoGenerate: false,
         },
 
         components: {
@@ -59,4 +58,13 @@ export default buildConfig({
     onInit: async (payload) => {
         await createDefaultPolicies(payload);
     },
+    endpoints: [
+        {
+            path: "/healthz",
+            method: "get",
+            handler: (req) => {
+                return Response.json({ status: "OK" });
+            },
+        },
+    ],
 });

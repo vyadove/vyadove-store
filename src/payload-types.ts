@@ -70,8 +70,6 @@ export interface Config {
     orders: Order;
     collections: Collection;
     products: Product;
-    variants: Variant;
-    options: Option;
     users: User;
     media: Media;
     policies: Policy;
@@ -86,8 +84,6 @@ export interface Config {
     orders: OrdersSelect<false> | OrdersSelect<true>;
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
-    variants: VariantsSelect<false> | VariantsSelect<true>;
-    options: OptionsSelect<false> | OptionsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     policies: PoliciesSelect<false> | PoliciesSelect<true>;
@@ -271,6 +267,16 @@ export interface Product {
       | null;
     id?: string | null;
   }[];
+  /**
+   * Add additional product info such as care instructions, materials, or sizing notes.
+   */
+  customFields?:
+    | {
+        name: string;
+        value?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -319,42 +325,6 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "variants".
- */
-export interface Variant {
-  id: number;
-  product: number | Product;
-  price: number;
-  options:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "options".
- */
-export interface Option {
-  id: number;
-  product: number | Product;
-  product2?: (number | null) | Product;
-  option: string;
-  values: {
-    value: string;
-    id?: string | null;
-  }[];
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -428,14 +398,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'products';
         value: number | Product;
-      } | null)
-    | ({
-        relationTo: 'variants';
-        value: number | Variant;
-      } | null)
-    | ({
-        relationTo: 'options';
-        value: number | Option;
       } | null)
     | ({
         relationTo: 'users';
@@ -577,31 +539,10 @@ export interface ProductsSelect<T extends boolean = true> {
             };
         id?: T;
       };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "variants_select".
- */
-export interface VariantsSelect<T extends boolean = true> {
-  product?: T;
-  price?: T;
-  options?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "options_select".
- */
-export interface OptionsSelect<T extends boolean = true> {
-  product?: T;
-  product2?: T;
-  option?: T;
-  values?:
+  customFields?:
     | T
     | {
+        name?: T;
         value?: T;
         id?: T;
       };

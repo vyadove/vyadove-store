@@ -21,6 +21,11 @@ export const Options: CollectionConfig = {
             required: true,
         },
         {
+            name: "product2",
+            type: "relationship",
+            relationTo: "products",
+        },
+        {
             name: "option",
             type: "text",
             required: true,
