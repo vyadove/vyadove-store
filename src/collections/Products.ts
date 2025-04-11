@@ -133,5 +133,25 @@ export const Products: CollectionConfig = {
                 },
             ],
         },
+        {
+            name: "customFields",
+            type: "array",
+            admin: {
+                position: "sidebar",
+                description:
+                    "Add additional product info such as care instructions, materials, or sizing notes.",
+            },
+            fields: [
+                {
+                    name: "name",
+                    type: "text",
+                    required: true,
+                },
+                {
+                    name: "value",
+                    type: "text",
+                },
+            ],
+        },
     ],
 };
