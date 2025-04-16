@@ -4,6 +4,7 @@ import { paymentSucceeded } from "./stripe/webhooks/payment-succeeded";
 import { paymentCanceled } from "./stripe/webhooks/payment-canceled";
 import { cjPlugin } from "@shoplyjs/cj-plugin";
 import { storePlugin } from "@shopnex/store-plugin";
+import { importExportPlugin } from "@shopnex/import-export-plugin";
 
 export const plugins: Plugin[] = [
     stripePlugin({
@@ -24,4 +25,16 @@ export const plugins: Plugin[] = [
         cjApiKey: process.env.CJ_PASSWORD || "",
     }),
     storePlugin({}),
+    importExportPlugin({
+        collections: ["products", "orders"],
+        importCollections: [
+            {
+                collectionSlug: "products",
+            },
+            {
+                collectionSlug: "orders",
+            },
+        ],
+        disableJobsQueue: true,
+    }),
 ];

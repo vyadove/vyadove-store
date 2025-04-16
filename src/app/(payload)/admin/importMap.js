@@ -1,3 +1,6 @@
+import { ExportListMenuItem as ExportListMenuItem_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
+import { ImportListMenuItem as ImportListMenuItem_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
+import { ExportSaveButton as ExportSaveButton_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
@@ -24,10 +27,19 @@ import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0
 import { default as default_ff3cd8d65216dba8a1f24ce4259e4b3e } from '@/custom/custom-image-cell'
 import { PluginEditView as PluginEditView_57ab7ef8acde5e865fd68d3a08a07070 } from '@shopnex/store-plugin/client'
 import { PluginListView as PluginListView_57ab7ef8acde5e865fd68d3a08a07070 } from '@shopnex/store-plugin/client'
+import { SortBy as SortBy_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
+import { FieldsToExport as FieldsToExport_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
+import { CollectionField as CollectionField_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
+import { WhereField as WhereField_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
+import { Preview as Preview_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
 import { default as default_812c24049b5448b453bfca1935697b37 } from '@/custom/Nav/Nav.tsx'
 import { default as default_a557470189c46dd24c338de7d7685cac } from '@/custom/Dashboard.tsx'
+import { ImportExportProvider as ImportExportProvider_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
 
 export const importMap = {
+  "@shopnex/import-export-plugin/rsc#ExportListMenuItem": ExportListMenuItem_2cddc2e1d3f965d7263141af56b26a90,
+  "@shopnex/import-export-plugin/rsc#ImportListMenuItem": ImportListMenuItem_2cddc2e1d3f965d7263141af56b26a90,
+  "@shopnex/import-export-plugin/rsc#ExportSaveButton": ExportSaveButton_2cddc2e1d3f965d7263141af56b26a90,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient": HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
@@ -54,6 +66,12 @@ export const importMap = {
   "@/custom/custom-image-cell#default": default_ff3cd8d65216dba8a1f24ce4259e4b3e,
   "@shopnex/store-plugin/client#PluginEditView": PluginEditView_57ab7ef8acde5e865fd68d3a08a07070,
   "@shopnex/store-plugin/client#PluginListView": PluginListView_57ab7ef8acde5e865fd68d3a08a07070,
+  "@shopnex/import-export-plugin/rsc#SortBy": SortBy_2cddc2e1d3f965d7263141af56b26a90,
+  "@shopnex/import-export-plugin/rsc#FieldsToExport": FieldsToExport_2cddc2e1d3f965d7263141af56b26a90,
+  "@shopnex/import-export-plugin/rsc#CollectionField": CollectionField_2cddc2e1d3f965d7263141af56b26a90,
+  "@shopnex/import-export-plugin/rsc#WhereField": WhereField_2cddc2e1d3f965d7263141af56b26a90,
+  "@shopnex/import-export-plugin/rsc#Preview": Preview_2cddc2e1d3f965d7263141af56b26a90,
   "@/custom/Nav/Nav.tsx#default": default_812c24049b5448b453bfca1935697b37,
-  "@/custom/Dashboard.tsx#default": default_a557470189c46dd24c338de7d7685cac
+  "@/custom/Dashboard.tsx#default": default_a557470189c46dd24c338de7d7685cac,
+  "@shopnex/import-export-plugin/rsc#ImportExportProvider": ImportExportProvider_2cddc2e1d3f965d7263141af56b26a90
 }
