@@ -11,9 +11,9 @@
   <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
 </a>
 
-# ShopNex is a Payload CMS eCommerce template
+# ShopNex – The Open Source eCommerce Built on Payload CMS
 
-Shopnex is a Payload CMS eCommerce template that provides a fully functional eCommerce store with a modern user interface. Its comes with a beautiful design, a powerful admin dashboard, and a wide range of features to help you build and manage your online store.
+**ShopNex** is a modern eCommerce template powered by **Payload CMS**, designed to help you launch a fully functional online store with ease. Whether you're starting a new store or building a scalable commerce platform, ShopNex provides a robust set of features and tools to streamline your development process.
 
 ## 🚀 Getting Started
 
@@ -23,12 +23,13 @@ Follow these simple steps to get ShopNex up and running:
 
 ```bash
 git clone https://github.com/shopnex-ai/shopnex.git
+cd shopnex
 pnpm install
 ```
 
-3. Rename the .env.example file to .env and fill in the required environment variables.
+2. Rename the .env.example file to .env and fill in the required environment variables.
 
-4. Run the development server:
+3. Run the development server:
 
 ```bash
 pnpm dev
@@ -51,13 +52,21 @@ pnpm dev
 
 - 🧩 Plugin Marketplace - Integrate third-party tools with just a few clicks
 
+- 🗂️ Import Mapping – Easily import product collections from various systems via CSV or Excel
+
 ## 🛠️ Contributing
+
+> 💡 Pro tip: Don’t forget to ⭐ star the repo and **fork** it to make it your own!
+
 We welcome contributions! If you find any bugs or have ideas for improvements, feel free to:
 
-- Open an issue to report bugs or request features.
-- Submit a pull request with your improvements.
-- Join our [Discord](https://discord.gg/MFc9x7vdXK) community for discussions and support.
-<p>Make sure to check the existing issues and PRs before creating new ones.</p>
+- 🐛 [Open an issue](https://github.com/your-repo/issues) to report bugs or request features.
+- 🔧 Fork the repo and submit a pull request with your improvements.
+- 💬 Join our [Discord](https://discord.gg/MFc9x7vdXK) community for discussions and support.
+
+Before contributing, please:
+- Check existing issues and PRs to avoid duplication.
+- Follow any project-specific contribution guidelines (if available).
 
 ## 📄 License
 Shopnex is licensed under the MIT License.
