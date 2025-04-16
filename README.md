@@ -52,7 +52,7 @@ pnpm dev
 
 - 🧩 Plugin Marketplace - Integrate third-party tools with just a few clicks
 
-- 🗂️ Import Mapping – Easily import product collections from various systems via CSV or Excel
+- 🗂️ Import Mapping – Easily import collection data from various systems via CSV or Excel
 
 ## 🛠️ Contributing
 
