@@ -116,7 +116,11 @@ const Dashboard = async (props: AdminViewServerProps) => {
             <h2 className={`${baseClass}__label`}>ShopNex</h2>
             <ul
                 className={`${baseClass}__card-list`}
-                style={{ gridTemplateColumns: "repeat(4, 1fr)" }}
+                style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+                    gap: "1rem",
+                }}
             >
                 <li>
                     <Card>
