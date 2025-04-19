@@ -47,7 +47,7 @@ function generateVariantCombinations(options: Option[]): Variant[] {
     return combinations.map((combo) => ({
         vid: null,
         imageUrl: null,
-        price: null,
+        price: 0,
         originalPrice: null,
         options: combo,
         gallery: [],
