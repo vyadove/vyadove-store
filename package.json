@@ -7,6 +7,7 @@
     "scripts": {
         "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
         "dev": "cross-env NODE_OPTIONS=\"${NODE_OPTIONS} --no-deprecation\" next dev",
+        "db:seed": "payload run ./src/seed",
         "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=\"${NODE_OPTIONS} --no-deprecation next dev",
         "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
         "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
