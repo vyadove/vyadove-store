@@ -107,11 +107,18 @@ export const Products: CollectionConfig = {
                     },
                     fields: [
                         {
+                            admin: {
+                                placeholder: "Enter an option",
+                            },
                             name: "option",
                             type: "text",
                             required: true,
                         },
                         {
+                            admin: {
+                                description: "(press enter to add multiple values)",
+                                placeholder: "Enter a value",
+                            },
                             name: "value",
                             type: "text",
                             required: true,
