@@ -57,6 +57,31 @@ export const Products: CollectionConfig = {
             },
             defaultValue: true,
         },
+        {
+            label: "Sales Channels",
+            name: "salesChannels",
+            type: "select",
+            admin: {
+                position: "sidebar",
+                disabled: true,
+                description:
+                    "Choose where this product should be available to customers.",
+            },
+            hasMany: true,
+            options: [
+                {
+                    label: "All Channels",
+                    value: "all",
+                },
+                {
+                    label: "Online Store",
+                    value: "onlineStore",
+                },
+                { label: "POS", value: "pos" },
+                { label: "Mobile App", value: "mobileApp" },
+            ],
+            defaultValue: "all",
+        },
         description(),
         {
             label: "Tags",
@@ -70,23 +95,48 @@ export const Products: CollectionConfig = {
         },
         handleField(),
         {
-            name: "variants",
-            type: "array",
-            minRows: 1,
-            required: true,
+            label: "Build Variants",
+            type: "collapsible",
             fields: [
                 {
-                    name: "gallery",
-                    type: "upload",
-                    relationTo: "media",
-                    hasMany: true,
+                    name: "variantOptions",
+                    type: "array",
+                    maxRows: 5,
                     admin: {
-                        isSortable: false,
+                        description: "Choose the options for this product.",
+                    },
+                    fields: [
+                        {
+                            name: "option",
+                            type: "text",
+                            required: true,
+                        },
+                        {
+                            name: "value",
+                            type: "text",
+                            required: true,
+                            hasMany: true,
+                        },
+                    ],
+                },
+                {
+                    name: "buildVariantsButton",
+                    type: "ui",
+                    admin: {
                         components: {
-                            Cell: "@/custom/custom-image-cell",
+                            Field: "@/custom/BuildVariantsButton/BuildVariantsButton",
                         },
                     },
                 },
+            ],
+        },
+
+        {
+            name: "variants",
+            type: "array",
+            minRows: 1,
+            maxRows: 10,
+            fields: [
                 {
                     name: "vid",
                     type: "text",
@@ -99,24 +149,39 @@ export const Products: CollectionConfig = {
                     name: "imageUrl",
                     type: "text",
                     label: "Image",
+                    admin: {
+                        disabled: true,
+                    },
                 },
                 {
-                    type: "row",
-                    fields: [
-                        {
-                            name: "price",
-                            type: "number",
-                            required: true,
+                    label: "Image",
+                    name: "gallery",
+                    type: "upload",
+                    relationTo: "media",
+                    hasMany: true,
+                    admin: {
+                        isSortable: false,
+                        components: {
+                            Cell: "@/custom/custom-image-cell",
+                            // Field: "@/custom/custom-image-field#UploadField",
                         },
-                        {
-                            name: "originalPrice",
-                            type: "number",
-                        },
-                    ],
+                    },
                 },
+                {
+                    name: "price",
+                    type: "number",
+                },
+                {
+                    name: "originalPrice",
+                    type: "number",
+                    admin: {
+                        disabled: true,
+                    },
+                },
+
                 {
                     name: "options",
-                    label: "Attributes",
+                    label: "Options",
                     type: "array",
                     fields: [
                         {
@@ -133,6 +198,7 @@ export const Products: CollectionConfig = {
                 },
             ],
         },
+
         {
             name: "customFields",
             type: "array",
