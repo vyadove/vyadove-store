@@ -24,6 +24,7 @@ import { LinkFeatureClient as LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864
 import { RelationshipFeatureClient as RelationshipFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BlockquoteFeatureClient as BlockquoteFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { default as default_09b440aec6ac378dcad67a9862b7d4ee } from '@/custom/BuildVariantsButton/BuildVariantsButton'
 import { default as default_ff3cd8d65216dba8a1f24ce4259e4b3e } from '@/custom/custom-image-cell'
 import { PluginEditView as PluginEditView_57ab7ef8acde5e865fd68d3a08a07070 } from '@shopnex/store-plugin/client'
 import { PluginListView as PluginListView_57ab7ef8acde5e865fd68d3a08a07070 } from '@shopnex/store-plugin/client'
@@ -63,6 +64,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#RelationshipFeatureClient": RelationshipFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BlockquoteFeatureClient": BlockquoteFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#UploadFeatureClient": UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "@/custom/BuildVariantsButton/BuildVariantsButton#default": default_09b440aec6ac378dcad67a9862b7d4ee,
   "@/custom/custom-image-cell#default": default_ff3cd8d65216dba8a1f24ce4259e4b3e,
   "@shopnex/store-plugin/client#PluginEditView": PluginEditView_57ab7ef8acde5e865fd68d3a08a07070,
   "@shopnex/store-plugin/client#PluginListView": PluginListView_57ab7ef8acde5e865fd68d3a08a07070,

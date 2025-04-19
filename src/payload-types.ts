@@ -244,6 +244,7 @@ export interface Product {
   pid?: string | null;
   title: string;
   currency?: string | null;
+  visible?: boolean | null;
   /**
    * Choose where this product should be available to customers.
    */
@@ -265,21 +266,36 @@ export interface Product {
   } | null;
   collections?: (number | Collection)[] | null;
   handle?: string | null;
-  variants: {
-    gallery?: (number | Media)[] | null;
-    vid?: string | null;
-    imageUrl?: string | null;
-    price: number;
-    originalPrice?: number | null;
-    options?:
-      | {
-          option: string;
-          value: string;
-          id?: string | null;
-        }[]
-      | null;
-    id?: string | null;
-  }[];
+  /**
+   * Choose the options for this product.
+   */
+  variantOptions?:
+    | {
+        option: string;
+        /**
+         * (press enter to add multiple values)
+         */
+        value: string[];
+        id?: string | null;
+      }[]
+    | null;
+  variants?:
+    | {
+        vid?: string | null;
+        imageUrl?: string | null;
+        gallery?: (number | Media)[] | null;
+        price?: number | null;
+        originalPrice?: number | null;
+        options?:
+          | {
+              option: string;
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Add additional product info such as care instructions, materials, or sizing notes.
    */
@@ -666,16 +682,24 @@ export interface ProductsSelect<T extends boolean = true> {
   pid?: T;
   title?: T;
   currency?: T;
+  visible?: T;
   salesChannels?: T;
   description?: T;
   collections?: T;
   handle?: T;
+  variantOptions?:
+    | T
+    | {
+        option?: T;
+        value?: T;
+        id?: T;
+      };
   variants?:
     | T
     | {
-        gallery?: T;
         vid?: T;
         imageUrl?: T;
+        gallery?: T;
         price?: T;
         originalPrice?: T;
         options?:
