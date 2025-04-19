@@ -1,15 +1,9 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
-import {
-    Button,
-    toast,
-    useAllFormFields,
-    useField,
-    useForm,
-    useFormFields,
-} from "@payloadcms/ui";
-import { getSiblingData, reduceFieldsToValues } from "payload/shared";
+import React, { useCallback } from "react";
+import { Button, toast, useField, useFormFields } from "@payloadcms/ui";
+import { reduceFieldsToValues } from "payload/shared";
+import { ClientFieldProps } from "payload";
 
 type Option = {
     id: string;
@@ -17,40 +11,40 @@ type Option = {
     option: string;
 };
 
-type Variant = {
-    [key: string]: string | number | null;
-};
-
 type VariantOption = {
     option: string;
     value: string;
 };
 
-function buildVariants(options: Option[]) {
+type Variant = {
+    vid: string | null;
+    imageUrl: string | null;
+    price: number | null;
+    originalPrice: number | null;
+    options: VariantOption[];
+    gallery: string[];
+};
+
+/**
+ * Generates all possible variant combinations for given options.
+ * Each option is combined with every other option by generating a Cartesian product.
+ */
+function generateVariantCombinations(options: Option[]): Variant[] {
     if (options.length === 0) return [];
 
-    // Generate the Cartesian product of options
-    const combinations = options.reduce(
-        (acc, option) => {
-            const result: VariantOption[][] = [];
-            for (const combination of acc) {
-                for (const value of option.value) {
-                    result.push([
-                        ...combination,
-                        {
-                            option: option.option,
-                            value,
-                        },
-                    ]);
-                }
-            }
-            return result;
-        },
-        [[]] as VariantOption[][]
+    // Generate Cartesian product of options.
+    const combinations = options.reduce<VariantOption[][]>(
+        (acc, option) =>
+            acc.flatMap((combo) =>
+                option.value.map((value) => [
+                    ...combo,
+                    { option: option.option, value },
+                ])
+            ),
+        [[]]
     );
 
-    // Wrap into full variant structure
-    const variants: any = combinations.map((combo) => ({
+    return combinations.map((combo) => ({
         vid: null,
         imageUrl: null,
         price: null,
@@ -58,58 +52,49 @@ function buildVariants(options: Option[]) {
         options: combo,
         gallery: [],
     }));
-
-    return variants;
 }
 
-const VariantGenerator: React.FC = ({ path }: any) => {
+const VariantGenerator = ({ path }: ClientFieldProps & { path: string }) => {
     const { setValue } = useField({ path });
-    const options = useFormFields(([fields]) => {
-        const matchingFields = Object.entries(fields)
-            .filter(([key]) => key.startsWith("variantOptions."))
-            .reduce(
-                (acc, [key, field]) => {
-                    acc[key] = field;
-                    return acc;
-                },
-                {} as Record<string, any>
-            );
 
-        return matchingFields;
-    });
+    const options = useFormFields(([fields]) =>
+        Object.entries(fields)
+            .filter(([key]) => key.startsWith("variantOptions."))
+            .reduce<Record<string, any>>((acc, [key, field]) => {
+                acc[key] = field;
+                return acc;
+            }, {})
+    );
 
     const { variantOptions } = reduceFieldsToValues(options, true);
-    const generatedVariants = buildVariants(variantOptions);
 
     const fieldDispatch = useFormFields(([, dispatch]) => dispatch);
+
     const handleBuildVariants = useCallback(() => {
-        generatedVariants.forEach((variant: any, index: number) => {
+        // Shift generation logic here so that variantOptions is freshly read
+        // If variantOptions is undefined or empty, it safely returns an empty array.
+        const variants = generateVariantCombinations(variantOptions || []);
+
+        variants.forEach((variant, index) => {
             fieldDispatch({
                 rowIndex: index,
                 type: "ADD_ROW",
                 path: "variants",
             });
-            fieldDispatch({
-                type: "UPDATE",
-                path: `variants.${index}.vid`,
-                value: variant.vid,
+
+            [
+                { path: `variants.${index}.vid`, value: variant.vid },
+                { path: `variants.${index}.imageUrl`, value: variant.imageUrl },
+                { path: `variants.${index}.price`, value: variant.price },
+                {
+                    path: `variants.${index}.originalPrice`,
+                    value: variant.originalPrice,
+                },
+            ].forEach(({ path, value }) => {
+                fieldDispatch({ type: "UPDATE", path, value });
             });
-            fieldDispatch({
-                type: "UPDATE",
-                path: `variants.${index}.imageUrl`,
-                value: variant.imageUrl,
-            });
-            fieldDispatch({
-                type: "UPDATE",
-                path: `variants.${index}.price`,
-                value: variant.price,
-            });
-            fieldDispatch({
-                type: "UPDATE",
-                path: `variants.${index}.originalPrice`,
-                value: variant.originalPrice,
-            });
-            variant.options?.forEach((option: any, optionIndex: number) => {
+
+            variant.options.forEach((option, optionIndex) => {
                 fieldDispatch({
                     type: "UPDATE",
                     path: `variants.${index}.options.${optionIndex}.option`,
@@ -121,12 +106,14 @@ const VariantGenerator: React.FC = ({ path }: any) => {
                     value: option.value,
                 });
             });
-            setValue("");
         });
+
         toast.success("Variants built successfully!");
-    }, [fieldDispatch]);
+        // Call setValue once after variants have been built if needed.
+        setValue("");
+    }, [fieldDispatch, variantOptions, setValue]);
 
     return <Button onClick={handleBuildVariants}>Build Variants</Button>;
 };
 
-export default VariantGenerator;
+export default React.memo(VariantGenerator);
