@@ -1,9 +1,7 @@
 import Decimal from "decimal.js";
 import Stripe from "stripe";
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-    apiVersion: "2022-08-01",
-});
+
 
 export const mapToStripeLineItems = (
     variants: {
@@ -40,6 +38,9 @@ export const createCheckoutSession = async (
     lineItems: Stripe.Checkout.SessionCreateParams.LineItem[],
     orderId: string
 ) => {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+        apiVersion: "2022-08-01",
+    });
     return stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: lineItems,
@@ -64,6 +65,9 @@ export const createCheckoutSession = async (
 };
 
 export const retrieveSession = async (sessionId: string) => {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+        apiVersion: "2022-08-01",
+    });
     return stripe.checkout.sessions.retrieve(sessionId);
 };
 
@@ -71,6 +75,9 @@ export const constructWebhookEvent = (
     payload: string | Buffer,
     signature: string
 ) => {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+        apiVersion: "2022-08-01",
+    });
     return stripe.webhooks.constructEvent(
         payload,
         signature,

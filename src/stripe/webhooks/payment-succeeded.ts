@@ -1,6 +1,5 @@
-import { stripe } from "@/app/services/stripe";
 import type { StripeWebhookHandler } from "@payloadcms/plugin-stripe/types";
-import type Stripe from "stripe";
+import Stripe from "stripe";
 
 /**
  * This webhook will run whenever a payment intent is successfully paid to create an order in Payload
@@ -26,6 +25,9 @@ export const paymentSucceeded: StripeWebhookHandler<{
     }
 
     try {
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+            apiVersion: "2022-08-01",
+        });
         const charges = await stripe.charges.list({
             payment_intent: paymentIntent.id,
         });
