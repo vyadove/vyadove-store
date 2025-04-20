@@ -4,6 +4,7 @@ import { Card, CardBody, CardFooter, CardHeader } from "./Card";
 import config from "@payload-config";
 import SalesChart from "./SalesChart";
 import { Order } from "@/payload-types";
+import { Gutter } from "@payloadcms/ui";
 
 const baseClass = "dashboard";
 
@@ -21,7 +22,7 @@ const calculatePercentageChange = (
     current: number,
     previous: number
 ): string => {
-    if (previous === 0) return current > 0 ? "+100%" : "N/A";
+    if (previous === 0) return current > 0 ? "+100%" : "None";
     const change = ((current - previous) / previous) * 100;
     return `${change.toFixed(2)}%`;
 };
@@ -112,14 +113,15 @@ const Dashboard = async (props: AdminViewServerProps) => {
     }));
 
     return (
-        <>
-            <h2 className={`${baseClass}__label`}>ShopNex</h2>
+        <Gutter>
+            <h1 className={`${baseClass}__label`}>ShopNex</h1>
             <ul
                 className={`${baseClass}__card-list`}
                 style={{
                     display: "grid",
                     gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
                     gap: "1rem",
+                    marginTop: "2rem",
                 }}
             >
                 <li>
@@ -180,7 +182,7 @@ const Dashboard = async (props: AdminViewServerProps) => {
                 </li>
             </ul>
             <SalesChart data={salesData} />
-        </>
+        </Gutter>
     );
 };
 
