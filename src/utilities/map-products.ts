@@ -3,7 +3,7 @@ import type { Product } from "@/payload-types";
 export const mapProducts = (products: Product[]) => {
     return products.map((product) => ({
         ...product,
-        variants: product.variants.map((variant) => ({
+        variants: product.variants?.map((variant) => ({
             ...variant,
             imageUrl:
                 variant.imageUrl ||
