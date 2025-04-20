@@ -24,8 +24,8 @@ import { LinkFeatureClient as LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864
 import { RelationshipFeatureClient as RelationshipFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BlockquoteFeatureClient as BlockquoteFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { default as default_09b440aec6ac378dcad67a9862b7d4ee } from '@/custom/BuildVariantsButton/BuildVariantsButton'
-import { default as default_ff3cd8d65216dba8a1f24ce4259e4b3e } from '@/custom/custom-image-cell'
+import { default as default_f0f7b12584c89e13c6a87d8efa94a229 } from '@/collections/Products/fields/BuildVariantsButton'
+import { default as default_e49979b57f52dbb3fe02cec65aa4998b } from '@/collections/Products/fields/ImageCell'
 import { PluginEditView as PluginEditView_57ab7ef8acde5e865fd68d3a08a07070 } from '@shopnex/store-plugin/client'
 import { PluginListView as PluginListView_57ab7ef8acde5e865fd68d3a08a07070 } from '@shopnex/store-plugin/client'
 import { SortBy as SortBy_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
@@ -33,9 +33,9 @@ import { FieldsToExport as FieldsToExport_2cddc2e1d3f965d7263141af56b26a90 } fro
 import { CollectionField as CollectionField_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
 import { WhereField as WhereField_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
 import { Preview as Preview_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
-import { default as default_812c24049b5448b453bfca1935697b37 } from '@/custom/Nav/Nav.tsx'
-import { default as default_a557470189c46dd24c338de7d7685cac } from '@/custom/Dashboard.tsx'
+import { default as default_37ff3de76d1a962ab5815bc7ccd78444 } from '@/admin/components/Nav/Nav.tsx'
 import { ImportExportProvider as ImportExportProvider_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
+import { default as default_1ab113f7c5575fdebcd59a27756787ec } from '@/admin/components/Dashboard/Dashboard'
 
 export const importMap = {
   "@shopnex/import-export-plugin/rsc#ExportListMenuItem": ExportListMenuItem_2cddc2e1d3f965d7263141af56b26a90,
@@ -64,8 +64,8 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#RelationshipFeatureClient": RelationshipFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BlockquoteFeatureClient": BlockquoteFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#UploadFeatureClient": UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "@/custom/BuildVariantsButton/BuildVariantsButton#default": default_09b440aec6ac378dcad67a9862b7d4ee,
-  "@/custom/custom-image-cell#default": default_ff3cd8d65216dba8a1f24ce4259e4b3e,
+  "@/collections/Products/fields/BuildVariantsButton#default": default_f0f7b12584c89e13c6a87d8efa94a229,
+  "@/collections/Products/fields/ImageCell#default": default_e49979b57f52dbb3fe02cec65aa4998b,
   "@shopnex/store-plugin/client#PluginEditView": PluginEditView_57ab7ef8acde5e865fd68d3a08a07070,
   "@shopnex/store-plugin/client#PluginListView": PluginListView_57ab7ef8acde5e865fd68d3a08a07070,
   "@shopnex/import-export-plugin/rsc#SortBy": SortBy_2cddc2e1d3f965d7263141af56b26a90,
@@ -73,7 +73,7 @@ export const importMap = {
   "@shopnex/import-export-plugin/rsc#CollectionField": CollectionField_2cddc2e1d3f965d7263141af56b26a90,
   "@shopnex/import-export-plugin/rsc#WhereField": WhereField_2cddc2e1d3f965d7263141af56b26a90,
   "@shopnex/import-export-plugin/rsc#Preview": Preview_2cddc2e1d3f965d7263141af56b26a90,
-  "@/custom/Nav/Nav.tsx#default": default_812c24049b5448b453bfca1935697b37,
-  "@/custom/Dashboard.tsx#default": default_a557470189c46dd24c338de7d7685cac,
-  "@shopnex/import-export-plugin/rsc#ImportExportProvider": ImportExportProvider_2cddc2e1d3f965d7263141af56b26a90
+  "@/admin/components/Nav/Nav.tsx#default": default_37ff3de76d1a962ab5815bc7ccd78444,
+  "@shopnex/import-export-plugin/rsc#ImportExportProvider": ImportExportProvider_2cddc2e1d3f965d7263141af56b26a90,
+  "@/admin/components/Dashboard/Dashboard#default": default_1ab113f7c5575fdebcd59a27756787ec
 }

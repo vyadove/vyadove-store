@@ -1,8 +1,6 @@
 import Decimal from "decimal.js";
 import Stripe from "stripe";
 
-
-
 export const mapToStripeLineItems = (
     variants: {
         id: string;
@@ -26,13 +24,12 @@ export const mapToStripeLineItems = (
                             ? [variant.gallery[0].url]
                             : [],
                 },
-                unit_amount: +(new Decimal(variant.price).times(100).toFixed(0)),
+                unit_amount: +new Decimal(variant.price).times(100).toFixed(0),
             },
             quantity: new Decimal(variant.quantity).toNumber(),
         };
     });
 };
-
 
 export const createCheckoutSession = async (
     lineItems: Stripe.Checkout.SessionCreateParams.LineItem[],

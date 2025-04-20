@@ -1,5 +1,5 @@
 import type { Field } from "payload";
-import { formatSlug } from "@/utilities/formatSlug";
+import { formatSlug } from "@/utilities/format-slug";
 
 export const handleField = (fieldToUse = "title"): Field => ({
     name: "handle",
