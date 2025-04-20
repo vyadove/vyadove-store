@@ -8,7 +8,7 @@ import sharp from "sharp";
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { Collections } from "./collections/Collections";
-import { Products } from "./collections/Products";
+import { Products } from "./collections/Products/Products";
 import { Orders } from "./collections/Orders";
 import StoreSettings from "./globals/StoreSettings";
 import { plugins } from "./plugins";
@@ -33,12 +33,13 @@ export default buildConfig({
         },
 
         components: {
-            beforeDashboard: [
-                {
-                    path: "@/custom/Dashboard.tsx",
+            views: {
+                dashboard: {
+                    path: "@/admin/components/Dashboard/Dashboard",
+                    Component: "@/admin/components/Dashboard/Dashboard",
                 },
-            ],
-            Nav: "@/custom/Nav/Nav.tsx",
+            },
+            Nav: "@/admin/components/Nav/Nav.tsx",
         },
     },
     collections: [Orders, ...catalog, Users, Media, Policies, GiftCards],
