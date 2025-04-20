@@ -57,4 +57,7 @@ const seed = async () => {
 };
 
 // Call the function here to run your seed script
+console.log("Seeding...");
 await seed();
+console.log("Seeding complete!");
+process.exit(0);
