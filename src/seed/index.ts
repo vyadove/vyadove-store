@@ -24,7 +24,7 @@ const seed = async () => {
             createdAt: "2025-04-20T04:59:11.487Z",
             url: "https://pub-e0a548fa3e234baf8e41a8fd95bb8ad5.r2.dev/shopnex-images/media/watch-hero.png",
             thumbnailURL: "https://pub-e0a548fa3e234baf8e41a8fd95bb8ad5.r2.dev/shopnex-images/media/watch-hero.png",
-            filename: "watch-3.png",
+            filename: `watch-${new Date().getTime()}.png`,
             mimeType: "image/png",
             filesize: 1077498,
             width: 1024,
