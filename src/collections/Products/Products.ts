@@ -3,7 +3,7 @@ import type { CollectionConfig } from "payload";
 import { admins, anyone } from "@/access/roles";
 import { handleField } from "@/fields/slug";
 import { description } from "@/fields/description";
-import { groups } from "./groups";
+import { groups } from "../groups";
 
 export const Products: CollectionConfig = {
     slug: "products",
@@ -116,7 +116,8 @@ export const Products: CollectionConfig = {
                         },
                         {
                             admin: {
-                                description: "(press enter to add multiple values)",
+                                description:
+                                    "(press enter to add multiple values)",
                                 placeholder: "Enter a value",
                             },
                             name: "value",
@@ -131,7 +132,7 @@ export const Products: CollectionConfig = {
                     type: "ui",
                     admin: {
                         components: {
-                            Field: "@/custom/BuildVariantsButton/BuildVariantsButton",
+                            Field: "@/collections/Products/fields/BuildVariantsButton",
                         },
                     },
                 },
@@ -169,7 +170,7 @@ export const Products: CollectionConfig = {
                     admin: {
                         isSortable: false,
                         components: {
-                            Cell: "@/custom/custom-image-cell",
+                            Cell: "@/collections/Products/fields/ImageCell",
                             // Field: "@/custom/custom-image-field#UploadField",
                         },
                     },
