@@ -15,24 +15,42 @@
 
 **ShopNex** is a modern eCommerce template powered by **Payload CMS**, designed to help you launch a fully functional online store with ease. Whether you're starting a new store or building a scalable commerce platform, ShopNex provides a robust set of features and tools to streamline your development process.
 
+Here’s a cleaner and more polished version of your **Getting Started** section with better formatting, a clearer explanation of the CLI command, and flag descriptions:
+
+---
+
 ## 🚀 Getting Started
 
-Follow these simple steps to get ShopNex up and running:
+Spin up a new **ShopNex** project in seconds using our CLI tool:
 
-1. **Clone** and **install dependencies** using pnpm or other package managers.
+### 1. Create a New Project
+
+Run one of the following commands:
 
 ```bash
-git clone https://github.com/shopnex-ai/shopnex.git
-cd shopnex
-pnpm install
+pnpm dlx create-shopnex-app
+# or
+npx create-shopnex-app
 ```
 
-2. Rename the .env.example file to .env and fill in the required environment variables.
+This command will guide you through the setup process, prompting you for options like your preferred database and environment configuration.
 
-3. Run the development server:
+---
+
+### 2. Optional CLI Flags
+
+You can customize the setup behavior using the following flags:
+
+| Flag            | Description                                                                 |
+|-----------------|-----------------------------------------------------------------------------|
+| `--fresh`       | Skips seeding of initial data. Starts a clean setup.       |
+| `--skip-env`    | Skips environment variable setup. You can configure `.env` manually later.  |
+| `--skip-dev`    | Does not automatically start the development server after setup.            |
+
+Example usage:
 
 ```bash
-pnpm dev
+pnpm dlx create-shopnex-app my-store --fresh --skip-env
 ```
 
 ## ✨ Features
