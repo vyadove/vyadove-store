@@ -1,8 +1,8 @@
 import { BasePayload, getPayload, type AdminViewServerProps } from "payload";
 import React from "react";
-import { Card, CardBody, CardFooter, CardHeader } from "./card";
+import { Card, CardBody, CardFooter, CardHeader } from "./Card";
 import config from "@payload-config";
-import SalesChart from "./sales-chart";
+import SalesChart from "./SalesChart";
 import { Order } from "@/payload-types";
 
 const baseClass = "dashboard";
