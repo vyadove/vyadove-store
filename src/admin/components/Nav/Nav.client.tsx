@@ -7,7 +7,7 @@ import {
     NavGroupType,
 } from "@payloadcms/ui/shared";
 import { usePathname } from "next/navigation";
-import { getNavIcon } from "./navIconMap";
+import { getNavIcon } from "./get-nav-icon";
 import { Home } from "lucide-react";
 import { getTranslation } from "@payloadcms/translations";
 import {
