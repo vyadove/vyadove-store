@@ -97,6 +97,9 @@ export const Products: CollectionConfig = {
         {
             label: "Build Variants",
             type: "collapsible",
+            admin: {
+                initCollapsed: true,
+            },
             fields: [
                 {
                     name: "variantOptions",
