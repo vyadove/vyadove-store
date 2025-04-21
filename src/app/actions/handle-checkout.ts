@@ -1,12 +1,15 @@
 "use server";
 
 import type { CheckoutResult } from "../types/checkout";
-import { createPendingOrder, updateOrderStatus } from "../services/orders";
+import {
+    createPendingOrder,
+    updateOrderStatus,
+} from "../../features/order/orders";
 import {
     createCheckoutSession,
     retrieveSession,
     mapToStripeLineItems,
-} from "../services/stripe";
+} from "../../features/stripe/stripe";
 import type { Stripe } from "stripe";
 import { getVariants } from "../services/products";
 import Decimal from "decimal.js";

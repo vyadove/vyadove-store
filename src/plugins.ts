@@ -1,7 +1,7 @@
 import type { Plugin } from "payload";
 import { stripePlugin } from "@payloadcms/plugin-stripe";
-import { paymentSucceeded } from "./stripe/webhooks/payment-succeeded";
-import { paymentCanceled } from "./stripe/webhooks/payment-canceled";
+import { paymentSucceeded } from "./features/stripe/webhooks/payment-succeeded";
+import { paymentCanceled } from "./features/stripe/webhooks/payment-canceled";
 import { cjPlugin } from "@shoplyjs/cj-plugin";
 import { storePlugin } from "@shopnex/store-plugin";
 import { importExportPlugin } from "@shopnex/import-export-plugin";
