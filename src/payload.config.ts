@@ -17,6 +17,8 @@ import { populatePolicies as createDefaultPolicies } from "./app/services/polici
 import { GiftCards } from "./collections/GiftCards";
 import { HeroSection } from "./globals/HeroSection";
 import { Footer } from "./globals/Footer";
+import { Payments } from "./collections/Payments";
+import { Locations } from "./collections/Locations";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -25,7 +27,7 @@ const catalog = [Collections, Products];
 export default buildConfig({
     telemetry: false,
     admin: {
-        suppressHydrationWarning: false,
+        suppressHydrationWarning: true,
         user: Users.slug,
         importMap: {
             baseDir: path.resolve(dirname),
@@ -42,7 +44,16 @@ export default buildConfig({
             Nav: "@/admin/components/Nav/Nav.tsx",
         },
     },
-    collections: [Orders, ...catalog, Users, Media, Policies, GiftCards],
+    collections: [
+        Orders,
+        ...catalog,
+        Users,
+        Media,
+        Policies,
+        GiftCards,
+        Payments,
+        Locations,
+    ],
     globals: [StoreSettings, HeroSection, Footer],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || "",

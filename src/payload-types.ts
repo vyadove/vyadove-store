@@ -74,6 +74,8 @@ export interface Config {
     media: Media;
     policies: Policy;
     'gift-cards': GiftCard;
+    payments: Payment;
+    locations: Location;
     'plugins-space': PluginsSpace;
     exports: Export;
     'payload-jobs': PayloadJob;
@@ -90,6 +92,8 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     policies: PoliciesSelect<false> | PoliciesSelect<true>;
     'gift-cards': GiftCardsSelect<false> | GiftCardsSelect<true>;
+    payments: PaymentsSelect<false> | PaymentsSelect<true>;
+    locations: LocationsSelect<false> | LocationsSelect<true>;
     'plugins-space': PluginsSpaceSelect<false> | PluginsSpaceSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
@@ -399,6 +403,60 @@ export interface GiftCard {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments".
+ */
+export interface Payment {
+  id: number;
+  name: string;
+  enabled?: boolean | null;
+  provider?:
+    | {
+        methodType: 'cod' | 'bankTransfer' | 'inStore' | 'other';
+        /**
+         * Shown to customers at checkout.
+         */
+        instructions: string;
+        details?:
+          | {
+              label: string;
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'manualProvider';
+      }[]
+    | null;
+  supportRefunds?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "locations".
+ */
+export interface Location {
+  id: number;
+  name: string;
+  address: string;
+  /**
+   * @minItems 2
+   * @maxItems 2
+   */
+  coordinates?: [number, number] | null;
+  contactPhone?: string | null;
+  /**
+   * e.g., Mon-Fri: 9am - 6pm
+   */
+  hours?: string | null;
+  isPickupLocation?: boolean | null;
+  enabled?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "plugins-space".
  */
 export interface PluginsSpace {
@@ -570,6 +628,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'gift-cards';
         value: number | GiftCard;
+      } | null)
+    | ({
+        relationTo: 'payments';
+        value: number | Payment;
+      } | null)
+    | ({
+        relationTo: 'locations';
+        value: number | Location;
       } | null)
     | ({
         relationTo: 'plugins-space';
@@ -777,6 +843,51 @@ export interface GiftCardsSelect<T extends boolean = true> {
   value?: T;
   customer?: T;
   expiryDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments_select".
+ */
+export interface PaymentsSelect<T extends boolean = true> {
+  name?: T;
+  enabled?: T;
+  provider?:
+    | T
+    | {
+        manualProvider?:
+          | T
+          | {
+              methodType?: T;
+              instructions?: T;
+              details?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  supportRefunds?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "locations_select".
+ */
+export interface LocationsSelect<T extends boolean = true> {
+  name?: T;
+  address?: T;
+  coordinates?: T;
+  contactPhone?: T;
+  hours?: T;
+  isPickupLocation?: T;
+  enabled?: T;
   updatedAt?: T;
   createdAt?: T;
 }
