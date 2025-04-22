@@ -7,6 +7,7 @@ export const ManualProvider: Block = {
         singular: "Manual Provider",
         plural: "Manual Providers",
     },
+    imageURL: "/manual-payment.png",
     fields: [
         {
             name: "methodType",

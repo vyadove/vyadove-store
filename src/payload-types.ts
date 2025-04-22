@@ -450,8 +450,8 @@ export interface Location {
    * e.g., Mon-Fri: 9am - 6pm
    */
   hours?: string | null;
-  isPickupLocation?: boolean | null;
   enabled?: boolean | null;
+  isPickupLocation?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -886,8 +886,8 @@ export interface LocationsSelect<T extends boolean = true> {
   coordinates?: T;
   contactPhone?: T;
   hours?: T;
-  isPickupLocation?: T;
   enabled?: T;
+  isPickupLocation?: T;
   updatedAt?: T;
   createdAt?: T;
 }

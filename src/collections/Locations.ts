@@ -39,16 +39,19 @@ export const Locations: CollectionConfig = {
             },
         },
         {
-            name: "isPickupLocation",
-            label: "Available for Pickup?",
-            type: "checkbox",
-            defaultValue: false,
-        },
-        {
             name: "enabled",
             label: "Enabled",
             type: "checkbox",
             defaultValue: true,
+            admin: {
+                position: "sidebar",
+            },
+        },
+        {
+            name: "isPickupLocation",
+            label: "Available for Pickup?",
+            type: "checkbox",
+            defaultValue: false,
             admin: {
                 position: "sidebar",
             },
