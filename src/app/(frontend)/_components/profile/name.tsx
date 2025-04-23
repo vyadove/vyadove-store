@@ -4,7 +4,7 @@ import React, { useEffect, useActionState } from "react";
 
 import AccountInfo from "../account-info";
 import Input from "../input";
-import type { User } from "@/payload-types";
+import { User } from "payload";
 
 type MyInformationProps = {
     customer: User;

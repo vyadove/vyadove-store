@@ -9,7 +9,7 @@ import ChevronDown from "./icons/chevron-down";
 import User from "./icons/user";
 import MapPin from "./icons/map-pin";
 import Package from "./icons/package";
-import { useAuth } from "../_providers/auth";;
+import { useAuth } from "../_providers/auth";
 
 const AccountNav = () => {
     const route = usePathname();
@@ -18,7 +18,7 @@ const AccountNav = () => {
 
     const handleLogout = async () => {
         await logout();
-        router.refresh()
+        router.refresh();
     };
 
     return (
@@ -165,7 +165,7 @@ const AccountNav = () => {
 };
 
 type AccountNavLinkProps = {
-	href: string;
+    href: string;
     route: string;
     children: React.ReactNode;
     "data-testid"?: string;

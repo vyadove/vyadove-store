@@ -4,7 +4,7 @@ import React, { useEffect, useActionState } from "react";
 
 import AccountInfo from "../account-info";
 import Input from "../input";
-import { updateCustomer } from "@/app/services/customers";
+import { updateCustomer } from "@/app/api/services/customers";
 
 type MyInformationProps = {
     customer: any;

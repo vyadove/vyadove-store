@@ -2,16 +2,15 @@
 
 import { Button, Divider, Heading } from "@medusajs/ui";
 import { useState, useTransition } from "react";
-import { handleCheckout } from "@/app/actions/handle-checkout"; // Import the Server Action
+import { handleCheckout } from "@/app/api/actions/handle-checkout"; // Import the Server Action
 import CartTotals from "../_components/cart-totals";
 import { useCart } from "react-use-cart";
 import { DiscountCode } from "../_components/discount-code";
 import type { GiftCard } from "@/payload-types";
 
-
 const Summary = () => {
     const [isPending, startTransition] = useTransition();
-    const [ promotions, setPromotions ] = useState<GiftCard[]>([]);
+    const [promotions, setPromotions] = useState<GiftCard[]>([]);
     const { items } = useCart();
 
     const handleClick = () => {
@@ -44,7 +43,7 @@ const Summary = () => {
             }
 
             const data = await response.json();
-            setPromotions(prev => [...prev, data]);
+            setPromotions((prev) => [...prev, data]);
         } catch (error) {
             console.error("Error verifying gift card code:", error);
         }
