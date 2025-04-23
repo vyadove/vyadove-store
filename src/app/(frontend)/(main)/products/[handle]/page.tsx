@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPayload } from "payload";
 import config from "@payload-config";
-import { mapProducts } from "@/utilities/map-products";
+import { mapProducts } from "@/utils/map-products";
 
 type ProductPageProps = {
     params: Promise<{ handle: string }>;
@@ -40,16 +40,16 @@ export async function generateMetadata(
 export default async function ProductPage(props: ProductPageProps) {
     const params = await props.params;
 
-	const payload = await getPayload({ config });
-	const product = await payload.find({
-		collection: "products",
-		limit: 1,
-		where: {
-			handle: {
-				equals: params.handle,
-			},
-		},
-	});
+    const payload = await getPayload({ config });
+    const product = await payload.find({
+        collection: "products",
+        limit: 1,
+        where: {
+            handle: {
+                equals: params.handle,
+            },
+        },
+    });
 
     const mappedProducts = mapProducts(product.docs);
 

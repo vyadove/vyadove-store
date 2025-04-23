@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Nav from "../_templates/nav";
 import Footer from "../_templates/footer";
 import { Providers } from "@/app/(frontend)/_providers/providers";
-import { getStoreSettings } from "@/app/services/store-settings";
+import { getStoreSettings } from "@/app/api/services/store-settings";
 
 export const metadata: Metadata = {
     title: "Shopnex Payload CMS Starter Template",

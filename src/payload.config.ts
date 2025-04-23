@@ -13,7 +13,7 @@ import { Orders } from "./collections/Orders";
 import StoreSettings from "./globals/StoreSettings";
 import { plugins } from "./plugins";
 import { Policies } from "./collections/Policies";
-import { populatePolicies as createDefaultPolicies } from "./app/services/policies";
+import { populatePolicies as createDefaultPolicies } from "./app/api/services/policies";
 import { GiftCards } from "./collections/GiftCards";
 import { HeroSection } from "./globals/HeroSection";
 import { Footer } from "./globals/Footer";

@@ -1,5 +1,5 @@
 import Overview from "../../_components/overview";
-import { getOrders } from "@/features/order/orders";
+import { getOrders } from "@/app/api/services/orders";
 
 export default async function AccountPage() {
     const orders = await getOrders();

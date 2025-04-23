@@ -5,7 +5,7 @@ import OrderOverview from "@/app/(frontend)/_components/order-overview";
 import Divider from "@/app/(frontend)/_components/divider";
 import { getPayload } from "payload";
 import config from "@payload-config";
-import { getOrders } from "@/features/order/orders";
+import { getOrders } from "@/app/api/services/orders";
 
 export const metadata: Metadata = {
     title: "Orders",

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import type { SortOptions } from "../../_util/sort-options";
 import StoreTemplate from "../../_templates/store";
-import { getPaginatedProducts } from "@/app/services/products";
+import { getPaginatedProducts } from "@/app/api/services/products";
 import decimal from "decimal.js";
 
 export const metadata: Metadata = {

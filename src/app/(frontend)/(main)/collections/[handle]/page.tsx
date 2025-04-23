@@ -3,10 +3,10 @@ import CollectionTemplate from "@/app/(frontend)/_templates/collections";
 import type { SortOptions } from "@/app/(frontend)/_util/sort-options";
 import { getPayload } from "payload";
 import config from "@payload-config";
-import { mapProducts } from "@/utilities/map-products";
+import { mapProducts } from "@/utils/map-products";
 
 type Props = {
-    params: Promise<{ handle: string; }>;
+    params: Promise<{ handle: string }>;
     searchParams: Promise<{
         page?: string;
         sortBy?: SortOptions;
@@ -31,15 +31,15 @@ export default async function CollectionPage(props: Props) {
 
     const collection = collectionData.docs[0];
 
-	const products = await payload.find({
-		collection: "products",
-		where: {
-			collections: {
-				equals: collection.id,
-			},
-		},
-		sort: "createdAt",
-	});
+    const products = await payload.find({
+        collection: "products",
+        where: {
+            collections: {
+                equals: collection.id,
+            },
+        },
+        sort: "createdAt",
+    });
 
     collection.products = mapProducts(products.docs);
 

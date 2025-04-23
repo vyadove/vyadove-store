@@ -1,5 +1,5 @@
 import OrderCompletedTemplate from "@/app/(frontend)/_templates/order-completed-template";
-import { getOrder } from "@/features/order/orders";
+import { getOrder } from "@/app/api/services/orders";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 

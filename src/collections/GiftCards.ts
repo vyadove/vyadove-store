@@ -1,13 +1,13 @@
 import type { CollectionConfig } from "payload";
 import { groups } from "./groups";
-import { generateGiftCardCode } from "@/utilities/generate-gift-card-code";
+import { generateGiftCardCode } from "@/utils/generate-gift-card-code";
 import { RateLimiterMemory } from "rate-limiter-flexible";
 import { admins } from "@/access/roles";
-import { getClientIp } from "@/utilities/get-client-ip";
+import { getClientIp } from "@/utils/get-client-ip";
 
 const rateLimiter = new RateLimiterMemory({
     points: 5,
-    duration: 60, 
+    duration: 60,
 });
 
 export const GiftCards: CollectionConfig = {
