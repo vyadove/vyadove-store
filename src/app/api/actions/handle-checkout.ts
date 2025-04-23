@@ -6,7 +6,7 @@ import {
     createCheckoutSession,
     retrieveSession,
     mapToStripeLineItems,
-} from "../../../features/stripe/stripe";
+} from "./stripe";
 import { getVariants } from "../services/products";
 import Decimal from "decimal.js";
 
