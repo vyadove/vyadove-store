@@ -283,23 +283,21 @@ export interface Product {
         id?: string | null;
       }[]
     | null;
-  variants?:
-    | {
-        vid?: string | null;
-        imageUrl?: string | null;
-        gallery?: (number | Media)[] | null;
-        price?: number | null;
-        originalPrice?: number | null;
-        options?:
-          | {
-              option: string;
-              value: string;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
+  variants: {
+    vid?: string | null;
+    imageUrl?: string | null;
+    gallery?: (number | Media)[] | null;
+    price: number;
+    originalPrice?: number | null;
+    options?:
+      | {
+          option: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
   /**
    * Add additional product info such as care instructions, materials, or sizing notes.
    */

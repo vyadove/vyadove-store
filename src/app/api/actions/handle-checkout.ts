@@ -1,16 +1,12 @@
 "use server";
 
-import type { CheckoutResult } from "../types/checkout";
-import {
-    createPendingOrder,
-    updateOrderStatus,
-} from "../../features/order/orders";
+import type { CheckoutResult } from "./checkout-types";
+import { createPendingOrder, updateOrderStatus } from "../services/orders";
 import {
     createCheckoutSession,
     retrieveSession,
     mapToStripeLineItems,
-} from "../../features/stripe/stripe";
-import type { Stripe } from "stripe";
+} from "../../../features/stripe/stripe";
 import { getVariants } from "../services/products";
 import Decimal from "decimal.js";
 
@@ -65,34 +61,5 @@ export async function handleCheckout(items: any[]): Promise<CheckoutResult> {
         return {
             error: `Checkout failed: ${errorMessage}`,
         };
-    }
-}
-
-// Handle webhook events from Stripe
-export async function handleStripeWebhook(event: Stripe.Event): Promise<void> {
-    try {
-        switch (event.type) {
-            case "checkout.session.completed": {
-                const session = event.data.object as Stripe.Checkout.Session;
-                await updateOrderStatus(session.id, "completed");
-                break;
-            }
-            case "checkout.session.expired": {
-                const session = event.data.object as Stripe.Checkout.Session;
-                await updateOrderStatus(session.id, "cancelled");
-                break;
-            }
-            case "payment_intent.payment_failed": {
-                const paymentIntent = event.data.object as Stripe.PaymentIntent;
-                const session = await retrieveSession(
-                    paymentIntent.metadata?.checkout_session_id as string
-                );
-                await updateOrderStatus(session.id, "failed");
-                break;
-            }
-        }
-    } catch (error) {
-        console.error("Error handling webhook:", error);
-        throw error;
     }
 }

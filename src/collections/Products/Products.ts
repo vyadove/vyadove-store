@@ -147,6 +147,7 @@ export const Products: CollectionConfig = {
             type: "array",
             minRows: 1,
             maxRows: 10,
+            required: true,
             fields: [
                 {
                     name: "vid",
@@ -181,6 +182,7 @@ export const Products: CollectionConfig = {
                 {
                     name: "price",
                     type: "number",
+                    required: true,
                 },
                 {
                     name: "originalPrice",
