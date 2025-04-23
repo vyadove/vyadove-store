@@ -1,9 +1,11 @@
+import type { Order } from "@/payload-types";
+
 import { Button } from "@medusajs/ui";
+import Link from "next/link";
 import { useMemo } from "react";
+
 import { convertToLocale } from "../_util/money";
 import Thumbnail from "./thumbnail";
-import Link from "next/link";
-import type { Order } from "@/payload-types";
 
 type OrderCardProps = {
     order: Order;
@@ -43,17 +45,17 @@ const OrderCard = ({ order }: OrderCardProps) => {
                 {order.items?.slice(0, 3).map((i: any) => {
                     return (
                         <div
-                            key={i.id}
                             className="flex flex-col gap-y-2"
                             data-testid="order-item"
+                            key={i.id}
                         >
                             <Thumbnail
+                                images={[]}
+                                size="full"
                                 thumbnail={
                                     i.product?.variants[0]?.imageUrl ||
                                     i.product?.variants[0]?.gallery?.[0]?.url
                                 }
-                                images={[]}
-                                size="full"
                             />
                             <div className="flex items-center text-small-regular text-ui-fg-base">
                                 <span

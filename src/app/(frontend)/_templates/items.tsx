@@ -1,8 +1,9 @@
 "use client";
 
 import { Heading, Table } from "@medusajs/ui";
-import Item from "../_components/item";
 import { useCart } from "react-use-cart";
+
+import Item from "../_components/item";
 
 const ItemsTemplate = () => {
     const { items } = useCart();
@@ -33,9 +34,9 @@ const ItemsTemplate = () => {
                     {items.map((item: any) => {
                         return (
                             <Item
-                                key={item.id}
-                                item={item}
                                 currencyCode={item.currency}
+                                item={item}
+                                key={item.id}
                             />
                         );
                     })}

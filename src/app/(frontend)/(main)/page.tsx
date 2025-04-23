@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import Hero from "../_components/hero";
-import FeaturedProducts from "../_components/featured-products";
-import { getPayload } from "payload";
+
 import config from "@payload-config";
+import { getPayload } from "payload";
+
+import FeaturedProducts from "../_components/featured-products";
+import Hero from "../_components/hero";
 
 export const metadata: Metadata = {
-    title: "Shopnex Ecommerce Starter Template",
     description:
         "A performant frontend ecommerce starter template with Payload CMS and Shopnex.",
+    title: "Shopnex Ecommerce Starter Template",
 };
 
 export const dynamic = "force-dynamic";

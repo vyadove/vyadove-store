@@ -1,47 +1,46 @@
 import { sqliteAdapter } from "@payloadcms/db-sqlite";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import path from "node:path";
-import { buildConfig } from "payload";
 import { fileURLToPath } from "node:url";
+import { buildConfig } from "payload";
 import sharp from "sharp";
 
-import { Users } from "./collections/Users";
-import { Media } from "./collections/Media";
+import { populatePolicies as createDefaultPolicies } from "./app/api/services/policies";
 import { Collections } from "./collections/Collections";
-import { Products } from "./collections/Products/Products";
+import { GiftCards } from "./collections/GiftCards";
+import { Locations } from "./collections/Locations";
+import { Media } from "./collections/Media";
 import { Orders } from "./collections/Orders";
+import { Payments } from "./collections/Payments";
+import { Policies } from "./collections/Policies";
+import { Products } from "./collections/Products/Products";
+import { Users } from "./collections/Users";
+import { Footer } from "./globals/Footer";
+import { HeroSection } from "./globals/HeroSection";
 import StoreSettings from "./globals/StoreSettings";
 import { plugins } from "./plugins";
-import { Policies } from "./collections/Policies";
-import { populatePolicies as createDefaultPolicies } from "./app/api/services/policies";
-import { GiftCards } from "./collections/GiftCards";
-import { HeroSection } from "./globals/HeroSection";
-import { Footer } from "./globals/Footer";
-import { Payments } from "./collections/Payments";
-import { Locations } from "./collections/Locations";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 const catalog = [Collections, Products];
 
 export default buildConfig({
-    telemetry: false,
     admin: {
+        importMap: {
+            autoGenerate: false,
+            baseDir: path.resolve(dirname),
+        },
         suppressHydrationWarning: true,
         user: Users.slug,
-        importMap: {
-            baseDir: path.resolve(dirname),
-            autoGenerate: false,
-        },
 
         components: {
+            Nav: "@/admin/components/Nav/Nav.tsx",
             views: {
                 dashboard: {
-                    path: "@/admin/components/Dashboard/Dashboard",
                     Component: "@/admin/components/Dashboard/Dashboard",
+                    path: "@/admin/components/Dashboard/Dashboard",
                 },
             },
-            Nav: "@/admin/components/Nav/Nav.tsx",
         },
     },
     collections: [
@@ -54,29 +53,30 @@ export default buildConfig({
         Payments,
         Locations,
     ],
-    globals: [StoreSettings, HeroSection, Footer],
-    editor: lexicalEditor(),
-    secret: process.env.PAYLOAD_SECRET || "",
-    typescript: {
-        outputFile: path.resolve(dirname, "payload-types.ts"),
-    },
     db: sqliteAdapter({
         client: {
             url: process.env.DATABASE_URI || "",
         },
     }),
-    sharp,
-    plugins,
-    onInit: async (payload) => {
-        await createDefaultPolicies(payload);
-    },
+    editor: lexicalEditor(),
     endpoints: [
         {
-            path: "/healthz",
-            method: "get",
             handler: (req) => {
                 return Response.json({ status: "OK" });
             },
+            method: "get",
+            path: "/healthz",
         },
     ],
+    globals: [StoreSettings, HeroSection, Footer],
+    onInit: async (payload) => {
+        await createDefaultPolicies(payload);
+    },
+    plugins,
+    secret: process.env.PAYLOAD_SECRET || "",
+    sharp,
+    telemetry: false,
+    typescript: {
+        outputFile: path.resolve(dirname, "payload-types.ts"),
+    },
 });

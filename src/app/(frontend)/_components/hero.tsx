@@ -1,4 +1,5 @@
-import { HeroSection } from "@/payload-types";
+import type { HeroSection } from "@/payload-types";
+
 import { Button, Heading } from "@medusajs/ui";
 import Link from "next/link";
 
@@ -18,8 +19,8 @@ const Hero = ({ hero }: HeroProps) => {
             className="h-[75vh] w-full border-b border-ui-border-base relative bg-ui-bg-subtle"
             style={{
                 backgroundImage: backgroundImageUrl,
-                backgroundSize: "cover",
                 backgroundPosition: "center",
+                backgroundSize: "cover",
             }}
         >
             {/* Dark overlay */}
@@ -28,20 +29,20 @@ const Hero = ({ hero }: HeroProps) => {
             <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center small:p-32 gap-6">
                 <span>
                     <Heading
-                        level="h1"
                         className="text-3xl leading-10 font-normal text-white"
+                        level="h1"
                     >
                         {hero?.title}
                     </Heading>
                     <Heading
-                        level="h2"
                         className="text-3xl leading-10 text-gray-300 font-normal"
+                        level="h2"
                     >
                         {hero?.subtitle}
                     </Heading>
                 </span>
                 <Link href={(hero as any)?.ctaButtonLink || "/"}>
-                    <Button variant="secondary" size="large">
+                    <Button size="large" variant="secondary">
                         {(hero as any)?.ctaButtonText}
                     </Button>
                 </Link>

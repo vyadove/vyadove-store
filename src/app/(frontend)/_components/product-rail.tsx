@@ -1,21 +1,22 @@
+import { mapProducts } from "@/utils/map-products";
 import { Text } from "@medusajs/ui";
+import config from "@payload-config";
+import { getPayload } from "payload";
+
 import InteractiveLink from "./interactive-link";
 import ProductPreview from "./product-preview";
-import { getPayload } from "payload";
-import config from "@payload-config";
-import { mapProducts } from "@/utils/map-products";
 
 export default async function ProductRail({ collection }: { collection: any }) {
     const payload = await getPayload({ config });
     const products = await payload.find({
         collection: "products",
+        limit: 3,
+        sort: "createdAt",
         where: {
             collections: {
                 equals: collection.id,
             },
         },
-        limit: 3,
-        sort: "createdAt",
     });
 
     const pricedProducts = mapProducts(products.docs);
@@ -31,7 +32,7 @@ export default async function ProductRail({ collection }: { collection: any }) {
             <ul className="grid grid-cols-2 small:grid-cols-3 gap-x-6 gap-y-24 small:gap-y-36">
                 {pricedProducts.map((product) => (
                     <li key={product.id}>
-                        <ProductPreview product={product} isFeatured />
+                        <ProductPreview isFeatured product={product} />
                     </li>
                 ))}
             </ul>

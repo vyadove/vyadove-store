@@ -1,24 +1,25 @@
-import { clx } from "@medusajs/ui";
 import type React from "react";
 
+import { clx } from "@medusajs/ui";
+
 type OptionSelectProps = {
-	optionName: string;
-	optionValue: string[];
-	updateOption: (option: string, value: string) => void;
-	options: string;
-	title: string;
-	disabled?: boolean;
 	"data-testid"?: string;
+	disabled?: boolean;
+	optionName: string;
+	options: string;
+	optionValue: string[];
+	title: string;
+	updateOption: (option: string, value: string) => void;
 };
 
 const OptionSelect: React.FC<OptionSelectProps> = ({
-	optionName,
-	optionValue,
-	options,
-	updateOption,
-	title,
 	"data-testid": dataTestId,
 	disabled,
+	optionName,
+	options,
+	optionValue,
+	title,
+	updateOption,
 }) => {
 	return (
 		<div className="flex flex-col gap-y-3">
@@ -29,9 +30,6 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
 			>
 				{optionValue.map((value: string) => (
 					<button
-						type="button"
-						key={value}
-						onClick={() => updateOption(optionName, value)}
 						className={clx(
 							"border border-ui-border-base bg-ui-bg-subtle text-small-regular rounded p-2 flex-1",
 							{
@@ -40,8 +38,11 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
 									options !== value,
 							},
 						)}
-						disabled={disabled}
 						data-testid="option-button"
+						disabled={disabled}
+						key={value}
+						onClick={() => updateOption(optionName, value)}
+						type="button"
 					>
 						{value}
 					</button>

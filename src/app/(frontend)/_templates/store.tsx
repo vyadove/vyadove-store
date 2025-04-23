@@ -1,25 +1,27 @@
+import type { Product } from "@/payload-types";
+
 import { Suspense } from "react";
 
-import PaginatedProducts from "./paginated-product";
 import type { SortOptions } from "../_util/sort-options";
+
 import RefinementList from "../_components/refinement-list";
 import SkeletonProductGrid from "../_components/skeleton-product-grid";
-import { Product } from "@/payload-types";
+import PaginatedProducts from "./paginated-product";
 
 const StoreTemplate = ({
-	sortBy,
+	collectionId,
 	page,
 	products,
-	totalPages,
-	collectionId,
 	productsIds,
+	sortBy,
+	totalPages,
 }: {
-	sortBy?: SortOptions;
+	collectionId?: string;
 	page?: string;
 	products: Product[];
-	totalPages: number;
-	collectionId?: string;
 	productsIds?: string[];
+	sortBy?: SortOptions;
+	totalPages: number;
 }) => {
 	const pageNumber = page ? Number.parseInt(page) : 1;
 	const sort = sortBy || "created_at";
@@ -36,10 +38,10 @@ const StoreTemplate = ({
 				</div>
 				<Suspense fallback={<SkeletonProductGrid />}>
 					<PaginatedProducts
-						sortBy={sort}
 						page={pageNumber}
-						productsIds={productsIds}
 						products={products}
+						productsIds={productsIds}
+						sortBy={sort}
 					/>
 				</Suspense>
 			</div>

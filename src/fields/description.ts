@@ -1,3 +1,5 @@
+import type { Field } from "payload";
+
 import {
 	FixedToolbarFeature,
 	HeadingFeature,
@@ -5,7 +7,6 @@ import {
 	InlineToolbarFeature,
 	lexicalEditor,
 } from "@payloadcms/richtext-lexical";
-import type { Field } from "payload";
 
 type Description = (fieldToUse?: string, overrides?: Partial<Field>) => Field;
 

@@ -2,20 +2,20 @@ import type { BasePayload } from "payload";
 
 const policiesList = [
     {
-        title: "Privacy Policy",
         handle: "privacy-policy",
+        title: "Privacy Policy",
     },
     {
-        title: "Terms of Service",
         handle: "terms-of-service",
+        title: "Terms of Service",
     },
     {
-        title: "Shipping Policy",
         handle: "shipping-policy",
+        title: "Shipping Policy",
     },
     {
-        title: "Returns Policy",
         handle: "returns-policy",
+        title: "Returns Policy",
     },
 ];
 

@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useActionState } from "react";
+import { updateCustomer } from "@/app/api/services/customers";
+import React, { useActionState, useEffect } from "react";
 
 import AccountInfo from "../account-info";
 import Input from "../input";
-import { updateCustomer } from "@/app/api/services/customers";
 
 type MyInformationProps = {
     customer: any;
@@ -23,10 +23,10 @@ const ProfilePhone: React.FC<MyInformationProps> = ({ customer }) => {
 
         try {
             await updateCustomer(customer);
-            return { success: true, error: null };
+            return { error: null, success: true };
         } catch (error: any) {
             console.error(error);
-            return { success: false, error: error.toString() };
+            return { error: error.toString(), success: false };
         }
     };
 
@@ -46,23 +46,23 @@ const ProfilePhone: React.FC<MyInformationProps> = ({ customer }) => {
     return (
         <form action={formAction} className="w-full">
             <AccountInfo
-                label="Phone"
-                currentInfo={`${customer?.phone || "-"}`}
-                isSuccess={successState}
-                isError={!!state.error}
-                errorMessage={state.error}
                 clearState={clearState}
+                currentInfo={`${customer?.phone || "-"}`}
                 data-testid="account-phone-editor"
+                errorMessage={state.error}
+                isError={!!state.error}
+                isSuccess={successState}
+                label="Phone"
             >
                 <div className="grid grid-cols-1 gap-y-2">
                     <Input
+                        autoComplete="phone"
+                        data-testid="phone-input"
+                        defaultValue={customer?.phone || ""}
                         label="Phone"
                         name="phone"
-                        type="phone"
-                        autoComplete="phone"
                         required
-                        defaultValue={customer?.phone || ""}
-                        data-testid="phone-input"
+                        type="phone"
                     />
                 </div>
             </AccountInfo>

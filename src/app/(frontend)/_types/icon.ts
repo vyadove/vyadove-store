@@ -1,4 +1,4 @@
 export type IconProps = {
 	color?: string;
-	size?: string | number;
+	size?: number | string;
 } & React.SVGAttributes<SVGElement>;

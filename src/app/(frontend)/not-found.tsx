@@ -1,11 +1,12 @@
+import type { Metadata } from "next";
+
 import { ArrowUpRightMini } from "@medusajs/icons";
 import { Text } from "@medusajs/ui";
-import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-	title: "404",
 	description: "Something went wrong",
+	title: "404",
 };
 
 export default function NotFound() {

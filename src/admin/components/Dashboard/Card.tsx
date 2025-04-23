@@ -5,10 +5,10 @@ import type React from "react";
 import "./index.scss";
 
 export type Props = {
-    children?: React.ReactNode;
-    title: string;
     amount: string;
+    children?: React.ReactNode;
     percentage: string;
+    title: string;
 };
 
 const baseClass = "card";

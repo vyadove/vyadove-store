@@ -1,32 +1,35 @@
 "use client";
 
-import { Badge, Heading, Input, Label, Text } from "@medusajs/ui";
+import type { GiftCard } from "@/payload-types";
 import type React from "react";
+
+import { Badge, Heading, Input, Label, Text } from "@medusajs/ui";
 import { useState } from "react";
 
 import ErrorMessage from "./error-message";
-import { SubmitButton } from "./submit-button";
 import Trash from "./icons/trash";
-import type { GiftCard } from "@/payload-types";
+import { SubmitButton } from "./submit-button";
 
 type DiscountCodeProps = {
-    promotions: GiftCard[];
     applyPromotion: (code: string) => Promise<void>;
-	setPromotions: (promotions: GiftCard[]) => void;
+    promotions: GiftCard[];
+    setPromotions: (promotions: GiftCard[]) => void;
 };
 
 export const DiscountCode: React.FC<DiscountCodeProps> = ({
-    promotions,
     applyPromotion,
-	setPromotions
+    promotions,
+    setPromotions,
 }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<null | string>(null);
 
-    const removePromotionCode = async (code: string) => {
+    const removePromotionCode = (code: string) => {
         try {
-            const updatedPromotions = promotions.filter((promo) => promo.code !== code);
-			setPromotions(updatedPromotions);
+            const updatedPromotions = promotions.filter(
+                (promo) => promo.code !== code
+            );
+            setPromotions(updatedPromotions);
         } catch (error) {
             setErrorMessage("Failed to remove promotion code.");
             console.error("Error:", error);
@@ -40,7 +43,9 @@ export const DiscountCode: React.FC<DiscountCodeProps> = ({
         const formData = new FormData(event.currentTarget);
         const code = formData.get("code") as string;
 
-        if (!code.trim()) return;
+        if (!code.trim()) {
+            return;
+        }
 
         try {
             await applyPromotion(code);
@@ -53,13 +58,13 @@ export const DiscountCode: React.FC<DiscountCodeProps> = ({
     return (
         <div className="w-full bg-white flex flex-col">
             <div className="txt-medium">
-                <form onSubmit={addPromotionCode} className="w-full mb-5">
+                <form className="w-full mb-5" onSubmit={addPromotionCode}>
                     <Label className="flex gap-x-1 my-2 items-center">
                         <button
-                            type="button"
-                            onClick={() => setIsOpen((prev) => !prev)}
                             className="txt-medium text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
                             data-testid="add-discount-button"
+                            onClick={() => setIsOpen((prev) => !prev)}
+                            type="button"
                         >
                             Add Promotion Code(s)
                         </button>
@@ -69,14 +74,14 @@ export const DiscountCode: React.FC<DiscountCodeProps> = ({
                         <div className="flex w-full gap-x-2">
                             <Input
                                 className="size-full"
+                                data-testid="discount-input"
                                 id="promotion-input"
                                 name="code"
                                 type="text"
-                                data-testid="discount-input"
                             />
                             <SubmitButton
-                                variant="secondary"
                                 data-testid="discount-apply-button"
+                                variant="secondary"
                             >
                                 Apply
                             </SubmitButton>
@@ -85,8 +90,8 @@ export const DiscountCode: React.FC<DiscountCodeProps> = ({
 
                     {errorMessage && (
                         <ErrorMessage
-                            error={errorMessage}
                             data-testid="discount-error-message"
+                            error={errorMessage}
                         />
                     )}
                 </form>
@@ -99,9 +104,9 @@ export const DiscountCode: React.FC<DiscountCodeProps> = ({
 
                         {promotions.map((promo) => (
                             <div
-                                key={promo.id}
                                 className="flex items-center justify-between w-full max-w-full mb-2"
                                 data-testid="discount-row"
+                                key={promo.id}
                             >
                                 <Text className="flex gap-x-1 items-baseline txt-small-plus w-4/5 pr-1">
                                     <Badge color={"grey"} size="small">
@@ -111,12 +116,12 @@ export const DiscountCode: React.FC<DiscountCodeProps> = ({
                                 </Text>
 
                                 <button
-                                    type="button"
                                     className="flex items-center"
+                                    data-testid="remove-discount-button"
                                     onClick={() =>
                                         removePromotionCode(promo.code)
                                     }
-                                    data-testid="remove-discount-button"
+                                    type="button"
                                 >
                                     <Trash size={14} />
                                     <span className="sr-only">

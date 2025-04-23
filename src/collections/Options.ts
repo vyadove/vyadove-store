@@ -1,13 +1,14 @@
-import { admins, anyone } from "@/access/roles";
 import type { CollectionConfig } from "payload";
+
+import { admins, anyone } from "@/access/roles";
 
 export const Options: CollectionConfig = {
     slug: "options",
     access: {
         create: admins,
+        delete: admins,
         read: anyone,
         update: admins,
-        delete: admins,
     },
     admin: {
         hidden: true,
@@ -33,7 +34,6 @@ export const Options: CollectionConfig = {
         {
             name: "values",
             type: "array",
-            required: true,
             fields: [
                 {
                     name: "value",
@@ -41,6 +41,7 @@ export const Options: CollectionConfig = {
                     required: true,
                 },
             ],
+            required: true,
         },
     ],
 };

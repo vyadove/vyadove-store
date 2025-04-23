@@ -1,22 +1,23 @@
 "use client";
 
 import type React from "react";
+
 import {
-    LineChart,
+    CartesianGrid,
+    Legend,
     Line,
+    LineChart,
+    ResponsiveContainer,
+    Tooltip,
     XAxis,
     YAxis,
-    Tooltip,
-    Legend,
-    ResponsiveContainer,
-    CartesianGrid,
 } from "recharts";
 
 export type SalesData = {
     date: string;
-    revenue: number;
     orders: number;
     profit: number;
+    revenue: number;
 };
 
 type Props = {
@@ -32,7 +33,7 @@ const getRecentDates = (): string[] => {
         const d = new Date(today);
         d.setDate(today.getDate() - i);
         dates.push(
-            d.toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" })
+            d.toLocaleDateString("en-US", { day: "2-digit", month: "2-digit" })
         );
     }
 
@@ -42,7 +43,7 @@ const getRecentDates = (): string[] => {
 const mergeDataWithPlaceholders = (realData: SalesData[]): SalesData[] => {
     const dataMap = new Map(realData.map((item) => [item.date, item]));
     return getRecentDates().map((date) => {
-        return dataMap.get(date) || { date, revenue: 0, orders: 0, profit: 0 };
+        return dataMap.get(date) || { date, orders: 0, profit: 0, revenue: 0 };
     });
 };
 
@@ -57,68 +58,68 @@ const SalesChart: React.FC<Props> = ({ data, strokeWidth = 2 }) => {
             <h3 className="text-xl font-semibold mb-4 text-gray-800">
                 Sales Overview
             </h3>
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer height={400} width="100%">
                 <LineChart
                     data={chartData}
-                    margin={{ top: 20, right: -10, left: -40, bottom: 10 }}
+                    margin={{ bottom: 10, left: -40, right: -10, top: 20 }}
                 >
                     <CartesianGrid
-                        vertical={false}
                         stroke="#e0e0e0"
                         strokeDasharray="3 3"
+                        vertical={false}
                     />
                     <XAxis
-                        dataKey="date"
-                        tick={{ fontSize: 12, fill: "#6b7280" }}
-                        axisLine={{ stroke: "#d1d5db" }}
-                        tickLine={{ stroke: "#d1d5db" }}
-                        interval="preserveStartEnd"
                         angle={-25}
-                        textAnchor="end"
+                        axisLine={{ stroke: "#d1d5db" }}
+                        dataKey="date"
                         height={60}
+                        interval="preserveStartEnd"
+                        textAnchor="end"
+                        tick={{ fill: "#6b7280", fontSize: 12 }}
+                        tickLine={{ stroke: "#d1d5db" }}
                     />
                     <YAxis
-                        tick={{ fontSize: 12, fill: "#6b7280" }}
                         axisLine={{ stroke: "#d1d5db" }}
+                        tick={{ fill: "#6b7280", fontSize: 12 }}
                         tickLine={{ stroke: "#d1d5db" }}
                     />
                     <Tooltip
-                        cursor={{ stroke: "#374151", strokeWidth: 2 }}
                         contentStyle={{
                             backgroundColor: "#f9fafb",
                             border: "1px solid #e5e7eb",
                             borderRadius: "4px",
                             padding: "8px",
                         }}
+                        cursor={{ stroke: "#374151", strokeWidth: 2 }}
                         itemStyle={{ color: "#374151" }}
                     />
                     <Legend
-                        wrapperStyle={{ padding: "10px", fontSize: "14px" }}
                         iconType="circle"
+                        wrapperStyle={{ fontSize: "14px", padding: "10px" }}
                     />
                     <Line
-                        type="monotone"
                         dataKey="revenue"
-                        stroke="var(--color-blue-500)"
-                        strokeWidth={strokeWidth}
                         dot={false}
                         name="Revenue"
+                        stroke="var(--color-blue-500)"
+                        strokeWidth={strokeWidth}
+                        type="monotone"
                     />
                     <Line
-                        type="monotone"
                         dataKey="orders"
-                        stroke="#5fe385"
-                        strokeWidth={strokeWidth}
                         dot={false}
                         name="Orders"
+                        stroke="#5fe385"
+                        strokeWidth={strokeWidth}
+                        type="monotone"
                     />
                     <Line
-                        type="monotone"
                         dataKey="profit"
-                        stroke="#f59e0b"
-                        strokeWidth={strokeWidth}
                         dot={false}
                         name="Profit"
+                        stroke="#f59e0b"
+                        strokeWidth={strokeWidth}
+                        type="monotone"
                     />
                 </LineChart>
             </ResponsiveContainer>

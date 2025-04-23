@@ -1,25 +1,27 @@
 "use client";
 
-import { Button } from "@medusajs/ui";
-import { useState, useMemo } from "react";
-import ProductPrice from "../product-price/product-price";
-import { useCart } from "react-use-cart";
-import Divider from "../../divider";
-import OptionSelect from "./option-select";
 import type { Product } from "@/payload-types";
+
+import { Button } from "@medusajs/ui";
+import { useMemo, useState } from "react";
+import { useCart } from "react-use-cart";
+
+import Divider from "../../divider";
+import ProductPrice from "../product-price/product-price";
+import OptionSelect from "./option-select";
 
 type ProductActionsProps = {
     product: Product;
+    selectedOptions: Record<string, string>;
     setSelectedOptions: React.Dispatch<
         React.SetStateAction<Record<string, string>>
     >;
-    selectedOptions: Record<string, string>;
 };
 
 export default function ProductActions({
     product,
-    setSelectedOptions,
     selectedOptions,
+    setSelectedOptions,
 }: ProductActionsProps) {
     const [isAdding, setIsAdding] = useState(false);
     const { addItem } = useCart();
@@ -38,9 +40,12 @@ export default function ProductActions({
 
         return Array.from(optionsMap.entries()).map(([option, values]) => ({
             name: option,
-            values: Array.from(values) as string[],
+            values: Array.from(values),
         }));
-    }, [product.variants]);
+    }, [product.variants]) as Array<{
+        name: string;
+        values: string[];
+    }>;
 
     const allOptionsSelected = useMemo(() => {
         return options.every(({ name }) => selectedOptions[name]);
@@ -55,17 +60,19 @@ export default function ProductActions({
             )
         );
 
-        if (selectedVariant?.id == null) return;
+        if (selectedVariant?.id == null) {
+            return;
+        }
 
         const newItem = {
             ...selectedVariant,
+            id: `${selectedVariant.id}`,
+            currency: product.currency,
             gallery: selectedVariant.gallery?.length
                 ? selectedVariant.gallery
                 : product.variants[0].gallery,
-            productName: product.title,
             handle: product.handle,
-            currency: product.currency,
-            id: `${selectedVariant.id}`,
+            productName: product.title,
         };
 
         setTimeout(() => {
@@ -86,36 +93,36 @@ export default function ProductActions({
             <div className="flex flex-col gap-y-4">
                 {options.map(({ name, values }) => (
                     <OptionSelect
+                        data-testid="product-options"
                         key={name}
-                        title={name}
                         optionName={name}
-                        optionValue={values}
                         options={selectedOptions[name]}
+                        optionValue={values}
+                        title={name}
                         updateOption={(option, value) => {
                             setSelectedOptions((prev) => ({
                                 ...prev,
                                 [option]: value,
                             }));
                         }}
-                        data-testid="product-options"
                     />
                 ))}
                 <Divider />
             </div>
 
             <ProductPrice
-                variant={selectedVariant}
-                showFrom={product.variants.length > 1 && !allOptionsSelected}
                 currency={product.currency}
+                showFrom={product.variants.length > 1 && !allOptionsSelected}
+                variant={selectedVariant}
             />
 
             <Button
-                onClick={handleAddToCart}
-                variant="primary"
                 className="w-full h-10"
-                isLoading={isAdding}
                 data-testid="add-product-button"
                 disabled={isAdding || !allOptionsSelected}
+                isLoading={isAdding}
+                onClick={handleAddToCart}
+                variant="primary"
             >
                 {allOptionsSelected ? "Add to cart" : "Select variant"}
             </Button>

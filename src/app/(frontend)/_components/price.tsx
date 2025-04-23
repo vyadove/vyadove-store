@@ -1,14 +1,15 @@
-import { Text, clx } from "@medusajs/ui";
+import { clx, Text } from "@medusajs/ui";
+
 import { convertToLocale } from "../_util/money";
 
-export default async function PreviewPrice({
-    price,
+export default function PreviewPrice({
+    currency,
     originalPrice,
-	currency,
+    price,
 }: {
-    price: any;
+    currency?: string;
     originalPrice?: any;
-	currency?: string;
+    price: any;
 }) {
     return (
         <>

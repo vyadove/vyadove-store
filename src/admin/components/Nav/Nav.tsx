@@ -1,18 +1,17 @@
-import { RenderServerComponent } from "@payloadcms/ui/elements/RenderServerComponent";
-import { NavWrapper } from "./NavWrapper";
+import type { EntityToGroup } from "@payloadcms/ui/shared";
+import type { ServerProps } from "payload";
+
 import { Logout } from "@payloadcms/ui";
-import { ServerProps } from "payload";
+import { RenderServerComponent } from "@payloadcms/ui/elements/RenderServerComponent";
+import { EntityType, groupNavItems } from "@payloadcms/ui/shared";
+
 import "./Nav.scss";
-import {
-    EntityToGroup,
-    EntityType,
-    groupNavItems,
-} from "@payloadcms/ui/shared";
 import { NavClient } from "./Nav.client";
+import { NavWrapper } from "./NavWrapper";
 
 const baseClass = "nav";
 
-const Nav = async (props: ServerProps) => {
+const Nav = (props: ServerProps) => {
     const {
         documentSubViewType,
         i18n,

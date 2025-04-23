@@ -1,13 +1,14 @@
 import { clx } from "@medusajs/ui";
+
 import { convertToLocale } from "../_util/money";
 
 type LineItemUnitPriceProps = {
+	currencyCode: string;
 	item: any;
 	style?: "default" | "tight";
-	currencyCode: string;
 };
 
-const LineItemUnitPrice = ({ item, currencyCode }: LineItemUnitPriceProps) => {
+const LineItemUnitPrice = ({ currencyCode, item }: LineItemUnitPriceProps) => {
 	return (
 		<div className="flex flex-col text-ui-fg-muted justify-center h-full">
 			<span

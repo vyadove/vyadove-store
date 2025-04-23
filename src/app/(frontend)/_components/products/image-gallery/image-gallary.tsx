@@ -2,7 +2,7 @@ import { Container } from "@medusajs/ui";
 import Image from "next/image";
 
 type ImageGalleryProps = {
-    thumbnail?: string | null;
+    thumbnail?: null | string;
 };
 
 const ImageGallery = ({ thumbnail }: ImageGalleryProps) => {
@@ -12,11 +12,11 @@ const ImageGallery = ({ thumbnail }: ImageGalleryProps) => {
                 <Container className="relative aspect-[29/34] w-full overflow-hidden bg-ui-bg-subtle">
                     {thumbnail && (
                         <Image
-                            src={thumbnail}
-                            className="absolute inset-0 rounded-rounded"
                             alt={"Product image"}
+                            className="absolute inset-0 rounded-rounded"
                             fill
                             sizes="(max-width: 576px) 280px, (max-width: 768px) 360px, (max-width: 992px) 480px, 800px"
+                            src={thumbnail}
                             style={{
                                 objectFit: "cover",
                             }}

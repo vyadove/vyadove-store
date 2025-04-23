@@ -1,12 +1,14 @@
 "use client";
 
+import type { GiftCard } from "@/payload-types";
+
+import { handleCheckout } from "@/app/api/actions/handle-checkout"; // Import the Server Action
 import { Button, Divider, Heading } from "@medusajs/ui";
 import { useState, useTransition } from "react";
-import { handleCheckout } from "@/app/api/actions/handle-checkout"; // Import the Server Action
-import CartTotals from "../_components/cart-totals";
 import { useCart } from "react-use-cart";
+
+import CartTotals from "../_components/cart-totals";
 import { DiscountCode } from "../_components/discount-code";
-import type { GiftCard } from "@/payload-types";
 
 const Summary = () => {
     const [isPending, startTransition] = useTransition();
@@ -31,10 +33,10 @@ const Summary = () => {
             const response = await fetch(
                 `/api/gift-cards/verify?code=${code}`,
                 {
-                    method: "GET",
                     headers: {
                         "Content-Type": "application/json",
                     },
+                    method: "GET",
                 }
             );
 
@@ -51,13 +53,13 @@ const Summary = () => {
 
     return (
         <div className="flex flex-col gap-y-4">
-            <Heading level="h2" className="text-[2rem] leading-[2.75rem]">
+            <Heading className="text-[2rem] leading-[2.75rem]" level="h2">
                 Summary
             </Heading>
             <DiscountCode
+                applyPromotion={applyPromotion}
                 promotions={promotions}
                 setPromotions={setPromotions}
-                applyPromotion={applyPromotion}
             />
             <Divider />
             <CartTotals
@@ -71,8 +73,8 @@ const Summary = () => {
             />
             <Button
                 className="w-full h-10"
-                onClick={handleClick}
                 disabled={isPending}
+                onClick={handleClick}
             >
                 {isPending ? "Processing..." : "Go to checkout"}
             </Button>

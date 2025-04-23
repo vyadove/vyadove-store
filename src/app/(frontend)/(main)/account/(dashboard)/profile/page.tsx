@@ -1,13 +1,13 @@
 "use client";
 
-import ProfileBillingAddress from "@/app/(frontend)/_components/profile-billing-address";
-import ProfileName from "@/app/(frontend)/_components/profile/name";
 import ProfileEmail from "@/app/(frontend)/_components/profile/email";
+import ProfileName from "@/app/(frontend)/_components/profile/name";
 import ProfilePhone from "@/app/(frontend)/_components/profile/phone";
+import ProfileBillingAddress from "@/app/(frontend)/_components/profile-billing-address";
 import { useAuth } from "@/app/(frontend)/_providers/auth";
 
 export default function Profile() {
-    const { user, updateUser } = useAuth();
+    const { updateUser, user } = useAuth();
 
     if (!user) {
         return null;
@@ -24,7 +24,10 @@ export default function Profile() {
                 </p>
             </div>
             <div className="flex flex-col gap-y-8 w-full">
-                <ProfileName customer={user} updateCustomer={updateUser} />
+                <ProfileName
+                    customer={user as any}
+                    updateCustomer={updateUser}
+                />
                 <Divider />
                 <ProfileEmail customer={user} />
                 <Divider />

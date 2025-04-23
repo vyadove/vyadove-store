@@ -1,7 +1,9 @@
+import type {
+	SelectHTMLAttributes} from "react";
+
 import { ChevronUpDown } from "@medusajs/icons";
 import { clx } from "@medusajs/ui";
 import {
-	SelectHTMLAttributes,
 	forwardRef,
 	useEffect,
 	useImperativeHandle,
@@ -10,15 +12,13 @@ import {
 } from "react";
 
 export type NativeSelectProps = {
-	placeholder?: string;
 	errors?: Record<string, unknown>;
+	placeholder?: string;
 	touched?: Record<string, unknown>;
 } & SelectHTMLAttributes<HTMLSelectElement>;
 
-const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
-	(
-		{ placeholder = "Select...", defaultValue, className, children, ...props },
-		ref,
+const NativeSelect = (
+		{ children, className, defaultValue, placeholder = "Select...", ref, ...props }: { ref?: React.RefObject<HTMLSelectElement | null> } & NativeSelectProps,
 	) => {
 		const innerRef = useRef<HTMLSelectElement>(null);
 		const [isPlaceholder, setIsPlaceholder] = useState(false);
@@ -39,8 +39,6 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
 		return (
 			<div>
 				<div
-					onFocus={() => innerRef.current?.focus()}
-					onBlur={() => innerRef.current?.blur()}
 					className={clx(
 						"relative flex items-center text-base-regular border border-ui-border-base bg-ui-bg-subtle rounded-md hover:bg-ui-bg-field-hover",
 						className,
@@ -48,10 +46,12 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
 							"text-ui-fg-muted": isPlaceholder,
 						},
 					)}
+					onBlur={() => innerRef.current?.blur()}
+					onFocus={() => innerRef.current?.focus()}
 				>
 					<select
-						ref={innerRef}
 						defaultValue={defaultValue}
+						ref={innerRef}
 						{...props}
 						className="appearance-none flex-1 bg-transparent border-none px-4 py-2.5 transition-colors duration-150 outline-none "
 					>
@@ -66,8 +66,7 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
 				</div>
 			</div>
 		);
-	},
-);
+	};
 
 NativeSelect.displayName = "NativeSelect";
 

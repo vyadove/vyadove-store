@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { convertToLocale } from "../_util/money";
 import { useCart } from "react-use-cart";
 
-const CartTotals = ({ order, currencyCode }: { order: { totalAmount: number }; currencyCode: string }) => {
+import { convertToLocale } from "../_util/money";
+
+const CartTotals = ({ currencyCode, order }: { currencyCode: string; order: { totalAmount: number } }) => {
     const { cartTotal } = useCart();
     const tax_total = 0;
     const shipping_subtotal = 0;

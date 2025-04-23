@@ -1,4 +1,4 @@
-import { SortOptions } from "./sort-options";
+import type { SortOptions } from "./sort-options";
 
 /**
  * Helper function to sort products by price until the store API supports sorting by price
@@ -7,7 +7,7 @@ import { SortOptions } from "./sort-options";
  * @returns products sorted by price
  */
 export function sortProducts(products: any[], sortBy: SortOptions): any[] {
-	let sortedProducts = products;
+	const sortedProducts = products;
 
 	if (["price_asc", "price_desc"].includes(sortBy)) {
 		// Precompute the minimum price for each product
@@ -33,7 +33,7 @@ export function sortProducts(products: any[], sortBy: SortOptions): any[] {
 	if (sortBy === "created_at") {
 		sortedProducts.sort((a, b) => {
 			return (
-				new Date(b.created_at!).getTime() - new Date(a.created_at!).getTime()
+				new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
 			);
 		});
 	}

@@ -1,19 +1,20 @@
+import type { CollectionConfig } from "payload";
+
 import { admins, anyone } from "@/access/roles";
 import { handleField } from "@/fields/slug";
-import type { CollectionConfig } from "payload";
 
 export const Policies: CollectionConfig = {
     slug: "policies",
-    admin: {
-        useAsTitle: "title",
-        group: "Settings",
-        defaultColumns: ["title", "handle", "createdAt", "updatedAt"],
-    },
     access: {
         create: admins,
+        delete: admins,
         read: anyone,
         update: admins,
-        delete: admins,
+    },
+    admin: {
+        defaultColumns: ["title", "handle", "createdAt", "updatedAt"],
+        group: "Settings",
+        useAsTitle: "title",
     },
     fields: [
         {

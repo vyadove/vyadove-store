@@ -3,14 +3,14 @@ import { Text } from "@medusajs/ui";
 import Link from "next/link";
 
 type InteractiveLinkProps = {
-	href: string;
 	children?: React.ReactNode;
+	href: string;
 	onClick?: () => void;
 };
 
 const InteractiveLink = ({
-	href,
 	children,
+	href,
 	onClick,
 	...props
 }: InteractiveLinkProps) => {

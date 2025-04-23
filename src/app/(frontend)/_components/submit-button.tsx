@@ -6,25 +6,25 @@ import { useFormStatus } from "react-dom";
 
 export function SubmitButton({
 	children,
-	variant = "primary",
 	className,
 	"data-testid": dataTestId,
+	variant = "primary",
 }: {
 	children: React.ReactNode;
-	variant?: "primary" | "secondary" | "transparent" | "danger" | null;
 	className?: string;
 	"data-testid"?: string;
+	variant?: "danger" | "primary" | "secondary" | "transparent" | null;
 }) {
 	const { pending } = useFormStatus();
 
 	return (
 		<Button
-			size="large"
 			className={className}
-			type="submit"
-			isLoading={pending}
-			variant={variant || "primary"}
 			data-testid={dataTestId}
+			isLoading={pending}
+			size="large"
+			type="submit"
+			variant={variant || "primary"}
 		>
 			{children}
 		</Button>

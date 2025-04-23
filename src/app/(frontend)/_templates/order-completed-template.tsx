@@ -1,15 +1,17 @@
 "use client";
 
-import { Heading } from "@medusajs/ui";
-import Help from "../_components/help";
-import PaymentDetails from "../_components/order/payment-details/payment-details";
-import OrderDetails from "../_components/order/order-details/order-details";
-import Items from "../_components/order/items/items";
-import CartTotals from "../_components/cart-totals";
 import type { Order } from "@/payload-types";
-import ShippingDetails from "../_components/order/shipping-details/shipping-details";
-import { useCart } from "react-use-cart";
+
+import { Heading } from "@medusajs/ui";
 import { useLayoutEffect } from "react";
+import { useCart } from "react-use-cart";
+
+import CartTotals from "../_components/cart-totals";
+import Help from "../_components/help";
+import Items from "../_components/order/items/items";
+import OrderDetails from "../_components/order/order-details/order-details";
+import PaymentDetails from "../_components/order/payment-details/payment-details";
+import ShippingDetails from "../_components/order/shipping-details/shipping-details";
 
 type OrderCompletedTemplateProps = {
     order: Order;
@@ -32,21 +34,21 @@ export default function OrderCompletedTemplate({
                     data-testid="order-complete-container"
                 >
                     <Heading
-                        level="h1"
                         className="flex flex-col gap-y-3 text-ui-fg-base text-3xl mb-4"
+                        level="h1"
                     >
                         <span>Thank you!</span>
                         <span>Your order was placed successfully.</span>
                     </Heading>
                     <OrderDetails order={order} />
                     <Heading
-                        level="h2"
                         className="flex flex-row text-3xl-regular"
+                        level="h2"
                     >
                         Summary
                     </Heading>
                     <Items order={order} />
-                    <CartTotals order={order} currencyCode="usd" />
+                    <CartTotals currencyCode="usd" order={order} />
                     <ShippingDetails order={order} />
                     <PaymentDetails order={order} />
                     <Help />

@@ -1,6 +1,6 @@
 import { RichText } from "@payloadcms/richtext-lexical/react";
 
-export default async function PolicyTemplate({ policy }: { policy: any }) {
+export default function PolicyTemplate({ policy }: { policy: any }) {
     return (
         <div className="max-w-prose mx-auto py-12 px-4">
             <div className="flex flex-col gap-y-6 text-ui-fg-base">

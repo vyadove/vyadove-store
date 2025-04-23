@@ -1,15 +1,15 @@
 "use client";
 
-import { clx } from "@medusajs/ui";
 import { ArrowRightOnRectangle } from "@medusajs/icons";
+import { clx } from "@medusajs/ui";
+import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 
-import Link from "next/link";
+import { useAuth } from "../_providers/auth";
 import ChevronDown from "./icons/chevron-down";
-import User from "./icons/user";
 import MapPin from "./icons/map-pin";
 import Package from "./icons/package";
-import { useAuth } from "../_providers/auth";
+import User from "./icons/user";
 
 const AccountNav = () => {
     const route = usePathname();
@@ -26,9 +26,9 @@ const AccountNav = () => {
             <div className="small:hidden" data-testid="mobile-account-nav">
                 {route !== "/account" ? (
                     <Link
-                        href="/account"
                         className="flex items-center gap-x-2 text-small-regular py-2"
                         data-testid="account-main-link"
+                        href="/account"
                     >
                         <>
                             <ChevronDown className="transform rotate-90" />
@@ -44,9 +44,9 @@ const AccountNav = () => {
                             <ul>
                                 <li>
                                     <Link
-                                        href="/account/profile"
                                         className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
                                         data-testid="profile-link"
+                                        href="/account/profile"
                                     >
                                         <>
                                             <div className="flex items-center gap-x-2">
@@ -59,9 +59,9 @@ const AccountNav = () => {
                                 </li>
                                 <li>
                                     <Link
-                                        href="/account/addresses"
                                         className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
                                         data-testid="addresses-link"
+                                        href="/account/addresses"
                                     >
                                         <>
                                             <div className="flex items-center gap-x-2">
@@ -74,9 +74,9 @@ const AccountNav = () => {
                                 </li>
                                 <li>
                                     <Link
-                                        href="/account/orders"
                                         className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
                                         data-testid="orders-link"
+                                        href="/account/orders"
                                     >
                                         <div className="flex items-center gap-x-2">
                                             <Package size={20} />
@@ -87,10 +87,10 @@ const AccountNav = () => {
                                 </li>
                                 <li>
                                     <button
-                                        type="button"
                                         className="flex items-center justify-between py-4 border-b border-gray-200 px-8 w-full"
-                                        onClick={handleLogout}
                                         data-testid="logout-button"
+                                        onClick={handleLogout}
+                                        type="button"
                                     >
                                         <div className="flex items-center gap-x-2">
                                             <ArrowRightOnRectangle />
@@ -113,45 +113,45 @@ const AccountNav = () => {
                         <ul className="flex mb-0 justify-start items-start flex-col gap-y-4">
                             <li>
                                 <AccountNavLink
+                                    data-testid="overview-link"
                                     href="/account"
                                     route={route}
-                                    data-testid="overview-link"
                                 >
                                     Overview
                                 </AccountNavLink>
                             </li>
                             <li>
                                 <AccountNavLink
+                                    data-testid="profile-link"
                                     href="/account/profile"
                                     route={route}
-                                    data-testid="profile-link"
                                 >
                                     Profile
                                 </AccountNavLink>
                             </li>
                             <li>
                                 <AccountNavLink
+                                    data-testid="addresses-link"
                                     href="/account/addresses"
                                     route={route}
-                                    data-testid="addresses-link"
                                 >
                                     Addresses
                                 </AccountNavLink>
                             </li>
                             <li>
                                 <AccountNavLink
+                                    data-testid="orders-link"
                                     href="/account/orders"
                                     route={route}
-                                    data-testid="orders-link"
                                 >
                                     Orders
                                 </AccountNavLink>
                             </li>
                             <li className="text-grey-700">
                                 <button
-                                    type="button"
-                                    onClick={handleLogout}
                                     data-testid="logout-button"
+                                    onClick={handleLogout}
+                                    type="button"
                                 >
                                     Log out
                                 </button>
@@ -165,26 +165,26 @@ const AccountNav = () => {
 };
 
 type AccountNavLinkProps = {
-    href: string;
-    route: string;
     children: React.ReactNode;
     "data-testid"?: string;
+    href: string;
+    route: string;
 };
 
 const AccountNavLink = ({
-    href,
-    route,
     children,
     "data-testid": dataTestId,
+    href,
+    route,
 }: AccountNavLinkProps) => {
     const active = route === href;
     return (
         <Link
-            href={href}
             className={clx("text-ui-fg-subtle hover:text-ui-fg-base", {
                 "text-ui-fg-base font-semibold": active,
             })}
             data-testid={dataTestId}
+            href={href}
         >
             {children}
         </Link>

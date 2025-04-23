@@ -1,8 +1,7 @@
-import type { AccessArgs, Access } from "payload";
-
 import type { User } from "@/payload-types";
+import type { Access, AccessArgs } from "payload";
 
-export const checkRole = (roles: User["roles"] = [], user?: User | null) =>
+export const checkRole = (roles: User["roles"] = [], user?: null | User) =>
     !!user?.roles?.some((role) => roles?.includes(role));
 
 type isAdmin = (args: AccessArgs<User>) => boolean;

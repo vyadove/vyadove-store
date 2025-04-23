@@ -1,7 +1,9 @@
 import type { Order } from "@/payload-types";
-import { Container, Heading, Text } from "@medusajs/ui";
-import Divider from "../../divider";
+
 import { convertToLocale } from "@/app/(frontend)/_util/money";
+import { Container, Heading, Text } from "@medusajs/ui";
+
+import Divider from "../../divider";
 import CreditCard from "../../icons/credit-card";
 
 type PaymentDetailsProps = {
@@ -11,7 +13,7 @@ type PaymentDetailsProps = {
 const PaymentDetails = ({ order }: PaymentDetailsProps) => {
     return (
         <div>
-            <Heading level="h2" className="flex flex-row text-3xl-regular my-6">
+            <Heading className="flex flex-row text-3xl-regular my-6" level="h2">
                 Payment
             </Heading>
             <div>

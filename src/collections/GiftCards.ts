@@ -1,66 +1,32 @@
 import type { CollectionConfig } from "payload";
-import { groups } from "./groups";
-import { generateGiftCardCode } from "@/utils/generate-gift-card-code";
-import { RateLimiterMemory } from "rate-limiter-flexible";
+
 import { admins } from "@/access/roles";
+import { generateGiftCardCode } from "@/utils/generate-gift-card-code";
 import { getClientIp } from "@/utils/get-client-ip";
+import { RateLimiterMemory } from "rate-limiter-flexible";
+
+import { groups } from "./groups";
 
 const rateLimiter = new RateLimiterMemory({
-    points: 5,
     duration: 60,
+    points: 5,
 });
 
 export const GiftCards: CollectionConfig = {
     slug: "gift-cards",
-    admin: {
-        useAsTitle: "code",
-        group: groups.catalog,
-        defaultColumns: ["code", "value", "expiryDate"],
-    },
     access: {
         create: admins,
+        delete: admins,
         read: admins,
         update: admins,
-        delete: admins,
     },
-    fields: [
-        {
-            name: "code",
-            type: "text",
-            label: "Card code",
-            required: true,
-            defaultValue: () => {
-                return generateGiftCardCode();
-            },
-        },
-        {
-            name: "value",
-            type: "number",
-            label: "Initial value",
-            required: true,
-        },
-        {
-            name: "customer",
-            type: "relationship",
-            relationTo: "users",
-            label: "Customer",
-            admin: {
-                position: "sidebar",
-            },
-        },
-        {
-            name: "expiryDate",
-            type: "date",
-            label: "Expiration Date",
-            admin: {
-                description: "Date gift card will expire",
-            },
-        },
-    ],
+    admin: {
+        defaultColumns: ["code", "value", "expiryDate"],
+        group: groups.catalog,
+        useAsTitle: "code",
+    },
     endpoints: [
         {
-            method: "get",
-            path: "/verify",
             handler: async (req) => {
                 try {
                     const ip = getClientIp(req);
@@ -76,12 +42,12 @@ export const GiftCards: CollectionConfig = {
 
                     const giftCards = await req.payload.find({
                         collection: "gift-cards",
+                        limit: 1,
                         where: {
                             code: {
                                 equals: req.query.code,
                             },
                         },
-                        limit: 1,
                     });
 
                     return Response.json(giftCards.docs?.[0]);
@@ -92,6 +58,42 @@ export const GiftCards: CollectionConfig = {
                     });
                 }
             },
+            method: "get",
+            path: "/verify",
+        },
+    ],
+    fields: [
+        {
+            name: "code",
+            type: "text",
+            defaultValue: () => {
+                return generateGiftCardCode();
+            },
+            label: "Card code",
+            required: true,
+        },
+        {
+            name: "value",
+            type: "number",
+            label: "Initial value",
+            required: true,
+        },
+        {
+            name: "customer",
+            type: "relationship",
+            admin: {
+                position: "sidebar",
+            },
+            label: "Customer",
+            relationTo: "users",
+        },
+        {
+            name: "expiryDate",
+            type: "date",
+            admin: {
+                description: "Date gift card will expire",
+            },
+            label: "Expiration Date",
         },
     ],
 };

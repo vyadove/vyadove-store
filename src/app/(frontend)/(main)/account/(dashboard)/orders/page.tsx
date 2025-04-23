@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 
-import { notFound } from "next/navigation";
-import OrderOverview from "@/app/(frontend)/_components/order-overview";
 import Divider from "@/app/(frontend)/_components/divider";
-import { getPayload } from "payload";
-import config from "@payload-config";
+import OrderOverview from "@/app/(frontend)/_components/order-overview";
 import { getOrders } from "@/app/api/services/orders";
+import config from "@payload-config";
+import { notFound } from "next/navigation";
+import { getPayload } from "payload";
 
 export const metadata: Metadata = {
-    title: "Orders",
     description: "Overview of your previous orders.",
+    title: "Orders",
 };
 
 export default async function Orders() {

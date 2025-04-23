@@ -1,36 +1,36 @@
 import type { User } from "@/payload-types";
 
 export interface CartItem {
+    gallery: Array<{ url: string }>;
     id: string;
-    title: string;
+    options: Array<{ option: string; value: string }>;
     price: number;
     quantity: number;
-    gallery: Array<{ url: string }>;
-    options: Array<{ option: string; value: string }>;
     selectedVariant: {
         id: string;
         price: number;
     };
+    title: string;
 }
 
 export interface CheckoutResult {
-    url?: string;
     error?: string;
     sessionId?: string;
+    url?: string;
 }
 
-export type PaymentStatus = "pending" | "completed" | "cancelled" | "failed";
+export type PaymentStatus = "cancelled" | "completed" | "failed" | "pending";
 
 export interface CreateOrderData {
-    orderNumber: string;
     items: Array<{
         product: number;
         quantity: number;
         variant: string;
     }>;
-    total: number;
-    user: User | null;
+    orderNumber: string;
     status: PaymentStatus;
+    total: number;
+    user: null | User;
 }
 
 export interface UpdateOrderStatusData {

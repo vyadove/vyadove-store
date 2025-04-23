@@ -10,12 +10,13 @@ import { Button } from "@medusajs/ui";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, useEffect, useRef, useState } from "react";
-import Thumbnail from "./thumbnail";
+import { useCart } from "react-use-cart";
+
 import { convertToLocale } from "../_util/money";
 import DeleteButton from "./delete-button";
-import LineItemPrice from "./line-item-price";
-import { useCart } from "react-use-cart";
 import LineItemOptions from "./line-item-options";
+import LineItemPrice from "./line-item-price";
+import Thumbnail from "./thumbnail";
 
 const CartDropdown = () => {
     const { cartTotal, items, totalItems } = useCart();
@@ -86,14 +87,13 @@ const CartDropdown = () => {
                 <PopoverButton className="h-full">
                     <Link
                         className="hover:text-ui-fg-base"
-                        href="/cart"
                         data-testid="nav-cart-link"
+                        href="/cart"
                     >
                         {isMounted ? `Cart (${totalItems})` : "Cart (0)"}
                     </Link>
                 </PopoverButton>
                 <Transition
-                    show={cartDropdownOpen}
                     as={Fragment}
                     enter="transition ease-out duration-200"
                     enterFrom="opacity-0 translate-y-1"
@@ -101,11 +101,12 @@ const CartDropdown = () => {
                     leave="transition ease-in duration-150"
                     leaveFrom="opacity-100 translate-y-0"
                     leaveTo="opacity-0 translate-y-1"
+                    show={cartDropdownOpen}
                 >
                     <PopoverPanel
-                        static
                         className="hidden small:block absolute top-[calc(100%+1px)] right-0 bg-white border-x border-b border-gray-200 w-[420px] text-ui-fg-base"
                         data-testid="nav-cart-dropdown"
+                        static
                     >
                         <div className="p-4 flex items-center justify-center">
                             <h3 className="text-large-semi">Cart</h3>
@@ -116,16 +117,16 @@ const CartDropdown = () => {
                                     {items.map((item) => (
                                         <div
                                             className="grid grid-cols-[122px_1fr] gap-x-4"
-                                            key={item.id}
                                             data-testid="cart-item"
+                                            key={item.id}
                                         >
                                             <Link
-                                                href={`/products/${item.handle}`}
                                                 className="w-24"
+                                                href={`/products/${item.handle}`}
                                             >
                                                 <Thumbnail
-                                                    thumbnail={item.imageUrl}
                                                     size="square"
+                                                    thumbnail={item.imageUrl}
                                                 />
                                             </Link>
                                             <div className="flex flex-col justify-between flex-1">
@@ -134,8 +135,8 @@ const CartDropdown = () => {
                                                         <div className="flex flex-col overflow-ellipsis whitespace-nowrap mr-4 w-[180px]">
                                                             <h3 className="text-base-regular overflow-hidden text-ellipsis">
                                                                 <Link
-                                                                    href={`/products/${item.handle}`}
                                                                     data-testid="product-link"
+                                                                    href={`/products/${item.handle}`}
                                                                 >
                                                                     {
                                                                         item.productName
@@ -143,15 +144,15 @@ const CartDropdown = () => {
                                                                 </Link>
                                                             </h3>
                                                             <LineItemOptions
+                                                                data-testid="cart-item-variant"
+                                                                data-value={
+                                                                    item
+                                                                }
                                                                 variant={{
                                                                     options:
                                                                         item.options,
                                                                     title: item.productName,
                                                                 }}
-                                                                data-testid="cart-item-variant"
-                                                                data-value={
-                                                                    item
-                                                                }
                                                             />
                                                             <span
                                                                 data-testid="cart-item-quantity"
@@ -168,21 +169,21 @@ const CartDropdown = () => {
                                                                 cartTotal={
                                                                     item.price
                                                                 }
+                                                                currencyCode={
+                                                                    item.currency
+                                                                }
                                                                 originalPrice={
                                                                     item.originalPrice
                                                                 }
                                                                 style="tight"
-                                                                currencyCode={
-                                                                    item.currency
-                                                                }
                                                             />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <DeleteButton
-                                                    id={item.id}
                                                     className="mt-1"
                                                     data-testid="cart-item-remove-button"
+                                                    id={item.id}
                                                 >
                                                     Remove
                                                 </DeleteButton>
@@ -212,8 +213,8 @@ const CartDropdown = () => {
                                     <Link href="/cart" passHref>
                                         <Button
                                             className="w-full"
-                                            size="large"
                                             data-testid="go-to-cart-button"
+                                            size="large"
                                         >
                                             Go to cart
                                         </Button>

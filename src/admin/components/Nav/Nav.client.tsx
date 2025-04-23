@@ -1,19 +1,22 @@
 "use client";
 
+import type {
+    NavGroupType} from "@payloadcms/ui/shared";
+
+import { getTranslation } from "@payloadcms/translations";
 import { Link, useConfig, useTranslation } from "@payloadcms/ui";
 import {
     EntityType,
-    formatAdminURL,
-    NavGroupType,
+    formatAdminURL
 } from "@payloadcms/ui/shared";
-import { usePathname } from "next/navigation";
-import { getNavIcon } from "./get-nav-icon";
 import { Home } from "lucide-react";
-import { getTranslation } from "@payloadcms/translations";
+import { usePathname } from "next/navigation";
+
+import { getNavIcon } from "./get-nav-icon";
 import {
     getActiveGroup,
-    getSortedGroups,
     getFilteredEntities,
+    getSortedGroups,
 } from "./nav-utils";
 
 type NavProps = {
@@ -38,8 +41,8 @@ export const NavClient = ({ groups }: NavProps) => {
         <div className="menu">
             <li className="group">
                 <Link
-                    href={adminRoute}
                     className={`${baseClass}__link group-toggle`}
+                    href={adminRoute}
                 >
                     <Home size={16} />
                     {"Home"}
@@ -65,18 +68,18 @@ export const NavClient = ({ groups }: NavProps) => {
                 return (
                     <li className="group" key={key}>
                         <Link
+                            className={`${baseClass}__link group-toggle`}
                             href={formatAdminURL({
                                 adminRoute,
                                 path: `/${selectedGroup.type === EntityType.collection ? "collections" : "globals"}/${selectedGroup?.slug}`,
                             })}
-                            className={`${baseClass}__link group-toggle`}
                         >
                             {Icon && <Icon size={16} />}
                             {getTranslation(groupLabel, i18n)}
                         </Link>
                         {isActiveGroup &&
-                            filteredEntities.map(({ type, slug, label }) => {
-                                let href: string | null = null;
+                            filteredEntities.map(({ slug, type, label }) => {
+                                let href: null | string = null;
                                 if (type === EntityType.collection) {
                                     href = formatAdminURL({
                                         adminRoute,
@@ -90,9 +93,9 @@ export const NavClient = ({ groups }: NavProps) => {
                                 }
                                 return (
                                     <Link
-                                        key={slug}
-                                        href={href || ""}
                                         className={`${baseClass}__link sub-group-list`}
+                                        href={href || ""}
+                                        key={slug}
                                     >
                                         {getTranslation(label, i18n)}
                                     </Link>

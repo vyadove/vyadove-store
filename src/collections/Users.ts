@@ -1,18 +1,20 @@
-import { admins, adminsOrSelf, anyone } from "@/access/roles";
 import type { CollectionConfig } from "payload";
+
+import { admins, adminsOrSelf, anyone } from "@/access/roles";
+
 import { groups } from "./groups";
 
 export const Users: CollectionConfig = {
 	slug: "users",
-	admin: {
-		useAsTitle: "email",
-		group: groups.customers,
-	},
 	access: {
 		create: anyone,
+		delete: admins,
 		read: adminsOrSelf,
 		update: admins,
-		delete: admins,
+	},
+	admin: {
+		group: groups.customers,
+		useAsTitle: "email",
 	},
 
 	auth: true,
@@ -31,8 +33,7 @@ export const Users: CollectionConfig = {
 		{
 			name: "roles",
 			type: "select",
-            saveToJWT: true,
-			defaultValue: ["customer"],
+            defaultValue: ["customer"],
 			hasMany: true,
 			options: [
 				{
@@ -44,6 +45,7 @@ export const Users: CollectionConfig = {
 					value: "customer",
 				},
 			],
+			saveToJWT: true,
 		},
 	],
 };

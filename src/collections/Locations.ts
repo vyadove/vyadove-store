@@ -1,4 +1,5 @@
-import { CollectionConfig } from "payload";
+import type { CollectionConfig } from "payload";
+
 import { groups } from "./groups";
 
 export const Locations: CollectionConfig = {
@@ -10,51 +11,51 @@ export const Locations: CollectionConfig = {
     fields: [
         {
             name: "name",
-            label: "Location Name",
             type: "text",
+            label: "Location Name",
             required: true,
         },
         {
             name: "address",
-            label: "Address",
             type: "textarea",
+            label: "Address",
             required: true,
         },
         {
             name: "coordinates",
-            label: "Coordinates",
             type: "point",
+            label: "Coordinates",
         },
         {
             name: "contactPhone",
-            label: "Contact Phone",
             type: "text",
+            label: "Contact Phone",
         },
         {
             name: "hours",
-            label: "Opening Hours",
             type: "textarea",
             admin: {
                 description: "e.g., Mon-Fri: 9am - 6pm",
             },
+            label: "Opening Hours",
         },
         {
             name: "enabled",
-            label: "Enabled",
             type: "checkbox",
-            defaultValue: true,
             admin: {
                 position: "sidebar",
             },
+            defaultValue: true,
+            label: "Enabled",
         },
         {
             name: "isPickupLocation",
-            label: "Available for Pickup?",
             type: "checkbox",
-            defaultValue: false,
             admin: {
                 position: "sidebar",
             },
+            defaultValue: false,
+            label: "Available for Pickup?",
         },
     ],
 };

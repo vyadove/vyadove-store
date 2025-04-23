@@ -1,7 +1,9 @@
 import type { Order, Product } from "@/payload-types";
+
 import { Table } from "@medusajs/ui";
-import Item from "../item/item";
+
 import Divider from "../../divider";
+import Item from "../item/item";
 
 type ItemsProps = {
     order: Order;
@@ -18,8 +20,8 @@ const Items = ({ order }: ItemsProps) => {
         return {
             ...variant,
             gallery: product.variants[0].gallery,
-            quantity: item.quantity,
             productName: product.title,
+            quantity: item.quantity,
         };
     });
 
@@ -31,9 +33,9 @@ const Items = ({ order }: ItemsProps) => {
                     {items.map((item) => {
                         return (
                             <Item
-                                key={item.vid}
-                                item={item as any}
                                 currencyCode={"usd"}
+                                item={item as any}
+                                key={item.vid}
                             />
                         );
                     })}

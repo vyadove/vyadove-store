@@ -1,8 +1,9 @@
-import { getPayload } from "payload";
 import config from "@payload-config";
-import products from "./products.json";
+import { getPayload } from "payload";
+
 import collections from "./collections.json";
 import globals from "./globals.json";
+import products from "./products.json";
 
 const seed = async () => {
     // Get a local copy of Payload by passing your config
@@ -20,18 +21,18 @@ const seed = async () => {
         collection: "media",
         data: {
             alt: "watch",
-            updatedAt: "2025-04-20T04:59:11.486Z",
             createdAt: "2025-04-20T04:59:11.487Z",
-            url: "https://pub-e0a548fa3e234baf8e41a8fd95bb8ad5.r2.dev/shopnex-images/media/watch-hero.png",
-            thumbnailURL:
-                "https://pub-e0a548fa3e234baf8e41a8fd95bb8ad5.r2.dev/shopnex-images/media/watch-hero.png",
             filename: `watch-${new Date().getTime()}.png`,
-            mimeType: "image/png",
             filesize: 1077498,
-            width: 1024,
-            height: 1024,
             focalX: 50,
             focalY: 50,
+            height: 1024,
+            mimeType: "image/png",
+            thumbnailURL:
+                "https://pub-e0a548fa3e234baf8e41a8fd95bb8ad5.r2.dev/shopnex-images/media/watch-hero.png",
+            updatedAt: "2025-04-20T04:59:11.486Z",
+            url: "https://pub-e0a548fa3e234baf8e41a8fd95bb8ad5.r2.dev/shopnex-images/media/watch-hero.png",
+            width: 1024,
         },
     });
 

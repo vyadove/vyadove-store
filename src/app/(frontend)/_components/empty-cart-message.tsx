@@ -1,4 +1,5 @@
 import { Heading, Text } from "@medusajs/ui";
+
 import InteractiveLink from "./interactive-link";
 
 const EmptyCartMessage = () => {
@@ -8,8 +9,8 @@ const EmptyCartMessage = () => {
 			data-testid="empty-cart-message"
 		>
 			<Heading
-				level="h1"
 				className="flex flex-row text-3xl-regular gap-x-2 items-baseline"
+				level="h1"
 			>
 				Cart
 			</Heading>

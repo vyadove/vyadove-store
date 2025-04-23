@@ -1,34 +1,34 @@
 import { Text } from "@medusajs/ui";
 
 type LineItemOptionsProps = {
+    "data-testid"?: string;
+    "data-value"?: any;
     variant:
         | {
               options?: { option: string; value: string }[];
               title?: string;
           }
         | undefined;
-    "data-testid"?: string;
-    "data-value"?: any;
 };
 
 const LineItemOptions = ({
-    variant,
     "data-testid": dataTestid,
     "data-value": dataValue,
+    variant,
 }: LineItemOptionsProps) => {
 	const formattedOptions = variant?.options
         ?.map(({ value }) => value)
         .join(" / ");
     return (
         <div
+            className="text-ui-fg-subtle w-full"
             data-testid={dataTestid}
             data-value={dataValue}
-            className="text-ui-fg-subtle w-full"
         >
             <Text
+                className="text-ui-fg-subtle w-full"
                 data-testid={dataTestid}
                 data-value={dataValue}
-                className="text-ui-fg-subtle w-full"
             >
                 Variants: {formattedOptions}
             </Text>

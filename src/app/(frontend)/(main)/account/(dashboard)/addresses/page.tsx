@@ -1,12 +1,13 @@
-import AddressBook from "@/app/(frontend)/_components/address-book";
 import type { Metadata } from "next";
 
+import AddressBook from "@/app/(frontend)/_components/address-book";
+
 export const metadata: Metadata = {
-    title: "Addresses",
     description: "View your addresses",
+    title: "Addresses",
 };
 
-export default async function Addresses(props: {
+export default function Addresses(props: {
     params: Promise<{ countryCode: string }>;
 }) {
     return (

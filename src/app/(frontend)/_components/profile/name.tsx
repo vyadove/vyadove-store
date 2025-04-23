@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useActionState } from "react";
+import type { User } from "@/payload-types";
+
+import React, { useActionState, useEffect } from "react";
 
 import AccountInfo from "../account-info";
 import Input from "../input";
-import { User } from "payload";
 
 type MyInformationProps = {
     customer: User;
@@ -17,7 +18,7 @@ const ProfileName: React.FC<MyInformationProps> = ({
 }) => {
     const [successState, setSuccessState] = React.useState(false);
 
-    const updateCustomerName = async (
+    const updateCustomerName = (
         _currentState: Record<string, unknown>,
         formData: FormData
     ) => {
@@ -29,10 +30,10 @@ const ProfileName: React.FC<MyInformationProps> = ({
 
         try {
             // updateCustomer(updatedCustomer)
-            return { success: true, error: null };
+            return { error: null, success: true };
         } catch (error: any) {
             console.error(error);
-            return { success: false, error: error.toString() };
+            return { error: error.toString(), success: false };
         }
     };
 
@@ -52,27 +53,27 @@ const ProfileName: React.FC<MyInformationProps> = ({
     return (
         <form action={formAction} className="w-full overflow-visible">
             <AccountInfo
-                label="Name"
-                currentInfo={`${customer.firstName} ${customer.lastName}`}
-                isSuccess={successState}
-                isError={!!state?.error}
                 clearState={clearState}
+                currentInfo={`${customer.firstName} ${customer.lastName}`}
                 data-testid="account-name-editor"
+                isError={!!state?.error}
+                isSuccess={successState}
+                label="Name"
             >
                 <div className="grid grid-cols-2 gap-x-4">
                     <Input
+                        data-testid="first-name-input"
+                        defaultValue={customer.firstName ?? ""}
                         label="First name"
                         name="first_name"
                         required
-                        defaultValue={customer.firstName ?? ""}
-                        data-testid="first-name-input"
                     />
                     <Input
+                        data-testid="last-name-input"
+                        defaultValue={customer.lastName ?? ""}
                         label="Last name"
                         name="last_name"
                         required
-                        defaultValue={customer.lastName ?? ""}
-                        data-testid="last-name-input"
                     />
                 </div>
             </AccountInfo>

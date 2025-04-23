@@ -1,21 +1,22 @@
-import { convertToLocale } from "@/app/(frontend)/_util/money";
 import type { Product } from "@/payload-types";
+
+import { convertToLocale } from "@/app/(frontend)/_util/money";
 import { clx } from "@medusajs/ui";
 
 type ProductPriceProps = {
-    variant?: Product["variants"][0];
+    currency?: null | string;
     showFrom: boolean;
-	currency?: string | null;
+	variant?: Product["variants"][0];
 };
 
 export default function ProductPrice({
-    variant,
+    currency,
     showFrom,
-	currency
+	variant
 }: ProductPriceProps) {
-    if (!variant) return null;
+    if (!variant) {return null;}
 
-    const { price, originalPrice } = variant;
+    const { originalPrice, price } = variant;
     const isOnSale = originalPrice && originalPrice > price;
     const percentageDiff = isOnSale
         ? Math.round(((originalPrice - price) / originalPrice) * 100)

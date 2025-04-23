@@ -1,6 +1,7 @@
 import type React from "react";
-import InteractiveLink from "../_components/interactive-link";
+
 import AccountNav from "../_components/account-nav";
+import InteractiveLink from "../_components/interactive-link";
 
 interface AccountLayoutProps {
 	children: React.ReactNode;

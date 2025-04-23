@@ -1,7 +1,9 @@
+import type { Order } from "@/payload-types";
+
 import { convertToLocale } from "@/app/(frontend)/_util/money";
 import { Heading, Text } from "@medusajs/ui";
+
 import Divider from "../../divider";
-import type { Order } from "@/payload-types";
 
 type ShippingDetailsProps = {
     order: Order;
@@ -10,7 +12,7 @@ type ShippingDetailsProps = {
 const ShippingDetails = ({ order }: ShippingDetailsProps) => {
     return (
         <div>
-            <Heading level="h2" className="flex flex-row text-3xl-regular my-6">
+            <Heading className="flex flex-row text-3xl-regular my-6" level="h2">
                 Delivery
             </Heading>
             <div className="flex items-start gap-x-8">

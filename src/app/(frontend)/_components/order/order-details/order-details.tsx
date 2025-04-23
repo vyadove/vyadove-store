@@ -1,4 +1,5 @@
 import type { Order } from "@/payload-types"
+
 import { Text } from "@medusajs/ui"
 
 type OrderDetailsProps = {

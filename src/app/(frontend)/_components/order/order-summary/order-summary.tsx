@@ -1,12 +1,13 @@
-import { convertToLocale } from "@/app/(frontend)/_util/money";
 import type { Order } from "@/payload-types";
+
+import { convertToLocale } from "@/app/(frontend)/_util/money";
 
 type OrderSummaryProps = {
     order: Order;
 };
 
 const OrderSummary = ({ order }: OrderSummaryProps) => {
-    const getAmount = (amount?: number | null) => {
+    const getAmount = (amount?: null | number) => {
         if (!amount) {
             return;
         }

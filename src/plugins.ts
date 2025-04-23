@@ -1,10 +1,12 @@
 import type { Plugin } from "payload";
+
 import { stripePlugin } from "@payloadcms/plugin-stripe";
-import { paymentSucceeded } from "./webhooks/payment-succeeded";
-import { paymentCanceled } from "./webhooks/payment-canceled";
 import { cjPlugin } from "@shoplyjs/cj-plugin";
-import { storePlugin } from "@shopnex/store-plugin";
 import { importExportPlugin } from "@shopnex/import-export-plugin";
+import { storePlugin } from "@shopnex/store-plugin";
+
+import { paymentCanceled } from "./webhooks/payment-canceled";
+import { paymentSucceeded } from "./webhooks/payment-succeeded";
 
 export const plugins: Plugin[] = [
     stripePlugin({
@@ -15,18 +17,19 @@ export const plugins: Plugin[] = [
         stripeWebhooksEndpointSecret:
             process.env.STRIPE_WEBHOOKS_SIGNING_SECRET,
         webhooks: {
-            "payment_intent.succeeded": paymentSucceeded,
             "payment_intent.canceled": paymentCanceled,
+            "payment_intent.succeeded": paymentSucceeded,
         },
     }),
     cjPlugin({
+        cjApiKey: process.env.CJ_PASSWORD || "",
         cjEmailAddress: process.env.CJ_EMAIL_ADDRESS || "",
         cjRefreshToken: process.env.CJ_REFRESH_TOKEN,
-        cjApiKey: process.env.CJ_PASSWORD || "",
     }),
     storePlugin({}),
     importExportPlugin({
         collections: ["products", "orders"],
+        disableJobsQueue: true,
         importCollections: [
             {
                 collectionSlug: "products",
@@ -35,6 +38,5 @@ export const plugins: Plugin[] = [
                 collectionSlug: "orders",
             },
         ],
-        disableJobsQueue: true,
     }),
 ];

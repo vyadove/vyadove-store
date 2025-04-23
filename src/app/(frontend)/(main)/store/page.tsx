@@ -1,35 +1,37 @@
 import type { Metadata } from "next";
 
-import type { SortOptions } from "../../_util/sort-options";
-import StoreTemplate from "../../_templates/store";
 import { getPaginatedProducts } from "@/app/api/services/products";
 import decimal from "decimal.js";
 
+import type { SortOptions } from "../../_util/sort-options";
+
+import StoreTemplate from "../../_templates/store";
+
 export const metadata: Metadata = {
-    title: "Store",
     description: "Explore all of our products.",
+    title: "Store",
 };
 
 type Params = {
-    searchParams: Promise<{
-        sortBy?: SortOptions;
-        page?: string;
-        collectionId?: string;
-        productsIds?: string[];
-    }>;
     params: Promise<{
         countryCode: string;
+    }>;
+    searchParams: Promise<{
+        collectionId?: string;
+        page?: string;
+        productsIds?: string[];
+        sortBy?: SortOptions;
     }>;
 };
 
 export default async function StorePage(props: Params) {
     const searchParams = await props.searchParams;
-    const { sortBy, page, collectionId, productsIds } = searchParams;
+    const { collectionId, page, productsIds, sortBy } = searchParams;
 
     const { docs: products, total } = await getPaginatedProducts({
+        collectionId,
         limit: 12,
         page: Number(page || 1),
-        collectionId,
         productsIds,
     });
 
@@ -53,11 +55,11 @@ export default async function StorePage(props: Params) {
 
     return (
         <StoreTemplate
-            sortBy={sortBy}
-            page={page}
             collectionId={collectionId}
-            productsIds={productsIds}
+            page={page}
             products={sortedProducts}
+            productsIds={productsIds}
+            sortBy={sortBy}
             totalPages={total}
         />
     );

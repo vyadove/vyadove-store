@@ -1,28 +1,29 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { clx } from "@medusajs/ui";
 import React, { Fragment } from "react";
-import X from "./icons/x";
+
 import { ModalProvider, useModal } from "../_context/modal-context";
+import X from "./icons/x";
 
 type ModalProps = {
-	isOpen: boolean;
-	close: () => void;
-	size?: "small" | "medium" | "large";
-	search?: boolean;
 	children: React.ReactNode;
+	close: () => void;
 	"data-testid"?: string;
+	isOpen: boolean;
+	search?: boolean;
+	size?: "large" | "medium" | "small";
 };
 
 const Modal = ({
-	isOpen,
-	close,
-	size = "medium",
-	search = false,
 	children,
+	close,
 	"data-testid": dataTestId,
+	isOpen,
+	search = false,
+	size = "medium",
 }: ModalProps) => {
 	return (
-		<Transition appear show={isOpen} as={Fragment}>
+		<Transition appear as={Fragment} show={isOpen}>
 			<Dialog as="div" className="relative z-[75]" onClose={close}>
 				<Transition.Child
 					as={Fragment}
@@ -56,17 +57,17 @@ const Modal = ({
 							leaveTo="opacity-0 scale-95"
 						>
 							<Dialog.Panel
-								data-testid={dataTestId}
 								className={clx(
 									"flex flex-col justify-start w-full transform p-5 text-left align-middle transition-all max-h-[75vh] h-fit",
 									{
-										"max-w-md": size === "small",
-										"max-w-xl": size === "medium",
-										"max-w-3xl": size === "large",
 										"bg-transparent shadow-none": search,
 										"bg-white shadow-xl border rounded-rounded": !search,
+										"max-w-3xl": size === "large",
+										"max-w-md": size === "small",
+										"max-w-xl": size === "medium",
 									},
 								)}
+								data-testid={dataTestId}
 							>
 								<ModalProvider close={close}>{children}</ModalProvider>
 							</Dialog.Panel>
@@ -85,7 +86,7 @@ const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 		<Dialog.Title className="flex items-center justify-between">
 			<div className="text-large-semi">{children}</div>
 			<div>
-				<button onClick={close} data-testid="close-modal-button">
+				<button data-testid="close-modal-button" onClick={close}>
 					<X size={20} />
 				</button>
 			</div>

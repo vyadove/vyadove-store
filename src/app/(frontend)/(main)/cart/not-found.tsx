@@ -1,9 +1,10 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
+
 import InteractiveLink from "../../_components/interactive-link";
 
 export const metadata: Metadata = {
-	title: "404",
 	description: "Something went wrong",
+	title: "404",
 };
 
 export default function NotFound() {

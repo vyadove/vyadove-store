@@ -1,10 +1,10 @@
-import { admins, anyone } from "@/access/roles";
 import type { GlobalConfig } from "payload";
+
+import { admins, anyone } from "@/access/roles";
 import currency from "currency-codes";
 
 const StoreSettings: GlobalConfig = {
     slug: "store-settings",
-    label: "Settings",
     access: {
         read: anyone,
         update: admins,
@@ -21,13 +21,14 @@ const StoreSettings: GlobalConfig = {
         {
             name: "currency",
             type: "select",
+            defaultValue: "USD",
             options: currency.codes().map((code) => ({
                 label: `${currency.code(code)?.currency} (${currency.code(code)?.code})`,
                 value: code,
             })),
-            defaultValue: "USD",
         },
     ],
+    label: "Settings",
 };
 
 export default StoreSettings;

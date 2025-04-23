@@ -1,14 +1,16 @@
 "use server";
 
+import Decimal from "decimal.js";
+
 import type { CheckoutResult } from "./checkout-types";
+
 import { createPendingOrder, updateOrderStatus } from "../services/orders";
+import { getVariants } from "../services/products";
 import {
     createCheckoutSession,
-    retrieveSession,
     mapToStripeLineItems,
+    retrieveSession,
 } from "./stripe";
-import { getVariants } from "../services/products";
-import Decimal from "decimal.js";
 
 export async function handleCheckout(items: any[]): Promise<CheckoutResult> {
     const variantIds = items.map((item) => item.id);
@@ -25,13 +27,13 @@ export async function handleCheckout(items: any[]): Promise<CheckoutResult> {
     );
     const orderItems = variantsWithQty.map((variant) => ({
         product: variant.product,
-        variant: {
-            variantId: variant.vid,
-            name: variant.options.map((opt: any) => opt.value).join(" / "),
-            price: variant.price,
-        },
         quantity: variant.quantity,
         totalPrice: +total,
+        variant: {
+            name: variant.options.map((opt: any) => opt.value).join(" / "),
+            price: variant.price,
+            variantId: variant.vid,
+        },
     }));
 
     try {
@@ -47,8 +49,8 @@ export async function handleCheckout(items: any[]): Promise<CheckoutResult> {
         await createPendingOrder(orderItems, session.id, +total, orderId);
 
         return {
-            url: session.url,
             sessionId: session.id,
+            url: session.url,
         };
     } catch (error) {
         console.error("Stripe Checkout Error:", error);

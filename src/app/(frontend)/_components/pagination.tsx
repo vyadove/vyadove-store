@@ -4,13 +4,13 @@ import { clx } from "@medusajs/ui";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export function Pagination({
+	"data-testid": dataTestid,
 	page,
 	totalPages,
-	"data-testid": dataTestid,
 }: {
+	"data-testid"?: string;
 	page: number;
 	totalPages: number;
-	"data-testid"?: string;
 }) {
 	const router = useRouter();
 	const pathname = usePathname();
@@ -30,15 +30,15 @@ export function Pagination({
 	// Function to render a page button
 	const renderPageButton = (
 		p: number,
-		label: string | number,
+		label: number | string,
 		isCurrent: boolean,
 	) => (
 		<button
-			key={p}
 			className={clx("txt-xlarge-plus text-ui-fg-muted", {
 				"text-ui-fg-base hover:text-ui-fg-subtle": isCurrent,
 			})}
 			disabled={isCurrent}
+			key={p}
 			onClick={() => handlePageChange(p)}
 		>
 			{label}
@@ -48,8 +48,8 @@ export function Pagination({
 	// Function to render ellipsis
 	const renderEllipsis = (key: string) => (
 		<span
-			key={key}
 			className="txt-xlarge-plus text-ui-fg-muted items-center cursor-default"
+			key={key}
 		>
 			...
 		</span>

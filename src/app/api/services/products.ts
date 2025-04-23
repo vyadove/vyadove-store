@@ -27,12 +27,12 @@ export const getVariants = async (variantIds: string[]) => {
 
                 variantsMap.set(variant.id || "", {
                     ...variant,
-                    product: product.id,
-                    imageUrl: variant.imageUrl || firstVariantGallery[0],
                     gallery:
                         variantGallery.length > 0
                             ? variantGallery
                             : firstVariantGallery,
+                    imageUrl: variant.imageUrl || firstVariantGallery[0],
+                    product: product.id,
                 });
             }
         }
@@ -58,15 +58,15 @@ export const getProducts = async (args: { [key: string]: string }) => {
 };
 
 export const getPaginatedProducts = async ({
+    collectionId,
     limit = 12,
     page = 1,
-    collectionId,
     productsIds,
     sortBy,
 }: {
+    collectionId?: string;
     limit?: number;
     page?: number;
-    collectionId?: string;
     productsIds?: string[];
     sortBy?: string;
 }) => {
@@ -103,15 +103,15 @@ export const getPaginatedProducts = async ({
         collection: "products",
         limit,
         page,
-        where,
-        sort
+        sort,
+        where
     });
 
     return {
         docs: products.docs,
-        total: products.totalDocs,
         limit: products.limit,
         page: products.page,
+        total: products.totalDocs,
         // pages: products.pages,
     };
 };

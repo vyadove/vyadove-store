@@ -1,20 +1,20 @@
 import React from "react";
 
-import { IconProps } from "../../_types/icon";
+import type { IconProps } from "../../_types/icon";
 
 const Ideal: React.FC<IconProps> = ({
-	size = "20",
 	color = "currentColor",
+	size = "20",
 	...attributes
 }) => {
 	return (
 		<svg
-			width="20px"
-			height="20px"
-			viewBox="0 0 24 24"
-			role="img"
-			xmlns="http://www.w3.org/2000/svg"
 			fill={color}
+			height="20px"
+			role="img"
+			viewBox="0 0 24 24"
+			width="20px"
+			xmlns="http://www.w3.org/2000/svg"
 			{...attributes}
 		>
 			<title>iDEAL icon</title>

@@ -1,6 +1,7 @@
+import type { Order } from "@/payload-types";
+
 import config from "@payload-config";
 import { getPayload } from "payload";
-import type { Order } from "@/payload-types";
 
 export const createPendingOrder = async (
     items: any[],
@@ -9,15 +10,15 @@ export const createPendingOrder = async (
     orderId: string
 ): Promise<Order> => {
     const orderData: any = {
-        orderId,
-        items,
         currency: "usd",
+        items,
+        orderId,
+        sessionId: stripeSessionId,
         totalAmount: total,
         user: null,
-        sessionId: stripeSessionId,
     };
 
-    const payload = await getPayload({ config: config });
+    const payload = await getPayload({ config });
     const order = await payload.create({
         collection: "orders",
         data: orderData,
@@ -34,17 +35,17 @@ export const updateOrderStatus = async (
     sessionId: string,
     status: any
 ): Promise<void> => {
-    const payload = await getPayload({ config: config });
+    const payload = await getPayload({ config });
 
     const result = await payload.update({
         collection: "orders",
+        data: {
+            orderStatus: status,
+        },
         where: {
             stripeSessionId: {
                 equals: sessionId,
             },
-        },
-        data: {
-            orderStatus: status,
         },
     });
 
@@ -55,7 +56,7 @@ export const updateOrderStatus = async (
 
 export const getOrder = async (orderId: string) => {
     try {
-        const payload = await getPayload({ config: config });
+        const payload = await getPayload({ config });
         const order = await payload.find({
             collection: "orders",
             where: {
@@ -78,7 +79,7 @@ export const getOrder = async (orderId: string) => {
 
 export const getOrders = async () => {
     try {
-        const payload = await getPayload({ config: config });
+        const payload = await getPayload({ config });
         const orders = await payload.find({
             collection: "orders",
         });

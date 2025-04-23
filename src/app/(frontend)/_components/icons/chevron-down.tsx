@@ -1,27 +1,27 @@
 import React from "react";
 
-import { IconProps } from "../../_types/icon";
+import type { IconProps } from "../../_types/icon";
 
 const ChevronDown: React.FC<IconProps> = ({
-	size = "16",
 	color = "currentColor",
+	size = "16",
 	...attributes
 }) => {
 	return (
 		<svg
-			width={size}
+			fill="none"
 			height={size}
 			viewBox="0 0 16 16"
-			fill="none"
+			width={size}
 			xmlns="http://www.w3.org/2000/svg"
 			{...attributes}
 		>
 			<path
 				d="M4 6L8 10L12 6"
 				stroke={color}
-				strokeWidth="1.5"
 				strokeLinecap="round"
 				strokeLinejoin="round"
+				strokeWidth="1.5"
 			/>
 		</svg>
 	);

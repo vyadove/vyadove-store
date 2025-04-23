@@ -1,27 +1,28 @@
 import { Table, Text } from "@medusajs/ui";
+
 import LineItemOptions from "../../line-item-options";
+import LineItemPrice from "../../line-item-price";
 import LineItemUnitPrice from "../../line-item-unit-price";
 import Thumbnail from "../../thumbnail";
-import LineItemPrice from "../../line-item-price";
 
 type ItemProps = {
+    currencyCode: string;
     item: {
+        id?: null | string;
         imageUrl: string;
+        options?: { option: string; value: string }[];
+        price: number;
         productName: string;
         quantity: number;
-        price: number;
-        options?: { option: string; value: string }[];
-        id?: string | null;
     };
-    currencyCode: string;
 };
 
-const Item = ({ item, currencyCode }: ItemProps) => {
+const Item = ({ currencyCode, item }: ItemProps) => {
     return (
         <Table.Row className="w-full" data-testid="product-row">
             <Table.Cell className="!pl-0 p-4 w-24">
                 <div className="flex w-16">
-                    <Thumbnail thumbnail={item.imageUrl} size="square" />
+                    <Thumbnail size="square" thumbnail={item.imageUrl} />
                 </div>
             </Table.Cell>
 
@@ -33,11 +34,11 @@ const Item = ({ item, currencyCode }: ItemProps) => {
                     {item.productName}
                 </Text>
                 <LineItemOptions
+                    data-testid="product-variant"
                     variant={{
                         options: item.options,
                         title: item.productName,
                     }}
-                    data-testid="product-variant"
                 />
             </Table.Cell>
 
@@ -51,16 +52,16 @@ const Item = ({ item, currencyCode }: ItemProps) => {
                             x{" "}
                         </Text>
                         <LineItemUnitPrice
+                            currencyCode={currencyCode}
                             item={item}
                             style="tight"
-                            currencyCode={currencyCode}
                         />
                     </span>
 
                     <LineItemPrice
                         cartTotal={item.price * item.quantity}
-                        style="tight"
                         currencyCode={currencyCode}
+                        style="tight"
                     />
                 </span>
             </Table.Cell>

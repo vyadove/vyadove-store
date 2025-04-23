@@ -1,10 +1,10 @@
-import { EntityType, NavGroupType } from "@payloadcms/ui/shared";
-import { StaticLabel } from "payload";
+import type { EntityType, NavGroupType } from "@payloadcms/ui/shared";
+import type { StaticLabel } from "payload";
 
 type IEntityType = {
-    type: EntityType;
-    slug: string;
     label: StaticLabel;
+    slug: string;
+    type: EntityType;
 };
 
 export const getActiveGroup = (pathname: string, adminRoute: string) =>

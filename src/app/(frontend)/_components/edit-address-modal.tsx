@@ -1,14 +1,16 @@
 "use client";
 
 import type React from "react";
-import { useEffect, useState } from "react";
+
 import { PencilSquare as Edit, Trash } from "@medusajs/icons";
-import { Button, Heading, Text, clx } from "@medusajs/ui";
+import { Button, clx, Heading, Text } from "@medusajs/ui";
+import { useEffect, useState } from "react";
+
 import useToggleState from "../_hooks/use-toggle-state";
-import Modal from "./modal";
-import Input from "./input";
-import { SubmitButton } from "./submit-button";
 import Spinner from "./icons/spinner";
+import Input from "./input";
+import Modal from "./modal";
+import { SubmitButton } from "./submit-button";
 
 type EditAddressProps = {
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -22,7 +24,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
 }) => {
 	const [removing, setRemoving] = useState(false);
 	const [successState, setSuccessState] = useState(false);
-	const { state, open, close: closeModal } = useToggleState(false);
+	const { close: closeModal, open, state } = useToggleState(false);
 
 	//   const [formState, formAction] = useActionState(updateCustomerAddress, {
 	//     success: false,
@@ -48,7 +50,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
 	//     }
 	//   }, [formState])
 
-	const removeAddress = async () => {
+	const removeAddress = () => {
 		setRemoving(true);
 		// await deleteCustomerAddress(address.id)
 		setRemoving(false);
@@ -96,19 +98,19 @@ const EditAddress: React.FC<EditAddressProps> = ({
 				</div>
 				<div className="flex items-center gap-x-4">
 					<button
-						type="button"
 						className="text-small-regular text-ui-fg-base flex items-center gap-x-2"
-						onClick={open}
 						data-testid="address-edit-button"
+						onClick={open}
+						type="button"
 					>
 						<Edit />
 						Edit
 					</button>
 					<button
-						type="button"
 						className="text-small-regular text-ui-fg-base flex items-center gap-x-2"
-						onClick={removeAddress}
 						data-testid="address-delete-button"
+						onClick={removeAddress}
+						type="button"
 					>
 						{removing ? <Spinner /> : <Trash />}
 						Remove
@@ -116,78 +118,78 @@ const EditAddress: React.FC<EditAddressProps> = ({
 				</div>
 			</div>
 
-			<Modal isOpen={state} close={close} data-testid="edit-address-modal">
+			<Modal close={close} data-testid="edit-address-modal" isOpen={state}>
 				<Modal.Title>
 					<Heading className="mb-2">Edit address</Heading>
 				</Modal.Title>
 				<form>
-					<input type="hidden" name="addressId" value={address.id} />
+					<input name="addressId" type="hidden" value={address.id} />
 					<Modal.Body>
 						<div className="grid grid-cols-1 gap-y-2">
 							<div className="grid grid-cols-2 gap-x-2">
 								<Input
+									autoComplete="given-name"
+									data-testid="first-name-input"
+									defaultValue={address.first_name || undefined}
 									label="First name"
 									name="first_name"
 									required
-									autoComplete="given-name"
-									defaultValue={address.first_name || undefined}
-									data-testid="first-name-input"
 								/>
 								<Input
+									autoComplete="family-name"
+									data-testid="last-name-input"
+									defaultValue={address.last_name || undefined}
 									label="Last name"
 									name="last_name"
 									required
-									autoComplete="family-name"
-									defaultValue={address.last_name || undefined}
-									data-testid="last-name-input"
 								/>
 							</div>
 							<Input
+								autoComplete="organization"
+								data-testid="company-input"
+								defaultValue={address.company || undefined}
 								label="Company"
 								name="company"
-								autoComplete="organization"
-								defaultValue={address.company || undefined}
-								data-testid="company-input"
 							/>
 							<Input
+								autoComplete="address-line1"
+								data-testid="address-1-input"
+								defaultValue={address.address_1 || undefined}
 								label="Address"
 								name="address_1"
 								required
-								autoComplete="address-line1"
-								defaultValue={address.address_1 || undefined}
-								data-testid="address-1-input"
 							/>
 							<Input
+								autoComplete="address-line2"
+								data-testid="address-2-input"
+								defaultValue={address.address_2 || undefined}
 								label="Apartment, suite, etc."
 								name="address_2"
-								autoComplete="address-line2"
-								defaultValue={address.address_2 || undefined}
-								data-testid="address-2-input"
 							/>
 							<div className="grid grid-cols-[144px_1fr] gap-x-2">
 								<Input
+									autoComplete="postal-code"
+									data-testid="postal-code-input"
+									defaultValue={address.postal_code || undefined}
 									label="Postal code"
 									name="postal_code"
 									required
-									autoComplete="postal-code"
-									defaultValue={address.postal_code || undefined}
-									data-testid="postal-code-input"
 								/>
 								<Input
+									autoComplete="locality"
+									data-testid="city-input"
+									defaultValue={address.city || undefined}
 									label="City"
 									name="city"
 									required
-									autoComplete="locality"
-									defaultValue={address.city || undefined}
-									data-testid="city-input"
 								/>
 							</div>
 							<Input
+								autoComplete="address-level1"
+								data-testid="state-input"
+								defaultValue={address.province || undefined}
 								label="Province / State"
 								name="province"
-								autoComplete="address-level1"
-								defaultValue={address.province || undefined}
-								data-testid="state-input"
 							/>
 							{/* <CountrySelect
                 name="country_code"
@@ -198,11 +200,11 @@ const EditAddress: React.FC<EditAddressProps> = ({
                 data-testid="country-select"
               /> */}
 							<Input
+								autoComplete="phone"
+								data-testid="phone-input"
+								defaultValue={address.phone || undefined}
 								label="Phone"
 								name="phone"
-								autoComplete="phone"
-								defaultValue={address.phone || undefined}
-								data-testid="phone-input"
 							/>
 						</div>
 						{/* {formState.error && (
@@ -212,11 +214,11 @@ const EditAddress: React.FC<EditAddressProps> = ({
 					<Modal.Footer>
 						<div className="flex gap-3 mt-6">
 							<Button
-								type="reset"
-								variant="secondary"
-								onClick={close}
 								className="h-10"
 								data-testid="cancel-button"
+								onClick={close}
+								type="reset"
+								variant="secondary"
 							>
 								Cancel
 							</Button>

@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import Nav from "../_templates/nav";
-import Footer from "../_templates/footer";
+
 import { Providers } from "@/app/(frontend)/_providers/providers";
 import { getStoreSettings } from "@/app/api/services/store-settings";
 
+import Footer from "../_templates/footer";
+import Nav from "../_templates/nav";
+
 export const metadata: Metadata = {
-    title: "Shopnex Payload CMS Starter Template",
     description:
         "A performant frontend ecommerce starter template with Payload and Shopnex.",
+    title: "Shopnex Payload CMS Starter Template",
 };
 
 export default async function PageLayout(props: { children: React.ReactNode }) {

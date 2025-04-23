@@ -2,30 +2,31 @@ import { Disclosure } from "@headlessui/react";
 import { Badge, Button, clx } from "@medusajs/ui";
 import { useEffect } from "react";
 import { useFormStatus } from "react-dom";
+
 import useToggleState from "../_hooks/use-toggle-state";
 
 type AccountInfoProps = {
-	label: string;
-	currentInfo: string | React.ReactNode;
-	isSuccess?: boolean;
-	isError?: boolean;
-	errorMessage?: string;
-	clearState: () => void;
 	children?: React.ReactNode;
+	clearState: () => void;
+	currentInfo: React.ReactNode | string;
 	"data-testid"?: string;
+	errorMessage?: string;
+	isError?: boolean;
+	isSuccess?: boolean;
+	label: string;
 };
 
 const AccountInfo = ({
-	label,
-	currentInfo,
-	isSuccess,
-	isError,
-	clearState,
-	errorMessage = "An error occurred, please try again",
 	children,
+	clearState,
+	currentInfo,
 	"data-testid": dataTestid,
+	errorMessage = "An error occurred, please try again",
+	isError,
+	isSuccess,
+	label,
 }: AccountInfoProps) => {
-	const { state, close, toggle } = useToggleState();
+	const { close, state, toggle } = useToggleState();
 
 	const { pending } = useFormStatus();
 
@@ -57,12 +58,12 @@ const AccountInfo = ({
 				</div>
 				<div>
 					<Button
-						variant="secondary"
 						className="w-[100px] min-h-[25px] py-1"
+						data-active={state}
+						data-testid="edit-button"
 						onClick={handleToggle}
 						type={state ? "reset" : "button"}
-						data-testid="edit-button"
-						data-active={state}
+						variant="secondary"
 					>
 						{state ? "Cancel" : "Edit"}
 					</Button>
@@ -72,7 +73,6 @@ const AccountInfo = ({
 			{/* Success state */}
 			<Disclosure>
 				<Disclosure.Panel
-					static
 					className={clx(
 						"transition-[max-height,opacity] duration-300 ease-in-out overflow-hidden",
 						{
@@ -81,6 +81,7 @@ const AccountInfo = ({
 						},
 					)}
 					data-testid="success-message"
+					static
 				>
 					<Badge className="p-2 my-4" color="green">
 						<span>{label} updated successfully</span>
@@ -91,7 +92,6 @@ const AccountInfo = ({
 			{/* Error state  */}
 			<Disclosure>
 				<Disclosure.Panel
-					static
 					className={clx(
 						"transition-[max-height,opacity] duration-300 ease-in-out overflow-hidden",
 						{
@@ -100,6 +100,7 @@ const AccountInfo = ({
 						},
 					)}
 					data-testid="error-message"
+					static
 				>
 					<Badge className="p-2 my-4" color="red">
 						<span>{errorMessage}</span>
@@ -109,7 +110,6 @@ const AccountInfo = ({
 
 			<Disclosure>
 				<Disclosure.Panel
-					static
 					className={clx(
 						"transition-[max-height,opacity] duration-300 ease-in-out overflow-visible",
 						{
@@ -117,15 +117,16 @@ const AccountInfo = ({
 							"max-h-0 opacity-0": !state,
 						},
 					)}
+					static
 				>
 					<div className="flex flex-col gap-y-2 py-4">
 						<div>{children}</div>
 						<div className="flex items-center justify-end mt-2">
 							<Button
-								isLoading={pending}
 								className="w-full small:max-w-[140px]"
-								type="submit"
 								data-testid="save-button"
+								isLoading={pending}
+								type="submit"
 							>
 								Save changes
 							</Button>

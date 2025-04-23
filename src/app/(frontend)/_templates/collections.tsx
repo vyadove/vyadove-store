@@ -1,17 +1,19 @@
 import { Suspense } from "react";
-import PaginatedProducts from "./paginated-product";
+
 import type { SortOptions } from "../_util/sort-options";
+
 import RefinementList from "../_components/refinement-list";
 import SkeletonProductGrid from "../_components/skeleton-product-grid";
+import PaginatedProducts from "./paginated-product";
 
 export default function CollectionTemplate({
-	sortBy,
 	collection,
 	page,
+	sortBy,
 }: {
-	sortBy?: SortOptions;
 	collection: any;
 	page?: string;
+	sortBy?: SortOptions;
 }) {
 	const pageNumber = page ? Number.parseInt(page) : 1;
 	const sort = sortBy || "created_at";
@@ -31,10 +33,10 @@ export default function CollectionTemplate({
 					}
 				>
 					<PaginatedProducts
-						sortBy={sort}
-						page={pageNumber}
 						collectionId={collection.id}
+						page={pageNumber}
 						products={collection.products}
+						sortBy={sort}
 					/>
 				</Suspense>
 			</div>

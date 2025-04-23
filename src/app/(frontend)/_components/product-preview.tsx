@@ -1,24 +1,25 @@
 import { Text } from "@medusajs/ui";
 import Link from "next/link";
+
 import PreviewPrice from "./price";
 import Thumbnail from "./thumbnail";
 
-export default async function ProductPreview({
-    product,
+export default function ProductPreview({
     isFeatured,
+    product,
 }: {
-    product: any;
     isFeatured?: boolean;
+    product: any;
 }) {
-    const { price, originalPrice } = product.variants?.[0] || {};
+    const { originalPrice, price } = product.variants?.[0] || {};
     return (
-        <Link href={`/products/${product.handle}`} className="group">
+        <Link className="group" href={`/products/${product.handle}`}>
             <div data-testid="product-wrapper">
                 <Thumbnail
-                    thumbnail={product.variants[0]?.imageUrl}
                     images={product.images}
-                    size="full"
                     isFeatured={isFeatured}
+                    size="full"
+                    thumbnail={product.variants[0]?.imageUrl}
                 />
                 <div className="flex txt-compact-medium mt-4 justify-between">
                     <Text
@@ -30,8 +31,8 @@ export default async function ProductPreview({
                     <div className="flex items-center gap-x-2">
                         <PreviewPrice
                             currency={product.currency}
-                            price={price}
                             originalPrice={originalPrice}
+                            price={price}
                         />
                     </div>
                 </div>

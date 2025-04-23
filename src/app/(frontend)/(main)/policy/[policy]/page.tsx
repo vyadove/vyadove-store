@@ -1,6 +1,7 @@
-import { getPayload } from "payload";
 import config from "@payload-config";
 import { notFound } from "next/navigation";
+import { getPayload } from "payload";
+
 import PolicyTemplate from "../../../_templates/policy";
 
 type PolicyPageProps = {

@@ -1,16 +1,17 @@
 import { Toaster } from "@medusajs/ui";
-import AccountLayout from "../../_templates/account-layout";
-import LoginTemplate from "../../_templates/login-template";
-import { getPayload } from "payload";
 import config from "@payload-config";
 import { headers as nextHeaders } from "next/headers";
+import { getPayload } from "payload";
+
+import AccountLayout from "../../_templates/account-layout";
+import LoginTemplate from "../../_templates/login-template";
 
 export default async function AccountPageLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const payload = await getPayload({ config: config });
+    const payload = await getPayload({ config });
     const headers = await nextHeaders();
     const { user } = (await payload.auth({ headers })) || {};
 

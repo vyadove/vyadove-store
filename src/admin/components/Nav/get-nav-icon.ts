@@ -1,25 +1,27 @@
+import type {
+    LucideProps} from "lucide-react";
+import type { ExoticComponent } from "react";
+
 import {
   Blocks,
     ChartArea,
     Image,
-    LucideProps,
     Palette,
     Settings,
     ShoppingCart,
     Tag,
     UserRound,
 } from "lucide-react";
-import { ExoticComponent } from "react";
 
 const navIconMap = {
-    products: Tag,
     analytics: ChartArea,
-    orders: ShoppingCart,
-    customers: UserRound,
-    plugins: Blocks,
-    settings: Settings,
     content: Image,
+    customers: UserRound,
     design: Palette,
+    orders: ShoppingCart,
+    plugins: Blocks,
+    products: Tag,
+    settings: Settings,
 };
 
 type NavIconSlug = keyof typeof navIconMap;

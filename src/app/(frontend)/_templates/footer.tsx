@@ -1,11 +1,12 @@
 import type { StoreSetting } from "@/payload-types";
-import { Text, clx } from "@medusajs/ui";
+
+import { clx, Text } from "@medusajs/ui";
+import config from "@payload-config";
+import { PayloadIcon } from "@payloadcms/ui";
 import Link from "next/link";
 import { getPayload } from "payload";
-import config from "@payload-config";
 
 import { ShoplyIcon } from "../_components/icons/shoply-icon";
-import { PayloadIcon } from "@payloadcms/ui";
 import { StyledRichText } from "../_components/styled-rich-text";
 
 export default async function Footer({
@@ -35,8 +36,8 @@ export default async function Footer({
                 <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
                     <div>
                         <Link
-                            href="/"
                             className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
+                            href="/"
                         >
                             {storeSettings?.name} Store
                         </Link>
@@ -74,30 +75,30 @@ export default async function Footer({
                             <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
                                 <li>
                                     <a
-                                        href="https://github.com/medusajs"
-                                        target="_blank"
-                                        rel="noreferrer"
                                         className="hover:text-ui-fg-base"
+                                        href="https://github.com/medusajs"
+                                        rel="noreferrer"
+                                        target="_blank"
                                     >
                                         GitHub
                                     </a>
                                 </li>
                                 <li>
                                     <a
-                                        href="https://docs.medusajs.com"
-                                        target="_blank"
-                                        rel="noreferrer"
                                         className="hover:text-ui-fg-base"
+                                        href="https://docs.medusajs.com"
+                                        rel="noreferrer"
+                                        target="_blank"
                                     >
                                         Documentation
                                     </a>
                                 </li>
                                 <li>
                                     <a
-                                        href="https://github.com/medusajs/nextjs-starter-medusa"
-                                        target="_blank"
-                                        rel="noreferrer"
                                         className="hover:text-ui-fg-base"
+                                        href="https://github.com/medusajs/nextjs-starter-medusa"
+                                        rel="noreferrer"
+                                        target="_blank"
                                     >
                                         Source code
                                     </a>
@@ -111,27 +112,27 @@ export default async function Footer({
                         <StyledRichText
                             data={basicFooter?.copyright}
                             properties={{
-                                storeName: storeSettings?.name || "",
                                 dateYear: new Date().getFullYear(),
+                                storeName: storeSettings?.name || "",
                             }}
                         />
                     </div>
                     <div className="flex gap-x-2 txt-compact-small-plus items-center">
                         <StyledRichText data={basicFooter?.poweredBy} />
                         <Link
-                            href="https://shoplyjs.com"
-                            target="_blank"
-                            rel="noreferrer"
                             className="-mr-1"
+                            href="https://shoplyjs.com"
+                            rel="noreferrer"
+                            target="_blank"
                         >
                             <ShoplyIcon fill="#9ca3af" />
                         </Link>
                         &{" "}
                         <Link
-                            href="https://payloadcms.com/"
-                            target="_blank"
-                            rel="noreferrer"
                             className="size-4"
+                            href="https://payloadcms.com/"
+                            rel="noreferrer"
+                            target="_blank"
                         >
                             <PayloadIcon fill="#9ca3af" />
                         </Link>

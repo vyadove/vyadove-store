@@ -1,6 +1,7 @@
+import type { Block, GlobalConfig } from "payload";
+
 import { admins } from "@/access/roles";
 import { groups } from "@/collections/groups";
-import { Block, GlobalConfig } from "payload";
 
 const HeroBlock: Block = {
     slug: "hero",
@@ -16,13 +17,13 @@ const HeroBlock: Block = {
         },
         {
             name: "ctaButtonText",
-            label: "CTA Button Text",
             type: "text",
+            label: "CTA Button Text",
         },
         {
             name: "ctaButtonLink",
-            label: "CTA Button Link",
             type: "text",
+            label: "CTA Button Link",
         },
         {
             name: "backgroundImage",
@@ -47,8 +48,8 @@ const CarouselBlock: Block = {
         {
             name: "featuredProducts",
             type: "upload",
-            relationTo: "media",
             hasMany: true,
+            relationTo: "media",
         },
         {
             name: "backgroundImage",
@@ -60,20 +61,20 @@ const CarouselBlock: Block = {
 
 export const HeroSection: GlobalConfig = {
     slug: "hero-section",
-    admin: {
-        group: groups.customizations,
-    },
     access: {
         read: admins,
         update: admins,
+    },
+    admin: {
+        group: groups.customizations,
     },
     fields: [
         {
             name: "type",
             type: "blocks",
             blocks: [HeroBlock, CarouselBlock],
-            required: true,
             maxRows: 1,
+            required: true,
         },
     ],
 };

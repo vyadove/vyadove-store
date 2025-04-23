@@ -1,14 +1,15 @@
 import type { StripeWebhookHandler } from "@payloadcms/plugin-stripe/types";
+
 import Stripe from "stripe";
 
 /**
  * This webhook will run whenever a payment intent is successfully paid to create an order in Payload
  */
 export const paymentSucceeded: StripeWebhookHandler<{
-    id: string;
     data: {
         object: Stripe.PaymentIntent;
     };
+    id: string;
 }> = async ({ event, payload }) => {
     const paymentIntent = event.data.object;
 
@@ -17,7 +18,9 @@ export const paymentSucceeded: StripeWebhookHandler<{
     const customerEmail =
         paymentIntent.receipt_email || paymentIntent.metadata?.email;
 
-    console.log(`🔔 Received Stripe Event: ${event.id}, Order ID: ${orderId}`);
+    payload.logger.info(
+        `🔔 Received Stripe Event: ${event.id}, Order ID: ${orderId}`
+    );
 
     if (!orderId) {
         console.error("❌ Missing order ID in payment metadata");
@@ -50,53 +53,57 @@ export const paymentSucceeded: StripeWebhookHandler<{
         const user = userQuery.docs[0];
         const result = await payload.update({
             collection: "orders",
+            data: {
+                billingAddress: billingDetails
+                    ? ({
+                          name: billingDetails.name,
+                          address: billingDetails.address,
+                          email: billingDetails.email,
+                          phone: billingDetails.phone,
+                      } as any)
+                    : undefined,
+                orderStatus: "processing",
+                paymentGateway: "stripe",
+                paymentIntentId: paymentIntent.id,
+                paymentMethod: paymentIntent.payment_method_types.join(", "),
+                paymentStatus: "paid",
+                receiptUrl: latestCharge.receipt_url,
+                shippingAddress: shippingDetails
+                    ? ({
+                          name: shippingDetails.name,
+                          address: shippingDetails.address,
+                          phone: shippingDetails.phone,
+                      } as any)
+                    : undefined,
+                updatedAt: new Date().toISOString(),
+                user: user ? user.id : null,
+            },
             where: {
                 orderId: {
                     equals: orderId,
                 },
             },
-            data: {
-                user: user ? user.id : null,
-                paymentStatus: "paid",
-                orderStatus: "processing",
-                paymentIntentId: paymentIntent.id,
-                paymentMethod: paymentIntent.payment_method_types.join(", "),
-                receiptUrl: latestCharge.receipt_url,
-                updatedAt: new Date().toISOString(),
-                paymentGateway: "stripe",
-                shippingAddress: shippingDetails
-                    ? {
-                          name: shippingDetails.name,
-                          address: shippingDetails.address,
-                          phone: shippingDetails.phone,
-                      } as any
-                    : undefined,
-                billingAddress: billingDetails
-                    ? {
-                          name: billingDetails.name,
-                          email: billingDetails.email,
-                          phone: billingDetails.phone,
-                          address: billingDetails.address,
-                      } as any
-                    : undefined,
-            },
         });
 
-        if (result.errors.length) throw new Error(result.errors[0].message);
+        if (result.errors.length) {
+            throw new Error(result.errors[0].message);
+        }
 
-        console.log(`✅ Payment successful for Order ID: ${orderId}`, result);
+        payload.logger.info(
+            `✅ Payment successful for Order ID: ${orderId}`,
+            result
+        );
 
         // (Optional) Send confirmation email
         if (customerEmail) {
-            await sendOrderConfirmationEmail(customerEmail, orderId);
+            sendOrderConfirmationEmail(customerEmail, orderId);
         }
     } catch (error) {
-        console.error("❌ Error updating order status:", error);
+        payload.logger.error("❌ Error updating order status:", error);
     }
 };
 
-// Dummy function for email sending (replace with actual implementation)
-async function sendOrderConfirmationEmail(email: string, orderId: string) {
+function sendOrderConfirmationEmail(email: string, orderId: string) {
     console.log(
         `📧 Sending confirmation email to ${email} for Order ID: ${orderId}`
     );

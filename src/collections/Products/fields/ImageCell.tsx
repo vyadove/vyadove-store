@@ -1,24 +1,24 @@
-import React from "react";
-import Image from "next/image";
 import config from "@/payload.config";
-import { getPayload, type DefaultServerCellComponentProps } from "payload";
+import Image from "next/image";
+import { type DefaultServerCellComponentProps, getPayload } from "payload";
+import React from "react";
 
 const CustomImageCell = async (props: DefaultServerCellComponentProps) => {
-	const payload = await getPayload({ config: config });
+	const payload = await getPayload({ config });
 
 	const { cellData } = props;
 	const media = await payload.findByID({
-		collection: "media",
 		id: cellData[0],
+		collection: "media",
 	});
 
 	return (
 		<Image
-			src={media.url!}
 			alt={media.alt}
 			height={50}
+			src={media.url!}
+			style={{ height: "50px", width: "auto" }}
 			width={50}
-			style={{ width: "auto", height: "50px" }}
 		/>
 	);
 };

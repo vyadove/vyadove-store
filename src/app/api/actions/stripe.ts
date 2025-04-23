@@ -3,10 +3,10 @@ import Stripe from "stripe";
 
 export const mapToStripeLineItems = (
     variants: {
-        id: string;
-        price: number;
-        options: { id: string; option: string; value: string }[];
         gallery: { url: string }[];
+        id: string;
+        options: { id: string; option: string; value: string }[];
+        price: number;
         quantity: number;
     }[]
 ): Stripe.Checkout.SessionCreateParams.LineItem[] => {
@@ -39,25 +39,25 @@ export const createCheckoutSession = async (
         apiVersion: "2022-08-01",
     });
     return stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
-        line_items: lineItems,
-        mode: "payment",
-        success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/order/confirmed/{CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/cart?canceled=true`,
+        expires_at: Math.floor(Date.now() / 1000) + 30 * 60, // Expires in 30 minutes
+        line_items: lineItems,
         metadata: {
             cartItemCount: lineItems.length.toString(),
-            orderId: orderId,
+            orderId,
         },
-        expires_at: Math.floor(Date.now() / 1000) + 30 * 60, // Expires in 30 minutes
+        mode: "payment",
         payment_intent_data: {
-            setup_future_usage: "off_session",
             metadata: {
                 orderId,
             },
+            setup_future_usage: "off_session",
         },
+        payment_method_types: ["card"],
         shipping_address_collection: {
             allowed_countries: ["US", "CA", "GB"], // Add the countries you want to support
         },
+        success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/order/confirmed/{CHECKOUT_SESSION_ID}`,
     });
 };
 
@@ -69,7 +69,7 @@ export const retrieveSession = async (sessionId: string) => {
 };
 
 export const constructWebhookEvent = (
-    payload: string | Buffer,
+    payload: Buffer | string,
     signature: string
 ) => {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {

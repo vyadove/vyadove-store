@@ -1,9 +1,11 @@
 "use client";
 
+import type {
+	SelectHTMLAttributes} from "react";
+
 import { ChevronDown } from "@medusajs/icons";
-import { IconBadge, clx } from "@medusajs/ui";
+import { clx, IconBadge } from "@medusajs/ui";
 import {
-	SelectHTMLAttributes,
 	forwardRef,
 	useEffect,
 	useImperativeHandle,
@@ -12,13 +14,12 @@ import {
 } from "react";
 
 type NativeSelectProps = {
-	placeholder?: string;
 	errors?: Record<string, unknown>;
+	placeholder?: string;
 	touched?: Record<string, unknown>;
 } & Omit<SelectHTMLAttributes<HTMLSelectElement>, "size">;
 
-const CartItemSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
-	({ placeholder = "Select...", className, children, ...props }, ref) => {
+const CartItemSelect = ({ children, className, placeholder = "Select...", ref, ...props }: { ref?: React.RefObject<HTMLSelectElement | null> } & NativeSelectProps) => {
 		const innerRef = useRef<HTMLSelectElement>(null);
 		const [isPlaceholder, setIsPlaceholder] = useState(false);
 
@@ -38,8 +39,6 @@ const CartItemSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
 		return (
 			<div>
 				<IconBadge
-					onFocus={() => innerRef.current?.focus()}
-					onBlur={() => innerRef.current?.blur()}
 					className={clx(
 						"relative flex items-center txt-compact-small border text-ui-fg-base group",
 						className,
@@ -47,6 +46,8 @@ const CartItemSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
 							"text-ui-fg-subtle": isPlaceholder,
 						},
 					)}
+					onBlur={() => innerRef.current?.blur()}
+					onFocus={() => innerRef.current?.focus()}
 				>
 					<select
 						ref={innerRef}
@@ -64,8 +65,7 @@ const CartItemSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
 				</IconBadge>
 			</div>
 		);
-	},
-);
+	};
 
 CartItemSelect.displayName = "CartItemSelect";
 

@@ -1,14 +1,15 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useCart } from "react-use-cart";
+
+import Divider from "../_components/divider";
+import EmptyCartMessage from "../_components/empty-cart-message";
+import Spinner from "../_components/icons/spinner";
+import SignInPrompt from "../_components/sign-in-prompt";
+import { useAuth } from "../_providers/auth";
 import ItemsTemplate from "./items";
 import Summary from "./summary";
-import EmptyCartMessage from "../_components/empty-cart-message";
-import SignInPrompt from "../_components/sign-in-prompt";
-import Divider from "../_components/divider";
-import { useCart } from "react-use-cart";
-import { useEffect, useState } from "react";
-import Spinner from "../_components/icons/spinner";
-import { useAuth } from "../_providers/auth";
 
 const CartTemplate = () => {
     const { items } = useCart();

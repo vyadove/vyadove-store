@@ -1,6 +1,7 @@
+import type { Block, GlobalConfig } from "payload";
+
 import { admins } from "@/access/roles";
 import { groups } from "@/collections/groups";
-import { Block, GlobalConfig } from "payload";
 
 const BasicFooter: Block = {
     slug: "basic-footer",
@@ -19,12 +20,12 @@ const BasicFooter: Block = {
 
 export const Footer: GlobalConfig = {
     slug: "footer",
-    admin: {
-        group: groups.customizations
-    },
     access: {
         read: admins,
         update: admins,
+    },
+    admin: {
+        group: groups.customizations
     },
     fields: [
         {

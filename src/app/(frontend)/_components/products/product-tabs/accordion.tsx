@@ -1,45 +1,45 @@
-import { Text, clx } from "@medusajs/ui";
+import { clx, Text } from "@medusajs/ui";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import React from "react";
 
-type AccordionItemProps = AccordionPrimitive.AccordionItemProps & {
-	title: string;
-	subtitle?: string;
-	description?: string;
-	required?: boolean;
-	tooltip?: string;
-	forceMountContent?: true;
-	headingSize?: "small" | "medium" | "large";
-	customTrigger?: React.ReactNode;
-	complete?: boolean;
+type AccordionItemProps = {
 	active?: boolean;
-	triggerable?: boolean;
 	children: React.ReactNode;
-};
+	complete?: boolean;
+	customTrigger?: React.ReactNode;
+	description?: string;
+	forceMountContent?: true;
+	headingSize?: "large" | "medium" | "small";
+	required?: boolean;
+	subtitle?: string;
+	title: string;
+	tooltip?: string;
+	triggerable?: boolean;
+} & AccordionPrimitive.AccordionItemProps;
 
 type AccordionProps =
-	| (AccordionPrimitive.AccordionSingleProps &
-			React.RefAttributes<HTMLDivElement>)
 	| (AccordionPrimitive.AccordionMultipleProps &
+			React.RefAttributes<HTMLDivElement>)
+	| (AccordionPrimitive.AccordionSingleProps &
 			React.RefAttributes<HTMLDivElement>);
 
-const Accordion: React.FC<AccordionProps> & {
+const Accordion: {
 	Item: React.FC<AccordionItemProps>;
-} = ({ children, ...props }) => {
+} & React.FC<AccordionProps> = ({ children, ...props }) => {
 	return (
 		<AccordionPrimitive.Root {...props}>{children}</AccordionPrimitive.Root>
 	);
 };
 
 const Item: React.FC<AccordionItemProps> = ({
-	title,
-	subtitle,
-	description,
 	children,
 	className,
-	headingSize = "large",
 	customTrigger = undefined,
+	description,
 	forceMountContent = undefined,
+	headingSize = "large",
+	subtitle,
+	title,
 	triggerable,
 	...props
 }) => {
@@ -63,17 +63,17 @@ const Item: React.FC<AccordionItemProps> = ({
 						</AccordionPrimitive.Trigger>
 					</div>
 					{subtitle && (
-						<Text as="span" size="small" className="mt-1">
+						<Text as="span" className="mt-1" size="small">
 							{subtitle}
 						</Text>
 					)}
 				</div>
 			</AccordionPrimitive.Header>
 			<AccordionPrimitive.Content
-				forceMount={forceMountContent}
 				className={clx(
 					"radix-state-closed:animate-accordion-close radix-state-open:animate-accordion-open radix-state-closed:pointer-events-none px-1",
 				)}
+				forceMount={forceMountContent}
 			>
 				<div className="inter-base-regular group-radix-state-closed:animate-accordion-close">
 					{description && <Text>{description}</Text>}

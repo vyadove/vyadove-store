@@ -1,11 +1,12 @@
-import Input from "./input";
-import { SubmitButton } from "./submit-button";
-import { useAuth } from "../_providers/auth";
 import { useRouter } from "next/navigation";
 
+import { useAuth } from "../_providers/auth";
+import Input from "./input";
+import { SubmitButton } from "./submit-button";
+
 enum LOGIN_VIEW {
-    SIGN_IN = "sign-in",
     REGISTER = "register",
+    SIGN_IN = "sign-in",
 }
 
 type Props = {
@@ -39,27 +40,27 @@ const Login = ({ setCurrentView }: Props) => {
             <form className="w-full" onSubmit={handleSubmit}>
                 <div className="flex flex-col w-full gap-y-2">
                     <Input
+                        autoComplete="email"
+                        data-testid="email-input"
                         label="Email"
                         name="email"
-                        type="email"
-                        title="Enter a valid email address."
-                        autoComplete="email"
                         required
-                        data-testid="email-input"
+                        title="Enter a valid email address."
+                        type="email"
                     />
                     <Input
+                        autoComplete="current-password"
+                        data-testid="password-input"
                         label="Password"
                         name="password"
-                        type="password"
-                        autoComplete="current-password"
                         required
-                        data-testid="password-input"
+                        type="password"
                     />
                 </div>
                 {/* <ErrorMessage error={message} data-testid="login-error-message" /> */}
                 <SubmitButton
-                    data-testid="sign-in-button"
                     className="w-full mt-6"
+                    data-testid="sign-in-button"
                 >
                     Sign in
                 </SubmitButton>
@@ -67,9 +68,9 @@ const Login = ({ setCurrentView }: Props) => {
             <span className="text-center text-ui-fg-base text-small-regular mt-6">
                 Not a member?{" "}
                 <button
-                    onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
                     className="underline"
                     data-testid="register-button"
+                    onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
                 >
                     Join us
                 </button>

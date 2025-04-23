@@ -1,8 +1,9 @@
-import OrderDetailsTemplate from "@/app/(frontend)/_templates/order-details";
 import type { Metadata } from "next";
+
+import OrderDetailsTemplate from "@/app/(frontend)/_templates/order-details";
+import config from "@payload-config";
 import { notFound } from "next/navigation";
 import { getPayload } from "payload";
-import config from "@payload-config";
 
 type Props = {
     params: Promise<{ id: string }>;
@@ -17,8 +18,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     }
 
     return {
-        title: `Order #${orderId}`,
         description: "View your order",
+        title: `Order #${orderId}`,
     };
 }
 
@@ -28,8 +29,8 @@ export default async function OrderDetailPage(props: Props) {
 
     const payload = await getPayload({ config })
     const order = await payload.findByID({
-        collection: "orders",
         id: orderId,
+        collection: "orders",
     })
 
     if (!order) {

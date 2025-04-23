@@ -1,14 +1,16 @@
 "use client";
 
+import type { Order, User } from "@/payload-types";
+
 import { Container } from "@medusajs/ui";
 import Link from "next/link";
+
+import { useAuth } from "../_providers/auth";
 import { convertToLocale } from "../_util/money";
 import ChevronDown from "./icons/chevron-down";
-import type { Order, User } from "@/payload-types";
-import { useAuth } from "../_providers/auth";
 
 type OverviewProps = {
-    orders: Order[] | null;
+    orders: null | Order[];
 };
 
 const Overview = ({ orders }: OverviewProps) => {
@@ -86,9 +88,9 @@ const Overview = ({ orders }: OverviewProps) => {
                                     orders.slice(0, 5).map((order) => {
                                         return (
                                             <li
-                                                key={order.id}
                                                 data-testid="order-wrapper"
                                                 data-value={order.id}
+                                                key={order.id}
                                             >
                                                 <Link
                                                     href={`/account/orders/details/${order.id}`}
@@ -128,9 +130,9 @@ const Overview = ({ orders }: OverviewProps) => {
                                                             </span>
                                                         </div>
                                                         <button
-                                                            type="button"
                                                             className="flex items-center justify-between"
                                                             data-testid="open-order-button"
+                                                            type="button"
                                                         >
                                                             <span className="sr-only">
                                                                 Go to order #
@@ -157,7 +159,7 @@ const Overview = ({ orders }: OverviewProps) => {
     );
 };
 
-const getProfileCompletion = (customer: User) => {
+const getProfileCompletion = (customer: null | User) => {
     let count = 0;
 
     if (!customer) {

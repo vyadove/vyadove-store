@@ -1,20 +1,26 @@
-import { BasePayload, getPayload, type AdminViewServerProps } from "payload";
-import React from "react";
-import { Card, CardBody, CardFooter, CardHeader } from "./Card";
+import type { Order } from "@/payload-types";
+
 import config from "@payload-config";
-import SalesChart from "./SalesChart";
-import { Order } from "@/payload-types";
 import { Gutter } from "@payloadcms/ui";
+import {
+    type AdminViewServerProps,
+    type BasePayload,
+    getPayload,
+} from "payload";
+import React from "react";
+
+import { Card, CardBody, CardFooter, CardHeader } from "./Card";
+import SalesChart from "./SalesChart";
 
 const baseClass = "dashboard";
 
 // Helper: Format currency
 const formatCurrency = (amount: number, currency = "USD") =>
     new Intl.NumberFormat("en-US", {
-        style: "currency",
         currency,
-        minimumFractionDigits: 2,
         maximumFractionDigits: 2,
+        minimumFractionDigits: 2,
+        style: "currency",
     }).format(amount);
 
 // Helper: Calculate percentage change
@@ -22,7 +28,9 @@ const calculatePercentageChange = (
     current: number,
     previous: number
 ): string => {
-    if (previous === 0) return current > 0 ? "+100%" : "None";
+    if (previous === 0) {
+        return current > 0 ? "+100%" : "None";
+    }
     const change = ((current - previous) / previous) * 100;
     return `${change.toFixed(2)}%`;
 };
@@ -35,14 +43,14 @@ const fetchOrders = async (
 ) => {
     const result = await payload.find({
         collection: "orders",
+        pagination: false,
+        sort: "createdAt",
         where: {
             createdAt: {
                 greater_than: startDate.toISOString(),
                 less_than: endDate.toISOString(),
             },
         },
-        sort: "createdAt",
-        pagination: false,
     });
     return result.docs;
 };
@@ -66,11 +74,11 @@ const Dashboard = async (props: AdminViewServerProps) => {
             59,
             999
         );
-        return { start, end };
+        return { end, start };
     };
 
-    const { start: currentStart, end: currentEnd } = getMonthRange(0);
-    const { start: lastStart, end: lastEnd } = getMonthRange(-1);
+    const { end: currentEnd, start: currentStart } = getMonthRange(0);
+    const { end: lastEnd, start: lastStart } = getMonthRange(-1);
 
     // Fetch current & last month orders
     const [currentOrders, lastOrders] = await Promise.all([
@@ -90,11 +98,11 @@ const Dashboard = async (props: AdminViewServerProps) => {
         const lifetimeValue = avgOrderValue * 10; // Assume avg. customer orders 10 times
 
         return {
-            totalOrders,
-            totalAmount,
             avgOrderValue,
-            totalProfit,
             lifetimeValue,
+            totalAmount,
+            totalOrders,
+            totalProfit,
         };
     };
 
@@ -104,12 +112,12 @@ const Dashboard = async (props: AdminViewServerProps) => {
     // Generate chart data from real order history
     const salesData = currentOrders.map((order: Order) => ({
         date: new Date(order.createdAt).toLocaleDateString("en-US", {
-            month: "short",
             day: "numeric",
+            month: "short",
         }),
-        revenue: order.totalAmount,
         orders: 1,
         profit: +(order.totalAmount * 0.05).toFixed(2),
+        revenue: order.totalAmount,
     }));
 
     return (
@@ -119,8 +127,8 @@ const Dashboard = async (props: AdminViewServerProps) => {
                 className={`${baseClass}__card-list`}
                 style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
                     gap: "1rem",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
                     marginTop: "2rem",
                 }}
             >

@@ -1,18 +1,14 @@
-import { Block, CollectionConfig } from "payload";
+import type { Block, CollectionConfig } from "payload";
+
 import { groups } from "./groups";
 
 export const ManualProvider: Block = {
     slug: "manualProvider",
-    labels: {
-        singular: "Manual Provider",
-        plural: "Manual Providers",
-    },
-    imageURL: "/manual-payment.png",
     fields: [
         {
             name: "methodType",
-            label: "Manual Payment Type",
             type: "select",
+            label: "Manual Payment Type",
             options: [
                 { label: "Cash on Delivery", value: "cod" },
                 { label: "Bank Transfer", value: "bankTransfer" },
@@ -23,16 +19,15 @@ export const ManualProvider: Block = {
         },
         {
             name: "instructions",
-            label: "Payment Instructions",
             type: "textarea",
-            required: true,
             admin: {
                 description: "Shown to customers at checkout.",
             },
+            label: "Payment Instructions",
+            required: true,
         },
         {
             name: "details",
-            label: "Details",
             type: "array",
             admin: {
                 condition: (data) => {
@@ -60,8 +55,14 @@ export const ManualProvider: Block = {
                     ],
                 },
             ],
+            label: "Details",
         },
     ],
+    imageURL: "/manual-payment.png",
+    labels: {
+        plural: "Manual Providers",
+        singular: "Manual Provider",
+    },
 };
 
 export const Payments: CollectionConfig = {

@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useCallback } from "react";
+import type { ClientFieldProps } from "payload";
+
 import { Button, toast, useField, useFormFields } from "@payloadcms/ui";
 import { reduceFieldsToValues } from "payload/shared";
-import { ClientFieldProps } from "payload";
+import React, { useCallback } from "react";
 
 type Option = {
     id: string;
-    value: string[];
     option: string;
+    value: string[];
 };
 
 type VariantOption = {
@@ -17,12 +18,12 @@ type VariantOption = {
 };
 
 type Variant = {
-    vid: string | null;
-    imageUrl: string | null;
-    price: number | null;
-    originalPrice: number | null;
-    options: VariantOption[];
     gallery: string[];
+    imageUrl: null | string;
+    options: VariantOption[];
+    originalPrice: null | number;
+    price: null | number;
+    vid: null | string;
 };
 
 /**
@@ -30,7 +31,7 @@ type Variant = {
  * Each option is combined with every other option by generating a Cartesian product.
  */
 function generateVariantCombinations(options: Option[]): Variant[] {
-    if (options.length === 0) return [];
+    if (options.length === 0) {return [];}
 
     // Generate Cartesian product of options.
     const combinations = options.reduce<VariantOption[][]>(
@@ -45,16 +46,16 @@ function generateVariantCombinations(options: Option[]): Variant[] {
     );
 
     return combinations.map((combo) => ({
-        vid: null,
-        imageUrl: null,
-        price: 0,
-        originalPrice: null,
-        options: combo,
         gallery: [],
+        imageUrl: null,
+        options: combo,
+        originalPrice: null,
+        price: 0,
+        vid: null,
     }));
 }
 
-const VariantGenerator = ({ path }: ClientFieldProps & { path: string }) => {
+const VariantGenerator = ({ path }: { path: string } & ClientFieldProps) => {
     const { setValue } = useField({ path });
 
     const options = useFormFields(([fields]) =>
@@ -77,9 +78,9 @@ const VariantGenerator = ({ path }: ClientFieldProps & { path: string }) => {
 
         variants.forEach((variant, index) => {
             fieldDispatch({
-                rowIndex: index,
                 type: "ADD_ROW",
                 path: "variants",
+                rowIndex: index,
             });
 
             [

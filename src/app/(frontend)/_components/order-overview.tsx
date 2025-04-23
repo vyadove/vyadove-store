@@ -1,7 +1,9 @@
+import type { Order } from "@/payload-types";
+
 import { Button } from "@medusajs/ui";
 import Link from "next/link";
+
 import OrderCard from "./order-card";
-import type { Order } from "@/payload-types";
 
 const OrderOverview = ({ orders }: { orders: Order[] }) => {
     if (orders?.length) {
@@ -9,8 +11,8 @@ const OrderOverview = ({ orders }: { orders: Order[] }) => {
             <div className="flex flex-col gap-y-8 w-full">
                 {orders.map((o) => (
                     <div
-                        key={o.id}
                         className="border-b border-gray-200 pb-6 last:pb-0 last:border-none"
+                        key={o.id}
                     >
                         <OrderCard order={o} />
                     </div>

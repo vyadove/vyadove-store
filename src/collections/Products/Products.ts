@@ -1,8 +1,9 @@
 import type { CollectionConfig } from "payload";
 
 import { admins, anyone } from "@/access/roles";
-import { handleField } from "@/fields/slug";
 import { description } from "@/fields/description";
+import { handleField } from "@/fields/slug";
+
 import { groups } from "../groups";
 
 export const Products: CollectionConfig = {
@@ -14,19 +15,9 @@ export const Products: CollectionConfig = {
         update: admins,
     },
     admin: {
-        useAsTitle: "title",
-        group: groups.catalog,
         defaultColumns: ["title", "variants", "collections"],
-    },
-    hooks: {
-        beforeRead: [
-            async ({ doc, req }) => {
-                const storeSettings = await req.payload.findGlobal({
-                    slug: "store-settings",
-                });
-                doc.currency = storeSettings.currency;
-            },
-        ],
+        group: groups.catalog,
+        useAsTitle: "title",
     },
     fields: [
         {
@@ -49,25 +40,26 @@ export const Products: CollectionConfig = {
             },
         },
         {
-            label: "Visibility",
             name: "visible",
             type: "checkbox",
             admin: {
                 position: "sidebar",
             },
             defaultValue: true,
+            label: "Visibility",
         },
         {
-            label: "Sales Channels",
             name: "salesChannels",
             type: "select",
             admin: {
-                position: "sidebar",
-                disabled: true,
                 description:
                     "Choose where this product should be available to customers.",
+                disabled: true,
+                position: "sidebar",
             },
+            defaultValue: "all",
             hasMany: true,
+            label: "Sales Channels",
             options: [
                 {
                     label: "All Channels",
@@ -80,22 +72,20 @@ export const Products: CollectionConfig = {
                 { label: "POS", value: "pos" },
                 { label: "Mobile App", value: "mobileApp" },
             ],
-            defaultValue: "all",
         },
         description(),
         {
-            label: "Tags",
             name: "collections",
             type: "relationship",
             admin: {
                 position: "sidebar",
             },
             hasMany: true,
+            label: "Tags",
             relationTo: "collections",
         },
         handleField(),
         {
-            label: "Build Variants",
             type: "collapsible",
             admin: {
                 initCollapsed: true,
@@ -104,31 +94,31 @@ export const Products: CollectionConfig = {
                 {
                     name: "variantOptions",
                     type: "array",
-                    maxRows: 5,
                     admin: {
                         description: "Choose the options for this product.",
                     },
                     fields: [
                         {
+                            name: "option",
+                            type: "text",
                             admin: {
                                 placeholder: "Enter an option",
                             },
-                            name: "option",
-                            type: "text",
                             required: true,
                         },
                         {
+                            name: "value",
+                            type: "text",
                             admin: {
                                 description:
                                     "(press enter to add multiple values)",
                                 placeholder: "Enter a value",
                             },
-                            name: "value",
-                            type: "text",
-                            required: true,
                             hasMany: true,
+                            required: true,
                         },
                     ],
+                    maxRows: 5,
                 },
                 {
                     name: "buildVariantsButton",
@@ -140,44 +130,42 @@ export const Products: CollectionConfig = {
                     },
                 },
             ],
+            label: "Build Variants",
         },
 
         {
             name: "variants",
             type: "array",
-            minRows: 1,
-            maxRows: 10,
-            required: true,
             fields: [
                 {
                     name: "vid",
                     type: "text",
-                    label: "Variant ID",
                     admin: {
                         disabled: true,
                     },
+                    label: "Variant ID",
                 },
                 {
                     name: "imageUrl",
                     type: "text",
-                    label: "Image",
                     admin: {
                         disabled: true,
                     },
+                    label: "Image",
                 },
                 {
-                    label: "Image",
                     name: "gallery",
                     type: "upload",
-                    relationTo: "media",
-                    hasMany: true,
                     admin: {
-                        isSortable: false,
                         components: {
                             Cell: "@/collections/Products/fields/ImageCell",
                             // Field: "@/custom/custom-image-field#UploadField",
                         },
+                        isSortable: false,
                     },
+                    hasMany: true,
+                    label: "Image",
+                    relationTo: "media",
                 },
                 {
                     name: "price",
@@ -194,7 +182,6 @@ export const Products: CollectionConfig = {
 
                 {
                     name: "options",
-                    label: "Options",
                     type: "array",
                     fields: [
                         {
@@ -208,17 +195,21 @@ export const Products: CollectionConfig = {
                             required: true,
                         },
                     ],
+                    label: "Options",
                 },
             ],
+            maxRows: 10,
+            minRows: 1,
+            required: true,
         },
 
         {
             name: "customFields",
             type: "array",
             admin: {
-                position: "sidebar",
                 description:
                     "Add additional product info such as care instructions, materials, or sizing notes.",
+                position: "sidebar",
             },
             fields: [
                 {
@@ -233,4 +224,14 @@ export const Products: CollectionConfig = {
             ],
         },
     ],
+    hooks: {
+        beforeRead: [
+            async ({ doc, req }) => {
+                const storeSettings = await req.payload.findGlobal({
+                    slug: "store-settings",
+                });
+                doc.currency = storeSettings.currency;
+            },
+        ],
+    },
 };

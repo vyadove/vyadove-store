@@ -1,4 +1,5 @@
 import { clx } from "@medusajs/ui";
+
 import { convertToLocale } from "../_util/money";
 
 export const getPercentageDiff = (original: number, calculated: number) => {
@@ -10,9 +11,9 @@ export const getPercentageDiff = (original: number, calculated: number) => {
 
 type LineItemPriceProps = {
     cartTotal: number;
-    style?: "default" | "tight";
     currencyCode: string;
     originalPrice?: number;
+    style?: "default" | "tight";
 };
 
 const LineItemPrice = ({

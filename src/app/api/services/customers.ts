@@ -1,4 +1,3 @@
-
-export const updateCustomer = async (customer: any) => {
-    return customer
-}
+export const updateCustomer = (customer: any) => {
+    return customer;
+};

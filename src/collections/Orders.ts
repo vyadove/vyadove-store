@@ -1,18 +1,20 @@
-import { admins, adminsOrSelf, anyone } from "@/access/roles";
 import type { CollectionConfig } from "payload";
+
+import { admins, adminsOrSelf, anyone } from "@/access/roles";
+
 import { groups } from "./groups";
 
 export const Orders: CollectionConfig = {
     slug: "orders",
-    admin: {
-        useAsTitle: "orderId",
-        group: groups.orders,
-    },
     access: {
         create: anyone,
+        delete: admins,
         read: adminsOrSelf,
         update: admins,
-        delete: admins,
+    },
+    admin: {
+        group: groups.orders,
+        useAsTitle: "orderId",
     },
     fields: [
         {
@@ -30,7 +32,6 @@ export const Orders: CollectionConfig = {
         {
             name: "items",
             type: "array",
-            required: true,
             fields: [
                 {
                     name: "product",
@@ -71,36 +72,38 @@ export const Orders: CollectionConfig = {
                     required: true,
                 },
             ],
+            required: true,
         },
         {
             name: "totalAmount",
             type: "number",
-            required: true,
             min: 0,
+            required: true,
         },
         {
             name: "currency",
             type: "text",
-            required: true,
             admin: {
                 position: "sidebar",
             },
+            required: true,
         },
         {
             name: "paymentStatus",
             type: "select",
+            defaultValue: "pending",
             options: [
                 { label: "Pending", value: "pending" },
                 { label: "Paid", value: "paid" },
                 { label: "Failed", value: "failed" },
                 { label: "Refunded", value: "refunded" },
             ],
-            defaultValue: "pending",
             required: true,
         },
         {
             name: "orderStatus",
             type: "select",
+            defaultValue: "pending",
             options: [
                 { label: "Pending", value: "pending" },
                 { label: "Processing", value: "processing" },
@@ -108,7 +111,6 @@ export const Orders: CollectionConfig = {
                 { label: "Delivered", value: "delivered" },
                 { label: "Canceled", value: "canceled" },
             ],
-            defaultValue: "pending",
             required: true,
         },
         {
@@ -121,11 +123,11 @@ export const Orders: CollectionConfig = {
         {
             name: "sessionId",
             type: "text",
-            required: true,
             admin: {
                 position: "sidebar",
                 readOnly: true,
             },
+            required: true,
         },
         {
             name: "paymentGateway",
@@ -135,18 +137,18 @@ export const Orders: CollectionConfig = {
         {
             name: "paymentMethod",
             type: "text",
-            required: false,
             admin: {
                 position: "sidebar",
             },
+            required: false,
         },
         {
             name: "receiptUrl",
             type: "text",
-            required: false,
             admin: {
                 readOnly: true,
             },
+            required: false,
         },
         {
             name: "metadata",
@@ -157,44 +159,45 @@ export const Orders: CollectionConfig = {
         },
         {
             name: "shippingAddress",
+            type: "json",
+            admin: {
+                position: "sidebar",
+            },
+            required: false,
             typescriptSchema: [
                 () => ({
                     type: "object",
                     properties: {
                         name: { type: "string" },
-                        phone: { type: "string" },
                         address: {
                             type: "object",
                             properties: {
-                                street: { type: "string" },
                                 city: { type: "string" },
-                                state: { type: "string" },
+                                country: { type: "string" },
                                 line1: { type: "string" },
                                 line2: { type: "string" },
                                 postal_code: { type: "string", required: true },
-                                country: { type: "string" },
+                                state: { type: "string" },
+                                street: { type: "string" },
                             },
                         },
+                        phone: { type: "string" },
                     },
                 }),
             ],
-            type: "json",
-            required: false,
-            admin: {
-                position: "sidebar",
-            },
         },
         {
             name: "billingAddress",
             type: "json",
+            admin: {
+                position: "sidebar",
+            },
             required: false,
             typescriptSchema: [
                 () => ({
                     type: "object",
                     properties: {
                         name: { type: "string" },
-                        email: { type: "string" },
-                        phone: { type: "string" },
                         address: {
                             type: "object",
                             properties: {
@@ -208,28 +211,27 @@ export const Orders: CollectionConfig = {
                                 state: { type: "string" },
                             },
                         },
+                        email: { type: "string" },
+                        phone: { type: "string" },
                     },
                 }),
             ],
-            admin: {
-                position: "sidebar",
-            },
         },
         {
             name: "updatedAt",
             type: "date",
-            defaultValue: () => new Date(),
             admin: {
                 readOnly: true,
             },
+            defaultValue: () => new Date(),
         },
         {
             name: "createdAt",
             type: "date",
-            defaultValue: () => new Date(),
             admin: {
                 readOnly: true,
             },
+            defaultValue: () => new Date(),
         },
     ],
 };

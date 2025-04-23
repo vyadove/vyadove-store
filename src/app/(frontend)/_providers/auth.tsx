@@ -2,10 +2,11 @@
 
 import type { User } from "@/payload-types";
 import type React from "react";
+
 import {
     createContext,
+    use,
     useCallback,
-    useContext,
     useEffect,
     useState,
 } from "react";
@@ -34,11 +35,11 @@ export type AuthContextType = {
     login: Login;
     logout: Logout;
     resetPassword: ResetPassword;
-    setUser: (user: User | null) => void;
-    updateUser: (updates: Partial<User>) => Promise<void>;
-    user: User | null;
+    setUser: (user: null | User) => void;
     // Derived status: 'loggedIn' if user exists, else 'loggedOut'
     status: "loggedIn" | "loggedOut";
+    updateUser: (updates: Partial<User>) => Promise<void>;
+    user: null | User;
 };
 
 // Utility function for API calls
@@ -63,7 +64,7 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<null | User>(null);
     // Derived status: if user exists then loggedIn, else loggedOut.
     const status: "loggedIn" | "loggedOut" = user ? "loggedIn" : "loggedOut";
 
@@ -71,14 +72,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const data = await fetchWithErrorHandling(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/create`,
             {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
                 body: JSON.stringify({
                     email: args.email,
                     password: args.password,
                     passwordConfirm: args.passwordConfirm,
                 }),
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                method: "POST",
             }
         );
         if (data.errors) {
@@ -91,13 +92,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const data = await fetchWithErrorHandling(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/login`,
             {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
                 body: JSON.stringify({
                     email: args.email,
                     password: args.password,
                 }),
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                method: "POST",
             }
         );
         if (data.errors) {
@@ -111,10 +112,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const data = await fetchWithErrorHandling(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/update/${updates?.id}`,
             {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
                 body: JSON.stringify(updates),
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                method: "PUT",
             }
         );
         if (data.errors) {
@@ -127,9 +128,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const data = await fetchWithErrorHandling(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/logout`,
             {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
                 credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                method: "POST",
             }
         );
         // You might check for specific data response if needed.
@@ -140,10 +141,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const data = await fetchWithErrorHandling(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/forgot-password`,
             {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
                 body: JSON.stringify({ email: args.email }),
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                method: "POST",
             }
         );
         if (data.errors) {
@@ -157,14 +158,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const data = await fetchWithErrorHandling(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/reset-password`,
             {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
                 body: JSON.stringify({
                     password: args.password,
                     passwordConfirm: args.passwordConfirm,
                     token: args.token,
                 }),
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                method: "POST",
             }
         );
         if (data.errors) {
@@ -182,9 +183,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
                 const data = await fetchWithErrorHandling(
                     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/me`,
                     {
-                        method: "GET",
-                        headers: { "Content-Type": "application/json" },
                         credentials: "include",
+                        headers: { "Content-Type": "application/json" },
+                        method: "GET",
                     }
                 );
                 if (isMounted) {
@@ -205,7 +206,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }, []);
 
     return (
-        <AuthContext.Provider
+        <AuthContext
             value={{
                 create,
                 forgotPassword,
@@ -213,14 +214,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
                 logout,
                 resetPassword,
                 setUser,
+                status,
                 updateUser,
                 user,
-                status,
             }}
         >
             {children}
-        </AuthContext.Provider>
+        </AuthContext>
     );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => use(AuthContext);

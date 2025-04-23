@@ -1,14 +1,15 @@
 "use client";
 
+import type { Product } from "@/payload-types";
 import type React from "react";
 
 import { notFound } from "next/navigation";
+import { useState } from "react";
+
 import ImageGallery from "../_components/products/image-gallery/image-gallary";
 import ProductActions from "../_components/products/product-actions/product-actions";
-import type { Product } from "@/payload-types";
-import ProductInfo from "./product-info";
 import ProductTabs from "../_components/products/product-tabs/product-tabs";
-import { useState } from "react";
+import ProductInfo from "./product-info";
 
 type ProductTemplateProps = {
     product: Product;
@@ -44,8 +45,8 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({ product }) => {
                 <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
                     <ProductActions
                         product={product}
-                        setSelectedOptions={setSelectedOptions}
                         selectedOptions={selectedOptions}
+                        setSelectedOptions={setSelectedOptions}
                     />
                 </div>
             </div>

@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useActionState } from "react";
+import type { User } from "@/payload-types";
+
+import React, { useActionState, useEffect } from "react";
 
 import AccountInfo from "../account-info";
 import Input from "../input";
-import { User } from "@/payload-types";
 
 type MyInformationProps = {
 	customer: User;
@@ -24,10 +25,10 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
 
 		try {
 			// await updateCustomer(customer)
-			return { success: true, error: null };
+			return { error: null, success: true };
 		} catch (error: any) {
 			console.error(error);
-			return { success: false, error: error.toString() };
+			return { error: error.toString(), success: false };
 		}
 	};
 
@@ -47,23 +48,23 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
 	return (
 		<form action={formAction} className="w-full">
 			<AccountInfo
-				label="Email"
-				currentInfo={`${customer.email}`}
-				isSuccess={successState}
-				isError={!!state.error}
-				errorMessage={state.error}
 				clearState={clearState}
+				currentInfo={`${customer.email}`}
 				data-testid="account-email-editor"
+				errorMessage={state.error}
+				isError={!!state.error}
+				isSuccess={successState}
+				label="Email"
 			>
 				<div className="grid grid-cols-1 gap-y-2">
 					<Input
+						autoComplete="email"
+						data-testid="email-input"
+						defaultValue={customer.email}
 						label="Email"
 						name="email"
-						type="email"
-						autoComplete="email"
 						required
-						defaultValue={customer.email}
-						data-testid="email-input"
+						type="email"
 					/>
 				</div>
 			</AccountInfo>

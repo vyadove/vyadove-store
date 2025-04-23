@@ -1,15 +1,17 @@
+import type { DefaultNodeTypes } from "@payloadcms/richtext-lexical";
+import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
+import type {
+    JSXConvertersFunction} from "@payloadcms/richtext-lexical/react";
+
 import {
-    JSXConvertersFunction,
     RichText,
 } from "@payloadcms/richtext-lexical/react";
-import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
-import { DefaultNodeTypes } from "@payloadcms/richtext-lexical";
 import Link from "next/link";
 
 type StyledRichTextProps = {
-    data?: SerializedEditorState | null;
+    data?: null | SerializedEditorState;
     properties?: {
-        [key: string]: string | number;
+        [key: string]: number | string;
     }
 };
 
@@ -19,6 +21,18 @@ const createJSXConverters =
     ): JSXConvertersFunction<DefaultNodeTypes> =>
     ({ defaultConverters }) => ({
         ...defaultConverters,
+        link: ({ node, nodesToJSX }) => {
+            if (node.fields?.linkType === 'custom') {
+                return (
+                    <Link
+                        className="hover:underline"
+                        href={`${node.fields.url}`}
+                    >
+                        {nodesToJSX({ nodes: node.children })}
+                    </Link>
+                );
+            }
+        },
         paragraph: ({ node, nodesToJSX }) => {
             let children = nodesToJSX({ nodes: node.children });
 
@@ -40,18 +54,6 @@ const createJSXConverters =
 
             return <p>{children.length ? children : <br />}</p>;
         },
-        link: ({ node, nodesToJSX }) => {
-            if (node.fields?.linkType === 'custom') {
-                return (
-                    <Link
-                        href={`${node.fields.url}`}
-                        className="hover:underline"
-                    >
-                        {nodesToJSX({ nodes: node.children })}
-                    </Link>
-                );
-            }
-        },
     });
 
 export const StyledRichText = ({ data, properties }: StyledRichTextProps) => {
@@ -60,6 +62,6 @@ export const StyledRichText = ({ data, properties }: StyledRichTextProps) => {
     }
 
     return (
-        <RichText data={data} converters={createJSXConverters(properties)} />
+        <RichText converters={createJSXConverters(properties)} data={data} />
     );
 };
