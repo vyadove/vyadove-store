@@ -1,4 +1,4 @@
-export const ShoplyIcon = ({
+export const ShopNexIcon = ({
     fill,
     size,
 }: {

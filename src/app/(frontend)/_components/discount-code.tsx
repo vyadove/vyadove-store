@@ -96,7 +96,7 @@ export const DiscountCode: React.FC<DiscountCodeProps> = ({
                     )}
                 </form>
 
-                {promotions.length > 0 && (
+                {promotions?.length > 0 && (
                     <div className="w-full flex flex-col">
                         <Heading className="txt-medium mb-2">
                             Promotion(s) applied:

@@ -1,0 +1,53 @@
+"use client";
+
+import { clx, Table } from "@medusajs/ui";
+import { Fragment } from "react";
+
+import Item from "../_components/item";
+import repeat from "../_util/repeat";
+
+type ItemsTemplateProps = {
+    cart: any;
+};
+
+const ItemsPreviewTemplate = ({ cart }: ItemsTemplateProps) => {
+    const items = cart.items;
+    const hasOverflow = items && items.length > 4;
+
+    return (
+        <div
+            className={clx({
+                "pl-[1px] overflow-y-scroll overflow-x-hidden no-scrollbar max-h-[420px]":
+                    hasOverflow,
+            })}
+        >
+            <Table>
+                <Table.Body data-testid="items-table">
+                    {items
+                        ? items
+                              .sort((a, b) => {
+                                  return (a.created_at ?? "") >
+                                      (b.created_at ?? "")
+                                      ? -1
+                                      : 1;
+                              })
+                              .map((item) => {
+                                  return (
+                                      <Item
+                                          currencyCode={cart.currency_code}
+                                          item={item}
+                                          key={item.id}
+                                          type="preview"
+                                      />
+                                  );
+                              })
+                        : repeat(5).map((i, index) => {
+                              return <Fragment key={index}></Fragment>;
+                          })}
+                </Table.Body>
+            </Table>
+        </div>
+    );
+};
+
+export default ItemsPreviewTemplate;

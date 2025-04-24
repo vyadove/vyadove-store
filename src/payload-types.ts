@@ -188,23 +188,21 @@ export interface Order {
     | null;
   shippingAddress?: {
     name?: string;
-    phone?: string;
     address?: {
-      street?: string;
       city?: string;
-      state?: string;
+      country?: string;
       line1?: string;
       line2?: string;
       postal_code?: string;
-      country?: string;
+      state?: string;
+      street?: string;
       [k: string]: unknown;
     };
+    phone?: string;
     [k: string]: unknown;
   };
   billingAddress?: {
     name?: string;
-    email?: string;
-    phone?: string;
     address?: {
       city?: string;
       country?: string;
@@ -214,6 +212,8 @@ export interface Order {
       state?: string;
       [k: string]: unknown;
     };
+    email?: string;
+    phone?: string;
     [k: string]: unknown;
   };
   updatedAt: string;

@@ -5,7 +5,13 @@ import { useCart } from "react-use-cart";
 
 import { convertToLocale } from "../_util/money";
 
-const CartTotals = ({ currencyCode, order }: { currencyCode: string; order: { totalAmount: number } }) => {
+const CartTotals = ({
+    currencyCode,
+    order,
+}: {
+    currencyCode: string;
+    order: { totalAmount: number };
+}) => {
     const { cartTotal } = useCart();
     const tax_total = 0;
     const shipping_subtotal = 0;
@@ -55,10 +61,10 @@ const CartTotals = ({ currencyCode, order }: { currencyCode: string; order: { to
                 <span
                     className="txt-xlarge-plus"
                     data-testid="cart-total"
-                    data-value={order.totalAmount || 0}
+                    data-value={order?.totalAmount || 0}
                 >
                     {convertToLocale({
-                        amount: order.totalAmount ?? 0,
+                        amount: order?.totalAmount ?? 0,
                         currency_code: currencyCode,
                     })}
                 </span>
