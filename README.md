@@ -3,12 +3,12 @@
 <br/>
 <br/>
 
-![License](https://img.shields.io/github/license/shopnex-ai/shopnex) 
-![Build](https://img.shields.io/github/actions/workflow/status/shopnex-ai/shopnex/ci.yaml) 
-![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen) 
-![Last Commit](https://img.shields.io/github/last-commit/shopnex-ai/shopnex) 
+![License](https://img.shields.io/github/license/shopnex-ai/shopnex)
+![Build](https://img.shields.io/github/actions/workflow/status/shopnex-ai/shopnex/ci.yaml)
+![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen)
+![Last Commit](https://img.shields.io/github/last-commit/shopnex-ai/shopnex)
 <a href="https://discord.gg/6NTt49jguY">
-  <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
+<img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
 </a>
 
 # ShopNex – The Open Source eCommerce Built on Payload CMS
@@ -41,11 +41,11 @@ This command will guide you through the setup process, prompting you for options
 
 You can customize the setup behavior using the following flags:
 
-| Flag            | Description                                                                 |
-|-----------------|-----------------------------------------------------------------------------|
-| `--fresh`       | Skips seeding of initial data. Starts a clean setup.       |
-| `--skip-env`    | Skips environment variable setup. You can configure `.env` manually later.  |
-| `--skip-dev`    | Does not automatically start the development server after setup.            |
+| Flag         | Description                                                                |
+| ------------ | -------------------------------------------------------------------------- |
+| `--fresh`    | Skips seeding of initial data. Starts a clean setup.                       |
+| `--skip-env` | Skips environment variable setup. You can configure `.env` manually later. |
+| `--skip-dev` | Does not automatically start the development server after setup.           |
 
 Example usage:
 
@@ -53,7 +53,31 @@ Example usage:
 pnpm dlx create-shopnex-app my-store --fresh --skip-env
 ```
 
+## 📁 Project Structure
+
+```text
+├── src
+│   ├── access              # Role-based access logic
+│   ├── admin               # Custom admin panel components
+│   ├── app                 # Core app logic: frontend, API routes, Payload admin
+│   ├── collections         # Payload CMS collections
+│   │   ├── GiftCards.ts
+│   │   ├── Locations.ts
+│   │   ├── Users.ts
+│   │   ├── Products             # Example of modular collection structure
+│   │   │   ├── Products.ts      # Main collection config for products
+│   │   │   └── fields           # Subfolder for custom fields (e.g., price, inventory)
+│   │   └── Policies.ts          # Example of custom collection with custom fields
+│   ├── fields              # Reusable field definitions (e.g., slug, description)
+│   ├── globals             # Global site settings (Footer, Store config, etc.)
+│   ├── seed                # JSON and script-based seeding logic
+│   ├── utils               # Common utilities (formatting, mapping, etc.)
+│   └── webhooks            # Webhooks for external event handling (e.g., payments)
+└── tsconfig.json
+```
+
 ## ✨ Features
+
 - 📊 Analytics Dashboard - Track performance with a sales chart
 
 - 🛍️ Beautiful Storefront - Built using Next.js & Tailwind CSS
@@ -61,8 +85,6 @@ pnpm dlx create-shopnex-app my-store --fresh --skip-env
 - 💳 Stripe Checkout Integration - Seamless and secure payment experience
 
 - 📦 CJ Dropshipping Integration - Effortless product sourcing and fulfillment
-
-- 🔐 Google OAuth Authentication - Secure login with your Google account
 
 - 📁 Customer & Order Management - Manage customers, orders, and store operations easily
 
@@ -83,8 +105,10 @@ We welcome contributions! If you find any bugs or have ideas for improvements, f
 - 💬 Join our [Discord](https://discord.gg/MFc9x7vdXK) community for discussions and support.
 
 Before contributing, please:
+
 - Check existing issues and PRs to avoid duplication.
 - Follow any project-specific contribution guidelines (if available).
 
 ## 📄 License
+
 Shopnex is licensed under the MIT License.
