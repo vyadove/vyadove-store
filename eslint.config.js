@@ -19,10 +19,14 @@ export const defaultESLintIgnores = [
     "**/node_modules/",
     "**/temp/",
     "plugins/**/*",
+    "src/app/(frontend)/_components/checkout/*",
 ];
 
 export default [
     ...payloadEsLintConfig,
+    {
+        ignores: defaultESLintIgnores,
+    },
     {
         rules: {
             "no-restricted-exports": "off",

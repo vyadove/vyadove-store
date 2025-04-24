@@ -87,15 +87,23 @@ const Shipping: React.FC<ShippingProps> = ({
                 .map((sm) => calculatePriceForShippingOption(sm.id, cart.id));
 
             if (promises.length) {
-                Promise.allSettled(promises).then((res) => {
-                    const pricesMap: Record<string, number> = {};
-                    res.filter((r) => r.status === "fulfilled").forEach(
-                        (p) => (pricesMap[p.value?.id || ""] = p.value?.amount)
-                    );
+                Promise.allSettled(promises)
+                    .then((res) => {
+                        const pricesMap: Record<string, number> = {};
+                        res.filter((r) => r.status === "fulfilled").forEach(
+                            (p) =>
+                                (pricesMap[p.value?.id || ""] = p.value?.amount)
+                        );
 
-                    setCalculatedPricesMap(pricesMap);
-                    setIsLoadingPrices(false);
-                });
+                        setCalculatedPricesMap(pricesMap);
+                        setIsLoadingPrices(false);
+                    })
+                    .then((data) => {
+                        console.log(data);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
             }
         }
 
@@ -112,7 +120,7 @@ const Shipping: React.FC<ShippingProps> = ({
         router.push(pathname + "?step=payment", { scroll: false });
     };
 
-    const handleSetShippingMethod = async (
+    const handleSetShippingMethod = (
         id: string,
         variant: "pickup" | "shipping"
     ) => {
@@ -131,7 +139,10 @@ const Shipping: React.FC<ShippingProps> = ({
             return id;
         });
 
-        await setShippingMethod({ cartId: cart.id, shippingMethodId: id })
+        setShippingMethod({ cartId: cart.id, shippingMethodId: id })
+            .then((data) => {
+                console.log(data);
+            })
             .catch((err) => {
                 setShippingMethodId(currentId);
 

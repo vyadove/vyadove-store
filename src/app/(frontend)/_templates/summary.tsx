@@ -2,31 +2,28 @@
 
 import type { GiftCard } from "@/payload-types";
 
-import { handleCheckout } from "@/app/api/actions/handle-checkout"; // Import the Server Action
 import { Button, Divider, Heading } from "@medusajs/ui";
-import { useState, useTransition } from "react";
+import Link from "next/link";
+import { useState } from "react";
 import { useCart } from "react-use-cart";
 
 import CartTotals from "../_components/cart-totals";
 import { DiscountCode } from "../_components/discount-code";
 
+function getCheckoutStep(cart: any) {
+    if (!cart?.shipping_address?.address_1 || !cart.email) {
+        return "address";
+    } else if (cart?.shipping_methods?.length === 0) {
+        return "delivery";
+    } else {
+        return "payment";
+    }
+}
+
 const Summary = () => {
-    const [isPending, startTransition] = useTransition();
     const [promotions, setPromotions] = useState<GiftCard[]>([]);
     const { items } = useCart();
-
-    const handleClick = () => {
-        startTransition(async () => {
-            const variants = items.map((item) => ({
-                id: item.id,
-                quantity: item.quantity,
-            }));
-            const result = await handleCheckout(variants); // Call the Server Action
-            if (result?.url) {
-                window.location.href = result.url; // Redirect to Stripe Checkout
-            }
-        });
-    };
+    const step = getCheckoutStep(items);
 
     const applyPromotion = async (code: string) => {
         try {
@@ -71,13 +68,9 @@ const Summary = () => {
                     ),
                 }}
             />
-            <Button
-                className="w-full h-10"
-                disabled={isPending}
-                onClick={handleClick}
-            >
-                {isPending ? "Processing..." : "Go to checkout"}
-            </Button>
+            <Link data-testid="checkout-button" href={"/checkout?step=" + step}>
+                <Button className="w-full h-10">Go to checkout</Button>
+            </Link>
         </div>
     );
 };

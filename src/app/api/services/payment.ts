@@ -1,3 +1,3 @@
-export const listCartPaymentMethods = async () => {
+export const listCartPaymentMethods = () => {
     return [];
 };

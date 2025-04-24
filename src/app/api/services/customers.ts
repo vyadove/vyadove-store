@@ -2,6 +2,6 @@ export const updateCustomer = (customer: any) => {
     return customer;
 };
 
-export const retrieveCustomer = async () => {
+export const retrieveCustomer = () => {
     return {};
 };

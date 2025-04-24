@@ -1,19 +1,19 @@
-export const setAddresses = async (cartId: string, addresses: any) => {
+export const setAddresses = (cartId: string, addresses: any) => {
     return null;
 };
 
-export const retrieveCart = async () => {
+export const retrieveCart = () => {
     return {};
 };
 
-export const initiatePaymentSession = async (cartId: string, data: any) => {
+export const initiatePaymentSession = (cartId: string, data: any) => {
     return {};
 };
 
-export const placeOrder = async (cartId: string, data: any) => {
+export const placeOrder = (cartId: string, data: any) => {
     return {};
 };
 
-export const setShippingMethod = async (cartId: string, data: any) => {
+export const setShippingMethod = ({ cartId, shippingMethodId }: any) => {
     return {};
 };

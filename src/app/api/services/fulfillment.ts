@@ -1,8 +1,8 @@
-export const listCartShippingMethods = async (cartId: string) => {
+export const listCartShippingMethods = (cartId: string) => {
     return [];
 };
 
-export const calculatePriceForShippingOption = async (
+export const calculatePriceForShippingOption = (
     shippingOptionId: string,
     cartId: string
 ) => {

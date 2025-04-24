@@ -1,38 +1,35 @@
+import type { StripeCardElementOptions } from "@stripe/stripe-js";
+
 import { Radio as RadioGroupOption } from "@headlessui/react";
-import { Text, clx } from "@medusajs/ui";
-import React, { useContext, useMemo, type JSX } from "react";
+import { clx, Text } from "@medusajs/ui";
+import React, { type JSX, use, useMemo } from "react";
 
-import Radio from "@modules/common/components/radio";
+import Radio from "../radio";
+import PaymentTest from "./payment-test";
 
-import { isManual } from "@lib/constants";
-import SkeletonCardDetails from "@modules/skeletons/components/skeleton-card-details";
-import { CardElement } from "@stripe/react-stripe-js";
-import { StripeCardElementOptions } from "@stripe/stripe-js";
-import PaymentTest from "../payment-test/payment-test";
-import { StripeContext } from "../payment-wrapper/stripe-wrapper";
+const isManual = (paymentProviderId: string) => {
+    return paymentProviderId === "manualProvider";
+};
 
 type PaymentContainerProps = {
-    paymentProviderId: string;
-    selectedPaymentOptionId: string | null;
-    disabled?: boolean;
-    paymentInfoMap: Record<string, { title: string; icon: JSX.Element }>;
     children?: React.ReactNode;
+    disabled?: boolean;
+    paymentInfoMap: Record<string, { icon: JSX.Element; title: string }>;
+    paymentProviderId: string;
+    selectedPaymentOptionId: null | string;
 };
 
 const PaymentContainer: React.FC<PaymentContainerProps> = ({
+    children,
+    disabled = false,
+    paymentInfoMap,
     paymentProviderId,
     selectedPaymentOptionId,
-    paymentInfoMap,
-    disabled = false,
-    children,
 }) => {
     const isDevelopment = process.env.NODE_ENV === "development";
 
     return (
         <RadioGroupOption
-            key={paymentProviderId}
-            value={paymentProviderId}
-            disabled={disabled}
             className={clx(
                 "flex flex-col gap-y-2 text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active",
                 {
@@ -40,6 +37,9 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
                         selectedPaymentOptionId === paymentProviderId,
                 }
             )}
+            disabled={disabled}
+            key={paymentProviderId}
+            value={paymentProviderId}
         >
             <div className="flex items-center justify-between ">
                 <div className="flex items-center gap-x-4">
@@ -69,52 +69,51 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
 export default PaymentContainer;
 
 export const StripeCardContainer = ({
+    disabled = false,
+    paymentInfoMap,
     paymentProviderId,
     selectedPaymentOptionId,
-    paymentInfoMap,
-    disabled = false,
     setCardBrand,
-    setError,
     setCardComplete,
-}: Omit<PaymentContainerProps, "children"> & {
+    setError,
+}: {
     setCardBrand: (brand: string) => void;
-    setError: (error: string | null) => void;
     setCardComplete: (complete: boolean) => void;
-}) => {
-    const stripeReady = useContext(StripeContext);
+    setError: (error: null | string) => void;
+} & Omit<PaymentContainerProps, "children">) => {
+    // const stripeReady = use(StripeContext);
 
     const useOptions: StripeCardElementOptions = useMemo(() => {
         return {
+            classes: {
+                base: "pt-3 pb-1 block w-full h-11 px-4 mt-0 bg-ui-bg-field border rounded-md appearance-none focus:outline-none focus:ring-0 focus:shadow-borders-interactive-with-active border-ui-border-base hover:bg-ui-bg-field-hover transition-all duration-300 ease-in-out",
+            },
             style: {
                 base: {
-                    fontFamily: "Inter, sans-serif",
-                    color: "#424270",
                     "::placeholder": {
                         color: "rgb(107 114 128)",
                     },
+                    color: "#424270",
+                    fontFamily: "Inter, sans-serif",
                 },
-            },
-            classes: {
-                base: "pt-3 pb-1 block w-full h-11 px-4 mt-0 bg-ui-bg-field border rounded-md appearance-none focus:outline-none focus:ring-0 focus:shadow-borders-interactive-with-active border-ui-border-base hover:bg-ui-bg-field-hover transition-all duration-300 ease-in-out",
             },
         };
     }, []);
 
     return (
         <PaymentContainer
+            disabled={disabled}
+            paymentInfoMap={paymentInfoMap}
             paymentProviderId={paymentProviderId}
             selectedPaymentOptionId={selectedPaymentOptionId}
-            paymentInfoMap={paymentInfoMap}
-            disabled={disabled}
         >
-            {selectedPaymentOptionId === paymentProviderId &&
+            {/* {selectedPaymentOptionId === paymentProviderId &&
                 (stripeReady ? (
                     <div className="my-4 transition-all duration-150 ease-in-out">
                         <Text className="txt-medium-plus text-ui-fg-base mb-1">
                             Enter your card details:
                         </Text>
                         <CardElement
-                            options={useOptions as StripeCardElementOptions}
                             onChange={(e) => {
                                 setCardBrand(
                                     e.brand &&
@@ -124,11 +123,12 @@ export const StripeCardContainer = ({
                                 setError(e.error?.message || null);
                                 setCardComplete(e.complete);
                             }}
+                            options={useOptions}
                         />
                     </div>
                 ) : (
                     <SkeletonCardDetails />
-                ))}
+                ))} */}
         </PaymentContainer>
     );
 };
