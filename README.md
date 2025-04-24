@@ -61,12 +61,13 @@ pnpm dlx create-shopnex-app my-store --fresh --skip-env
 │   ├── admin               # Custom admin panel components
 │   ├── app                 # Core app logic: frontend, API routes, Payload admin
 │   ├── collections         # Payload CMS collections
-│   │   ├── GiftCards.ts
-│   │   ├── Locations.ts
-│   │   ├── Users.ts
+│   │   ├── GiftCards.ts         # Gift cards collection
+│   │   ├── Locations.ts         # Locations collection
+│   │   ├── Users.ts             # Users collection
 │   │   ├── Products             # Example of modular collection structure
 │   │   │   ├── Products.ts      # Main collection config for products
 │   │   │   └── fields           # Subfolder for custom fields (e.g., price, inventory)
+│   │   ├── ...                  # Other collections
 │   │   └── Policies.ts          # Example of custom collection with custom fields
 │   ├── fields              # Reusable field definitions (e.g., slug, description)
 │   ├── globals             # Global site settings (Footer, Store config, etc.)
