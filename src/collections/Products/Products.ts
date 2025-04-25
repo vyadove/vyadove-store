@@ -73,6 +73,16 @@ export const Products: CollectionConfig = {
                 { label: "Mobile App", value: "mobileApp" },
             ],
         },
+        {
+            name: "source",
+            type: "select",
+            admin: {
+                disabled: true,
+                position: "sidebar",
+            },
+            defaultValue: "manual",
+            options: [{ label: "Manual", value: "manual" }],
+        },
         description(),
         {
             name: "collections",

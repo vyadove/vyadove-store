@@ -76,6 +76,7 @@ export interface Config {
     'gift-cards': GiftCard;
     payments: Payment;
     locations: Location;
+    shipping: Shipping;
     'plugins-space': PluginsSpace;
     exports: Export;
     'payload-jobs': PayloadJob;
@@ -94,6 +95,7 @@ export interface Config {
     'gift-cards': GiftCardsSelect<false> | GiftCardsSelect<true>;
     payments: PaymentsSelect<false> | PaymentsSelect<true>;
     locations: LocationsSelect<false> | LocationsSelect<true>;
+    shipping: ShippingSelect<false> | ShippingSelect<true>;
     'plugins-space': PluginsSpaceSelect<false> | PluginsSpaceSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
@@ -253,6 +255,7 @@ export interface Product {
    * Choose where this product should be available to customers.
    */
   salesChannels?: ('all' | 'onlineStore' | 'pos' | 'mobileApp')[] | null;
+  source?: 'manual' | null;
   description?: {
     root: {
       type: string;
@@ -455,6 +458,30 @@ export interface Location {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shipping".
+ */
+export interface Shipping {
+  id: number;
+  name: string;
+  enabled?: boolean | null;
+  location?: (number | null) | Location;
+  /**
+   * Select a shipping provider
+   */
+  shippingProvider?:
+    | {
+        name: string;
+        rate: number;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'manual';
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "plugins-space".
  */
 export interface PluginsSpace {
@@ -636,6 +663,10 @@ export interface PayloadLockedDocument {
         value: number | Location;
       } | null)
     | ({
+        relationTo: 'shipping';
+        value: number | Shipping;
+      } | null)
+    | ({
         relationTo: 'plugins-space';
         value: number | PluginsSpace;
       } | null)
@@ -748,6 +779,7 @@ export interface ProductsSelect<T extends boolean = true> {
   currency?: T;
   visible?: T;
   salesChannels?: T;
+  source?: T;
   description?: T;
   collections?: T;
   handle?: T;
@@ -886,6 +918,29 @@ export interface LocationsSelect<T extends boolean = true> {
   hours?: T;
   enabled?: T;
   isPickupLocation?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shipping_select".
+ */
+export interface ShippingSelect<T extends boolean = true> {
+  name?: T;
+  enabled?: T;
+  location?: T;
+  shippingProvider?:
+    | T
+    | {
+        manual?:
+          | T
+          | {
+              name?: T;
+              rate?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
 }

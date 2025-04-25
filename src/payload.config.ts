@@ -19,6 +19,7 @@ import { Footer } from "./globals/Footer";
 import { HeroSection } from "./globals/HeroSection";
 import StoreSettings from "./globals/StoreSettings";
 import { plugins } from "./plugins";
+import { Shipping } from "./collections/Shipping";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -52,6 +53,7 @@ export default buildConfig({
         GiftCards,
         Payments,
         Locations,
+        Shipping,
     ],
     db: sqliteAdapter({
         client: {
