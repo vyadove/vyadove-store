@@ -1,4 +1,4 @@
-import { Divider, Heading } from "@medusajs/ui";
+import { Divider } from "@medusajs/ui";
 
 import CartTotals from "../_components/cart-totals";
 import { DiscountCode } from "../_components/discount-code";
@@ -13,7 +13,7 @@ const CheckoutSummary = ({ cart }: { cart: any }) => {
                     In your Cart
                 </h2>
                 <Divider className="my-6" />
-                <CartTotals totals={cart} />
+                <CartTotals />
                 <ItemsPreviewTemplate cart={cart} />
                 <div className="my-6">
                     <DiscountCode cart={cart} />

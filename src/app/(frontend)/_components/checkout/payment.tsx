@@ -8,6 +8,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 import ErrorMessage from "../error-message";
+import PaymentContainer from "./payment-container";
 
 const Payment = ({
     availablePaymentMethods,
@@ -72,8 +73,7 @@ const Payment = ({
     const handleSubmit = async () => {
         setIsLoading(true);
         try {
-            // const shouldInputCard =
-            //     isStripeFunc(selectedPaymentMethod) && !activeSession;
+            const shouldInputCard = !activeSession;
 
             const checkActiveSession =
                 activeSession?.provider_id === selectedPaymentMethod;
@@ -84,14 +84,14 @@ const Payment = ({
                 });
             }
 
-            // if (!shouldInputCard) {
-            //     return router.push(
-            //         pathname + "?" + createQueryString("step", "review"),
-            //         {
-            //             scroll: false,
-            //         }
-            //     );
-            // }
+            if (!shouldInputCard) {
+                return router.push(
+                    pathname + "?" + createQueryString("step", "review"),
+                    {
+                        scroll: false,
+                    }
+                );
+            }
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -145,36 +145,15 @@ const Payment = ({
                                 {availablePaymentMethods.map(
                                     (paymentMethod) => (
                                         <div key={paymentMethod.id}>
-                                            {/* {isStripeFunc(paymentMethod.id) ? (
-                                                <StripeCardContainer
-                                                    paymentInfoMap={
-                                                        paymentInfoMap
-                                                    }
-                                                    paymentProviderId={
-                                                        paymentMethod.id
-                                                    }
-                                                    selectedPaymentOptionId={
-                                                        selectedPaymentMethod
-                                                    }
-                                                    setCardBrand={setCardBrand}
-                                                    setCardComplete={
-                                                        setCardComplete
-                                                    }
-                                                    setError={setError}
-                                                />
-                                            ) : (
-                                                <PaymentContainer
-                                                    paymentInfoMap={
-                                                        paymentInfoMap
-                                                    }
-                                                    paymentProviderId={
-                                                        paymentMethod.id
-                                                    }
-                                                    selectedPaymentOptionId={
-                                                        selectedPaymentMethod
-                                                    }
-                                                />
-                                            )} */}
+                                            <PaymentContainer
+                                                paymentInfoMap={{}}
+                                                paymentProviderId={
+                                                    paymentMethod.id
+                                                }
+                                                selectedPaymentOptionId={
+                                                    selectedPaymentMethod
+                                                }
+                                            />
                                         </div>
                                     )
                                 )}

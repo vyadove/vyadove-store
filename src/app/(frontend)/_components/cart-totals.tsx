@@ -5,13 +5,7 @@ import { useCart } from "react-use-cart";
 
 import { convertToLocale } from "../_util/money";
 
-const CartTotals = ({
-    currencyCode,
-    order,
-}: {
-    currencyCode: string;
-    order: { totalAmount: number };
-}) => {
+const CartTotals = () => {
     const { cartTotal } = useCart();
     const tax_total = 0;
     const shipping_subtotal = 0;
@@ -29,7 +23,7 @@ const CartTotals = ({
                     >
                         {convertToLocale({
                             amount: cartTotal ?? 0,
-                            currency_code: currencyCode,
+                            currency_code: "usd",
                         })}
                     </span>
                 </div>
@@ -41,7 +35,7 @@ const CartTotals = ({
                     >
                         {convertToLocale({
                             amount: shipping_subtotal ?? 0,
-                            currency_code: currencyCode,
+                            currency_code: "usd",
                         })}
                     </span>
                 </div>
@@ -50,7 +44,7 @@ const CartTotals = ({
                     <span data-testid="cart-taxes" data-value={tax_total || 0}>
                         {convertToLocale({
                             amount: tax_total ?? 0,
-                            currency_code: currencyCode,
+                            currency_code: "usd",
                         })}
                     </span>
                 </div>
@@ -61,11 +55,11 @@ const CartTotals = ({
                 <span
                     className="txt-xlarge-plus"
                     data-testid="cart-total"
-                    data-value={order?.totalAmount || 0}
+                    data-value={cartTotal || 0}
                 >
                     {convertToLocale({
-                        amount: order?.totalAmount ?? 0,
-                        currency_code: currencyCode,
+                        amount: cartTotal ?? 0,
+                        currency_code: "usd",
                     })}
                 </span>
             </div>

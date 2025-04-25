@@ -7,6 +7,7 @@ import { CheckCircleSolid, Loader } from "@medusajs/icons";
 import { Button, clx, Heading, Text } from "@medusajs/ui";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import MedusaRadio from "../radio";
 
 import Divider from "../divider";
 import ErrorMessage from "./error-message";

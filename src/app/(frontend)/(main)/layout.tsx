@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { Providers } from "@/app/(frontend)/_providers/providers";
 import { getStoreSettings } from "@/app/api/services/store-settings";
 
 import Footer from "../_templates/footer";
@@ -15,10 +14,10 @@ export const metadata: Metadata = {
 export default async function PageLayout(props: { children: React.ReactNode }) {
     const storeSettings = await getStoreSettings();
     return (
-        <Providers>
+        <>
             <Nav storeSettings={storeSettings} />
             {props.children}
             <Footer storeSettings={storeSettings} />
-        </Providers>
+        </>
     );
 }
