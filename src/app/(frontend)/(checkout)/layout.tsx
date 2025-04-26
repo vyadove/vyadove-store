@@ -1,7 +1,8 @@
 import Link from "next/link";
+import React from "react";
 
 import ChevronDown from "../_components/icons/chevron-down";
-import { ShopNexIcon } from "../_components/icons/shoply-icon";
+import { ShopNexIcon } from "../_components/icons/shopnex-icon";
 
 export default function CheckoutLayout({
     children,

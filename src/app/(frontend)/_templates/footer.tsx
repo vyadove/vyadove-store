@@ -6,7 +6,7 @@ import { PayloadIcon } from "@payloadcms/ui";
 import Link from "next/link";
 import { getPayload } from "payload";
 
-import { ShopNexIcon } from "../_components/icons/shoply-icon";
+import { ShopNexIcon } from "../_components/icons/shopnex-icon";
 import { StyledRichText } from "../_components/styled-rich-text";
 
 export default async function Footer({

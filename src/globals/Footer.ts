@@ -14,7 +14,7 @@ const BasicFooter: Block = {
         {
             name: "poweredBy",
             type: "richText",
-        }
+        },
     ],
 };
 
@@ -25,16 +25,14 @@ export const Footer: GlobalConfig = {
         update: admins,
     },
     admin: {
-        group: groups.customizations
+        group: groups.customizations,
     },
     fields: [
         {
             name: "type",
             type: "blocks",
-            blocks: [
-                BasicFooter
-            ],
-            maxRows: 1
+            blocks: [BasicFooter],
+            maxRows: 1,
         },
     ],
 };
