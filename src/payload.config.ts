@@ -14,12 +14,12 @@ import { Orders } from "./collections/Orders";
 import { Payments } from "./collections/Payments";
 import { Policies } from "./collections/Policies";
 import { Products } from "./collections/Products/Products";
+import { Shipping } from "./collections/Shipping";
 import { Users } from "./collections/Users";
 import { Footer } from "./globals/Footer";
 import { HeroSection } from "./globals/HeroSection";
 import StoreSettings from "./globals/StoreSettings";
 import { plugins } from "./plugins";
-import { Shipping } from "./collections/Shipping";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);

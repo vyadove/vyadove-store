@@ -64,12 +64,12 @@ const Addresses = ({
             {isOpen ? (
                 <form action={formAction}>
                     <div className="pb-8">
-                        <ShippingAddress
+                        {/* <ShippingAddress
                             cart={cart}
                             checked={sameAsBilling}
                             customer={customer}
                             onChange={toggleSameAsBilling}
-                        />
+                        /> */}
 
                         {!sameAsBilling && (
                             <div>

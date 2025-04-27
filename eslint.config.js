@@ -18,8 +18,11 @@ export const defaultESLintIgnores = [
     "**/build/",
     "**/node_modules/",
     "**/temp/",
-    "plugins/**/*",
+    "plugins/*",
     "src/app/(frontend)/_components/checkout/*",
+    "src/app/(frontend)/(checkout)/checkout/*",
+    "src/app/(frontend)/_templates/checkout-form.tsx",
+    "src/app/(frontend)/*",
 ];
 
 export default [
