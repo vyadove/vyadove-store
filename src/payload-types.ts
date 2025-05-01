@@ -255,7 +255,7 @@ export interface Product {
    * Choose where this product should be available to customers.
    */
   salesChannels?: ('all' | 'onlineStore' | 'pos' | 'mobileApp')[] | null;
-  source?: 'manual' | null;
+  source?: ('manual' | 'cj') | null;
   description?: {
     root: {
       type: string;

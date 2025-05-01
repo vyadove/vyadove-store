@@ -1,7 +1,7 @@
 import type { Plugin } from "payload";
 
 import { stripePlugin } from "@payloadcms/plugin-stripe";
-import { cjPlugin } from "@shoplyjs/cj-plugin";
+import { cjPlugin } from "@shopnex/cj-plugin";
 import { importExportPlugin } from "@shopnex/import-export-plugin";
 import { storePlugin } from "@shopnex/store-plugin";
 
