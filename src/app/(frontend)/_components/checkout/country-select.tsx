@@ -25,7 +25,7 @@ const CountrySelect = ({
             return [];
         }
 
-        return region.countries?.map((country) => ({
+        return region.countries?.map((country: any) => ({
             label: country.label,
             value: country.value,
         }));
@@ -38,7 +38,7 @@ const CountrySelect = ({
             ref={innerRef}
             {...props}
         >
-            {countryOptions?.map(({ label, value }, index: number) => (
+            {countryOptions?.map(({ label, value }: any, index: number) => (
                 <option key={index} value={value}>
                     {label}
                 </option>
