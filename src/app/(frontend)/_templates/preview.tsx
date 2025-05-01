@@ -25,13 +25,13 @@ const ItemsPreviewTemplate = ({ cart }: ItemsTemplateProps) => {
                 <Table.Body data-testid="items-table">
                     {items
                         ? items
-                              .sort((a, b) => {
+                              .sort((a: any, b: any) => {
                                   return (a.created_at ?? "") >
                                       (b.created_at ?? "")
                                       ? -1
                                       : 1;
                               })
-                              .map((item) => {
+                              .map((item: any) => {
                                   return (
                                       <Item
                                           currencyCode={cart.currency_code}

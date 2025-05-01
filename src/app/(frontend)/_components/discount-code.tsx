@@ -14,9 +14,11 @@ type DiscountCodeProps = {
     applyPromotion: (code: string) => Promise<void>;
     promotions: GiftCard[];
     setPromotions: (promotions: GiftCard[]) => void;
+    cart: any;
 };
 
 export const DiscountCode: React.FC<DiscountCodeProps> = ({
+    cart,
     applyPromotion,
     promotions,
     setPromotions,

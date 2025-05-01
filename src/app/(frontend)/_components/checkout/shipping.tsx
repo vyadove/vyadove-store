@@ -11,6 +11,7 @@ import MedusaRadio from "../radio";
 
 import Divider from "../divider";
 import ErrorMessage from "./error-message";
+import { convertToLocale } from "../../_util/money";
 
 const PICKUP_OPTION_ON = "__PICKUP_ON";
 const PICKUP_OPTION_OFF = "__PICKUP_OFF";
@@ -20,7 +21,7 @@ type ShippingProps = {
     cart: any;
 };
 
-function formatAddress(address) {
+function formatAddress(address: any) {
     if (!address) {
         return "";
     }
@@ -92,7 +93,7 @@ const Shipping: React.FC<ShippingProps> = ({
                     .then((res) => {
                         const pricesMap: Record<string, number> = {};
                         res.filter((r) => r.status === "fulfilled").forEach(
-                            (p) =>
+                            (p: any) =>
                                 (pricesMap[p.value?.id || ""] = p.value?.amount)
                         );
 
@@ -140,18 +141,18 @@ const Shipping: React.FC<ShippingProps> = ({
             return id;
         });
 
-        setShippingMethod({ cartId: cart.id, shippingMethodId: id })
-            .then((data) => {
-                console.log(data);
-            })
-            .catch((err) => {
-                setShippingMethodId(currentId);
+        // setShippingMethod({ cartId: cart.id, shippingMethodId: id })
+        //     .then((data) => {
+        //         console.log(data);
+        //     })
+        //     .catch((err) => {
+        //         setShippingMethodId(currentId);
 
-                setError(err.message);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        //         setError(err.message);
+        //     })
+        //     .finally(() => {
+        //         setIsLoading(false);
+        //     });
     };
 
     useEffect(() => {
@@ -251,7 +252,7 @@ const Shipping: React.FC<ShippingProps> = ({
                                     </RadioGroup>
                                 )}
                                 <RadioGroup
-                                    onChange={(v) =>
+                                    onChange={(v: any) =>
                                         handleSetShippingMethod(v, "shipping")
                                     }
                                     value={shippingMethodId}
@@ -338,7 +339,7 @@ const Shipping: React.FC<ShippingProps> = ({
                             <div data-testid="delivery-options-container">
                                 <div className="pb-8 md:pt-0 pt-2">
                                     <RadioGroup
-                                        onChange={(v) =>
+                                        onChange={(v: any) =>
                                             handleSetShippingMethod(v, "pickup")
                                         }
                                         value={shippingMethodId}

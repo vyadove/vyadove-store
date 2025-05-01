@@ -56,11 +56,11 @@ const Summary = () => {
             <Heading className="text-[2rem] leading-[2.75rem]" level="h2">
                 Summary
             </Heading>
-            <DiscountCode
+            {/* <DiscountCode
                 applyPromotion={applyPromotion}
                 promotions={promotions}
                 setPromotions={setPromotions}
-            />
+            /> */}
             <Divider />
             <CartTotals
                 currencyCode={items[0].currency}
