@@ -10,7 +10,6 @@ import compareAddresses from "../../_util/compare-addresses";
 import { SubmitButton } from "../submit-button";
 import BillingAddress from "./billing-address";
 import ErrorMessage from "./error-message";
-import ShippingAddress from "./shipping-address";
 
 const Addresses = ({
     cart,
@@ -39,7 +38,7 @@ const Addresses = ({
         router.push(pathname + "?step=address");
     };
 
-    const [message, formAction] = useActionState(setAddresses, null);
+    const [message, formAction] = useActionState(setAddresses as any, null);
 
     return (
         <div className="bg-white">

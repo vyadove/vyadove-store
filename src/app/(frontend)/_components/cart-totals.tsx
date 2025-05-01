@@ -5,7 +5,7 @@ import { useCart } from "react-use-cart";
 
 import { convertToLocale } from "../_util/money";
 
-const CartTotals = () => {
+const CartTotals = ({ cart, currencyCode }: any) => {
     const { cartTotal } = useCart();
     const tax_total = 0;
     const shipping_subtotal = 0;

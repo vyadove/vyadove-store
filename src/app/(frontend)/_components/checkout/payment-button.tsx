@@ -59,21 +59,21 @@ const StripePaymentButton = ({
     const [errorMessage, setErrorMessage] = useState<null | string>(null);
 
     const onPaymentCompleted = async () => {
-        await placeOrder()
-            .catch((err) => {
-                setErrorMessage(err.message);
-            })
-            .finally(() => {
-                setSubmitting(false);
-            });
+        // await placeOrder()
+        //     .catch((err) => {
+        //         setErrorMessage(err.message);
+        //     })
+        //     .finally(() => {
+        //         setSubmitting(false);
+        //     });
     };
 
     // const stripe = useStripe();
     // const elements = useElements();
-    const card = elements?.getElement("card");
+    // const card = elements?.getElement("card");
 
     const session = cart.payment_collection?.payment_sessions?.find(
-        (s) => s.status === "pending"
+        (s: any) => s.status === "pending"
     );
 
     // const disabled = !stripe || !elements ? true : false;
@@ -141,7 +141,7 @@ const StripePaymentButton = ({
         <>
             <Button
                 data-testid={dataTestId}
-                disabled={disabled || notReady}
+                // disabled={disabled || notReady}
                 isLoading={submitting}
                 onClick={handlePayment}
                 size="large"

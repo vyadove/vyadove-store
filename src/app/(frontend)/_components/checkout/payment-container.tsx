@@ -1,5 +1,3 @@
-import type { StripeCardElementOptions } from "@stripe/stripe-js";
-
 import { Radio as RadioGroupOption } from "@headlessui/react";
 import { clx, Text } from "@medusajs/ui";
 import React, { type JSX, use, useMemo } from "react";
@@ -83,7 +81,7 @@ export const StripeCardContainer = ({
 } & Omit<PaymentContainerProps, "children">) => {
     // const stripeReady = use(StripeContext);
 
-    const useOptions: StripeCardElementOptions = useMemo(() => {
+    const useOptions: any = useMemo(() => {
         return {
             classes: {
                 base: "pt-3 pb-1 block w-full h-11 px-4 mt-0 bg-ui-bg-field border rounded-md appearance-none focus:outline-none focus:ring-0 focus:shadow-borders-interactive-with-active border-ui-border-base hover:bg-ui-bg-field-hover transition-all duration-300 ease-in-out",

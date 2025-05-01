@@ -1,5 +1,3 @@
-import type { HttpTypes } from "@medusajs/types";
-
 import { Listbox, Transition } from "@headlessui/react";
 import { ChevronUpDown } from "@medusajs/icons";
 import { clx } from "@medusajs/ui";
@@ -9,7 +7,7 @@ import compareAddresses from "../../_util/compare-addresses";
 import Radio from "../radio";
 
 type AddressSelectProps = {
-    addresses: HttpTypes.StoreCustomerAddress[];
+    addresses: any;
     addressInput: any | null;
     onSelect: (address: any | undefined, email?: string) => void;
 };
@@ -20,14 +18,14 @@ const AddressSelect = ({
     onSelect,
 }: AddressSelectProps) => {
     const handleSelect = (id: string) => {
-        const savedAddress = addresses.find((a) => a.id === id);
+        const savedAddress = addresses.find((a: any) => a.id === id);
         if (savedAddress) {
-            onSelect(savedAddress as HttpTypes.StoreCartAddress);
+            onSelect(savedAddress as any);
         }
     };
 
     const selectedAddress = useMemo(() => {
-        return addresses.find((a) => compareAddresses(a, addressInput));
+        return addresses.find((a: any) => compareAddresses(a, addressInput));
     }, [addresses, addressInput]);
 
     return (
@@ -65,7 +63,7 @@ const AddressSelect = ({
                         className="absolute z-20 w-full overflow-auto text-small-regular bg-white border border-top-0 max-h-60 focus:outline-none sm:text-sm"
                         data-testid="shipping-address-options"
                     >
-                        {addresses.map((address) => {
+                        {addresses.map((address: any) => {
                             return (
                                 <Listbox.Option
                                     className="cursor-default select-none relative pl-6 pr-10 hover:bg-gray-50 py-4"

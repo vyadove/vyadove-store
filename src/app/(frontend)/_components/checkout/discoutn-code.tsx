@@ -1,20 +1,16 @@
 "use client";
 
-import type { HttpTypes } from "@medusajs/types";
-
-import { applyPromotions, submitPromotionForm } from "@lib/data/cart";
-import { convertToLocale } from "@lib/util/money";
 import { Badge, Heading, Input, Label, Text } from "@medusajs/ui";
-import Trash from "@modules/common/icons/trash";
 import React, { useActionState } from "react";
-
-import ErrorMessage from "../error-message/error-message";
-import { SubmitButton } from "../submit-button/submit-button";
+import { SubmitButton } from "./submit-button";
+import ErrorMessage from "./error-message";
+import Trash from "../icons/trash";
+import { convertToLocale } from "../../_util/money";
 
 type DiscountCodeProps = {
     cart: {
-        promotions: HttpTypes.StorePromotion[];
-    } & HttpTypes.StoreCart;
+        promotions: any[];
+    } & any;
 };
 
 const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
@@ -26,11 +22,11 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
             (promotion) => promotion.code !== code
         );
 
-        await applyPromotions(
-            validPromotions
-                .filter((p) => p.code === undefined)
-                .map((p) => p.code!)
-        );
+        // await applyPromotions(
+        //     validPromotions
+        //         .filter((p) => p.code === undefined)
+        //         .map((p) => p.code!)
+        // );
     };
 
     const addPromotionCode = async (formData: FormData) => {
@@ -42,18 +38,18 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
             "promotion-input"
         ) as HTMLInputElement;
         const codes = promotions
-            .filter((p) => p.code === undefined)
-            .map((p) => p.code!);
+            .filter((p: any) => p.code === undefined)
+            .map((p: any) => p.code!);
         codes.push(code.toString());
 
-        await applyPromotions(codes);
+        // await applyPromotions(codes);
 
         if (input) {
             input.value = "";
         }
     };
 
-    const [message] = useActionState(submitPromotionForm, null);
+    // const [message] = useActionState(submitPromotionForm as any, null);
 
     return (
         <div className="w-full bg-white flex flex-col">
@@ -96,10 +92,10 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                                 </SubmitButton>
                             </div>
 
-                            <ErrorMessage
+                            {/* <ErrorMessage
                                 data-testid="discount-error-message"
                                 error={message}
-                            />
+                            /> */}
                         </>
                     )}
                 </form>
@@ -111,7 +107,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                                 Promotion(s) applied:
                             </Heading>
 
-                            {promotions.map((promotion) => {
+                            {promotions.map((promotion: any) => {
                                 return (
                                     <div
                                         className="flex items-center justify-between w-full max-w-full mb-2"

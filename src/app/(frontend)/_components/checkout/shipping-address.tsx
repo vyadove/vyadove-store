@@ -1,5 +1,3 @@
-import type { HttpTypes } from "@medusajs/types";
-
 import { Container } from "@medusajs/ui";
 import { mapKeys } from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
@@ -51,10 +49,7 @@ const ShippingAddress = ({
         [customer?.addresses, countriesInRegion]
     );
 
-    const setFormAddress = (
-        address?: HttpTypes.StoreCartAddress,
-        email?: string
-    ) => {
+    const setFormAddress = (address?: any, email?: string) => {
         address &&
             setFormData((prevState: Record<string, any>) => ({
                 ...prevState,
