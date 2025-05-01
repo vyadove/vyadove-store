@@ -208,7 +208,7 @@ export const Products: CollectionConfig = {
                     label: "Options",
                 },
             ],
-            maxRows: 10,
+            maxRows: 100,
             minRows: 1,
             required: true,
         },
