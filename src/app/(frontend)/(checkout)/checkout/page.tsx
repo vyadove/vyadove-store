@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import PaymentWrapper from "../../_components/checkout/payment-wrapper";
 import CheckoutForm from "../../_templates/checkout-form";
 import CheckoutSummary from "../../_templates/checkout-summary";
+import React from "react";
 
 export const metadata: Metadata = {
     title: "Checkout",
