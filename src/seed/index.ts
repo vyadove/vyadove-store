@@ -36,13 +36,14 @@ const seed = async () => {
         },
     });
 
-    globals.forEach(async (global: any) => {
-        await payload.updateGlobal({
-            slug: global.globalType,
-            data: { ...global, backgroundImage: backgroundImage.id },
-        });
-    });
-
+    await Promise.all(
+        globals.map(async (global: any) => {
+            return payload.updateGlobal({
+                slug: global.globalType,
+                data: { ...global, backgroundImage: backgroundImage.id },
+            });
+        })
+    );
     const collectionResults = await Promise.all(
         collections.map(async (collection: any) => {
             return payload.create({
@@ -61,12 +62,14 @@ const seed = async () => {
         collectionResults[2].id,
     ];
 
-    products.forEach(async (product: any, index) => {
-        await payload.create({
-            collection: "products",
-            data: { ...product, collections: productCollectionIds[index] },
-        });
-    });
+    await Promise.all(
+        products.map(async (product: any, index) => {
+            return payload.create({
+                collection: "products",
+                data: { ...product, collections: productCollectionIds[index] },
+            });
+        })
+    );
 };
 
 // Call the function here to run your seed script
