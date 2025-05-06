@@ -28,12 +28,10 @@ export const Collections: CollectionConfig = {
         description(),
         {
             name: "products",
-            type: "relationship",
-            admin: {
-                position: "sidebar",
-            },
+            type: "join",
+            collection: "products", // Points to the collections collection
             hasMany: true, // Allows a collection to have many products
-            relationTo: "products", // Points to the Products collection
+            on: "collections", // Points to the collections collection
         },
     ],
 };
