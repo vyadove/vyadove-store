@@ -42,7 +42,7 @@ export default async function CollectionPage(props: Props) {
         },
     });
 
-    collection.products = mapProducts(products.docs);
+    collection.products = mapProducts(products.docs) as any;
 
     if (!collection) {
         notFound();
