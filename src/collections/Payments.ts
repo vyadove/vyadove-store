@@ -6,6 +6,10 @@ export const ManualProvider: Block = {
     slug: "manualProvider",
     fields: [
         {
+            name: "providerName",
+            type: "text",
+        },
+        {
             name: "methodType",
             type: "select",
             label: "Manual Payment Type",
@@ -31,7 +35,7 @@ export const ManualProvider: Block = {
             type: "array",
             admin: {
                 condition: (data) => {
-                    const manualProvider = data?.provider.find(
+                    const manualProvider = data?.providers.find(
                         (provider: any) =>
                             provider.blockType === "manualProvider"
                     );
@@ -85,17 +89,10 @@ export const Payments: CollectionConfig = {
             },
         },
         {
-            name: "provider",
+            name: "providers",
             type: "blocks",
             blocks: [ManualProvider],
-            maxRows: 1,
-        },
-        {
-            name: "supportRefunds",
-            type: "checkbox",
-            admin: {
-                position: "sidebar",
-            },
+            maxRows: 5,
         },
     ],
 };
