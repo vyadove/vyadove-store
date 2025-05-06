@@ -41,20 +41,27 @@ export const getVariants = async (variantIds: string[]) => {
     return variantIds.map((id) => variantsMap.get(id)).filter(Boolean);
 };
 
-export const getProducts = async (args: { [key: string]: string }) => {
-    const key = Object.keys(args)[0];
-    const value = args[key];
+export const getProducts = async () => {
     const payload = await getPayload({ config });
     const products = await payload.find({
         collection: "products",
+    });
+    return products.docs;
+};
+
+export const getProduct = async (handle: string) => {
+    const payload = await getPayload({ config });
+    const product = await payload.find({
+        collection: "products",
         limit: 1,
         where: {
-            [key]: {
-                equals: value,
+            handle: {
+                equals: handle,
             },
         },
     });
-    return products.docs;
+
+    return product.docs[0];
 };
 
 export const getPaginatedProducts = async ({
@@ -104,7 +111,7 @@ export const getPaginatedProducts = async ({
         limit,
         page,
         sort,
-        where
+        where,
     });
 
     return {
