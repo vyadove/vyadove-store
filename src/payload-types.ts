@@ -77,6 +77,7 @@ export interface Config {
     payments: Payment;
     locations: Location;
     shipping: Shipping;
+    carts: Cart;
     'plugins-space': PluginsSpace;
     exports: Export;
     'payload-jobs': PayloadJob;
@@ -84,7 +85,11 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    collections: {
+      products: 'products';
+    };
+  };
   collectionsSelect: {
     orders: OrdersSelect<false> | OrdersSelect<true>;
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
@@ -96,6 +101,7 @@ export interface Config {
     payments: PaymentsSelect<false> | PaymentsSelect<true>;
     locations: LocationsSelect<false> | LocationsSelect<true>;
     shipping: ShippingSelect<false> | ShippingSelect<true>;
+    carts: CartsSelect<false> | CartsSelect<true>;
     'plugins-space': PluginsSpaceSelect<false> | PluginsSpaceSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
@@ -337,7 +343,11 @@ export interface Collection {
     };
     [k: string]: unknown;
   } | null;
-  products?: (number | Product)[] | null;
+  products?: {
+    docs?: (number | Product)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -410,26 +420,36 @@ export interface Payment {
   id: number;
   name: string;
   enabled?: boolean | null;
-  provider?:
-    | {
-        methodType: 'cod' | 'bankTransfer' | 'inStore' | 'other';
-        /**
-         * Shown to customers at checkout.
-         */
-        instructions: string;
-        details?:
-          | {
-              label: string;
-              value: string;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'manualProvider';
-      }[]
+  providers?:
+    | (
+        | {
+            providerName?: string | null;
+            methodType: 'cod' | 'bankTransfer' | 'inStore' | 'other';
+            /**
+             * Shown to customers at checkout.
+             */
+            instructions: string;
+            details?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'manualProvider';
+          }
+        | {
+            stripeSecretKey: string;
+            stripeWebhooksEndpointSecret: string;
+            publishableKey: string;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'stripe';
+          }
+      )[]
     | null;
-  supportRefunds?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -475,6 +495,23 @@ export interface Shipping {
         id?: string | null;
         blockName?: string | null;
         blockType: 'manual';
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "carts".
+ */
+export interface Cart {
+  id: number;
+  sessionId: string;
+  cartItems?:
+    | {
+        product: number | Product;
+        quantity: number;
+        id?: string | null;
       }[]
     | null;
   updatedAt: string;
@@ -665,6 +702,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'shipping';
         value: number | Shipping;
+      } | null)
+    | ({
+        relationTo: 'carts';
+        value: number | Cart;
       } | null)
     | ({
         relationTo: 'plugins-space';
@@ -883,12 +924,13 @@ export interface GiftCardsSelect<T extends boolean = true> {
 export interface PaymentsSelect<T extends boolean = true> {
   name?: T;
   enabled?: T;
-  provider?:
+  providers?:
     | T
     | {
         manualProvider?:
           | T
           | {
+              providerName?: T;
               methodType?: T;
               instructions?: T;
               details?:
@@ -901,8 +943,16 @@ export interface PaymentsSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        stripe?:
+          | T
+          | {
+              stripeSecretKey?: T;
+              stripeWebhooksEndpointSecret?: T;
+              publishableKey?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
-  supportRefunds?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -940,6 +990,22 @@ export interface ShippingSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "carts_select".
+ */
+export interface CartsSelect<T extends boolean = true> {
+  sessionId?: T;
+  cartItems?:
+    | T
+    | {
+        product?: T;
+        quantity?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
