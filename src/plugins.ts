@@ -1,9 +1,9 @@
 import type { Plugin } from "payload";
 
-import { stripePlugin } from "@payloadcms/plugin-stripe";
 import { cjPlugin } from "@shopnex/cj-plugin";
 import { importExportPlugin } from "@shopnex/import-export-plugin";
 import { storePlugin } from "@shopnex/store-plugin";
+import { stripePlugin } from "@shopnex/stripe-plugin";
 
 import { paymentCanceled } from "./webhooks/payment-canceled";
 import { paymentSucceeded } from "./webhooks/payment-succeeded";
@@ -12,6 +12,7 @@ export const plugins: Plugin[] = [
     stripePlugin({
         isTestKey: Boolean(process.env.NEXT_PUBLIC_STRIPE_IS_TEST_KEY),
         logs: true,
+        paymentCollectionSlug: "payments",
         rest: false,
         stripeSecretKey: process.env.STRIPE_SECRET_KEY || "",
         stripeWebhooksEndpointSecret:
