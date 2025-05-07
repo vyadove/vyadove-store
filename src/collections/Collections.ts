@@ -24,6 +24,10 @@ export const Collections: CollectionConfig = {
             type: "text",
             required: true,
         },
+        {
+            name: "imageUrl",
+            type: "text",
+        },
         handleField(),
         description(),
         {

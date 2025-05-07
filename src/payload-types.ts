@@ -327,6 +327,7 @@ export interface Product {
 export interface Collection {
   id: number;
   title: string;
+  imageUrl?: string | null;
   handle?: string | null;
   description?: {
     root: {
@@ -804,6 +805,7 @@ export interface OrdersSelect<T extends boolean = true> {
  */
 export interface CollectionsSelect<T extends boolean = true> {
   title?: T;
+  imageUrl?: T;
   handle?: T;
   description?: T;
   products?: T;
