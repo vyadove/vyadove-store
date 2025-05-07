@@ -1,5 +1,5 @@
 import config from "@payload-config";
-import { getPayload, Sort } from "payload";
+import { getPayload } from "payload";
 
 export const getVariants = async (variantIds: string[]) => {
     const payload = await getPayload({ config });
@@ -45,6 +45,11 @@ export const getProducts = async () => {
     const payload = await getPayload({ config });
     const products = await payload.find({
         collection: "products",
+        where: {
+            visible: {
+                equals: true,
+            },
+        },
     });
     return products.docs;
 };
