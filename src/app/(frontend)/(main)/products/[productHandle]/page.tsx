@@ -7,17 +7,17 @@ import { notFound } from "next/navigation";
 import { getPayload } from "payload";
 
 type ProductPageProps = {
-    params: Promise<{ handle: string }>;
+    params: Promise<{ productHandle: string }>;
 };
 
 export async function generateMetadata(
     props: ProductPageProps
 ): Promise<Metadata> {
     const params = await props.params;
-    const { handle } = params;
+    const { productHandle } = params;
 
     const product = {
-        handle,
+        handle: productHandle,
         thumbnail:
             "https://next.medusajs.com/_next/image?url=https%3A%2F%2Fmedusa-server-testing.s3.us-east-1.amazonaws.com%2Fheadphones-nobg-1700675136219.png&w=1920&q=50",
         title: "Product 1",
@@ -47,7 +47,7 @@ export default async function ProductPage(props: ProductPageProps) {
         limit: 1,
         where: {
             handle: {
-                equals: params.handle,
+                equals: params.productHandle,
             },
         },
     });
