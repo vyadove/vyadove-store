@@ -13,7 +13,6 @@ const ProductPage = async ({ params }: ProductPageProps) => {
     const top4VariantImages = product.variants
         .slice(0, 4)
         .map((variant) => variant.imageUrl);
-    // const { cartItems = [] } = (await retrieveCart()) || {};
 
     const colorOptions = getColorOptions(product.variants);
     const variants = product.variants;
