@@ -1,10 +1,13 @@
 "use client";
+import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
+
 import builder, {
     Builder,
     BuilderComponent,
     useIsPreviewing,
     withChildren,
 } from "@builder.io/react";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 import DefaultErrorPage from "next/error";
 import Link from "next/link";
 import { CartProvider, useCart } from "react-use-cart";
@@ -42,6 +45,20 @@ function DeleteItemWrapper({ children, variantId }: any) {
         </div>
     );
 }
+
+const RichTextDescription = ({ data }: { data: SerializedEditorState }) => {
+    return <RichText data={data} />;
+};
+
+Builder.registerComponent(RichTextDescription, {
+    name: "RichTextDescription",
+    inputs: [
+        {
+            name: "data",
+            type: "serializedEditorState",
+        },
+    ],
+});
 
 function AddToCartWrapper({
     children,
