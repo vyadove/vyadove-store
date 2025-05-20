@@ -78,6 +78,7 @@ export interface Config {
     locations: Location;
     shipping: Shipping;
     carts: Cart;
+    'cj-settings': CjSetting;
     'plugins-space': PluginsSpace;
     exports: Export;
     'payload-jobs': PayloadJob;
@@ -102,6 +103,7 @@ export interface Config {
     locations: LocationsSelect<false> | LocationsSelect<true>;
     shipping: ShippingSelect<false> | ShippingSelect<true>;
     carts: CartsSelect<false> | CartsSelect<true>;
+    'cj-settings': CjSettingsSelect<false> | CjSettingsSelect<true>;
     'plugins-space': PluginsSpaceSelect<false> | PluginsSpaceSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
@@ -116,13 +118,11 @@ export interface Config {
     'store-settings': StoreSetting;
     'hero-section': HeroSection;
     footer: Footer;
-    'cj-settings': CjSetting;
   };
   globalsSelect: {
     'store-settings': StoreSettingsSelect<false> | StoreSettingsSelect<true>;
     'hero-section': HeroSectionSelect<false> | HeroSectionSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
-    'cj-settings': CjSettingsSelect<false> | CjSettingsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -520,6 +520,31 @@ export interface Cart {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cj-settings".
+ */
+export interface CjSetting {
+  id: number;
+  emailAddress?: string | null;
+  apiToken?: string | null;
+  refreshToken?: string | null;
+  refreshTokenExpiry?: string | null;
+  accessToken?: string | null;
+  accessTokenExpiry?: string | null;
+  pod?: (number | null) | Media;
+  /**
+   * A list of product URLs to sync with CJ Dropshipping
+   */
+  items?:
+    | {
+        productUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "plugins-space".
  */
 export interface PluginsSpace {
@@ -707,6 +732,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'carts';
         value: number | Cart;
+      } | null)
+    | ({
+        relationTo: 'cj-settings';
+        value: number | CjSetting;
       } | null)
     | ({
         relationTo: 'plugins-space';
@@ -1007,6 +1036,27 @@ export interface CartsSelect<T extends boolean = true> {
     | {
         product?: T;
         quantity?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cj-settings_select".
+ */
+export interface CjSettingsSelect<T extends boolean = true> {
+  emailAddress?: T;
+  apiToken?: T;
+  refreshToken?: T;
+  refreshTokenExpiry?: T;
+  accessToken?: T;
+  accessTokenExpiry?: T;
+  pod?: T;
+  items?:
+    | T
+    | {
+        productUrl?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -1383,24 +1433,6 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "cj-settings".
- */
-export interface CjSetting {
-  id: number;
-  /**
-   * A list of product URLs to sync with CJ Dropshipping
-   */
-  items?:
-    | {
-        productUrl?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "store-settings_select".
  */
 export interface StoreSettingsSelect<T extends boolean = true> {
@@ -1460,21 +1492,6 @@ export interface FooterSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "cj-settings_select".
- */
-export interface CjSettingsSelect<T extends boolean = true> {
-  items?:
-    | T
-    | {
-        productUrl?: T;
-        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
