@@ -1,18 +1,15 @@
 import type { DefaultNodeTypes } from "@payloadcms/richtext-lexical";
 import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
-import type {
-    JSXConvertersFunction} from "@payloadcms/richtext-lexical/react";
+import type { JSXConvertersFunction } from "@payloadcms/richtext-lexical/react";
 
-import {
-    RichText,
-} from "@payloadcms/richtext-lexical/react";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 import Link from "next/link";
 
 type StyledRichTextProps = {
     data?: null | SerializedEditorState;
     properties?: {
         [key: string]: number | string;
-    }
+    };
 };
 
 const createJSXConverters =
@@ -22,7 +19,7 @@ const createJSXConverters =
     ({ defaultConverters }) => ({
         ...defaultConverters,
         link: ({ node, nodesToJSX }) => {
-            if (node.fields?.linkType === 'custom') {
+            if (node.fields?.linkType === "custom") {
                 return (
                     <Link
                         className="hover:underline"

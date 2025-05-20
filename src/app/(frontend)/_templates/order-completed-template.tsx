@@ -25,7 +25,7 @@ export default function OrderCompletedTemplate({
     useLayoutEffect(() => {
         emptyCart();
     }, [emptyCart]);
-    
+
     return (
         <div className="py-6 min-h-[calc(100vh-64px)]">
             <div className="content-container flex flex-col justify-center items-center gap-y-10 max-w-4xl h-full w-full">

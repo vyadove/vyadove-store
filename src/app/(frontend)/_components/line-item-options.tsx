@@ -16,7 +16,7 @@ const LineItemOptions = ({
     "data-value": dataValue,
     variant,
 }: LineItemOptionsProps) => {
-	const formattedOptions = variant?.options
+    const formattedOptions = variant?.options
         ?.map(({ value }) => value)
         .join(" / ");
     return (

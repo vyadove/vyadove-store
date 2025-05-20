@@ -4,11 +4,11 @@ import _ from "lodash";
 import Link from "next/link";
 
 type ProductInfoProps = {
-	product: any;
+    product: any;
 };
 
 const ProductInfo = ({ product }: ProductInfoProps) => {
-	return (
+    return (
         <div id="product-info">
             <div className="flex flex-col gap-y-4 lg:max-w-[500px] mx-auto">
                 {product.collections[0] && (

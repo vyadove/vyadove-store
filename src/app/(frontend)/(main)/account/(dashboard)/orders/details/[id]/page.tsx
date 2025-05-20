@@ -25,13 +25,13 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function OrderDetailPage(props: Props) {
     const params = await props.params;
-    const orderId = params.id
+    const orderId = params.id;
 
-    const payload = await getPayload({ config })
+    const payload = await getPayload({ config });
     const order = await payload.findByID({
         id: orderId,
         collection: "orders",
-    })
+    });
 
     if (!order) {
         notFound();

@@ -6,15 +6,17 @@ import { clx } from "@medusajs/ui";
 type ProductPriceProps = {
     currency?: null | string;
     showFrom: boolean;
-	variant?: Product["variants"][0];
+    variant?: Product["variants"][0];
 };
 
 export default function ProductPrice({
     currency,
     showFrom,
-	variant
+    variant,
 }: ProductPriceProps) {
-    if (!variant) {return null;}
+    if (!variant) {
+        return null;
+    }
 
     const { originalPrice, price } = variant;
     const isOnSale = originalPrice && originalPrice > price;

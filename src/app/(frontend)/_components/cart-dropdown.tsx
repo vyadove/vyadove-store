@@ -206,7 +206,8 @@ const CartDropdown = () => {
                                         >
                                             {convertToLocale({
                                                 amount: subtotal,
-                                                currency_code: items[0].currency,
+                                                currency_code:
+                                                    items[0].currency,
                                             })}
                                         </span>
                                     </div>

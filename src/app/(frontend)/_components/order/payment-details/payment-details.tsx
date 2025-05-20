@@ -26,7 +26,9 @@ const PaymentDetails = ({ order }: PaymentDetailsProps) => {
                             className="txt-medium text-ui-fg-subtle"
                             data-testid="payment-method"
                         >
-                            {order.paymentMethod === 'card' ? 'Credit Card' : order.paymentMethod}
+                            {order.paymentMethod === "card"
+                                ? "Credit Card"
+                                : order.paymentMethod}
                         </Text>
                     </div>
                     <div className="flex flex-col w-2/3">
