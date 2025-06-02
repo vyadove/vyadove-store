@@ -1,4 +1,7 @@
-const OptionRowLabel = (props) => {
+import type { RowLabelProps } from "@payloadcms/ui";
+import type { ArrayFieldServerProps } from "payload";
+
+const OptionRowLabel = (props: ArrayFieldServerProps & RowLabelProps) => {
     if (!props.siblingData.options) {
         return null;
     }

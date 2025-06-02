@@ -1,11 +1,14 @@
+import type { RowLabelProps } from "@payloadcms/ui";
+import type { ArrayFieldServerProps } from "payload";
+
 import Image from "next/image";
 
-const VariantRowLabel = (props) => {
+const VariantRowLabel = (props: ArrayFieldServerProps & RowLabelProps) => {
     if (!props.data.variants) {
         return null;
     }
     const currentRow = props.data.variants.find(
-        (v, index: number) => index === props.rowNumber - 1
+        (v, index: number) => index === (props.rowNumber as number) - 1
     );
     const variantValues = currentRow.options.map((option: any) => option.value);
     const imageUrl = currentRow.gallery?.[0]?.url || currentRow.imageUrl;
