@@ -1,8 +1,15 @@
 import Link from "next/link";
 import React from "react";
+import type { Metadata } from "next";
 
 import ChevronDown from "../_components/icons/chevron-down";
 import { ShopNexIcon } from "../_components/icons/shopnex-icon";
+
+export const metadata: Metadata = {
+    title: "Secure Checkout | ShopNex",
+    description: "Complete your purchase safely and securely",
+    robots: "noindex, nofollow",
+};
 
 export default function CheckoutLayout({
     children,
