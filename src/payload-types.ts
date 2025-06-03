@@ -314,10 +314,12 @@ export interface Product {
         | null;
     variants: {
         vid?: string | null;
+        sku?: string | null;
         imageUrl?: string | null;
         gallery?: (number | Media)[] | null;
         price: number;
         originalPrice?: number | null;
+        stockCount?: number | null;
         options?:
             | {
                   option: string;
@@ -900,10 +902,12 @@ export interface ProductsSelect<T extends boolean = true> {
         | T
         | {
               vid?: T;
+              sku?: T;
               imageUrl?: T;
               gallery?: T;
               price?: T;
               originalPrice?: T;
+              stockCount?: T;
               options?:
                   | T
                   | {

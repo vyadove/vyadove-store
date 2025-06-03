@@ -3,13 +3,18 @@ import type { ArrayFieldServerProps } from "payload";
 
 import Image from "next/image";
 
-const VariantRowLabel = (props: ArrayFieldServerProps & RowLabelProps) => {
+const VariantRowLabel = (
+    props: { rowLabel: string } & ArrayFieldServerProps & RowLabelProps
+) => {
     if (!props.data.variants) {
-        return null;
+        return <p>{props.rowLabel}</p>;
     }
     const currentRow = props.data.variants.find(
         (_: any, index: number) => index === (props.rowNumber as number) - 1
     );
+    if (!currentRow.options?.length) {
+        return <p>{props.rowLabel}</p>;
+    }
     const variantValues = currentRow.options.map((option: any) => option.value);
     const imageUrl = currentRow.gallery?.[0]?.url || currentRow.imageUrl;
     return (
