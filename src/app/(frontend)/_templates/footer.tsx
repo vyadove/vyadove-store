@@ -8,21 +8,21 @@ import { getPayload } from "payload";
 
 import { ShopNexIcon } from "../_components/icons/shopnex-icon";
 import { StyledRichText } from "../_components/styled-rich-text";
+import { payloadSdk } from "@/utils/payload-sdk";
 
 export default async function Footer({
     storeSettings,
 }: {
     storeSettings: StoreSetting;
 }) {
-    const payload = await getPayload({ config });
-    const footer = await payload.findGlobal({
+    const footer = await payloadSdk.findGlobal({
         slug: "footer",
     });
     const basicFooter = footer.type?.find(
         (f) => f.blockType === "basic-footer"
     );
 
-    const collectionsPayload = await payload.find({
+    const collectionsPayload = await payloadSdk.find({
         collection: "collections",
         limit: 6,
         sort: "createdAt",

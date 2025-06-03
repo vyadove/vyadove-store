@@ -1,28 +1,24 @@
 import type { Metadata } from "next";
 
-import config from "@payload-config";
-import { getPayload } from "payload";
-
 import FeaturedProducts from "../_components/featured-products";
 import Hero from "../_components/hero";
+import { payloadSdk } from "@/utils/payload-sdk";
 
 export const metadata: Metadata = {
     description:
-        "A performant frontend ecommerce starter template with Payload CMS and Shopnex.",
-    title: "Shopnex Ecommerce Starter Template",
+        "A performant frontend eCommerce starter template with Payload CMS and Shopnex.",
+    title: "Shopnex eCommerce Starter Template",
 };
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-    const payload = await getPayload({ config });
-
-    const heroSection = await payload.findGlobal({
+    const heroSection = await payloadSdk.findGlobal({
         slug: "hero-section",
     });
     const hero = heroSection.type?.find((f) => f.blockType === "hero");
 
-    const featuredCollections = await payload.find({
+    const featuredCollections = await payloadSdk.find({
         collection: "collections",
         limit: 3,
         sort: "createdAt",

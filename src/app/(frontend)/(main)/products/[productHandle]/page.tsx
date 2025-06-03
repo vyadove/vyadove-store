@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 
 import ProductTemplate from "@/app/(frontend)/_templates/product";
 import { mapProducts } from "@/utils/map-products";
-import config from "@payload-config";
 import { notFound } from "next/navigation";
-import { getPayload } from "payload";
+import { payloadSdk } from "@/utils/payload-sdk";
 
 type ProductPageProps = {
     params: Promise<{ productHandle: string }>;
@@ -41,8 +40,7 @@ export async function generateMetadata(
 export default async function ProductPage(props: ProductPageProps) {
     const params = await props.params;
 
-    const payload = await getPayload({ config });
-    const product = await payload.find({
+    const product = await payloadSdk.find({
         collection: "products",
         limit: 1,
         where: {
