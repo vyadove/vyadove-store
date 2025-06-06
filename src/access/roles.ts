@@ -12,6 +12,8 @@ export const admins: isAdmin = ({ req: { user } }) => {
 
 export const anyone: Access = () => true;
 
+export const noOne: Access = () => false;
+
 export const adminsOrSelf: Access = ({ req: { user } }) => {
     if (user) {
         if (checkRole(["admin"], user)) {

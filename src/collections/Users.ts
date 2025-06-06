@@ -1,13 +1,13 @@
 import type { CollectionConfig } from "payload";
 
-import { admins, adminsOrSelf, anyone } from "@/access/roles";
+import { admins, adminsOrSelf, noOne } from "@/access/roles";
 
 import { groups } from "./groups";
 
 export const Users: CollectionConfig = {
     slug: "users",
     access: {
-        create: anyone,
+        create: noOne,
         delete: admins,
         read: adminsOrSelf,
         update: admins,
