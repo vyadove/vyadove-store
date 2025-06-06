@@ -1,13 +1,13 @@
 import type { CollectionConfig } from "payload";
 
-import { admins, adminsOrSelf, noOne } from "@/access/roles";
+import { admins, adminsOrSelf, anyone } from "@/access/roles";
 
 import { groups } from "./groups";
 
 export const Users: CollectionConfig = {
     slug: "users",
     access: {
-        create: noOne,
+        create: anyone,
         delete: admins,
         read: adminsOrSelf,
         update: admins,
@@ -33,6 +33,16 @@ export const Users: CollectionConfig = {
         {
             name: "roles",
             type: "select",
+            access: {
+                create: ({ req }) => {
+                    const isAdmin = !!req.user?.roles?.includes("admin");
+                    return isAdmin;
+                },
+                update: ({ req }) => {
+                    const isAdmin = !!req.user?.roles?.includes("admin");
+                    return isAdmin;
+                },
+            },
             defaultValue: ["customer"],
             hasMany: true,
             options: [
