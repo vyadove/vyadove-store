@@ -89,7 +89,9 @@
             "sharp"
         ],
         "overrides": {
-            "tar-fs": "^3.0.9"
+            "tar-fs": "^3.0.9",
+            "xlsx": "0.17.5",
+            "image-size": "^1.2.1"
         }
     }
 }
