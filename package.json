@@ -87,6 +87,9 @@
     "pnpm": {
         "onlyBuiltDependencies": [
             "sharp"
-        ]
+        ],
+        "overrides": {
+            "tar-fs": "^3.0.9"
+        }
     }
 }
