@@ -7,6 +7,8 @@ export const metadata: Metadata = {
     title: "Cart",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function Cart() {
     return <CartTemplate />;
 }
