@@ -19,7 +19,6 @@
         "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
         "format": "prettier --write ."
     },
-    "dependencies": {},
     "devDependencies": {
         "@eslint/eslintrc": "^3.2.0",
         "@payloadcms/eslint-config": "^3.28.0",
@@ -29,6 +28,7 @@
         "@types/react": "19.0.7",
         "@types/react-dom": "19.0.3",
         "autoprefixer": "^10.4.20",
+        "cross-env": "^7.0.3",
         "eslint": "^9.16.0",
         "eslint-config-next": "15.1.5",
         "postcss": "^8.5.3",
