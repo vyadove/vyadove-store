@@ -12,16 +12,16 @@ export const sessionCartCreate: AfterChangeHook<Cart> = ({
         return;
     }
 
-    const tenantCookie = generateCookie({
+    const cartCookie = generateCookie({
         name: "cart-session",
         expires: getCookieExpiration({ seconds: 60 * 60 * 24 * 30 }),
         path: "/",
         returnCookieAsObject: false,
-        value: doc.sessionId,
+        value: doc.sessionId!,
     });
 
     const newHeaders = new Headers({
-        "Set-Cookie": tenantCookie as string,
+        "Set-Cookie": cartCookie as string,
     });
 
     req.responseHeaders = req.responseHeaders

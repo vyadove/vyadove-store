@@ -13,6 +13,7 @@ import LineItemOptions from "./line-item-options";
 import LineItemPrice from "./line-item-price";
 import LineItemUnitPrice from "./line-item-unit-price";
 import Thumbnail from "./thumbnail";
+import { updateCart } from "@/app/api/services/cart";
 
 type ItemProps = {
     currencyCode: string;
@@ -22,15 +23,20 @@ type ItemProps = {
 
 const Item = ({ type = "full", currencyCode, item }: ItemProps) => {
     const [updating, setUpdating] = useState(false);
-    const { cartTotal, updateItemQuantity } = useCart();
+    const { updateItemQuantity } = useCart();
     const [error, setError] = useState<null | string>(null);
 
     const changeQuantity = (quantity: number) => {
         setError(null);
         setUpdating(true);
 
-        setTimeout(() => {
+        setTimeout(async () => {
             updateItemQuantity(item.id, quantity);
+
+            await updateCart({
+                id: item.id,
+                quantity,
+            });
             setUpdating(false);
         }, 200);
     };

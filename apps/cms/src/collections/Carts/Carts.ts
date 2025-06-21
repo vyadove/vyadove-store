@@ -8,7 +8,7 @@ import { sessionCartCreate } from "./hooks/session-cart-create";
 export const Carts: CollectionConfig = {
     slug: "carts",
     access: {
-        create: anyone,
+        create: canAccessOwnCart,
         delete: canAccessOwnCart,
         read: canAccessOwnCart,
         update: canAccessOwnCart,
@@ -25,16 +25,22 @@ export const Carts: CollectionConfig = {
                 position: "sidebar",
                 readOnly: true,
             },
-            required: true,
+        },
+        {
+            name: "customer",
+            type: "relationship",
+            admin: {
+                position: "sidebar",
+            },
+            relationTo: "users",
         },
         {
             name: "cartItems",
             type: "array",
             fields: [
                 {
-                    name: "product",
-                    type: "relationship",
-                    relationTo: "products",
+                    name: "variantId",
+                    type: "text",
                     required: true,
                 },
                 {
@@ -43,6 +49,14 @@ export const Carts: CollectionConfig = {
                     required: true,
                 },
             ],
+        },
+        {
+            name: "completed",
+            type: "checkbox",
+            defaultValue: false,
+            admin: {
+                position: "sidebar",
+            },
         },
     ],
     hooks: {

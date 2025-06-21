@@ -1,6 +1,6 @@
 "use client";
 
-import type { Product } from "@/payload-types";
+import type { Product } from "@shopnex/types";
 
 import { Button } from "@medusajs/ui";
 import { useMemo, useState } from "react";
@@ -9,6 +9,8 @@ import { useCart } from "react-use-cart";
 import Divider from "../../divider";
 import ProductPrice from "../product-price/product-price";
 import OptionSelect from "./option-select";
+import Cookies from "js-cookie";
+import { createCart, updateCart } from "@/app/api/services/cart";
 
 type ProductActionsProps = {
     product: Product;
@@ -51,36 +53,73 @@ export default function ProductActions({
         return options.every(({ name }) => selectedOptions[name]);
     }, [options, selectedOptions]);
 
-    const handleAddToCart = () => {
+    const handleAddToCart = async () => {
         setIsAdding(true);
 
-        const selectedVariant = product.variants?.find((variant) =>
+        const selectedVariant = findSelectedVariant();
+
+        if (!selectedVariant?.id) {
+            setIsAdding(false);
+            return;
+        }
+
+        const newItem = buildCartItem(selectedVariant);
+
+        // Optimistic UI update
+        addItem(newItem, 1);
+
+        try {
+            const cartSessionId = getCartSessionId();
+            await syncCartWithBackend(
+                {
+                    id: newItem.id,
+                    quantity: 1,
+                },
+                cartSessionId
+            );
+        } catch (error) {
+            console.error("Failed to sync cart:", error);
+            // Optionally: show error toast or revert optimistic update here
+        } finally {
+            setIsAdding(false);
+        }
+    };
+
+    const findSelectedVariant = () => {
+        return product.variants?.find((variant) =>
             variant.options?.every(
                 (opt) => selectedOptions[opt.option] === opt.value
             )
         );
+    };
 
-        if (selectedVariant?.id == null) {
-            return;
-        }
-
-        const newItem = {
-            ...selectedVariant,
-            id: `${selectedVariant.id}`,
+    const buildCartItem = (variant: Product["variants"][0]) => {
+        return {
+            ...variant,
+            id: `${variant.id}`,
             currency: product.currency,
-            gallery: selectedVariant.gallery?.length
-                ? selectedVariant.gallery
+            gallery: variant.gallery?.length
+                ? variant.gallery
                 : product.variants[0].gallery,
             handle: product.handle,
             productName: product.title,
         };
-
-        setTimeout(() => {
-            addItem(newItem, 1);
-            setIsAdding(false);
-        }, 200);
     };
 
+    const getCartSessionId = () => {
+        return Cookies.get("cart-session");
+    };
+
+    async function syncCartWithBackend(
+        item: { id: string; quantity: number },
+        cartSessionId?: string
+    ) {
+        if (cartSessionId) {
+            await updateCart(item);
+        } else {
+            await createCart(item);
+        }
+    }
     const selectedVariant =
         product.variants?.find((variant) =>
             variant.options?.every(

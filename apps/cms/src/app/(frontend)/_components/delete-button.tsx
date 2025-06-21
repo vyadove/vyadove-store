@@ -4,6 +4,7 @@ import { useCart } from "react-use-cart";
 
 import Spinner from "./icons/spinner";
 import Trash from "./icons/trash";
+import { updateCart } from "@/app/api/services/cart";
 
 const DeleteButton = ({
     id,
@@ -19,8 +20,12 @@ const DeleteButton = ({
 
     const handleDelete = (id: string) => {
         setIsDeleting(true);
-        setTimeout(() => {
+        setTimeout(async () => {
             removeItem(id);
+            await updateCart({
+                id,
+                quantity: 0,
+            });
             setIsDeleting(false);
         }, 200);
     };
