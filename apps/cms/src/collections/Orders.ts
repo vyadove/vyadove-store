@@ -30,6 +30,12 @@ export const Orders: CollectionConfig = {
             required: false,
         },
         {
+            name: "cart",
+            type: "relationship",
+            relationTo: "carts",
+            required: false,
+        },
+        {
             name: "items",
             type: "array",
             fields: [
@@ -216,22 +222,6 @@ export const Orders: CollectionConfig = {
                     },
                 }),
             ],
-        },
-        {
-            name: "updatedAt",
-            type: "date",
-            admin: {
-                readOnly: true,
-            },
-            defaultValue: () => new Date(),
-        },
-        {
-            name: "createdAt",
-            type: "date",
-            admin: {
-                readOnly: true,
-            },
-            defaultValue: () => new Date(),
         },
     ],
 };
