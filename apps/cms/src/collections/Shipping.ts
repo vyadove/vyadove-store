@@ -2,33 +2,61 @@ import type { Block, CollectionConfig } from "payload";
 
 import { groups } from "./groups";
 
-const ManualProvider: Block = {
-    slug: "manual",
+export const CustomShipping: Block = {
+    slug: "custom-shipping",
     admin: {
+        disableBlockName: true,
         group: groups.settings,
     },
     fields: [
         {
-            name: "name",
+            name: "label",
             type: "text",
-            access: {
-                read: () => false,
-                update: () => false,
-            },
-            label: "Name",
+            defaultValue: "Standard Shipping",
+            label: "Label Shown to Customer",
             required: true,
         },
         {
-            name: "rate",
+            name: "baseRate",
             type: "number",
-            access: {
-                read: () => false,
-                update: () => false,
-            },
-            label: "Rate",
+            label: "Base Rate (flat rate)",
             required: true,
         },
+        {
+            type: "row",
+            fields: [
+                {
+                    name: "freeShippingMinOrder",
+                    type: "number",
+                    admin: {
+                        description:
+                            "If set, shipping is free for orders above this amount.",
+                    },
+                    label: "Free Shipping Over (optional)",
+                },
+                {
+                    name: "estimatedDeliveryDays",
+                    type: "text",
+                    admin: {
+                        description: "Example: '3-5 business days'",
+                    },
+                    label: "Estimated Delivery (optional)",
+                },
+            ],
+        },
+        {
+            name: "notes",
+            type: "textarea",
+            admin: {
+                description: "Visible to customers if needed.",
+            },
+            label: "Notes (optional)",
+        },
     ],
+    labels: {
+        plural: "Custom Shipping",
+        singular: "Custom Shipping",
+    },
 };
 
 export const Shipping: CollectionConfig = {
@@ -66,7 +94,7 @@ export const Shipping: CollectionConfig = {
             admin: {
                 description: "Select a shipping provider",
             },
-            blocks: [ManualProvider],
+            blocks: [CustomShipping],
         },
     ],
     labels: {
