@@ -38,6 +38,7 @@
         "@shopnex/payload-sdk": "^3.1.7",
         "@shopnex/store-plugin": "1.0.14",
         "@shopnex/stripe-plugin": "3.31.3",
+        "@shopnex/utils": "^1.0.5",
         "@tailwindcss/postcss": "^4.0.9",
         "@tailwindcss/typography": "^0.5.16",
         "axios": "^1.8.2",
