@@ -2,7 +2,8 @@ import type { CollectionConfig } from "payload";
 
 import { admins, adminsOrSelf, anyone } from "@/access/roles";
 
-import { groups } from "./groups";
+import { groups } from "../groups";
+import { OrderTimeline } from "./fields/OrderTimeline";
 
 export const Orders: CollectionConfig = {
     slug: "orders",
@@ -21,7 +22,7 @@ export const Orders: CollectionConfig = {
             name: "orderId",
             type: "text",
             required: true,
-            unique: true, // Ensures no duplicate orders
+            unique: true,
         },
         {
             name: "user",
@@ -223,5 +224,6 @@ export const Orders: CollectionConfig = {
                 }),
             ],
         },
+        OrderTimeline,
     ],
 };
