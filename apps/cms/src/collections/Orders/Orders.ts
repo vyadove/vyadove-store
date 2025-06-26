@@ -4,6 +4,7 @@ import { admins, adminsOrSelf, anyone } from "@/access/roles";
 
 import { groups } from "../groups";
 import { OrderTimeline } from "./fields/OrderTimeline";
+import { addOrderTimelineEntry } from "./hooks/add-order-timeline-entry";
 
 export const Orders: CollectionConfig = {
     slug: "orders",
@@ -226,4 +227,7 @@ export const Orders: CollectionConfig = {
         },
         OrderTimeline,
     ],
+    hooks: {
+        beforeChange: [addOrderTimelineEntry],
+    },
 };

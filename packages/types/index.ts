@@ -165,6 +165,7 @@ export interface Order {
   id: number;
   orderId: string;
   user?: (number | null) | User;
+  cart?: (number | null) | Cart;
   items: {
     product?: (number | null) | Product;
     variant: {
@@ -224,6 +225,30 @@ export interface Order {
     phone?: string;
     [k: string]: unknown;
   };
+  /**
+   * Track important order events (e.g. status changes, payments, shipments, notes).
+   */
+  timeline?:
+    | {
+        title: string;
+        date: string;
+        type:
+          | 'note'
+          | 'order_created'
+          | 'order_paid'
+          | 'order_cancelled'
+          | 'refund_issued'
+          | 'fulfillment_started'
+          | 'shipped'
+          | 'delivered'
+          | 'return_requested'
+          | 'return_completed'
+          | 'other';
+        createdBy?: (number | null) | User;
+        details?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -246,6 +271,25 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "carts".
+ */
+export interface Cart {
+  id: number;
+  sessionId?: string | null;
+  customer?: (number | null) | User;
+  cartItems?:
+    | {
+        variantId: string;
+        quantity: number;
+        id?: string | null;
+      }[]
+    | null;
+  completed?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -493,32 +537,25 @@ export interface Shipping {
    */
   shippingProvider?:
     | {
-        name: string;
-        rate: number;
+        label: string;
+        baseRate: number;
+        /**
+         * If set, shipping is free for orders above this amount.
+         */
+        freeShippingMinOrder?: number | null;
+        /**
+         * Example: '3-5 business days'
+         */
+        estimatedDeliveryDays?: string | null;
+        /**
+         * Visible to customers if needed.
+         */
+        notes?: string | null;
         id?: string | null;
         blockName?: string | null;
-        blockType: 'manual';
+        blockType: 'custom-shipping';
       }[]
     | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "carts".
- */
-export interface Cart {
-  id: number;
-  sessionId?: string | null;
-  customer?: (number | null) | User;
-  cartItems?:
-    | {
-        variantId: string;
-        quantity: number;
-        id?: string | null;
-      }[]
-    | null;
-  completed?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -802,6 +839,7 @@ export interface PayloadMigration {
 export interface OrdersSelect<T extends boolean = true> {
   orderId?: T;
   user?: T;
+  cart?: T;
   items?:
     | T
     | {
@@ -829,6 +867,16 @@ export interface OrdersSelect<T extends boolean = true> {
   metadata?: T;
   shippingAddress?: T;
   billingAddress?: T;
+  timeline?:
+    | T
+    | {
+        title?: T;
+        date?: T;
+        type?: T;
+        createdBy?: T;
+        details?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1019,11 +1067,14 @@ export interface ShippingSelect<T extends boolean = true> {
   shippingProvider?:
     | T
     | {
-        manual?:
+        'custom-shipping'?:
           | T
           | {
-              name?: T;
-              rate?: T;
+              label?: T;
+              baseRate?: T;
+              freeShippingMinOrder?: T;
+              estimatedDeliveryDays?: T;
+              notes?: T;
               id?: T;
               blockName?: T;
             };
