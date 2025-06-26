@@ -225,6 +225,30 @@ export interface Order {
     phone?: string;
     [k: string]: unknown;
   };
+  /**
+   * Track important order events (e.g. status changes, payments, shipments, notes).
+   */
+  timeline?:
+    | {
+        title: string;
+        date: string;
+        type:
+          | 'note'
+          | 'order_created'
+          | 'order_paid'
+          | 'order_cancelled'
+          | 'refund_issued'
+          | 'fulfillment_started'
+          | 'shipped'
+          | 'delivered'
+          | 'return_requested'
+          | 'return_completed'
+          | 'other';
+        createdBy?: (number | null) | User;
+        details?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -843,6 +867,16 @@ export interface OrdersSelect<T extends boolean = true> {
   metadata?: T;
   shippingAddress?: T;
   billingAddress?: T;
+  timeline?:
+    | T
+    | {
+        title?: T;
+        date?: T;
+        type?: T;
+        createdBy?: T;
+        details?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
