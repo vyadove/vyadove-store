@@ -2,15 +2,15 @@
 
 import type { Product } from "@shopnex/types";
 
+import { createCart, updateCart } from "@/app/api/services/cart";
 import { Button } from "@medusajs/ui";
+import Cookies from "js-cookie";
 import { useMemo, useState } from "react";
 import { useCart } from "react-use-cart";
 
 import Divider from "../../divider";
 import ProductPrice from "../product-price/product-price";
 import OptionSelect from "./option-select";
-import Cookies from "js-cookie";
-import { createCart, updateCart } from "@/app/api/services/cart";
 
 type ProductActionsProps = {
     product: Product;
@@ -127,6 +127,8 @@ export default function ProductActions({
             )
         ) || product.variants[0];
 
+    const isOutOfStock = selectedVariant?.stockCount === 0;
+
     return (
         <div className="flex flex-col gap-y-2">
             <div className="flex flex-col gap-y-4">
@@ -158,12 +160,16 @@ export default function ProductActions({
             <Button
                 className="w-full h-10"
                 data-testid="add-product-button"
-                disabled={isAdding || !allOptionsSelected}
+                disabled={isAdding || !allOptionsSelected || isOutOfStock}
                 isLoading={isAdding}
                 onClick={handleAddToCart}
                 variant="primary"
             >
-                {allOptionsSelected ? "Add to cart" : "Select variant"}
+                {!allOptionsSelected
+                    ? "Select variant"
+                    : isOutOfStock
+                      ? "Out of stock"
+                      : "Add to cart"}
             </Button>
         </div>
     );
