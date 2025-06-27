@@ -10,7 +10,7 @@ export default {
     // examples: "Examples",
     index: "Welcome",
     quickstart: "Quick start",
-    mask: "Mask",
+    // mask: "Mask",
     // popover: "Popover",
     tour: "Tour",
 };
