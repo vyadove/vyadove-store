@@ -5,16 +5,16 @@ import { Logo } from "@components/logo/Logo";
 
 export const metadata = {
     title: {
-        template: "%s | Reactour",
-        default: "Reactour",
+        template: "%s | ShopNex",
+        default: "ShopNex",
     },
-    description: "Tourist Guide into your React Components",
+    description: "ShopNex",
 };
 
 const navbar = (
     <Navbar
         logo={<Logo />}
-        projectLink="https://github.com/elrumordelaluz/reactour"
+        projectLink="https://github.com/shopnex-ai/shopnex"
     />
 );
 const footer = <Footer></Footer>;
@@ -24,9 +24,10 @@ export default async function RootLayout({ children }) {
         <html lang="en" dir="ltr" suppressHydrationWarning>
             <body>
                 <Layout
+                    search={false}
                     navbar={navbar}
                     pageMap={await getPageMap()}
-                    docsRepositoryBase="https://github.com/elrumordelaluz/reactour/tree/main/apps/docs"
+                    docsRepositoryBase="https://github.com/shopnex-ai/shopnex"
                     footer={footer}
                     toc={{ backToTop: true }}
                     sidebar={{
