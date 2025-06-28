@@ -9,8 +9,15 @@ export default {
     // },
     // examples: "Examples",
     index: "Welcome",
-    quickstart: "Quick start",
+    quickstart: {
+        display: "hidden",
+    },
+    design: {
+        display: "hidden",
+    },
+    plugins: "Plugins",
+    "self-hosted": "Self-hosted",
     // mask: "Mask",
     // popover: "Popover",
-    tour: "Tour",
+    // tour: "Tour",
 };
