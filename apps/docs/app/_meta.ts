@@ -12,6 +12,7 @@ export default {
     quickstart: {
         display: "hidden",
     },
+    // eslint-disable-next-line perfectionist/sort-objects
     design: {
         display: "hidden",
     },
