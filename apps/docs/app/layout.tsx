@@ -1,14 +1,16 @@
-import { Footer, Layout, Navbar } from "nextra-theme-docs";
-import { getPageMap } from "nextra/page-map";
-import "./globals.css";
 import { Logo } from "@components/logo/Logo";
+import { getPageMap } from "nextra/page-map";
+
+import "./globals.css";
+
+import { Footer, Layout, Navbar } from "nextra-theme-docs";
 
 export const metadata = {
-    title: {
-        template: "%s | ShopNex",
-        default: "ShopNex",
-    },
     description: "ShopNex",
+    title: {
+        default: "ShopNex",
+        template: "%s | ShopNex",
+    },
 };
 
 const navbar = (
@@ -21,24 +23,24 @@ const footer = <Footer></Footer>;
 
 export default async function RootLayout({ children }) {
     return (
-        <html lang="en" dir="ltr" suppressHydrationWarning>
+        <html dir="ltr" lang="en" suppressHydrationWarning>
             <body>
                 <Layout
-                    search={false}
-                    navbar={navbar}
-                    pageMap={await getPageMap()}
                     docsRepositoryBase="https://github.com/shopnex-ai/shopnex"
-                    footer={footer}
-                    toc={{ backToTop: true }}
-                    sidebar={{
-                        toggleButton: true,
-                        defaultMenuCollapseLevel: 1,
-                    }}
+                    editLink={<>Edit this page on GitHub </>}
                     feedback={{
                         content: "Question? Give us feedback →",
                         labels: "feedback",
                     }}
-                    editLink={<>Edit this page on GitHub </>}
+                    footer={footer}
+                    navbar={navbar}
+                    pageMap={await getPageMap()}
+                    search={false}
+                    sidebar={{
+                        defaultMenuCollapseLevel: 1,
+                        toggleButton: true,
+                    }}
+                    toc={{ backToTop: true }}
                 >
                     {children}
                 </Layout>
