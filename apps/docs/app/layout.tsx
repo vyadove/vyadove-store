@@ -26,7 +26,7 @@ export default async function RootLayout({ children }) {
         <html dir="ltr" lang="en" suppressHydrationWarning>
             <body>
                 <Layout
-                    docsRepositoryBase="https://github.com/shopnex-ai/shopnex"
+                    docsRepositoryBase="https://github.com/shopnex-ai/shopnex/tree/main/apps/docs"
                     editLink={<>Edit this page on GitHub </>}
                     feedback={{
                         content: "Question? Give us feedback →",
