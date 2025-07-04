@@ -78,8 +78,9 @@ export interface Config {
     locations: Location;
     shipping: Shipping;
     carts: Cart;
-    'cj-settings': CjSetting;
     'plugins-space': PluginsSpace;
+    'cj-settings': CjSetting;
+    'stripe-settings': StripeSetting;
     exports: Export;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -103,8 +104,9 @@ export interface Config {
     locations: LocationsSelect<false> | LocationsSelect<true>;
     shipping: ShippingSelect<false> | ShippingSelect<true>;
     carts: CartsSelect<false> | CartsSelect<true>;
-    'cj-settings': CjSettingsSelect<false> | CjSettingsSelect<true>;
     'plugins-space': PluginsSpaceSelect<false> | PluginsSpaceSelect<true>;
+    'cj-settings': CjSettingsSelect<false> | CjSettingsSelect<true>;
+    'stripe-settings': StripeSettingsSelect<false> | StripeSettingsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -166,24 +168,14 @@ export interface Order {
   orderId: string;
   user?: (number | null) | User;
   cart?: (number | null) | Cart;
-  items: {
-    product?: (number | null) | Product;
-    variant: {
-      variantId: string;
-      name: string;
-      price: number;
-    };
-    quantity: number;
-    totalPrice: number;
-    id?: string | null;
-  }[];
   totalAmount: number;
   currency: string;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
   orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'canceled';
   paymentIntentId?: string | null;
   sessionId: string;
-  paymentGateway?: 'stripe' | null;
+  sessionUrl?: string | null;
+  paymentGateway?: ('stripe' | 'manual') | null;
   paymentMethod?: string | null;
   receiptUrl?: string | null;
   metadata?:
@@ -278,11 +270,11 @@ export interface User {
  */
 export interface Cart {
   id: number;
-  sessionId?: string | null;
   customer?: (number | null) | User;
   cartItems?:
     | {
         variantId: string;
+        product: number | Product;
         quantity: number;
         id?: string | null;
       }[]
@@ -488,6 +480,8 @@ export interface Payment {
             blockType: 'manualProvider';
           }
         | {
+            providerName: string;
+            testMode?: boolean | null;
             stripeSecretKey: string;
             stripeWebhooksEndpointSecret: string;
             publishableKey: string;
@@ -561,6 +555,18 @@ export interface Shipping {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plugins-space".
+ */
+export interface PluginsSpace {
+  id: number;
+  pluginName?: string | null;
+  displayName?: string | null;
+  pluginVersion?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "cj-settings".
  */
 export interface CjSetting {
@@ -586,13 +592,14 @@ export interface CjSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "plugins-space".
+ * via the `definition` "stripe-settings".
  */
-export interface PluginsSpace {
+export interface StripeSetting {
   id: number;
-  pluginName?: string | null;
-  displayName?: string | null;
-  pluginVersion?: string | null;
+  testMode?: boolean | null;
+  secretKey?: string | null;
+  webhooksEndpointSecret?: string | null;
+  publishableKey?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -775,12 +782,16 @@ export interface PayloadLockedDocument {
         value: number | Cart;
       } | null)
     | ({
+        relationTo: 'plugins-space';
+        value: number | PluginsSpace;
+      } | null)
+    | ({
         relationTo: 'cj-settings';
         value: number | CjSetting;
       } | null)
     | ({
-        relationTo: 'plugins-space';
-        value: number | PluginsSpace;
+        relationTo: 'stripe-settings';
+        value: number | StripeSetting;
       } | null)
     | ({
         relationTo: 'exports';
@@ -840,27 +851,13 @@ export interface OrdersSelect<T extends boolean = true> {
   orderId?: T;
   user?: T;
   cart?: T;
-  items?:
-    | T
-    | {
-        product?: T;
-        variant?:
-          | T
-          | {
-              variantId?: T;
-              name?: T;
-              price?: T;
-            };
-        quantity?: T;
-        totalPrice?: T;
-        id?: T;
-      };
   totalAmount?: T;
   currency?: T;
   paymentStatus?: T;
   orderStatus?: T;
   paymentIntentId?: T;
   sessionId?: T;
+  sessionUrl?: T;
   paymentGateway?: T;
   paymentMethod?: T;
   receiptUrl?: T;
@@ -1031,6 +1028,8 @@ export interface PaymentsSelect<T extends boolean = true> {
         stripe?:
           | T
           | {
+              providerName?: T;
+              testMode?: T;
               stripeSecretKey?: T;
               stripeWebhooksEndpointSecret?: T;
               publishableKey?: T;
@@ -1087,16 +1086,27 @@ export interface ShippingSelect<T extends boolean = true> {
  * via the `definition` "carts_select".
  */
 export interface CartsSelect<T extends boolean = true> {
-  sessionId?: T;
   customer?: T;
   cartItems?:
     | T
     | {
         variantId?: T;
+        product?: T;
         quantity?: T;
         id?: T;
       };
   completed?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plugins-space_select".
+ */
+export interface PluginsSpaceSelect<T extends boolean = true> {
+  pluginName?: T;
+  displayName?: T;
+  pluginVersion?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1123,12 +1133,13 @@ export interface CjSettingsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "plugins-space_select".
+ * via the `definition` "stripe-settings_select".
  */
-export interface PluginsSpaceSelect<T extends boolean = true> {
-  pluginName?: T;
-  displayName?: T;
-  pluginVersion?: T;
+export interface StripeSettingsSelect<T extends boolean = true> {
+  testMode?: T;
+  secretKey?: T;
+  webhooksEndpointSecret?: T;
+  publishableKey?: T;
   updatedAt?: T;
   createdAt?: T;
 }
