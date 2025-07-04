@@ -73,6 +73,7 @@ export default function ProductActions({
             await syncCartWithBackend(
                 {
                     id: newItem.id,
+                    productId: newItem.productId,
                     quantity: 1,
                 },
                 cartSessionId
@@ -102,6 +103,7 @@ export default function ProductActions({
                 ? variant.gallery
                 : product.variants[0].gallery,
             handle: product.handle,
+            productId: product.id,
             productName: product.title,
         };
     };
@@ -111,7 +113,7 @@ export default function ProductActions({
     };
 
     async function syncCartWithBackend(
-        item: { id: string; quantity: number },
+        item: { id: string; productId: number; quantity: number },
         cartSessionId?: string
     ) {
         if (cartSessionId) {

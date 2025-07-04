@@ -1,6 +1,5 @@
 "use client";
 
-import { initiatePaymentSession } from "@/app/api/services/cart";
 import { RadioGroup } from "@headlessui/react";
 import { CheckCircleSolid, CreditCard } from "@medusajs/icons";
 import { Button, clx, Container, Divider, Heading, Text } from "@medusajs/ui";
@@ -37,7 +36,7 @@ const Payment = ({
 
     // const isStripe = isStripeFunc(selectedPaymentMethod);
 
-    const setPaymentMethod = async (method: string) => {
+    const setPaymentMethod = (method: string) => {
         setError(null);
         setSelectedPaymentMethod(method);
         // if (isStripeFunc(method)) {
@@ -70,19 +69,10 @@ const Payment = ({
         });
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         setIsLoading(true);
         try {
             const shouldInputCard = !activeSession;
-
-            const checkActiveSession =
-                activeSession?.provider_id === selectedPaymentMethod;
-
-            if (!checkActiveSession) {
-                await initiatePaymentSession(cart, {
-                    provider_id: selectedPaymentMethod,
-                });
-            }
 
             if (!shouldInputCard) {
                 return router.push(
