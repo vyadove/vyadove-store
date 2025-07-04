@@ -2,30 +2,21 @@
 
 import type { GiftCard } from "@/payload-types";
 
-import { handleCheckout } from "@/app/api/actions/handle-checkout";
 import { Button, Divider, Heading } from "@medusajs/ui";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useCart } from "react-use-cart";
 
 import CartTotals from "../_components/cart-totals";
-import { DiscountCode } from "../_components/discount-code";
 
 const Summary = () => {
     const [isPending, startTransition] = useTransition();
     const [promotions, setPromotions] = useState<GiftCard[]>([]);
     const { items } = useCart();
+    const router = useRouter();
 
     const handleClick = () => {
-        startTransition(async () => {
-            const variants = items.map((item) => ({
-                id: item.id,
-                quantity: item.quantity,
-            }));
-            const result = await handleCheckout(variants); // Call the Server Action
-            if (result?.url) {
-                window.location.href = result.url; // Redirect to Stripe Checkout
-            }
-        });
+        router.push("/checkout");
     };
 
     const applyPromotion = async (code: string) => {
