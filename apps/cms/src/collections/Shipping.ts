@@ -1,5 +1,7 @@
 import type { Block, CollectionConfig } from "payload";
 
+import { admins, anyone } from "@/access/roles";
+
 import { groups } from "./groups";
 
 export const CustomShipping: Block = {
@@ -61,6 +63,12 @@ export const CustomShipping: Block = {
 
 export const Shipping: CollectionConfig = {
     slug: "shipping",
+    access: {
+        create: admins,
+        delete: admins,
+        read: anyone,
+        update: admins,
+    },
     admin: {
         group: groups.settings,
         useAsTitle: "name",
