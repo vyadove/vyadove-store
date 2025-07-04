@@ -1,14 +1,15 @@
 "use client";
 
+import type { Order } from "@shopnex/types";
+
 import React from "react";
-import { useCart } from "react-use-cart";
 
 import { convertToLocale } from "../_util/money";
 
-const CartTotals = ({ cart, currencyCode }: any) => {
-    const { cartTotal } = useCart();
-    const tax_total = 0;
-    const shipping_subtotal = 0;
+const CartTotals = ({ order }: { order: Order }) => {
+    const taxTotal = 0;
+    const shippingSubtotal = 0;
+    const cartTotal = order.totalAmount;
 
     return (
         <div>
@@ -31,19 +32,19 @@ const CartTotals = ({ cart, currencyCode }: any) => {
                     <span>Shipping</span>
                     <span
                         data-testid="cart-shipping"
-                        data-value={shipping_subtotal || 0}
+                        data-value={shippingSubtotal || 0}
                     >
                         {convertToLocale({
-                            amount: shipping_subtotal ?? 0,
+                            amount: shippingSubtotal ?? 0,
                             currency_code: "usd",
                         })}
                     </span>
                 </div>
                 <div className="flex justify-between">
                     <span className="flex gap-x-1 items-center ">Taxes</span>
-                    <span data-testid="cart-taxes" data-value={tax_total || 0}>
+                    <span data-testid="cart-taxes" data-value={taxTotal || 0}>
                         {convertToLocale({
-                            amount: tax_total ?? 0,
+                            amount: taxTotal ?? 0,
                             currency_code: "usd",
                         })}
                     </span>
