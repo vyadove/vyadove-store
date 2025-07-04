@@ -4,12 +4,14 @@ import React from "react";
 type CheckboxProps = {
     checked?: boolean;
     "data-testid"?: string;
+    id: string;
     label: string;
     name?: string;
     onChange?: () => void;
 };
 
 const CheckboxWithLabel: React.FC<CheckboxProps> = ({
+    id = "checkbox",
     name,
     checked = true,
     "data-testid": dataTestId,
@@ -24,7 +26,7 @@ const CheckboxWithLabel: React.FC<CheckboxProps> = ({
                     checked={checked}
                     className="text-base-regular flex items-center gap-x-2"
                     data-testid={dataTestId}
-                    id="checkbox"
+                    id={id}
                     name={name}
                     onClick={onChange}
                     role="checkbox"
