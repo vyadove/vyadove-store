@@ -1,8 +1,6 @@
 import { listCartShippingMethods } from "@/app/api/services/fulfillment";
 import { listCartPaymentMethods } from "@/app/api/services/payment";
 
-import Addresses from "../_components/checkout/addresses";
-import Payment from "../_components/checkout/payment";
 import Review from "../_components/checkout/review";
 import Shipping from "../_components/checkout/shipping";
 
