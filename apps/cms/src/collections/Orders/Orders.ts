@@ -3,6 +3,7 @@ import type { CollectionConfig } from "payload";
 import { admins, adminsOrSelf, anyone } from "@/access/roles";
 
 import { groups } from "../groups";
+import { checkoutEndpoint } from "./endpoints/checkout";
 import { OrderTimeline } from "./fields/OrderTimeline";
 import { addOrderTimelineEntry } from "./hooks/add-order-timeline-entry";
 
@@ -18,6 +19,7 @@ export const Orders: CollectionConfig = {
         group: groups.orders,
         useAsTitle: "orderId",
     },
+    endpoints: [checkoutEndpoint],
     fields: [
         {
             name: "orderId",
@@ -35,52 +37,6 @@ export const Orders: CollectionConfig = {
             name: "cart",
             type: "relationship",
             relationTo: "carts",
-            required: false,
-        },
-        {
-            name: "items",
-            type: "array",
-            fields: [
-                {
-                    name: "product",
-                    type: "relationship",
-                    relationTo: "products",
-                    required: false,
-                },
-                {
-                    name: "variant",
-                    type: "group",
-                    fields: [
-                        {
-                            name: "variantId",
-                            type: "text",
-                            required: true,
-                        },
-                        {
-                            name: "name",
-                            type: "text",
-                            required: true,
-                        },
-                        {
-                            name: "price",
-                            type: "number",
-                            required: true,
-                        },
-                    ],
-                },
-                {
-                    name: "quantity",
-                    type: "number",
-                    min: 1,
-                    required: true,
-                },
-                {
-                    name: "totalPrice",
-                    type: "number",
-                    required: true,
-                },
-            ],
-            required: true,
         },
         {
             name: "totalAmount",
@@ -138,9 +94,20 @@ export const Orders: CollectionConfig = {
             required: true,
         },
         {
+            name: "sessionUrl",
+            type: "text",
+            admin: {
+                disabled: true,
+            },
+            virtual: true,
+        },
+        {
             name: "paymentGateway",
             type: "select",
-            options: [{ label: "Stripe", value: "stripe" }],
+            options: [
+                { label: "Stripe", value: "stripe" },
+                { label: "Manual", value: "manual" },
+            ],
         },
         {
             name: "paymentMethod",
