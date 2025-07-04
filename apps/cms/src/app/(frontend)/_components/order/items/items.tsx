@@ -1,5 +1,7 @@
 import type { Order, Product } from "@/payload-types";
+import type { Cart } from "@shopnex/types";
 
+import { isExpandedDoc } from "@/utils/is-expended-doc";
 import { Table } from "@medusajs/ui";
 
 import Divider from "../../divider";
@@ -10,11 +12,15 @@ type ItemsProps = {
 };
 
 const Items = ({ order }: ItemsProps) => {
-    const items = order.items.map((item) => {
-        const { variantId } = item.variant;
+    if (!isExpandedDoc<Cart>(order.cart) || !order.cart.cartItems) {
+        return null;
+    }
+    const { cartItems } = order.cart;
+    const items = cartItems.map((item) => {
+        const { variantId } = item;
         const product = item.product as Product;
         const variant = product.variants.find(
-            (variant) => variant.vid === variantId
+            (variant) => variant.id === variantId
         );
 
         return {

@@ -8,8 +8,8 @@ import Thumbnail from "../../thumbnail";
 type ItemProps = {
     currencyCode: string;
     item: {
+        gallery: { url: string }[];
         id?: null | string;
-        imageUrl: string;
         options?: { option: string; value: string }[];
         price: number;
         productName: string;
@@ -22,7 +22,7 @@ const Item = ({ currencyCode, item }: ItemProps) => {
         <Table.Row className="w-full" data-testid="product-row">
             <Table.Cell className="!pl-0 p-4 w-24">
                 <div className="flex w-16">
-                    <Thumbnail size="square" thumbnail={item.imageUrl} />
+                    <Thumbnail size="square" thumbnail={item?.gallery[0].url} />
                 </div>
             </Table.Cell>
 
