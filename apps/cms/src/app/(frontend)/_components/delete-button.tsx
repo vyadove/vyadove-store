@@ -1,10 +1,10 @@
+import { updateCart } from "@/app/api/services/cart";
 import { clx } from "@medusajs/ui";
 import { useState } from "react";
 import { useCart } from "react-use-cart";
 
 import Spinner from "./icons/spinner";
 import Trash from "./icons/trash";
-import { updateCart } from "@/app/api/services/cart";
 
 const DeleteButton = ({
     id,
