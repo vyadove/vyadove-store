@@ -1,8 +1,6 @@
 import type { Product } from "@/payload-types";
 import type { Order } from "@shopnex/types";
 
-import { mapToStripeLineItems } from "@/app/api/actions/stripe";
-import { createPendingOrder } from "@/app/api/services/orders";
 import { getVariants } from "@/app/api/services/products";
 import Decimal from "decimal.js";
 import { type Endpoint, parseCookies, type PayloadRequest } from "payload";
@@ -99,21 +97,21 @@ const createOrderItems = (
     }));
 };
 
-const validateCartItems = async (cartItems: CartItem[], logger: any) => {
-    const variantIds = cartItems.map((item) => item.id);
-    const variants = await getVariants(variantIds);
+// const validateCartItems = async (cartItems: CartItem[], logger: any) => {
+//     const variantIds = cartItems.map((item) => item.id);
+//     const variants = await getVariants(variantIds);
 
-    if (!variants.length) {
-        logger.error("No valid variants found for checkout");
-        throw new Error("Invalid product variants.");
-    }
+//     if (!variants.length) {
+//         logger.error("No valid variants found for checkout");
+//         throw new Error("Invalid product variants.");
+//     }
 
-    return variants.map((variant) => ({
-        ...variant,
-        quantity:
-            cartItems.find((item) => item.id === variant.id)?.quantity || 0,
-    }));
-};
+//     return variants.map((variant) => ({
+//         ...variant,
+//         quantity:
+//             cartItems.find((item) => item.id === variant.id)?.quantity || 0,
+//     }));
+// };
 
 const createOrder = async (
     req: PayloadRequest,
@@ -134,103 +132,103 @@ export const checkoutEndpoint: Endpoint = {
         const cartSessionId = cookies.get("cart-session");
         const cartId = cartSessionId ? +cartSessionId : null;
         const orderId = `ORD-${Date.now().toString()}`;
-        try {
-            if (!req.json) {
-                logger.error("Checkout failed - Invalid request body");
-                return Response.json(
-                    { error: "Invalid request body." },
-                    { status: 400 }
-                );
-            }
+        // try {
+        //     if (!req.json) {
+        //         logger.error("Checkout failed - Invalid request body");
+        //         return Response.json(
+        //             { error: "Invalid request body." },
+        //             { status: 400 }
+        //         );
+        //     }
 
-            const body: CheckoutRequest = await req.json();
-            const { cartItems, customer, paymentMethod, shippingMethod } = body;
+        //     const body: CheckoutRequest = await req.json();
+        //     const { cartItems, customer, paymentMethod, shippingMethod } = body;
 
-            logger.info("Processing checkout", {
-                customerId: customer?.id,
-                itemCount: cartItems?.length,
-                paymentMethod,
-            });
+        //     logger.info("Processing checkout", {
+        //         customerId: customer?.id,
+        //         itemCount: cartItems?.length,
+        //         paymentMethod,
+        //     });
 
-            const variantsWithQty = await validateCartItems(cartItems, logger);
-            logger.info("Validated variants", {
-                variantCount: variantsWithQty.length,
-                variantsWithQty,
-            });
+        //     const variantsWithQty = await validateCartItems(cartItems, logger);
+        //     logger.info("Validated variants", {
+        //         variantCount: variantsWithQty.length,
+        //         variantsWithQty,
+        //     });
 
-            const { subtotal, total } = calculateOrderTotals(
-                variantsWithQty,
-                shippingMethod?.cost || 0
-            );
+        //     const { subtotal, total } = calculateOrderTotals(
+        //         variantsWithQty,
+        //         shippingMethod?.cost || 0
+        //     );
 
-            logger.info("Calculated order totals", {
-                subtotal,
-                total,
-            });
+        //     logger.info("Calculated order totals", {
+        //         subtotal,
+        //         total,
+        //     });
 
-            if (paymentMethod === "manualProvider") {
-                const sessionId = `SID-${crypto.randomUUID()}`;
-                const order = await createOrder(req, {
-                    cart: cartId,
-                    currency: "usd",
-                    orderId,
-                    orderStatus: "shipped",
-                    paymentGateway: "manual",
-                    paymentMethod,
-                    paymentStatus: "paid",
-                    sessionId,
-                    totalAmount: total,
-                });
+        //     if (paymentMethod === "manualProvider") {
+        //         const sessionId = `SID-${crypto.randomUUID()}`;
+        //         const order = await createOrder(req, {
+        //             cart: cartId,
+        //             currency: "usd",
+        //             orderId,
+        //             orderStatus: "shipped",
+        //             paymentGateway: "manual",
+        //             paymentMethod,
+        //             paymentStatus: "paid",
+        //             sessionId,
+        //             totalAmount: total,
+        //         });
 
-                logger.info("Created and completed manual order", {
-                    orderId: order.id,
-                });
+        //         logger.info("Created and completed manual order", {
+        //             orderId: order.id,
+        //         });
 
-                return Response.json({
-                    redirectUrl: `${process.env.NEXT_PUBLIC_SERVER_URL}/order/confirmed/${sessionId}`,
-                });
-            }
+        //         return Response.json({
+        //             redirectUrl: `${process.env.NEXT_PUBLIC_SERVER_URL}/order/confirmed/${sessionId}`,
+        //         });
+        //     }
 
-            if (paymentMethod === "stripe") {
-                logger.info("Processing Stripe payment", { orderId });
-                const lineItems = mapToStripeLineItems(variantsWithQty);
-                const session = await createCheckoutSession(lineItems, orderId);
+        //     // if (paymentMethod === "stripe") {
+        //     //     logger.info("Processing Stripe payment", { orderId });
+        //     //     const lineItems = mapToStripeLineItems(variantsWithQty);
+        //     //     const session = await createCheckoutSession(lineItems, orderId);
 
-                await createOrder(req, {
-                    cart: cartId,
-                    currency: "usd",
-                    orderId,
-                    orderStatus: "pending",
-                    paymentGateway: "stripe",
-                    paymentMethod,
-                    paymentStatus: "pending",
-                    sessionId: session.id,
-                    totalAmount: total,
-                });
-                logger.info("Created Stripe checkout session", {
-                    orderId,
-                    sessionId: session.id,
-                });
-                return Response.json({
-                    redirectUrl: session.url,
-                });
-            }
+        //     //     await createOrder(req, {
+        //     //         cart: cartId,
+        //     //         currency: "usd",
+        //     //         orderId,
+        //     //         orderStatus: "pending",
+        //     //         paymentGateway: "stripe",
+        //     //         paymentMethod,
+        //     //         paymentStatus: "pending",
+        //     //         sessionId: session.id,
+        //     //         totalAmount: total,
+        //     //     });
+        //     //     logger.info("Created Stripe checkout session", {
+        //     //         orderId,
+        //     //         sessionId: session.id,
+        //     //     });
+        //     //     return Response.json({
+        //     //         redirectUrl: session.url,
+        //     //     });
+        //     // }
 
-            return Response.json({
-                redirectUrl: `${process.env.NEXT_PUBLIC_SERVER_URL}/order-success?orderId=${order.id}`,
-            });
-        } catch (error) {
-            if (error instanceof Error) {
-                logger.error("Checkout error", { error });
-                return Response.json({ error: error.message }, { status: 400 });
-            } else {
-                logger.error("Checkout error", { error: String(error) });
-                return Response.json(
-                    { error: "Checkout failed." },
-                    { status: 500 }
-                );
-            }
-        }
+        //     return Response.json({
+        //         redirectUrl: `${process.env.NEXT_PUBLIC_SERVER_URL}/order-success?orderId=${order.id}`,
+        //     });
+        // } catch (error) {
+        //     if (error instanceof Error) {
+        //         logger.error("Checkout error", { error });
+        //         return Response.json({ error: error.message }, { status: 400 });
+        //     } else {
+        //         logger.error("Checkout error", { error: String(error) });
+        //         return Response.json(
+        //             { error: "Checkout failed." },
+        //             { status: 500 }
+        //         );
+        //     }
+        // }
     },
     method: "post",
     path: "/checkout",

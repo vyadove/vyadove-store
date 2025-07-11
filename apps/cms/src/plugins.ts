@@ -5,6 +5,7 @@ import { importExportPlugin } from "@shopnex/import-export-plugin";
 import { storePlugin } from "@shopnex/store-plugin";
 import { stripePlugin } from "@shopnex/stripe-plugin";
 
+import { admins } from "./access/roles";
 import { paymentCanceled } from "./webhooks/payment-canceled";
 import { paymentSucceeded } from "./webhooks/payment-succeeded";
 
@@ -19,7 +20,11 @@ export const plugins: Plugin[] = [
         isTestKey: Boolean(process.env.NEXT_PUBLIC_STRIPE_IS_TEST_KEY),
         logs: true,
         paymentCollectionSlug: "payments",
-        rest: false,
+        secretAccess: {
+            create: admins,
+            read: admins,
+            update: admins,
+        },
         stripeSecretKey: process.env.STRIPE_SECRET_KEY || "",
         stripeWebhooksEndpointSecret:
             process.env.STRIPE_WEBHOOKS_SIGNING_SECRET,
