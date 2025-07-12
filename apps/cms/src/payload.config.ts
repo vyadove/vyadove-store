@@ -55,6 +55,13 @@ export default buildConfig({
         Shipping,
         Carts,
     ],
+    cors: {
+        headers: ["x-shop-handle", "x-shop-id"],
+        origins: [
+            process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",
+            process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3020",
+        ],
+    },
     db: sqliteAdapter({
         client: {
             url: process.env.DATABASE_URI || "",
