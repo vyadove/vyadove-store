@@ -1,7 +1,6 @@
-import type { Product } from "@/payload-types";
-import type { Order } from "@shopnex/types";
+import type { Cart, Order } from "@shopnex/types";
 
-import { getVariants } from "@/app/api/services/products";
+import { validateCartItems } from "@/utils/validate-cart-items";
 import Decimal from "decimal.js";
 import { type Endpoint, parseCookies, type PayloadRequest } from "payload";
 import Stripe from "stripe";
@@ -20,35 +19,24 @@ interface CheckoutRequest {
     };
 }
 
-interface OrderItem {
-    product: Product;
-    quantity: number;
-    totalPrice: number;
-    variant: {
-        name: string;
-        price: number;
-        variantId: string;
-    };
-}
-
-interface VariantsWithQty {
-    id: string;
-    name: string;
-    options: any[];
-    price: number;
-    product: Product;
-    quantity: number;
-}
-
 const calculateOrderTotals = (
-    variantsWithQty: VariantsWithQty[],
+    cartItems: Cart["cartItems"],
     shippingCost: number
 ) => {
-    const subtotal = variantsWithQty.reduce(
-        (sum, variant) =>
-            sum.plus(new Decimal(variant.price).times(variant.quantity)),
-        new Decimal(0)
-    );
+    const subtotal =
+        cartItems?.reduce((sum, item) => {
+            if (typeof item.product === "number") {
+                return sum;
+            }
+            const variant = item.product.variants.find(
+                (variant) => variant.id === item.variantId
+            );
+            if (!variant) {
+                return sum;
+            }
+            return sum.plus(new Decimal(variant.price).times(item.quantity));
+        }, new Decimal(0)) || new Decimal(0);
+
     const total = subtotal.plus(new Decimal(shippingCost));
 
     return { subtotal: +subtotal, total: +total };
@@ -81,38 +69,6 @@ export const createCheckoutSession = async (
     });
 };
 
-const createOrderItems = (
-    variantsWithQty: VariantsWithQty[],
-    total: number
-): OrderItem[] => {
-    return variantsWithQty.map((variant) => ({
-        product: variant.product,
-        quantity: variant.quantity,
-        totalPrice: total,
-        variant: {
-            name: variant.options.map((opt) => opt.value).join(" / "),
-            price: variant.price,
-            variantId: variant.id,
-        },
-    }));
-};
-
-// const validateCartItems = async (cartItems: CartItem[], logger: any) => {
-//     const variantIds = cartItems.map((item) => item.id);
-//     const variants = await getVariants(variantIds);
-
-//     if (!variants.length) {
-//         logger.error("No valid variants found for checkout");
-//         throw new Error("Invalid product variants.");
-//     }
-
-//     return variants.map((variant) => ({
-//         ...variant,
-//         quantity:
-//             cartItems.find((item) => item.id === variant.id)?.quantity || 0,
-//     }));
-// };
-
 const createOrder = async (
     req: PayloadRequest,
     orderData: Omit<Order, "createdAt" | "id" | "updatedAt">
@@ -126,109 +82,150 @@ const createOrder = async (
 
 export const checkoutEndpoint: Endpoint = {
     handler: async (req) => {
+        if (req.method === "OPTIONS") {
+            return new Response(null, {
+                headers: {
+                    "Access-Control-Allow-Credentials": "true",
+                    "Access-Control-Allow-Headers":
+                        "Content-Type, x-shop-handle, x-shop-id",
+                    "Access-Control-Allow-Methods": "POST, OPTIONS",
+                    "Access-Control-Allow-Origin":
+                        process.env.NEXT_PUBLIC_STOREFRONT_URL ||
+                        "http://localhost:3020",
+                },
+                status: 204,
+            });
+        }
         const { logger } = req.payload;
         const cookies = parseCookies(req.headers);
 
         const cartSessionId = cookies.get("cart-session");
         const cartId = cartSessionId ? +cartSessionId : null;
         const orderId = `ORD-${Date.now().toString()}`;
-        // try {
-        //     if (!req.json) {
-        //         logger.error("Checkout failed - Invalid request body");
-        //         return Response.json(
-        //             { error: "Invalid request body." },
-        //             { status: 400 }
-        //         );
-        //     }
+        try {
+            if (!req.json) {
+                logger.error("Checkout failed - Invalid request body");
+                return Response.json(
+                    { error: "Invalid request body." },
+                    { status: 400 }
+                );
+            }
+            const cart = await req.payload.find({
+                collection: "carts",
+                req,
+                where: {
+                    id: {
+                        equals: cartId,
+                    },
+                    completed: {
+                        equals: false,
+                    },
+                },
+            });
 
-        //     const body: CheckoutRequest = await req.json();
-        //     const { cartItems, customer, paymentMethod, shippingMethod } = body;
+            if (!cart.docs.length) {
+                logger.error("Checkout failed - Invalid cart");
+                return Response.json(
+                    { error: "Invalid cart." },
+                    { status: 400 }
+                );
+            }
+            const { cartItems } = cart.docs[0];
 
-        //     logger.info("Processing checkout", {
-        //         customerId: customer?.id,
-        //         itemCount: cartItems?.length,
-        //         paymentMethod,
-        //     });
+            const body: CheckoutRequest = await req.json();
+            const { customer, paymentMethod, shippingMethod } = body;
 
-        //     const variantsWithQty = await validateCartItems(cartItems, logger);
-        //     logger.info("Validated variants", {
-        //         variantCount: variantsWithQty.length,
-        //         variantsWithQty,
-        //     });
+            logger.info("Processing checkout", {
+                customerId: customer?.id,
+                itemCount: cartItems?.length,
+                paymentMethod,
+            });
 
-        //     const { subtotal, total } = calculateOrderTotals(
-        //         variantsWithQty,
-        //         shippingMethod?.cost || 0
-        //     );
+            const isValid = validateCartItems(cartItems, logger);
+            if (!isValid) {
+                logger.error("Checkout failed - Invalid cart items");
+                return Response.json(
+                    { error: "Invalid cart items." },
+                    { status: 400 }
+                );
+            }
 
-        //     logger.info("Calculated order totals", {
-        //         subtotal,
-        //         total,
-        //     });
+            const { subtotal, total } = calculateOrderTotals(
+                cartItems,
+                shippingMethod?.cost || 0
+            );
 
-        //     if (paymentMethod === "manualProvider") {
-        //         const sessionId = `SID-${crypto.randomUUID()}`;
-        //         const order = await createOrder(req, {
-        //             cart: cartId,
-        //             currency: "usd",
-        //             orderId,
-        //             orderStatus: "shipped",
-        //             paymentGateway: "manual",
-        //             paymentMethod,
-        //             paymentStatus: "paid",
-        //             sessionId,
-        //             totalAmount: total,
-        //         });
+            logger.info("Calculated order totals", {
+                subtotal,
+                total,
+            });
 
-        //         logger.info("Created and completed manual order", {
-        //             orderId: order.id,
-        //         });
+            if (paymentMethod === "manualProvider") {
+                const sessionId = `SID-${crypto.randomUUID()}`;
+                const order = await createOrder(req, {
+                    cart: cartId,
+                    currency: "usd",
+                    orderId,
+                    orderStatus: "shipped",
+                    paymentGateway: "manual",
+                    paymentMethod,
+                    paymentStatus: "paid",
+                    sessionId,
+                    totalAmount: total,
+                });
 
-        //         return Response.json({
-        //             redirectUrl: `${process.env.NEXT_PUBLIC_SERVER_URL}/order/confirmed/${sessionId}`,
-        //         });
-        //     }
+                logger.info("Created and completed manual order", {
+                    orderId: order.id,
+                });
 
-        //     // if (paymentMethod === "stripe") {
-        //     //     logger.info("Processing Stripe payment", { orderId });
-        //     //     const lineItems = mapToStripeLineItems(variantsWithQty);
-        //     //     const session = await createCheckoutSession(lineItems, orderId);
+                return Response.json({
+                    redirectUrl: `${process.env.NEXT_PUBLIC_SERVER_URL}/order/confirmed/${sessionId}`,
+                });
+            }
 
-        //     //     await createOrder(req, {
-        //     //         cart: cartId,
-        //     //         currency: "usd",
-        //     //         orderId,
-        //     //         orderStatus: "pending",
-        //     //         paymentGateway: "stripe",
-        //     //         paymentMethod,
-        //     //         paymentStatus: "pending",
-        //     //         sessionId: session.id,
-        //     //         totalAmount: total,
-        //     //     });
-        //     //     logger.info("Created Stripe checkout session", {
-        //     //         orderId,
-        //     //         sessionId: session.id,
-        //     //     });
-        //     //     return Response.json({
-        //     //         redirectUrl: session.url,
-        //     //     });
-        //     // }
+            logger.info(
+                `Processing ${paymentMethod} payment, orderId: ${orderId}`
+            );
 
-        //     return Response.json({
-        //         redirectUrl: `${process.env.NEXT_PUBLIC_SERVER_URL}/order-success?orderId=${order.id}`,
-        //     });
-        // } catch (error) {
-        //     if (error instanceof Error) {
-        //         logger.error("Checkout error", { error });
-        //         return Response.json({ error: error.message }, { status: 400 });
-        //     } else {
-        //         logger.error("Checkout error", { error: String(error) });
-        //         return Response.json(
-        //             { error: "Checkout failed." },
-        //             { status: 500 }
-        //         );
-        //     }
-        // }
+            const order = await createOrder(req, {
+                cart: cartId,
+                currency: "usd",
+                orderId,
+                orderStatus: "pending",
+                paymentGateway: paymentMethod,
+                paymentMethod,
+                paymentStatus: "pending",
+                totalAmount: total,
+            });
+
+            return Response.json(
+                {
+                    redirectUrl: order.sessionUrl,
+                },
+                {
+                    headers: {
+                        "Access-Control-Allow-Credentials": "true",
+                        "Access-Control-Allow-Headers":
+                            "Content-Type, x-shop-handle, x-shop-id",
+                        "Access-Control-Allow-Methods": "POST, OPTIONS",
+                        "Access-Control-Allow-Origin":
+                            process.env.NEXT_PUBLIC_STOREFRONT_URL ||
+                            "http://localhost:3020",
+                    },
+                }
+            );
+        } catch (error) {
+            if (error instanceof Error) {
+                logger.error("Checkout error", { error });
+                return Response.json({ error: error.message }, { status: 400 });
+            } else {
+                logger.error("Checkout error", { error: String(error) });
+                return Response.json(
+                    { error: "Checkout failed." },
+                    { status: 500 }
+                );
+            }
+        }
     },
     method: "post",
     path: "/checkout",
