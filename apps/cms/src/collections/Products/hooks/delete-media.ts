@@ -1,7 +1,7 @@
 import type { Media, Product } from "@/payload-types";
 import type { CollectionAfterDeleteHook } from "payload";
 
-import { isExpandedDoc } from "@/utils/is-expended-doc";
+import { isExpandedDoc } from "@/utils/is-expanded-doc";
 
 export const deleteMedia: CollectionAfterDeleteHook<Product> = async ({
     doc,
