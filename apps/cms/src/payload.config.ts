@@ -62,6 +62,10 @@ export default buildConfig({
             process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3020",
         ],
     },
+    custom: {
+        shopUrl:
+            process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3020",
+    },
     db: sqliteAdapter({
         client: {
             url: process.env.DATABASE_URI || "",
@@ -80,6 +84,7 @@ export default buildConfig({
     globals: [StoreSettings, HeroSection, Footer],
     plugins,
     secret: process.env.PAYLOAD_SECRET || "",
+    serverURL: process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",
     sharp,
     telemetry: false,
     typescript: {

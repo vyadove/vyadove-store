@@ -171,7 +171,7 @@ export interface Order {
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
   orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'canceled';
   paymentIntentId?: string | null;
-  sessionId: string;
+  sessionId?: string | null;
   sessionUrl?: string | null;
   paymentGateway?: ('stripe' | 'manual') | null;
   paymentMethod?: string | null;

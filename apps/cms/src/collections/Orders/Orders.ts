@@ -91,7 +91,6 @@ export const Orders: CollectionConfig = {
                 position: "sidebar",
                 readOnly: true,
             },
-            required: true,
         },
         {
             name: "sessionUrl",
@@ -99,7 +98,6 @@ export const Orders: CollectionConfig = {
             admin: {
                 disabled: true,
             },
-            virtual: true,
         },
         {
             name: "paymentGateway",

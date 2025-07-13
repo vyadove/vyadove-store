@@ -80,7 +80,6 @@ export interface Config {
     carts: Cart;
     'plugins-space': PluginsSpace;
     'cj-settings': CjSetting;
-    'stripe-settings': StripeSetting;
     exports: Export;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -106,7 +105,6 @@ export interface Config {
     carts: CartsSelect<false> | CartsSelect<true>;
     'plugins-space': PluginsSpaceSelect<false> | PluginsSpaceSelect<true>;
     'cj-settings': CjSettingsSelect<false> | CjSettingsSelect<true>;
-    'stripe-settings': StripeSettingsSelect<false> | StripeSettingsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -173,7 +171,7 @@ export interface Order {
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
   orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'canceled';
   paymentIntentId?: string | null;
-  sessionId: string;
+  sessionId?: string | null;
   sessionUrl?: string | null;
   paymentGateway?: ('stripe' | 'manual') | null;
   paymentMethod?: string | null;
@@ -270,7 +268,6 @@ export interface User {
  */
 export interface Cart {
   id: number;
-  sessionId?: string | null;
   customer?: (number | null) | User;
   cartItems?:
     | {
@@ -483,6 +480,7 @@ export interface Payment {
         | {
             providerName: string;
             testMode?: boolean | null;
+            methodType?: ('card' | 'ach' | 'auto') | null;
             stripeSecretKey: string;
             stripeWebhooksEndpointSecret: string;
             publishableKey: string;
@@ -588,19 +586,6 @@ export interface CjSetting {
         id?: string | null;
       }[]
     | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "stripe-settings".
- */
-export interface StripeSetting {
-  id: number;
-  testMode?: boolean | null;
-  secretKey?: string | null;
-  webhooksEndpointSecret?: string | null;
-  publishableKey?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -789,10 +774,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'cj-settings';
         value: number | CjSetting;
-      } | null)
-    | ({
-        relationTo: 'stripe-settings';
-        value: number | StripeSetting;
       } | null)
     | ({
         relationTo: 'exports';
@@ -1031,6 +1012,7 @@ export interface PaymentsSelect<T extends boolean = true> {
           | {
               providerName?: T;
               testMode?: T;
+              methodType?: T;
               stripeSecretKey?: T;
               stripeWebhooksEndpointSecret?: T;
               publishableKey?: T;
@@ -1087,7 +1069,6 @@ export interface ShippingSelect<T extends boolean = true> {
  * via the `definition` "carts_select".
  */
 export interface CartsSelect<T extends boolean = true> {
-  sessionId?: T;
   customer?: T;
   cartItems?:
     | T
@@ -1130,18 +1111,6 @@ export interface CjSettingsSelect<T extends boolean = true> {
         productUrl?: T;
         id?: T;
       };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "stripe-settings_select".
- */
-export interface StripeSettingsSelect<T extends boolean = true> {
-  testMode?: T;
-  secretKey?: T;
-  webhooksEndpointSecret?: T;
-  publishableKey?: T;
   updatedAt?: T;
   createdAt?: T;
 }
