@@ -31,7 +31,7 @@ export const paymentSucceeded: StripeWebhookHandler<{
 
     try {
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-            apiVersion: "2022-08-01",
+            apiVersion: "2025-02-24.acacia",
         });
         const charges = await stripe.charges.list({
             payment_intent: paymentIntent.id,
@@ -95,7 +95,7 @@ export const paymentSucceeded: StripeWebhookHandler<{
 
         // (Optional) Send confirmation email
         if (customerEmail) {
-            sendOrderConfirmationEmail(customerEmail, orderId);
+            sendOrderConfirmationEmail(customerEmail, orderId, logger);
         }
     } catch (error) {
         logger.error("❌ Error updating order status:", error);
