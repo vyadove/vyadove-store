@@ -5,18 +5,8 @@
     "license": "MIT",
     "type": "module",
     "scripts": {
-        "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
-        "dev": "turbo run dev --parallel",
-        "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=\"${NODE_OPTIONS} --no-deprecation next dev",
-        "db:seed": "pnpm --filter ./apps/cms db:seed",
-        "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
-        "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
-        "generate:schema": "payload generate:db-schema",
-        "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
-        "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
-        "lint:quiet": "cross-env NODE_OPTIONS=--no-deprecation next lint --quiet",
-        "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
-        "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+        "dev": "pnpm --filter ./apps/cms dev",
+        "build": "turbo run build",
         "format": "prettier --write ."
     },
     "dependencies": {
