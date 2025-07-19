@@ -1,7 +1,7 @@
 {
-    "name": "shopnex-new",
-    "version": "1.0.0",
-    "description": "A blank template to get started with Payload 3.0",
+    "name": "shopnex-starter",
+    "version": "0.6.0",
+    "description": "Starter for building Shopify-like storefronts using Payload CMS",
     "license": "MIT",
     "type": "module",
     "scripts": {
