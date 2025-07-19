@@ -26,7 +26,7 @@ export const defaultESLintIgnores = [
 ];
 
 export default [
-    ...payloadEsLintConfig,
+    // ...payloadEsLintConfig,
     {
         ignores: defaultESLintIgnores,
     },
