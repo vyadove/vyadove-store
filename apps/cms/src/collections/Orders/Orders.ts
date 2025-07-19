@@ -1,8 +1,9 @@
 import type { CollectionConfig } from "payload";
 
-import { admins, adminsOrSelf, anyone } from "@/access/roles";
+import { admins, anyone } from "@/access/roles";
 
 import { groups } from "../groups";
+import { readOrderAccess } from "./access/order-access";
 import { checkoutEndpoint } from "./endpoints/checkout";
 import { OrderTimeline } from "./fields/OrderTimeline";
 import { addOrderTimelineEntry } from "./hooks/add-order-timeline-entry";
@@ -12,7 +13,7 @@ export const Orders: CollectionConfig = {
     access: {
         create: anyone,
         delete: admins,
-        read: adminsOrSelf,
+        read: readOrderAccess,
         update: admins,
     },
     admin: {
