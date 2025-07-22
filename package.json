@@ -7,7 +7,8 @@
     "scripts": {
         "dev": "pnpm --filter ./apps/cms dev",
         "build": "turbo run build",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "seed": "payload run ./src/seed"
     },
     "dependencies": {
         "@payloadcms/db-sqlite": "3.31.0",
