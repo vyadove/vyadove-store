@@ -78,6 +78,7 @@ export interface Config {
     locations: Location;
     shipping: Shipping;
     carts: Cart;
+    themes: Theme;
     'plugins-space': PluginsSpace;
     'cj-settings': CjSetting;
     exports: Export;
@@ -103,6 +104,7 @@ export interface Config {
     locations: LocationsSelect<false> | LocationsSelect<true>;
     shipping: ShippingSelect<false> | ShippingSelect<true>;
     carts: CartsSelect<false> | CartsSelect<true>;
+    themes: ThemesSelect<false> | ThemesSelect<true>;
     'plugins-space': PluginsSpaceSelect<false> | PluginsSpaceSelect<true>;
     'cj-settings': CjSettingsSelect<false> | CjSettingsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
@@ -554,6 +556,38 @@ export interface Shipping {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "themes".
+ */
+export interface Theme {
+  id: number;
+  title?: string | null;
+  editorMode: (
+    | {
+        builderIoPublicKey: string;
+        builderIoPrivateKey: string;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'builder-io';
+      }
+    | {
+        /**
+         * Optional: Link to your live storefront. Press enter to add multiple values
+         */
+        storefrontUrls?: string[] | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'custom-storefront-block';
+      }
+  )[];
+  /**
+   * Explore top-rated free themes loved by store owners—designed to help you launch quickly and look great.
+   */
+  customStorefrontThemes?: {};
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "plugins-space".
  */
 export interface PluginsSpace {
@@ -766,6 +800,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'carts';
         value: number | Cart;
+      } | null)
+    | ({
+        relationTo: 'themes';
+        value: number | Theme;
       } | null)
     | ({
         relationTo: 'plugins-space';
@@ -1079,6 +1117,35 @@ export interface CartsSelect<T extends boolean = true> {
         id?: T;
       };
   completed?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "themes_select".
+ */
+export interface ThemesSelect<T extends boolean = true> {
+  title?: T;
+  editorMode?:
+    | T
+    | {
+        'builder-io'?:
+          | T
+          | {
+              builderIoPublicKey?: T;
+              builderIoPrivateKey?: T;
+              id?: T;
+              blockName?: T;
+            };
+        'custom-storefront-block'?:
+          | T
+          | {
+              storefrontUrls?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  customStorefrontThemes?: T | {};
   updatedAt?: T;
   createdAt?: T;
 }

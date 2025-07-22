@@ -20,10 +20,10 @@ import { Footer } from "./globals/Footer";
 import { HeroSection } from "./globals/HeroSection";
 import StoreSettings from "./globals/StoreSettings";
 import { plugins } from "./plugins";
+import { Themes } from "./collections/Themes/Themes";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
-const catalog = [Collections, Products];
 
 export default buildConfig({
     admin: {
@@ -45,7 +45,8 @@ export default buildConfig({
     },
     collections: [
         Orders,
-        ...catalog,
+        Collections,
+        Products,
         Users,
         Media,
         Policies,
@@ -54,6 +55,7 @@ export default buildConfig({
         Locations,
         Shipping,
         Carts,
+        Themes,
     ],
     cors: {
         headers: ["x-shop-handle", "x-shop-id"],
