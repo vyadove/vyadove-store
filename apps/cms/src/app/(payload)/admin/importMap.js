@@ -29,6 +29,9 @@ import { default as default_f0f7b12584c89e13c6a87d8efa94a229 } from '@/collectio
 import { default as default_3c59176b2ff1d26ac22ac2944241cb35 } from '@/collections/Products/fields/OptionRowLabel'
 import { default as default_f22cadbcf95d70613e3cffb6affc278d } from '@/collections/Products/fields/VariantRowLabel'
 import { ApiToken as ApiToken_4db7f57ea512297f27e20ca12ad3336a } from '@shopnex/utils/rsc'
+import { default as default_af8eadd8e60b0110bcc8a69137099f48 } from '@/collections/Themes/components/Description'
+import { default as default_bc95b4ce11f38543f2d00a0530dc39f0 } from '@/collections/Themes/components/ThemeList'
+import { ThemeList as ThemeList_32e73524266c6540e71cefa48f073681 } from '@shopnex/builder-io-plugin/rsc'
 import { PluginEditView as PluginEditView_57ab7ef8acde5e865fd68d3a08a07070 } from '@shopnex/store-plugin/client'
 import { PluginListView as PluginListView_57ab7ef8acde5e865fd68d3a08a07070 } from '@shopnex/store-plugin/client'
 import { SortBy as SortBy_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
@@ -72,6 +75,9 @@ export const importMap = {
   "@/collections/Products/fields/OptionRowLabel#default": default_3c59176b2ff1d26ac22ac2944241cb35,
   "@/collections/Products/fields/VariantRowLabel#default": default_f22cadbcf95d70613e3cffb6affc278d,
   "@shopnex/utils/rsc#ApiToken": ApiToken_4db7f57ea512297f27e20ca12ad3336a,
+  "@/collections/Themes/components/Description#default": default_af8eadd8e60b0110bcc8a69137099f48,
+  "@/collections/Themes/components/ThemeList#default": default_bc95b4ce11f38543f2d00a0530dc39f0,
+  "@shopnex/builder-io-plugin/rsc#ThemeList": ThemeList_32e73524266c6540e71cefa48f073681,
   "@shopnex/store-plugin/client#PluginEditView": PluginEditView_57ab7ef8acde5e865fd68d3a08a07070,
   "@shopnex/store-plugin/client#PluginListView": PluginListView_57ab7ef8acde5e865fd68d3a08a07070,
   "@shopnex/import-export-plugin/rsc#SortBy": SortBy_2cddc2e1d3f965d7263141af56b26a90,

@@ -4,6 +4,7 @@ import { cjPlugin } from "@shopnex/cj-plugin";
 import { importExportPlugin } from "@shopnex/import-export-plugin";
 import { storePlugin } from "@shopnex/store-plugin";
 import { stripePlugin } from "@shopnex/stripe-plugin";
+import { builderIoPlugin } from "@shopnex/builder-io-plugin";
 
 import { admins } from "./access/roles";
 import { paymentCanceled } from "./webhooks/payment-canceled";
@@ -44,5 +45,16 @@ export const plugins: Plugin[] = [
                 collectionSlug: "orders",
             },
         ],
+    }),
+    builderIoPlugin({
+        collectionDesignSlug: "themes",
+        collectionOverrides: {
+            access: {
+                create: admins,
+                delete: admins,
+                read: admins,
+                update: admins,
+            },
+        },
     }),
 ];
