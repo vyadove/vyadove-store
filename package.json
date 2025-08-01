@@ -11,13 +11,13 @@
         "db:seed": "pnpm --filter ./apps/cms db:seed"
     },
     "dependencies": {
-        "@payloadcms/db-sqlite": "3.31.0",
-        "@payloadcms/next": "3.31.0",
-        "@payloadcms/richtext-lexical": "3.31.0",
-        "@payloadcms/translations": "3.31.0",
-        "@payloadcms/ui": "3.31.0",
+        "@payloadcms/db-sqlite": "3.49.1",
+        "@payloadcms/next": "3.49.1",
+        "@payloadcms/richtext-lexical": "3.49.1",
+        "@payloadcms/translations": "3.49.1",
+        "@payloadcms/ui": "3.49.1",
         "@shopnex/types": "workspace:*",
-        "payload": "3.31.0"
+        "payload": "3.49.1"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.2.0",
@@ -49,7 +49,6 @@
         "overrides": {
             "tar-fs": "^3.0.9",
             "esbuild": "^0.25.0",
-            "image-size": "^1.2.1",
             "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz"
         }
     }
