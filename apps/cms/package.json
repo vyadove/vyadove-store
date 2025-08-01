@@ -24,6 +24,7 @@
         "@shopnex/cj-plugin": "1.2.2",
         "@shopnex/import-export-plugin": "^3.31.3",
         "@shopnex/payload-sdk": "^3.1.7",
+        "@shopnex/quick-actions-plugin": "^0.0.3",
         "@shopnex/store-plugin": "^1.0.15",
         "@shopnex/stripe-plugin": "^3.31.9",
         "@shopnex/utils": "^1.0.6",

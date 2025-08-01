@@ -9,6 +9,7 @@ import { builderIoPlugin } from "@shopnex/builder-io-plugin";
 import { admins } from "./access/roles";
 import { paymentCanceled } from "./webhooks/payment-canceled";
 import { paymentSucceeded } from "./webhooks/payment-succeeded";
+import { quickActionsPlugin } from "@shopnex/quick-actions-plugin";
 
 export const plugins: Plugin[] = [
     storePlugin({}),
@@ -56,5 +57,8 @@ export const plugins: Plugin[] = [
                 update: admins,
             },
         },
+    }),
+    quickActionsPlugin({
+        position: "before-nav-links",
     }),
 ];
