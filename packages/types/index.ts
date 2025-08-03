@@ -78,6 +78,8 @@ export interface Config {
     locations: Location;
     shipping: Shipping;
     carts: Cart;
+    themes: Theme;
+    'checkout-sessions': CheckoutSession;
     'plugins-space': PluginsSpace;
     'cj-settings': CjSetting;
     exports: Export;
@@ -103,6 +105,8 @@ export interface Config {
     locations: LocationsSelect<false> | LocationsSelect<true>;
     shipping: ShippingSelect<false> | ShippingSelect<true>;
     carts: CartsSelect<false> | CartsSelect<true>;
+    themes: ThemesSelect<false> | ThemesSelect<true>;
+    'checkout-sessions': CheckoutSessionsSelect<false> | CheckoutSessionsSelect<true>;
     'plugins-space': PluginsSpaceSelect<false> | PluginsSpaceSelect<true>;
     'cj-settings': CjSettingsSelect<false> | CjSettingsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
@@ -164,16 +168,16 @@ export interface UserAuthOperations {
 export interface Order {
   id: number;
   orderId: string;
+  totalAmount: number;
   user?: (number | null) | User;
   cart?: (number | null) | Cart;
-  totalAmount: number;
   currency: string;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
   orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'canceled';
+  paymentGateway?: ('stripe' | 'manual') | null;
   paymentIntentId?: string | null;
   sessionId?: string | null;
   sessionUrl?: string | null;
-  paymentGateway?: ('stripe' | 'manual') | null;
   paymentMethod?: string | null;
   receiptUrl?: string | null;
   metadata?:
@@ -260,6 +264,13 @@ export interface User {
   hash?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
   password?: string | null;
 }
 /**
@@ -460,7 +471,6 @@ export interface Payment {
   providers?:
     | (
         | {
-            providerName?: string | null;
             methodType: 'cod' | 'bankTransfer' | 'inStore' | 'other';
             /**
              * Shown to customers at checkout.
@@ -530,7 +540,6 @@ export interface Shipping {
    */
   shippingProvider?:
     | {
-        label: string;
         baseRate: number;
         /**
          * If set, shipping is free for orders above this amount.
@@ -548,6 +557,70 @@ export interface Shipping {
         blockName?: string | null;
         blockType: 'custom-shipping';
       }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "themes".
+ */
+export interface Theme {
+  id: number;
+  title?: string | null;
+  editorMode: (
+    | {
+        builderIoPublicKey: string;
+        builderIoPrivateKey: string;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'builder-io';
+      }
+    | {
+        /**
+         * Optional: Link to your live storefront. Press enter to add multiple values
+         */
+        storefrontUrls?: string[] | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'custom-storefront-block';
+      }
+  )[];
+  /**
+   * Explore top-rated free themes loved by store owners—designed to help you launch quickly and look great.
+   */
+  customStorefrontThemes?: {};
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "checkout-sessions".
+ */
+export interface CheckoutSession {
+  id: number;
+  sessionId?: string | null;
+  customer?: (number | null) | User;
+  cart: number | Cart;
+  shipping?: (number | null) | Shipping;
+  payment?: (number | null) | Payment;
+  shippingAddress?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  billingAddress?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
     | null;
   updatedAt: string;
   createdAt: string;
@@ -768,6 +841,14 @@ export interface PayloadLockedDocument {
         value: number | Cart;
       } | null)
     | ({
+        relationTo: 'themes';
+        value: number | Theme;
+      } | null)
+    | ({
+        relationTo: 'checkout-sessions';
+        value: number | CheckoutSession;
+      } | null)
+    | ({
         relationTo: 'plugins-space';
         value: number | PluginsSpace;
       } | null)
@@ -831,16 +912,16 @@ export interface PayloadMigration {
  */
 export interface OrdersSelect<T extends boolean = true> {
   orderId?: T;
+  totalAmount?: T;
   user?: T;
   cart?: T;
-  totalAmount?: T;
   currency?: T;
   paymentStatus?: T;
   orderStatus?: T;
+  paymentGateway?: T;
   paymentIntentId?: T;
   sessionId?: T;
   sessionUrl?: T;
-  paymentGateway?: T;
   paymentMethod?: T;
   receiptUrl?: T;
   metadata?: T;
@@ -939,6 +1020,13 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -994,7 +1082,6 @@ export interface PaymentsSelect<T extends boolean = true> {
         manualProvider?:
           | T
           | {
-              providerName?: T;
               methodType?: T;
               instructions?: T;
               details?:
@@ -1052,7 +1139,6 @@ export interface ShippingSelect<T extends boolean = true> {
         'custom-shipping'?:
           | T
           | {
-              label?: T;
               baseRate?: T;
               freeShippingMinOrder?: T;
               estimatedDeliveryDays?: T;
@@ -1079,6 +1165,50 @@ export interface CartsSelect<T extends boolean = true> {
         id?: T;
       };
   completed?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "themes_select".
+ */
+export interface ThemesSelect<T extends boolean = true> {
+  title?: T;
+  editorMode?:
+    | T
+    | {
+        'builder-io'?:
+          | T
+          | {
+              builderIoPublicKey?: T;
+              builderIoPrivateKey?: T;
+              id?: T;
+              blockName?: T;
+            };
+        'custom-storefront-block'?:
+          | T
+          | {
+              storefrontUrls?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  customStorefrontThemes?: T | {};
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "checkout-sessions_select".
+ */
+export interface CheckoutSessionsSelect<T extends boolean = true> {
+  sessionId?: T;
+  customer?: T;
+  cart?: T;
+  shipping?: T;
+  payment?: T;
+  shippingAddress?: T;
+  billingAddress?: T;
   updatedAt?: T;
   createdAt?: T;
 }
