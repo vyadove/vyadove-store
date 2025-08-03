@@ -1,23 +1,28 @@
-import { anyone } from "@/access/roles";
+import { admins } from "@/access/roles";
 import { CollectionConfig } from "payload";
 import { groups } from "../groups";
-import { createCheckoutSession } from "../Orders/endpoints/checkout";
 import { checkoutSessionHook } from "./hooks/checkout-session-hook";
+import { beforeCreateHook } from "./hooks/before-create-hook";
+import {
+    createSessionAccess,
+    readSessionAccess,
+    updateSessionAccess,
+} from "./access/session-access";
 
 export const CheckoutSessions: CollectionConfig = {
     slug: "checkout-sessions",
     access: {
-        create: anyone,
-        delete: anyone,
-        read: anyone,
-        update: anyone,
+        create: createSessionAccess,
+        delete: admins,
+        read: readSessionAccess,
+        update: updateSessionAccess,
     },
     admin: {
         useAsTitle: "sessionId",
         group: groups.orders,
     },
     hooks: {
-        beforeChange: [checkoutSessionHook],
+        beforeChange: [beforeCreateHook, checkoutSessionHook],
     },
     fields: [
         {

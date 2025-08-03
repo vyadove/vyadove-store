@@ -23,28 +23,42 @@ export const Orders: CollectionConfig = {
     endpoints: [checkoutEndpoint],
     fields: [
         {
-            name: "orderId",
-            type: "text",
-            required: true,
-            unique: true,
+            type: "row",
+            fields: [
+                {
+                    name: "orderId",
+                    type: "text",
+                    required: true,
+                    unique: true,
+                    admin: {
+                        readOnly: true,
+                    },
+                },
+                {
+                    name: "totalAmount",
+                    type: "number",
+                    min: 0,
+                    required: true,
+                },
+            ],
         },
         {
-            name: "user",
-            type: "relationship",
-            relationTo: "users",
-            required: false,
+            type: "row",
+            fields: [
+                {
+                    name: "user",
+                    type: "relationship",
+                    relationTo: "users",
+                    required: false,
+                },
+                {
+                    name: "cart",
+                    type: "relationship",
+                    relationTo: "carts",
+                },
+            ],
         },
-        {
-            name: "cart",
-            type: "relationship",
-            relationTo: "carts",
-        },
-        {
-            name: "totalAmount",
-            type: "number",
-            min: 0,
-            required: true,
-        },
+
         {
             name: "currency",
             type: "text",
@@ -54,34 +68,56 @@ export const Orders: CollectionConfig = {
             required: true,
         },
         {
-            name: "paymentStatus",
-            type: "select",
-            defaultValue: "pending",
-            options: [
-                { label: "Pending", value: "pending" },
-                { label: "Paid", value: "paid" },
-                { label: "Failed", value: "failed" },
-                { label: "Refunded", value: "refunded" },
+            type: "row",
+            fields: [
+                {
+                    name: "paymentStatus",
+                    type: "select",
+                    defaultValue: "pending",
+                    options: [
+                        { label: "Pending", value: "pending" },
+                        { label: "Paid", value: "paid" },
+                        { label: "Failed", value: "failed" },
+                        { label: "Refunded", value: "refunded" },
+                    ],
+                    required: true,
+                },
+                {
+                    name: "orderStatus",
+                    type: "select",
+                    defaultValue: "pending",
+                    options: [
+                        { label: "Pending", value: "pending" },
+                        { label: "Processing", value: "processing" },
+                        { label: "Shipped", value: "shipped" },
+                        { label: "Delivered", value: "delivered" },
+                        { label: "Canceled", value: "canceled" },
+                    ],
+                    required: true,
+                },
             ],
-            required: true,
         },
+
         {
-            name: "orderStatus",
-            type: "select",
-            defaultValue: "pending",
-            options: [
-                { label: "Pending", value: "pending" },
-                { label: "Processing", value: "processing" },
-                { label: "Shipped", value: "shipped" },
-                { label: "Delivered", value: "delivered" },
-                { label: "Canceled", value: "canceled" },
+            type: "row",
+            fields: [
+                {
+                    name: "payment",
+                    type: "relationship",
+                    relationTo: "payments",
+                },
+                {
+                    name: "shipping",
+                    type: "relationship",
+                    relationTo: "shipping",
+                },
             ],
-            required: true,
         },
         {
             name: "paymentIntentId",
             type: "text",
             admin: {
+                position: "sidebar",
                 readOnly: true,
             },
         },
@@ -99,14 +135,6 @@ export const Orders: CollectionConfig = {
             admin: {
                 disabled: true,
             },
-        },
-        {
-            name: "paymentGateway",
-            type: "select",
-            options: [
-                { label: "Stripe", value: "stripe" },
-                { label: "Manual", value: "manual" },
-            ],
         },
         {
             name: "paymentMethod",

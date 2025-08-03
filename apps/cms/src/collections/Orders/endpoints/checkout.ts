@@ -5,20 +5,6 @@ import Decimal from "decimal.js";
 import { type Endpoint, parseCookies, type PayloadRequest } from "payload";
 import Stripe from "stripe";
 
-interface CartItem {
-    id: string;
-    quantity: number;
-}
-
-interface CheckoutRequest {
-    cartItems: CartItem[];
-    customer: any;
-    paymentMethod: "manualProvider" | "stripe";
-    shippingMethod: {
-        cost: number;
-    };
-}
-
 const calculateOrderTotals = (
     cartItems: Cart["cartItems"],
     shippingCost: number
@@ -82,24 +68,11 @@ const createOrder = async (
 
 export const checkoutEndpoint: Endpoint = {
     handler: async (req) => {
-        if (req.method === "OPTIONS") {
-            return new Response(null, {
-                headers: {
-                    "Access-Control-Allow-Credentials": "true",
-                    "Access-Control-Allow-Headers":
-                        "Content-Type, x-shop-handle, x-shop-id",
-                    "Access-Control-Allow-Methods": "POST, OPTIONS",
-                    "Access-Control-Allow-Origin":
-                        process.env.NEXT_PUBLIC_STOREFRONT_URL ||
-                        "http://localhost:3020",
-                },
-                status: 204,
-            });
-        }
         const { logger } = req.payload;
         const cookies = parseCookies(req.headers);
 
         const cartSessionId = cookies.get("cart-session");
+        const checkoutId = cookies.get("checkout-session");
         const cartId = cartSessionId ? +cartSessionId : null;
         const orderId = `ORD-${Date.now().toString()}`;
         try {
@@ -110,35 +83,41 @@ export const checkoutEndpoint: Endpoint = {
                     { status: 400 }
                 );
             }
-            const cart = await req.payload.find({
-                collection: "carts",
+
+            const checkoutSession = await req.payload.find({
+                collection: "checkout-sessions",
                 req,
                 where: {
-                    id: {
-                        equals: cartId,
-                    },
-                    completed: {
-                        equals: false,
+                    sessionId: {
+                        equals: checkoutId,
                     },
                 },
             });
+            const { customer, payment, shipping, cart } =
+                checkoutSession.docs[0];
 
-            if (!cart.docs.length) {
+            if (!cart || typeof cart !== "object") {
                 logger.error("Checkout failed - Invalid cart");
                 return Response.json(
                     { error: "Invalid cart." },
                     { status: 400 }
                 );
             }
-            const { cartItems } = cart.docs[0];
 
-            const body: CheckoutRequest = await req.json();
-            const { customer, paymentMethod, shippingMethod } = body;
+            if (typeof shipping !== "object" || typeof payment !== "object") {
+                logger.error("Checkout failed - Invalid customer or payment");
+                return Response.json(
+                    { error: "Invalid shipping or payment." },
+                    { status: 400 }
+                );
+            }
+
+            const { cartItems } = cart;
 
             logger.info("Processing checkout", {
                 customerId: customer?.id,
                 itemCount: cartItems?.length,
-                paymentMethod,
+                payment,
             });
 
             const isValid = validateCartItems(cartItems, logger);
@@ -152,13 +131,15 @@ export const checkoutEndpoint: Endpoint = {
 
             const { subtotal, total } = calculateOrderTotals(
                 cartItems,
-                shippingMethod?.cost || 0
+                shipping?.shippingProvider?.[0]?.baseRate || 0
             );
 
             logger.info("Calculated order totals", {
                 subtotal,
                 total,
             });
+
+            const paymentMethod = payment?.providers?.[0]?.blockType;
 
             if (paymentMethod === "manualProvider") {
                 const sessionId = `SID-${crypto.randomUUID()}`;
@@ -167,8 +148,9 @@ export const checkoutEndpoint: Endpoint = {
                     currency: "usd",
                     orderId,
                     orderStatus: "shipped",
-                    paymentGateway: "manual",
-                    paymentMethod,
+                    paymentMethod: payment?.providers?.[0]?.id,
+                    payment: payment?.id,
+                    shipping: shipping?.id,
                     paymentStatus: "paid",
                     sessionId,
                     totalAmount: total,
@@ -198,22 +180,9 @@ export const checkoutEndpoint: Endpoint = {
                 totalAmount: total,
             });
 
-            return Response.json(
-                {
-                    redirectUrl: order.sessionUrl,
-                },
-                {
-                    headers: {
-                        "Access-Control-Allow-Credentials": "true",
-                        "Access-Control-Allow-Headers":
-                            "Content-Type, x-shop-handle, x-shop-id",
-                        "Access-Control-Allow-Methods": "POST, OPTIONS",
-                        "Access-Control-Allow-Origin":
-                            process.env.NEXT_PUBLIC_STOREFRONT_URL ||
-                            "http://localhost:3020",
-                    },
-                }
-            );
+            return Response.json({
+                redirectUrl: order.sessionUrl,
+            });
         } catch (error) {
             if (error instanceof Error) {
                 logger.error("Checkout error", { error });
