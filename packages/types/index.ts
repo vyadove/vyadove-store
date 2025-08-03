@@ -174,7 +174,8 @@ export interface Order {
   currency: string;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
   orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'canceled';
-  paymentGateway?: ('stripe' | 'manual') | null;
+  payment?: (number | null) | Payment;
+  shipping?: (number | null) | Shipping;
   paymentIntentId?: string | null;
   sessionId?: string | null;
   sessionUrl?: string | null;
@@ -420,48 +421,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "policies".
- */
-export interface Policy {
-  id: number;
-  title: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  handle?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "gift-cards".
- */
-export interface GiftCard {
-  id: number;
-  code: string;
-  value: number;
-  customer?: (number | null) | User;
-  /**
-   * Date gift card will expire
-   */
-  expiryDate?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payments".
  */
 export interface Payment {
@@ -505,29 +464,6 @@ export interface Payment {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "locations".
- */
-export interface Location {
-  id: number;
-  name: string;
-  address: string;
-  /**
-   * @minItems 2
-   * @maxItems 2
-   */
-  coordinates?: [number, number] | null;
-  contactPhone?: string | null;
-  /**
-   * e.g., Mon-Fri: 9am - 6pm
-   */
-  hours?: string | null;
-  enabled?: boolean | null;
-  isPickupLocation?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "shipping".
  */
 export interface Shipping {
@@ -558,6 +494,71 @@ export interface Shipping {
         blockType: 'custom-shipping';
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "locations".
+ */
+export interface Location {
+  id: number;
+  name: string;
+  address: string;
+  /**
+   * @minItems 2
+   * @maxItems 2
+   */
+  coordinates?: [number, number] | null;
+  contactPhone?: string | null;
+  /**
+   * e.g., Mon-Fri: 9am - 6pm
+   */
+  hours?: string | null;
+  enabled?: boolean | null;
+  isPickupLocation?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "policies".
+ */
+export interface Policy {
+  id: number;
+  title: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  handle?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gift-cards".
+ */
+export interface GiftCard {
+  id: number;
+  code: string;
+  value: number;
+  customer?: (number | null) | User;
+  /**
+   * Date gift card will expire
+   */
+  expiryDate?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -918,7 +919,8 @@ export interface OrdersSelect<T extends boolean = true> {
   currency?: T;
   paymentStatus?: T;
   orderStatus?: T;
-  paymentGateway?: T;
+  payment?: T;
+  shipping?: T;
   paymentIntentId?: T;
   sessionId?: T;
   sessionUrl?: T;

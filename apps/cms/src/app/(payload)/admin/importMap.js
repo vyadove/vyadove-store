@@ -3,6 +3,7 @@ import { ImportListMenuItem as ImportListMenuItem_2cddc2e1d3f965d7263141af56b26a
 import { ExportSaveButton as ExportSaveButton_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
+import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { FixedToolbarFeatureClient as FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
@@ -29,6 +30,7 @@ import { default as default_f0f7b12584c89e13c6a87d8efa94a229 } from '@/collectio
 import { default as default_3c59176b2ff1d26ac22ac2944241cb35 } from '@/collections/Products/fields/OptionRowLabel'
 import { default as default_f22cadbcf95d70613e3cffb6affc278d } from '@/collections/Products/fields/VariantRowLabel'
 import { ApiToken as ApiToken_4db7f57ea512297f27e20ca12ad3336a } from '@shopnex/utils/rsc'
+import { default as default_2282665b318df6a13f6507ea389d6c5e } from '@/components/Blocks/CustomStorefrontBlock'
 import { default as default_af8eadd8e60b0110bcc8a69137099f48 } from '@/collections/Themes/components/Description'
 import { default as default_bc95b4ce11f38543f2d00a0530dc39f0 } from '@/collections/Themes/components/ThemeList'
 import { ThemeList as ThemeList_32e73524266c6540e71cefa48f073681 } from '@shopnex/builder-io-plugin/rsc'
@@ -40,7 +42,9 @@ import { CollectionField as CollectionField_2cddc2e1d3f965d7263141af56b26a90 } f
 import { WhereField as WhereField_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
 import { Preview as Preview_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
 import { default as default_37ff3de76d1a962ab5815bc7ccd78444 } from '@/admin/components/Nav/Nav.tsx'
+import { QuickActions as QuickActions_c473cfc8237cb5375a757ad784076201 } from '@shopnex/quick-actions-plugin/client'
 import { ImportExportProvider as ImportExportProvider_2cddc2e1d3f965d7263141af56b26a90 } from '@shopnex/import-export-plugin/rsc'
+import { CommandBar as CommandBar_c473cfc8237cb5375a757ad784076201 } from '@shopnex/quick-actions-plugin/client'
 import { default as default_1ab113f7c5575fdebcd59a27756787ec } from '@/admin/components/Dashboard/Dashboard'
 
 export const importMap = {
@@ -49,6 +53,7 @@ export const importMap = {
   "@shopnex/import-export-plugin/rsc#ExportSaveButton": ExportSaveButton_2cddc2e1d3f965d7263141af56b26a90,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
+  "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient": HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#InlineToolbarFeatureClient": InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#FixedToolbarFeatureClient": FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
@@ -75,6 +80,7 @@ export const importMap = {
   "@/collections/Products/fields/OptionRowLabel#default": default_3c59176b2ff1d26ac22ac2944241cb35,
   "@/collections/Products/fields/VariantRowLabel#default": default_f22cadbcf95d70613e3cffb6affc278d,
   "@shopnex/utils/rsc#ApiToken": ApiToken_4db7f57ea512297f27e20ca12ad3336a,
+  "@/components/Blocks/CustomStorefrontBlock#default": default_2282665b318df6a13f6507ea389d6c5e,
   "@/collections/Themes/components/Description#default": default_af8eadd8e60b0110bcc8a69137099f48,
   "@/collections/Themes/components/ThemeList#default": default_bc95b4ce11f38543f2d00a0530dc39f0,
   "@shopnex/builder-io-plugin/rsc#ThemeList": ThemeList_32e73524266c6540e71cefa48f073681,
@@ -86,6 +92,8 @@ export const importMap = {
   "@shopnex/import-export-plugin/rsc#WhereField": WhereField_2cddc2e1d3f965d7263141af56b26a90,
   "@shopnex/import-export-plugin/rsc#Preview": Preview_2cddc2e1d3f965d7263141af56b26a90,
   "@/admin/components/Nav/Nav.tsx#default": default_37ff3de76d1a962ab5815bc7ccd78444,
+  "@shopnex/quick-actions-plugin/client#QuickActions": QuickActions_c473cfc8237cb5375a757ad784076201,
   "@shopnex/import-export-plugin/rsc#ImportExportProvider": ImportExportProvider_2cddc2e1d3f965d7263141af56b26a90,
+  "@shopnex/quick-actions-plugin/client#CommandBar": CommandBar_c473cfc8237cb5375a757ad784076201,
   "@/admin/components/Dashboard/Dashboard#default": default_1ab113f7c5575fdebcd59a27756787ec
 }
