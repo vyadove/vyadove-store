@@ -21,6 +21,7 @@ import { HeroSection } from "./globals/HeroSection";
 import StoreSettings from "./globals/StoreSettings";
 import { plugins } from "./plugins";
 import { Themes } from "./collections/Themes/Themes";
+import { CheckoutSessions } from "./collections/CheckoutSessions/CheckoutSessions";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -56,6 +57,7 @@ export default buildConfig({
         Shipping,
         Carts,
         Themes,
+        CheckoutSessions,
     ],
     cors: {
         headers: ["x-shop-handle", "x-shop-id"],
