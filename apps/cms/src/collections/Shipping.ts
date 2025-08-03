@@ -12,13 +12,6 @@ export const CustomShipping: Block = {
     },
     fields: [
         {
-            name: "label",
-            type: "text",
-            defaultValue: "Standard Shipping",
-            label: "Label Shown to Customer",
-            required: true,
-        },
-        {
             name: "baseRate",
             type: "number",
             label: "Base Rate (flat rate)",

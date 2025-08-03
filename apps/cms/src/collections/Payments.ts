@@ -11,10 +11,6 @@ export const ManualProvider: Block = {
     },
     fields: [
         {
-            name: "providerName",
-            type: "text",
-        },
-        {
             name: "methodType",
             type: "select",
             label: "Manual Payment Type",
@@ -102,9 +98,10 @@ export const Payments: CollectionConfig = {
         },
         {
             name: "providers",
+            label: "Provider",
             type: "blocks",
             blocks: [ManualProvider],
-            maxRows: 5,
+            maxRows: 1,
         },
     ],
 };
