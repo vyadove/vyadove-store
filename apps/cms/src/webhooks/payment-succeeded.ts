@@ -65,7 +65,6 @@ export const paymentSucceeded: StripeWebhookHandler<{
                       } as any)
                     : undefined,
                 orderStatus: "processing",
-                paymentGateway: "stripe",
                 paymentIntentId: paymentIntent.id,
                 paymentMethod: paymentIntent.payment_method_types.join(", "),
                 paymentStatus: "paid",

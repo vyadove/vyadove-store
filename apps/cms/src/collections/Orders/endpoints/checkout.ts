@@ -104,7 +104,11 @@ export const checkoutEndpoint: Endpoint = {
                 );
             }
 
-            if (typeof shipping !== "object" || typeof payment !== "object") {
+            if (
+                typeof shipping !== "object" ||
+                typeof payment !== "object" ||
+                typeof customer !== "object"
+            ) {
                 logger.error("Checkout failed - Invalid customer or payment");
                 return Response.json(
                     { error: "Invalid shipping or payment." },
@@ -174,7 +178,8 @@ export const checkoutEndpoint: Endpoint = {
                 currency: "usd",
                 orderId,
                 orderStatus: "pending",
-                paymentGateway: paymentMethod,
+                payment: payment?.id,
+                shipping: shipping?.id,
                 paymentMethod,
                 paymentStatus: "pending",
                 totalAmount: total,
