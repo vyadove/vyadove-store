@@ -16,12 +16,12 @@ import { Policies } from "./collections/Policies";
 import { Products } from "./collections/Products/Products";
 import { Shipping } from "./collections/Shipping";
 import { Users } from "./collections/Users";
-import { Footer } from "./globals/Footer";
-import { HeroSection } from "./globals/HeroSection";
 import StoreSettings from "./globals/StoreSettings";
 import { plugins } from "./plugins";
 import { Themes } from "./collections/Themes/Themes";
 import { CheckoutSessions } from "./collections/CheckoutSessions/CheckoutSessions";
+import { HeroPage } from "./collections/pages/Hero";
+import { FooterPage } from "./collections/pages/Footer";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -58,7 +58,10 @@ export default buildConfig({
         Carts,
         Themes,
         CheckoutSessions,
+        HeroPage,
+        FooterPage,
     ],
+    globals: [StoreSettings],
     cors: {
         headers: ["x-shop-handle", "x-shop-id"],
         origins: [
@@ -85,7 +88,6 @@ export default buildConfig({
             path: "/healthz",
         },
     ],
-    globals: [StoreSettings, HeroSection, Footer],
     plugins,
     secret: process.env.PAYLOAD_SECRET || "",
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",

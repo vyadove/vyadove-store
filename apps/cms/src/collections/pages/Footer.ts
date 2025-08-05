@@ -1,7 +1,6 @@
-import type { Block, GlobalConfig } from "payload";
-
 import { admins, anyone } from "@/access/roles";
-import { groups } from "@/collections/groups";
+import { Block, CollectionConfig } from "payload";
+import { groups } from "../groups";
 
 const BasicFooter: Block = {
     slug: "basic-footer",
@@ -11,15 +10,15 @@ const BasicFooter: Block = {
             type: "richText",
             required: true,
         },
-        {
-            name: "poweredBy",
-            type: "richText",
-        },
     ],
 };
 
-export const Footer: GlobalConfig = {
-    slug: "footer",
+export const FooterPage: CollectionConfig = {
+    slug: "footer-page",
+    labels: {
+        singular: "Footer Page",
+        plural: "Footer Page",
+    },
     access: {
         read: anyone,
         update: admins,

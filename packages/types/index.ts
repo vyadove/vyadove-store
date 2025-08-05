@@ -80,6 +80,8 @@ export interface Config {
     carts: Cart;
     themes: Theme;
     'checkout-sessions': CheckoutSession;
+    'hero-page': HeroPage;
+    'footer-page': FooterPage;
     'plugins-space': PluginsSpace;
     'cj-settings': CjSetting;
     exports: Export;
@@ -107,6 +109,8 @@ export interface Config {
     carts: CartsSelect<false> | CartsSelect<true>;
     themes: ThemesSelect<false> | ThemesSelect<true>;
     'checkout-sessions': CheckoutSessionsSelect<false> | CheckoutSessionsSelect<true>;
+    'hero-page': HeroPageSelect<false> | HeroPageSelect<true>;
+    'footer-page': FooterPageSelect<false> | FooterPageSelect<true>;
     'plugins-space': PluginsSpaceSelect<false> | PluginsSpaceSelect<true>;
     'cj-settings': CjSettingsSelect<false> | CjSettingsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
@@ -120,13 +124,9 @@ export interface Config {
   };
   globals: {
     'store-settings': StoreSetting;
-    'hero-section': HeroSection;
-    footer: Footer;
   };
   globalsSelect: {
     'store-settings': StoreSettingsSelect<false> | StoreSettingsSelect<true>;
-    'hero-section': HeroSectionSelect<false> | HeroSectionSelect<true>;
-    footer: FooterSelect<false> | FooterSelect<true>;
   };
   locale: null;
   user: User & {
@@ -628,6 +628,82 @@ export interface CheckoutSession {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-page".
+ */
+export interface HeroPage {
+  id: number;
+  type: (
+    | {
+        title: string;
+        subtitle?: string | null;
+        ctaButtonText?: string | null;
+        ctaButtonLink?: string | null;
+        backgroundImage?: (number | null) | Media;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'hero';
+      }
+    | {
+        title: string;
+        subtitle?: string | null;
+        featuredProducts?: (number | Media)[] | null;
+        backgroundImage?: (number | null) | Media;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'carousel';
+      }
+  )[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer-page".
+ */
+export interface FooterPage {
+  id: number;
+  type?:
+    | {
+        copyright: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        poweredBy?: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'basic-footer';
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "plugins-space".
  */
 export interface PluginsSpace {
@@ -848,6 +924,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'checkout-sessions';
         value: number | CheckoutSession;
+      } | null)
+    | ({
+        relationTo: 'hero-page';
+        value: number | HeroPage;
+      } | null)
+    | ({
+        relationTo: 'footer-page';
+        value: number | FooterPage;
       } | null)
     | ({
         relationTo: 'plugins-space';
@@ -1216,6 +1300,59 @@ export interface CheckoutSessionsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-page_select".
+ */
+export interface HeroPageSelect<T extends boolean = true> {
+  type?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              ctaButtonText?: T;
+              ctaButtonLink?: T;
+              backgroundImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+        carousel?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              featuredProducts?: T;
+              backgroundImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer-page_select".
+ */
+export interface FooterPageSelect<T extends boolean = true> {
+  type?:
+    | T
+    | {
+        'basic-footer'?:
+          | T
+          | {
+              copyright?: T;
+              poweredBy?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "plugins-space_select".
  */
 export interface PluginsSpaceSelect<T extends boolean = true> {
@@ -1530,142 +1667,11 @@ export interface StoreSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "hero-section".
- */
-export interface HeroSection {
-  id: number;
-  type: (
-    | {
-        title: string;
-        subtitle?: string | null;
-        ctaButtonText?: string | null;
-        ctaButtonLink?: string | null;
-        backgroundImage?: (number | null) | Media;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'hero';
-      }
-    | {
-        title: string;
-        subtitle?: string | null;
-        featuredProducts?: (number | Media)[] | null;
-        backgroundImage?: (number | null) | Media;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'carousel';
-      }
-  )[];
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer".
- */
-export interface Footer {
-  id: number;
-  type?:
-    | {
-        copyright: {
-          root: {
-            type: string;
-            children: {
-              type: string;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        };
-        poweredBy?: {
-          root: {
-            type: string;
-            children: {
-              type: string;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'basic-footer';
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "store-settings_select".
  */
 export interface StoreSettingsSelect<T extends boolean = true> {
   name?: T;
   currency?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "hero-section_select".
- */
-export interface HeroSectionSelect<T extends boolean = true> {
-  type?:
-    | T
-    | {
-        hero?:
-          | T
-          | {
-              title?: T;
-              subtitle?: T;
-              ctaButtonText?: T;
-              ctaButtonLink?: T;
-              backgroundImage?: T;
-              id?: T;
-              blockName?: T;
-            };
-        carousel?:
-          | T
-          | {
-              title?: T;
-              subtitle?: T;
-              featuredProducts?: T;
-              backgroundImage?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer_select".
- */
-export interface FooterSelect<T extends boolean = true> {
-  type?:
-    | T
-    | {
-        'basic-footer'?:
-          | T
-          | {
-              copyright?: T;
-              poweredBy?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
