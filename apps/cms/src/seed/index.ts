@@ -35,8 +35,8 @@ const seed = async () => {
         },
     });
 
-    await payload.updateGlobal({
-        slug: "hero-section",
+    await payload.create({
+        collection: "hero-page",
         data: {
             type: [
                 {
@@ -53,15 +53,14 @@ const seed = async () => {
         },
     });
 
-    await payload.updateGlobal({
-        slug: "footer",
+    await payload.create({
+        collection: "footer-page",
         data: {
             type: [
                 {
                     blockName: null,
                     blockType: "basic-footer",
                     copyright: (globals[1].type[0] as any).copyright,
-                    poweredBy: (globals[1].type[0] as any).poweredBy,
                 },
             ],
         },
