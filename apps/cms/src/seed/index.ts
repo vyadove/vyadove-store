@@ -103,7 +103,6 @@ const seed = async () => {
                         url: imageUrl,
                     },
                 });
-                variant.imageUrl = imageResult.url;
                 variant.gallery = [imageResult.id];
             }
 
