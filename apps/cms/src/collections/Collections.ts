@@ -36,6 +36,7 @@ export const Collections: CollectionConfig = {
             collection: "products",
             hasMany: true,
             on: "collections",
+            maxDepth: 5,
         },
     ],
 };
