@@ -4,9 +4,4 @@
 [submodule "plugins"]
 	path = plugins
 	url = https://github.com/shopnex-ai/shopnex-plugins.git
-[submodule "apps/shop"]
-	path = apps/shop
-	url = https://github.com/shopnex-ai/next-storefront.git
-[submodule "apps/builder-shop"]
-	path = apps/builder-shop
-	url = https://github.com/shopnex-ai/builder-shop.git
+
