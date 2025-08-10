@@ -1,7 +1,7 @@
 import type { CollectionConfig } from "payload";
 
 import { admins, anyone } from "@/access/roles";
-import { handleField } from "@/fields/slug";
+import { HandleField } from "@/fields/slug";
 
 export const Policies: CollectionConfig = {
     slug: "policies",
@@ -26,6 +26,6 @@ export const Policies: CollectionConfig = {
             name: "description",
             type: "richText",
         },
-        handleField(),
+        HandleField(),
     ],
 };

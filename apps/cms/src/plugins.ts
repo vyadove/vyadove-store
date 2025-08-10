@@ -10,6 +10,7 @@ import { admins } from "./access/roles";
 import { paymentCanceled } from "./webhooks/payment-canceled";
 import { paymentSucceeded } from "./webhooks/payment-succeeded";
 import { quickActionsPlugin } from "@shopnex/quick-actions-plugin";
+import { seoPlugin } from "@payloadcms/plugin-seo";
 
 export const plugins: Plugin[] = [
     storePlugin({}),
@@ -60,5 +61,21 @@ export const plugins: Plugin[] = [
     }),
     quickActionsPlugin({
         position: "before-nav-links",
+    }),
+    seoPlugin({
+        generateURL: ({ doc }) => {
+            return `${process.env.NEXT_PUBLIC_SERVER_URL}/products/${doc.handle}`;
+        },
+        uploadsCollection: "media",
+        generateTitle: ({ doc }) => `ShopNex — ${doc.title}`,
+        generateDescription: ({ doc }) => {
+            return `some description`;
+        },
+        fields: ({ defaultFields }) => {
+            const resultFields = defaultFields.filter(
+                (field) => (field as any).name !== "image"
+            );
+            return resultFields;
+        },
     }),
 ];

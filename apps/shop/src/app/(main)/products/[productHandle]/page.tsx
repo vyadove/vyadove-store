@@ -14,25 +14,37 @@ export async function generateMetadata(
     const params = await props.params;
     const { productHandle } = params;
 
-    const product = {
-        handle: productHandle,
-        thumbnail:
-            "https://next.medusajs.com/_next/image?url=https%3A%2F%2Fmedusa-server-testing.s3.us-east-1.amazonaws.com%2Fheadphones-nobg-1700675136219.png&w=1920&q=50",
-        title: "Product 1",
-    };
+    const result = await payloadSdk.find({
+        collection: "products",
+        limit: 1,
+        where: {
+            handle: {
+                equals: productHandle,
+            },
+        },
+        select: {
+            title: true,
+            meta: {
+                title: true,
+                description: true,
+            },
+        },
+    });
 
-    if (!product) {
+    if (!result.docs.length) {
         notFound();
     }
 
+    const product = result.docs[0];
+
     return {
-        description: `${product.title}`,
+        description: product.meta?.title || `${product.title}`, // Fallback to title if no meta description
         openGraph: {
-            description: `${product.title}`,
-            images: product.thumbnail ? [product.thumbnail] : [],
-            title: `${product.title} | Medusa Store`,
+            title: product.meta?.title || `${product.title} | ShopNex`, // Fallback if no meta title
+            description: product.meta?.description || `${product.title}`,
+            // images: product.thumbnail ? [product.thumbnail] : [],
         },
-        title: `${product.title} | Medusa Store`,
+        title: product.meta?.title || `${product.title} | ShopNex`,
     };
 }
 

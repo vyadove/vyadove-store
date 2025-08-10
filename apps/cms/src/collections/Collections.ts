@@ -2,9 +2,10 @@ import type { CollectionConfig } from "payload";
 
 import { admins, anyone } from "@/access/roles";
 import { description } from "@/fields/description";
-import { handleField } from "@/fields/slug";
+import { HandleField } from "@/fields/slug";
 
 import { groups } from "./groups";
+import { SeoField } from "@/fields/seo";
 
 export const Collections: CollectionConfig = {
     slug: "collections",
@@ -28,7 +29,7 @@ export const Collections: CollectionConfig = {
             name: "imageUrl",
             type: "text",
         },
-        handleField(),
+        HandleField(),
         description(),
         {
             name: "products",
@@ -38,5 +39,6 @@ export const Collections: CollectionConfig = {
             on: "collections",
             maxDepth: 5,
         },
+        SeoField(),
     ],
 };
