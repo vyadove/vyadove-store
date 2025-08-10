@@ -1,4 +1,4 @@
-import type { Media, Product } from "@/payload-types";
+import type { Media, Product } from "@shopnex/types";
 import type { CollectionAfterDeleteHook } from "payload";
 
 import { isExpandedDoc } from "@/utils/is-expanded-doc";

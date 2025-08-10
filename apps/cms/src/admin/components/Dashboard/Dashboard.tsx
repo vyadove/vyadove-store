@@ -1,4 +1,4 @@
-import type { Order } from "@/payload-types";
+import type { Order } from "@shopnex/types";
 
 import config from "@payload-config";
 import { Gutter } from "@payloadcms/ui";

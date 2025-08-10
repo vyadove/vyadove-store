@@ -1,5 +1,5 @@
 import type { FieldAccessArgs } from "@/admin/types";
-import type { User } from "@/payload-types";
+import type { User } from "@shopnex/types";
 import type { Access, AccessArgs } from "payload";
 
 export const checkRole = (roles: User["roles"] = [], user?: null | User) =>

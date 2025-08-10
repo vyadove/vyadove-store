@@ -1,4 +1,4 @@
-import type { Product } from "@/payload-types";
+import type { Product } from "@shopnex/types";
 
 type ColorOption = {
     colorHex: string;

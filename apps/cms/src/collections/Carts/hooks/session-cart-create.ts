@@ -1,5 +1,5 @@
 import type { AfterChangeHook } from "@/admin/types";
-import type { Cart } from "@/payload-types";
+import type { Cart } from "@shopnex/types";
 
 import { generateCookie, getCookieExpiration, mergeHeaders } from "payload";
 
