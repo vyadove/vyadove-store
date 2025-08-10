@@ -20,7 +20,7 @@ const VariantRowLabel = (
     return (
         <div style={{ display: "flex", gap: "1rem" }}>
             <Image
-                alt={currentRow.name}
+                alt={currentRow.name || "variant image"}
                 height={0}
                 sizes="100vw" // Optional hint for responsive images
                 src={imageUrl}

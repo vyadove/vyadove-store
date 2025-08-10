@@ -1,12 +1,13 @@
-"use client";
-
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { OrderSummery } from "@/templates/checkout/order-summary";
 import { ShopNexIcon } from "@/components/icons/shopnex-icon";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { Steps } from "@/templates/checkout/steps";
+import { getStoreSettings } from "@/services/store-settings";
+import { payloadSdk } from "@/utils/payload-sdk";
+import { StyledRichText } from "@/components/styled-rich-text";
 
 export const steps = [
     {
@@ -35,16 +36,22 @@ export const steps = [
     },
 ];
 
-export default function CheckoutLayout({
+export default async function CheckoutLayout({
     children,
     params,
 }: {
     children: ReactNode;
     params: any;
 }) {
-    const pathname = usePathname();
+    const footerResult = await payloadSdk.find({
+        collection: "footer-page",
+    });
 
-    const currentStepIndex = steps.findIndex((step) => step.route === pathname);
+    const footer = footerResult.docs?.[0];
+
+    const basicFooter = footer?.type?.find(
+        (f) => f.blockType === "basic-footer"
+    );
 
     return (
         <div className="w-full bg-white relative small:min-h-screen">
@@ -80,50 +87,7 @@ export default function CheckoutLayout({
                             {/* Main Content */}
                             <div className="lg:col-span-2">
                                 {/* Step UI could be reused via context */}
-                                <div className="mb-8">
-                                    <div className="flex items-center justify-between">
-                                        {steps.map((step, index) => (
-                                            <div
-                                                className="flex items-center"
-                                                key={step.id}
-                                            >
-                                                <div
-                                                    className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
-                                                        index < currentStepIndex
-                                                            ? "border-green-500 bg-green-500 text-white"
-                                                            : index ===
-                                                                currentStepIndex
-                                                              ? "border-blue-500 text-blue-500"
-                                                              : "border-gray-300 text-gray-300"
-                                                    }`}
-                                                >
-                                                    <span className="text-sm font-medium">
-                                                        {index <
-                                                        currentStepIndex
-                                                            ? "✓"
-                                                            : step.id}
-                                                    </span>
-                                                </div>
-
-                                                <div className="ml-3">
-                                                    <p
-                                                        className={`text-sm font-medium ${
-                                                            index ===
-                                                            currentStepIndex
-                                                                ? "text-black"
-                                                                : "text-gray-500"
-                                                        }`}
-                                                    >
-                                                        {step.name}
-                                                    </p>
-                                                </div>
-                                                {index < steps.length - 1 && (
-                                                    <div className="hidden sm:block w-16 h-0.5 ml-4 bg-gray-300" />
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
+                                <Steps steps={steps} />
 
                                 {/* Step Content */}
                                 <Card>
@@ -139,8 +103,29 @@ export default function CheckoutLayout({
                     </div>
                 </div>
             </div>
-            <div className="py-4 w-full flex items-center justify-center">
-                <ShopNexIcon />
+            <div className="content-container flex flex-col w-full">
+                {footer && (
+                    <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
+                        <p className="font-normal font-sans txt-medium txt-compact-small">
+                            <StyledRichText
+                                data={basicFooter?.copyright}
+                                properties={{
+                                    dateYear: new Date().getFullYear(),
+                                }}
+                            />
+                        </p>
+                        <div className="flex gap-x-2 txt-compact-small-plus items-center">
+                            <Link
+                                className="font-normal font-sans txt-medium flex gap-x-2 txt-compact-small-plus items-center"
+                                href="https://github.com/shopnex-ai/shopnex"
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                Powered by <ShopNexIcon fill="#9ca3af" />
+                            </Link>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

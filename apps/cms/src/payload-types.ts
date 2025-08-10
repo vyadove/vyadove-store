@@ -365,6 +365,10 @@ export interface Product {
         id?: string | null;
       }[]
     | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -396,6 +400,10 @@ export interface Collection {
     docs?: (number | Product)[];
     hasNextPage?: boolean;
     totalDocs?: number;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -1021,6 +1029,12 @@ export interface CollectionsSelect<T extends boolean = true> {
   handle?: T;
   description?: T;
   products?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1070,6 +1084,12 @@ export interface ProductsSelect<T extends boolean = true> {
         name?: T;
         value?: T;
         id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
       };
   updatedAt?: T;
   createdAt?: T;
