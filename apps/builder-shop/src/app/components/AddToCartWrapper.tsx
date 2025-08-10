@@ -43,6 +43,7 @@ export function AddToCartWrapper({
             await createCart({
                 id: variantId,
                 quantity,
+                productId,
             });
         }
     };
