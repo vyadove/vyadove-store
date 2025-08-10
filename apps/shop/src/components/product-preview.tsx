@@ -37,7 +37,7 @@ export default function ProductPreview({
                     </Text>
                     <div className="flex items-center gap-x-2">
                         <PreviewPrice
-                            currency={product.currency}
+                            currency={product.currency!}
                             originalPrice={originalPrice}
                             price={price}
                         />

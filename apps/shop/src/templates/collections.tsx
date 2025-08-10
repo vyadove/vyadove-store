@@ -29,14 +29,14 @@ export default function CollectionTemplate({
                 <Suspense
                     fallback={
                         <SkeletonProductGrid
-                            numberOfProducts={collection.products?.length}
+                            numberOfProducts={collection.products?.docs?.length}
                         />
                     }
                 >
                     <PaginatedProducts
                         collectionId={collection.id}
                         page={pageNumber}
-                        products={collection.products?.docs}
+                        products={collection.products?.docs as any}
                         sortBy={sort}
                     />
                 </Suspense>
