@@ -365,6 +365,10 @@ export interface Product {
         id?: string | null;
       }[]
     | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -396,6 +400,10 @@ export interface Collection {
     docs?: (number | Product)[];
     hasNextPage?: boolean;
     totalDocs?: number;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -679,21 +687,6 @@ export interface FooterPage {
           };
           [k: string]: unknown;
         };
-        poweredBy?: {
-          root: {
-            type: string;
-            children: {
-              type: string;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'basic-footer';
@@ -1036,6 +1029,12 @@ export interface CollectionsSelect<T extends boolean = true> {
   handle?: T;
   description?: T;
   products?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1085,6 +1084,12 @@ export interface ProductsSelect<T extends boolean = true> {
         name?: T;
         value?: T;
         id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -1343,7 +1348,6 @@ export interface FooterPageSelect<T extends boolean = true> {
           | T
           | {
               copyright?: T;
-              poweredBy?: T;
               id?: T;
               blockName?: T;
             };
