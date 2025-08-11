@@ -5,9 +5,10 @@ import { ShopNexIcon } from "@/components/icons/shopnex-icon";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { Steps } from "@/templates/checkout/steps";
-import { getStoreSettings } from "@/services/store-settings";
 import { payloadSdk } from "@/utils/payload-sdk";
 import { StyledRichText } from "@/components/styled-rich-text";
+
+export const dynamic = "force-dynamic";
 
 export const steps = [
     {
