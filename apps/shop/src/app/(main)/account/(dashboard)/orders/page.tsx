@@ -5,6 +5,8 @@ import OrderOverview from "@/components/order-overview";
 import { getOrders } from "@/services/orders";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
     description: "Overview of your previous orders.",
     title: "Orders",
