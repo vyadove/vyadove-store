@@ -61,6 +61,16 @@ export const plugins: Plugin[] = [
             },
         },
     }),
+    easyEmailPlugin({
+        collectionOverrides: {
+            access: {
+                create: adminPluginAccess,
+                delete: adminPluginAccess,
+                read: adminPluginAccess,
+                update: adminPluginAccess,
+            },
+        },
+    }),
     quickActionsPlugin({
         position: "before-nav-links",
     }),
@@ -78,16 +88,6 @@ export const plugins: Plugin[] = [
                 (field) => (field as any).name !== "image"
             );
             return resultFields;
-        },
-    }),
-    easyEmailPlugin({
-        collectionOverrides: {
-            access: {
-                create: adminPluginAccess,
-                delete: adminPluginAccess,
-                read: adminPluginAccess,
-                update: adminPluginAccess,
-            },
         },
     }),
 ];
