@@ -65,10 +65,11 @@ export default buildConfig({
     ],
     globals: [StoreSettings],
     cors: {
-        headers: ["x-shop-handle", "x-shop-id"],
+        headers: ["x-payload-sdk-token"],
         origins: [
             process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",
             process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3020",
+            process.env.NEXT_PUBLIC_EASY_EMAIL_URL || "http://localhost:3040",
         ],
     },
     custom: {
