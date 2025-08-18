@@ -7,6 +7,14 @@ export const checkRole = (roles: User["roles"] = [], user?: null | User) =>
 
 type isAdmin = (args: AccessArgs<User> | FieldAccessArgs<User>) => boolean;
 
+export const adminPluginAccess: Access = ({ req }) => {
+    const shopHandle = req.headers.get("x-payload-sdk-token");
+    req.user = shopHandle
+        ? JSON.parse(req.payload.decrypt(shopHandle!))
+        : req.user;
+    return admins({ req });
+};
+
 export const admins: isAdmin = ({ req: { user } }) => {
     return checkRole(["admin"], user);
 };

@@ -22,6 +22,7 @@ import { Themes } from "./collections/Themes/Themes";
 import { CheckoutSessions } from "./collections/CheckoutSessions/CheckoutSessions";
 import { HeroPage } from "./collections/pages/Hero";
 import { FooterPage } from "./collections/pages/Footer";
+import { Campaigns } from "./collections/Campaigns/Campaigns";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -49,6 +50,7 @@ export default buildConfig({
         Collections,
         Products,
         Users,
+        Campaigns,
         Media,
         Policies,
         GiftCards,

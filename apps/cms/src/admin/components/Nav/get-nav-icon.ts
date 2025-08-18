@@ -9,6 +9,7 @@ import {
     Settings,
     ShoppingCart,
     Tag,
+    Target,
     UserRound,
 } from "lucide-react";
 
@@ -17,6 +18,7 @@ const navIconMap = {
     content: Image,
     customers: UserRound,
     design: Palette,
+    campaigns: Target,
     orders: ShoppingCart,
     plugins: Blocks,
     products: Tag,

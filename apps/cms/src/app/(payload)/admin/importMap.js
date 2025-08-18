@@ -25,25 +25,24 @@ import { LinkFeatureClient as LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864
 import { RelationshipFeatureClient as RelationshipFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from "@payloadcms/richtext-lexical/client";
 import { BlockquoteFeatureClient as BlockquoteFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from "@payloadcms/richtext-lexical/client";
 import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from "@payloadcms/richtext-lexical/client";
-import { default as default_e49979b57f52dbb3fe02cec65aa4998b } from "@/collections/Products/fields/ImageCell";
-import { default as default_f0f7b12584c89e13c6a87d8efa94a229 } from "@/collections/Products/fields/BuildVariantsButton";
-import { default as default_3c59176b2ff1d26ac22ac2944241cb35 } from "@/collections/Products/fields/OptionRowLabel";
-import { default as default_f22cadbcf95d70613e3cffb6affc278d } from "@/collections/Products/fields/VariantRowLabel";
 import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860 } from "@payloadcms/plugin-seo/client";
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from "@payloadcms/plugin-seo/client";
 import { OverviewComponent as OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from "@payloadcms/plugin-seo/client";
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from "@payloadcms/plugin-seo/client";
+import { default as default_e49979b57f52dbb3fe02cec65aa4998b } from "@/collections/Products/fields/ImageCell";
+import { default as default_f0f7b12584c89e13c6a87d8efa94a229 } from "@/collections/Products/fields/BuildVariantsButton";
+import { default as default_3c59176b2ff1d26ac22ac2944241cb35 } from "@/collections/Products/fields/OptionRowLabel";
+import { default as default_f22cadbcf95d70613e3cffb6affc278d } from "@/collections/Products/fields/VariantRowLabel";
 import { ApiToken as ApiToken_4db7f57ea512297f27e20ca12ad3336a } from "@shopnex/utils/rsc";
 import { default as default_af8eadd8e60b0110bcc8a69137099f48 } from "@/collections/Themes/components/Description";
 import { default as default_bc95b4ce11f38543f2d00a0530dc39f0 } from "@/collections/Themes/components/ThemeList";
 import { ThemeList as ThemeList_32e73524266c6540e71cefa48f073681 } from "@shopnex/builder-io-plugin/rsc";
-import { PluginEditView as PluginEditView_57ab7ef8acde5e865fd68d3a08a07070 } from "@shopnex/store-plugin/client";
-import { PluginListView as PluginListView_57ab7ef8acde5e865fd68d3a08a07070 } from "@shopnex/store-plugin/client";
 import { SortBy as SortBy_2cddc2e1d3f965d7263141af56b26a90 } from "@shopnex/import-export-plugin/rsc";
 import { FieldsToExport as FieldsToExport_2cddc2e1d3f965d7263141af56b26a90 } from "@shopnex/import-export-plugin/rsc";
 import { CollectionField as CollectionField_2cddc2e1d3f965d7263141af56b26a90 } from "@shopnex/import-export-plugin/rsc";
 import { WhereField as WhereField_2cddc2e1d3f965d7263141af56b26a90 } from "@shopnex/import-export-plugin/rsc";
 import { Preview as Preview_2cddc2e1d3f965d7263141af56b26a90 } from "@shopnex/import-export-plugin/rsc";
+import { EmailTemplateEditView as EmailTemplateEditView_9a2dbbd98eb6f9c6172216f1808af5e0 } from "@shopnex/easy-email-plugin/client";
 import { default as default_37ff3de76d1a962ab5815bc7ccd78444 } from "@/admin/components/Nav/Nav.tsx";
 import { QuickActions as QuickActions_c473cfc8237cb5375a757ad784076201 } from "@shopnex/quick-actions-plugin/client";
 import { ImportExportProvider as ImportExportProvider_2cddc2e1d3f965d7263141af56b26a90 } from "@shopnex/import-export-plugin/rsc";
@@ -105,14 +104,6 @@ export const importMap = {
         BlockquoteFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
     "@payloadcms/richtext-lexical/client#UploadFeatureClient":
         UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-    "@/collections/Products/fields/ImageCell#default":
-        default_e49979b57f52dbb3fe02cec65aa4998b,
-    "@/collections/Products/fields/BuildVariantsButton#default":
-        default_f0f7b12584c89e13c6a87d8efa94a229,
-    "@/collections/Products/fields/OptionRowLabel#default":
-        default_3c59176b2ff1d26ac22ac2944241cb35,
-    "@/collections/Products/fields/VariantRowLabel#default":
-        default_f22cadbcf95d70613e3cffb6affc278d,
     "@payloadcms/plugin-seo/client#MetaTitleComponent":
         MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860,
     "@payloadcms/plugin-seo/client#MetaDescriptionComponent":
@@ -121,6 +112,14 @@ export const importMap = {
         OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
     "@payloadcms/plugin-seo/client#PreviewComponent":
         PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
+    "@/collections/Products/fields/ImageCell#default":
+        default_e49979b57f52dbb3fe02cec65aa4998b,
+    "@/collections/Products/fields/BuildVariantsButton#default":
+        default_f0f7b12584c89e13c6a87d8efa94a229,
+    "@/collections/Products/fields/OptionRowLabel#default":
+        default_3c59176b2ff1d26ac22ac2944241cb35,
+    "@/collections/Products/fields/VariantRowLabel#default":
+        default_f22cadbcf95d70613e3cffb6affc278d,
     "@shopnex/utils/rsc#ApiToken": ApiToken_4db7f57ea512297f27e20ca12ad3336a,
     "@/collections/Themes/components/Description#default":
         default_af8eadd8e60b0110bcc8a69137099f48,
@@ -128,10 +127,6 @@ export const importMap = {
         default_bc95b4ce11f38543f2d00a0530dc39f0,
     "@shopnex/builder-io-plugin/rsc#ThemeList":
         ThemeList_32e73524266c6540e71cefa48f073681,
-    "@shopnex/store-plugin/client#PluginEditView":
-        PluginEditView_57ab7ef8acde5e865fd68d3a08a07070,
-    "@shopnex/store-plugin/client#PluginListView":
-        PluginListView_57ab7ef8acde5e865fd68d3a08a07070,
     "@shopnex/import-export-plugin/rsc#SortBy":
         SortBy_2cddc2e1d3f965d7263141af56b26a90,
     "@shopnex/import-export-plugin/rsc#FieldsToExport":
@@ -142,6 +137,8 @@ export const importMap = {
         WhereField_2cddc2e1d3f965d7263141af56b26a90,
     "@shopnex/import-export-plugin/rsc#Preview":
         Preview_2cddc2e1d3f965d7263141af56b26a90,
+    "@shopnex/easy-email-plugin/client#EmailTemplateEditView":
+        EmailTemplateEditView_9a2dbbd98eb6f9c6172216f1808af5e0,
     "@/admin/components/Nav/Nav.tsx#default":
         default_37ff3de76d1a962ab5815bc7ccd78444,
     "@shopnex/quick-actions-plugin/client#QuickActions":

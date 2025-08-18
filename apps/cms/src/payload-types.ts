@@ -71,6 +71,7 @@ export interface Config {
     collections: Collection;
     products: Product;
     users: User;
+    campaigns: Campaign;
     media: Media;
     policies: Policy;
     'gift-cards': GiftCard;
@@ -82,9 +83,9 @@ export interface Config {
     'checkout-sessions': CheckoutSession;
     'hero-page': HeroPage;
     'footer-page': FooterPage;
-    'plugins-space': PluginsSpace;
     'cj-settings': CjSetting;
     exports: Export;
+    'email-templates': EmailTemplate;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -100,6 +101,7 @@ export interface Config {
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    campaigns: CampaignsSelect<false> | CampaignsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     policies: PoliciesSelect<false> | PoliciesSelect<true>;
     'gift-cards': GiftCardsSelect<false> | GiftCardsSelect<true>;
@@ -111,9 +113,9 @@ export interface Config {
     'checkout-sessions': CheckoutSessionsSelect<false> | CheckoutSessionsSelect<true>;
     'hero-page': HeroPageSelect<false> | HeroPageSelect<true>;
     'footer-page': FooterPageSelect<false> | FooterPageSelect<true>;
-    'plugins-space': PluginsSpaceSelect<false> | PluginsSpaceSelect<true>;
     'cj-settings': CjSettingsSelect<false> | CjSettingsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
+    'email-templates': EmailTemplatesSelect<false> | EmailTemplatesSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -530,6 +532,65 @@ export interface Location {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "campaigns".
+ */
+export interface Campaign {
+  id: number;
+  name: string;
+  type: 'email' | 'sms';
+  status?: ('draft' | 'scheduled' | 'sent' | 'paused') | null;
+  subject?: string | null;
+  emailTemplate?: (number | null) | EmailTemplate;
+  profile?: {
+    from?: string | null;
+    replyTo?: string | null;
+  };
+  /**
+   * Optional variables for template rendering. Here admin keys that you can use: name, picture, user, issuerName, scope, sub.
+   */
+  templateData?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Select the users who will receive this campaign.
+   */
+  recipients?: (number | User)[] | null;
+  metrics?: {
+    sent?: number | null;
+    opened?: number | null;
+    clicked?: number | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-templates".
+ */
+export interface EmailTemplate {
+  id: number;
+  name?: string | null;
+  html?: string | null;
+  json?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "policies".
  */
 export interface Policy {
@@ -692,18 +753,6 @@ export interface FooterPage {
         blockType: 'basic-footer';
       }[]
     | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "plugins-space".
- */
-export interface PluginsSpace {
-  id: number;
-  pluginName?: string | null;
-  displayName?: string | null;
-  pluginVersion?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -883,6 +932,10 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
+        relationTo: 'campaigns';
+        value: number | Campaign;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -927,16 +980,16 @@ export interface PayloadLockedDocument {
         value: number | FooterPage;
       } | null)
     | ({
-        relationTo: 'plugins-space';
-        value: number | PluginsSpace;
-      } | null)
-    | ({
         relationTo: 'cj-settings';
         value: number | CjSetting;
       } | null)
     | ({
         relationTo: 'exports';
         value: number | Export;
+      } | null)
+    | ({
+        relationTo: 'email-templates';
+        value: number | EmailTemplate;
       } | null)
     | ({
         relationTo: 'payload-jobs';
@@ -1118,6 +1171,34 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "campaigns_select".
+ */
+export interface CampaignsSelect<T extends boolean = true> {
+  name?: T;
+  type?: T;
+  status?: T;
+  subject?: T;
+  emailTemplate?: T;
+  profile?:
+    | T
+    | {
+        from?: T;
+        replyTo?: T;
+      };
+  templateData?: T;
+  recipients?: T;
+  metrics?:
+    | T
+    | {
+        sent?: T;
+        opened?: T;
+        clicked?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1357,17 +1438,6 @@ export interface FooterPageSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "plugins-space_select".
- */
-export interface PluginsSpaceSelect<T extends boolean = true> {
-  pluginName?: T;
-  displayName?: T;
-  pluginVersion?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "cj-settings_select".
  */
 export interface CjSettingsSelect<T extends boolean = true> {
@@ -1412,6 +1482,17 @@ export interface ExportsSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-templates_select".
+ */
+export interface EmailTemplatesSelect<T extends boolean = true> {
+  name?: T;
+  html?: T;
+  json?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

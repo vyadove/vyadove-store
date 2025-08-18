@@ -6,14 +6,16 @@ import { storePlugin } from "@shopnex/store-plugin";
 import { stripePlugin } from "@shopnex/stripe-plugin";
 import { builderIoPlugin } from "@shopnex/builder-io-plugin";
 
-import { admins } from "./access/roles";
+import { adminPluginAccess, admins } from "./access/roles";
 import { paymentCanceled } from "./webhooks/payment-canceled";
 import { paymentSucceeded } from "./webhooks/payment-succeeded";
 import { quickActionsPlugin } from "@shopnex/quick-actions-plugin";
+import { easyEmailPlugin } from "@shopnex/easy-email-plugin";
 import { seoPlugin } from "@payloadcms/plugin-seo";
 
 export const plugins: Plugin[] = [
-    storePlugin({}),
+    // TODO: uncomment when ready
+    // storePlugin({}),
     cjPlugin({
         cjApiKey: process.env.CJ_PASSWORD || "",
         cjEmailAddress: process.env.CJ_EMAIL_ADDRESS || "",
@@ -76,6 +78,16 @@ export const plugins: Plugin[] = [
                 (field) => (field as any).name !== "image"
             );
             return resultFields;
+        },
+    }),
+    easyEmailPlugin({
+        collectionOverrides: {
+            access: {
+                create: adminPluginAccess,
+                delete: adminPluginAccess,
+                read: adminPluginAccess,
+                update: adminPluginAccess,
+            },
         },
     }),
 ];

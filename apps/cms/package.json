@@ -22,6 +22,7 @@
     "dependencies": {
         "@shopnex/builder-io-plugin": "^1.0.11",
         "@shopnex/cj-plugin": "1.2.2",
+        "@shopnex/easy-email-plugin": "^0.0.5",
         "@shopnex/import-export-plugin": "^3.31.3",
         "@shopnex/payload-sdk": "^3.1.7",
         "@shopnex/quick-actions-plugin": "^0.0.3",
