@@ -23,12 +23,17 @@ import { CheckoutSessions } from "./collections/CheckoutSessions/CheckoutSession
 import { HeroPage } from "./collections/pages/Hero";
 import { FooterPage } from "./collections/pages/Footer";
 import { Campaigns } from "./collections/Campaigns/Campaigns";
+import { postgresAdapter } from "@payloadcms/db-postgres";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 export default buildConfig({
     admin: {
+        autoLogin: {
+            email: process.env.ADMIN_EMAIL,
+            password: process.env.ADMIN_PASSWORD,
+        },
         importMap: {
             autoGenerate: false,
             baseDir: path.resolve(dirname),
@@ -76,9 +81,9 @@ export default buildConfig({
         shopUrl:
             process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3020",
     },
-    db: sqliteAdapter({
-        client: {
-            url: process.env.DATABASE_URI || "",
+    db: postgresAdapter({
+        pool: {
+            connectionString: process.env.DATABASE_URI || "",
         },
     }),
     editor: lexicalEditor(),

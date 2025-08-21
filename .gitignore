@@ -49,3 +49,6 @@ _pagefind
 out
 
 .turbo
+
+test-results
+playwright-report
