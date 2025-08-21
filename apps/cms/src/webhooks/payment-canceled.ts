@@ -1,15 +1,10 @@
-import type { StripeWebhookHandler } from "@shopnex/stripe-plugin/types";
-import type Stripe from "stripe";
+import type { PaymentCanceledHandler } from "@/types/webhooks";
+import { sendOrderCancellationEmail } from "./payment-handlers";
 
 /**
  * This webhook will run whenever a payment intent is canceled
  */
-export const paymentCanceled: StripeWebhookHandler<{
-    data: {
-        object: Stripe.PaymentIntent;
-    };
-    id: string;
-}> = async ({ event, payload }) => {
+export const paymentCanceled: PaymentCanceledHandler = async ({ event, payload }) => {
     const paymentIntent = event.data.object;
 
     // Extract relevant details
@@ -17,10 +12,12 @@ export const paymentCanceled: StripeWebhookHandler<{
     const customerEmail =
         paymentIntent.receipt_email || paymentIntent.metadata?.email;
 
-    console.log(`🔔 Received Stripe Event: ${event.id}`);
+    const { logger } = payload;
+    
+    logger.info(`🔔 Received Stripe Event: ${event.id}`);
 
     if (!orderId) {
-        console.error("❌ Missing order ID in payment metadata");
+        logger.error("❌ Missing order ID in payment metadata");
         return;
     }
 
@@ -38,20 +35,14 @@ export const paymentCanceled: StripeWebhookHandler<{
             },
         });
 
-        console.log(`✅ Payment canceled for Order ID: ${orderId}`, result);
+        logger.info(`✅ Payment canceled for Order ID: ${orderId}`, result);
 
-        // (Optional) Send cancellation email
+        // Send cancellation email
         if (customerEmail) {
-            sendOrderCancellationEmail(customerEmail, orderId);
+            sendOrderCancellationEmail(customerEmail, orderId, logger);
         }
     } catch (error) {
-        console.error("❌ Error updating order status:", error);
+        logger.error("❌ Error updating order status:", error);
     }
 };
 
-// Dummy function for email sending (replace with actual implementation)
-function sendOrderCancellationEmail(email: string, orderId: string) {
-    console.log(
-        `📧 Sending cancellation email to ${email} for Order ID: ${orderId}`
-    );
-}

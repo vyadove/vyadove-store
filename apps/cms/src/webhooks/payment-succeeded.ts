@@ -1,17 +1,11 @@
-import type { StripeWebhookHandler } from "@shopnex/stripe-plugin/types";
-import type { Payload } from "payload";
-
+import type { PaymentSucceededHandler } from "@/types/webhooks";
+import { sendOrderConfirmationEmail } from "./payment-handlers";
 import Stripe from "stripe";
 
 /**
  * This webhook will run whenever a payment intent is successfully paid to create an order in Payload
  */
-export const paymentSucceeded: StripeWebhookHandler<{
-    data: {
-        object: Stripe.PaymentIntent;
-    };
-    id: string;
-}> = async ({ event, payload }) => {
+export const paymentSucceeded: PaymentSucceededHandler = async ({ event, payload }) => {
     const { logger } = payload;
     const paymentIntent = event.data.object;
 
@@ -42,6 +36,19 @@ export const paymentSucceeded: StripeWebhookHandler<{
         const billingDetails = latestCharge?.billing_details;
         const shippingDetails = paymentIntent.shipping || null;
 
+        // Transform Stripe address to Payload format
+        const transformAddress = (address: any) => {
+            if (!address) return undefined;
+            return {
+                city: address.city || undefined,
+                country: address.country || undefined,
+                line1: address.line1 || undefined,
+                line2: address.line2 || undefined,
+                postal_code: address.postal_code || undefined,
+                state: address.state || undefined,
+            };
+        };
+
         const userQuery = await payload.find({
             collection: "users",
             where: {
@@ -57,12 +64,12 @@ export const paymentSucceeded: StripeWebhookHandler<{
             collection: "orders",
             data: {
                 billingAddress: billingDetails
-                    ? ({
-                          name: billingDetails.name,
-                          address: billingDetails.address,
-                          email: billingDetails.email,
-                          phone: billingDetails.phone,
-                      } as any)
+                    ? {
+                          name: billingDetails.name || undefined,
+                          address: transformAddress(billingDetails.address),
+                          email: billingDetails.email || undefined,
+                          phone: billingDetails.phone || undefined,
+                      }
                     : undefined,
                 orderStatus: "processing",
                 paymentIntentId: paymentIntent.id,
@@ -70,11 +77,11 @@ export const paymentSucceeded: StripeWebhookHandler<{
                 paymentStatus: "paid",
                 receiptUrl: latestCharge.receipt_url,
                 shippingAddress: shippingDetails
-                    ? ({
-                          name: shippingDetails.name,
-                          address: shippingDetails.address,
-                          phone: shippingDetails.phone,
-                      } as any)
+                    ? {
+                          name: shippingDetails.name || undefined,
+                          address: transformAddress(shippingDetails.address),
+                          phone: shippingDetails.phone || undefined,
+                      }
                     : undefined,
                 updatedAt: new Date().toISOString(),
                 user: user ? user.id : null,
@@ -92,7 +99,7 @@ export const paymentSucceeded: StripeWebhookHandler<{
 
         logger.info(`✅ Payment successful for Order ID: ${orderId}`, result);
 
-        // (Optional) Send confirmation email
+        // Send confirmation email
         if (customerEmail) {
             sendOrderConfirmationEmail(customerEmail, orderId, logger);
         }
@@ -101,12 +108,3 @@ export const paymentSucceeded: StripeWebhookHandler<{
     }
 };
 
-function sendOrderConfirmationEmail(
-    email: string,
-    orderId: string,
-    logger: Payload["logger"]
-) {
-    logger.info(
-        `📧 Sending confirmation email to ${email} for Order ID: ${orderId}`
-    );
-}
