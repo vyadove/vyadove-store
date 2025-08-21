@@ -1,0 +1,88 @@
+---
+title: Campaigns
+description: Learn how to create and manage email & SMS campaigns.
+---
+
+import { Callout } from "nextra/components";
+
+# 📢 Campaigns
+
+Campaigns let you reach your customers with **email** or **SMS** messages — whether it’s a **newsletter**, **promotion**, or **update**.  
+From the Campaigns dashboard, you can draft messages, choose who receives them, and track how well they perform.
+
+---
+
+## ✍️ Creating a Campaign
+
+1. **Click “New Campaign”** from the Campaigns page.
+2. Enter a **name** (e.g. “Black Friday Promo”).
+3. Choose the **type**:
+    - **Email** → Send a custom email with subject and template.
+    - **SMS** → Send a short text message.
+4. Pick a **status**:
+    - **Draft** → Save your work, but don’t send yet.
+    - **Scheduled** → Prepare for automatic sending later.
+    - **Sent** → Already sent (read-only).
+    - **Paused** → Stop sending midway.
+
+---
+
+## 💌 Email Campaigns
+
+If you select **Email**:
+
+- Add a **subject line** for your email.
+- Choose an **email template** (pre-built or custom).
+- Set the **From** and **Reply-To** addresses.
+- Optionally, provide **template data** (like customer name or promo code) to personalize each message.
+
+<details>
+<summary>Example: Template Personalization</summary>
+
+If your template says:  
+`Hi {{name}}, enjoy 20% off your next order!`
+
+And you add `name = Sarah` in Template Data, the customer will receive:  
+**“Hi Sarah, enjoy 20% off your next order!”**
+
+</details>
+
+---
+
+## 👥 Adding Recipients
+
+- Select which **customers or users** should receive the campaign.
+- You can choose multiple recipients at once.
+
+<Callout type="info">
+    Tip: Use filters or customer groups (like “VIP Customers” or “Recent
+    Buyers”) for better targeting.
+</Callout>
+
+---
+
+## 📊 Tracking Campaign Performance
+
+Once your campaign is sent, you’ll see **metrics update automatically**:
+
+- **Sent** → How many messages were delivered.
+- **Opened** → How many emails were opened.
+- **Clicked** → How many people clicked a link inside.
+
+This helps you measure what’s working and improve future campaigns.
+
+---
+
+## 🚀 Typical Workflow
+
+1. Draft a campaign with your **message and template**.
+2. Select your **audience** (recipients).
+3. Schedule or send immediately.
+4. Monitor results in the **metrics dashboard**.
+
+---
+
+<Callout type="warning">
+    Campaign scheduling is coming soon. For now, campaigns can be sent
+    immediately or saved as drafts.
+</Callout>

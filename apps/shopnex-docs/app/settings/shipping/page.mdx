@@ -1,0 +1,80 @@
+---
+title: Shipping
+description: Configure shipping options and custom shipping methods.
+---
+
+# Shipping
+
+Use the **Shipping** settings to define delivery options for your store. Each entry represents one shipping method, like “Standard Shipping” or “Free Shipping”.
+
+## ➕ Add a Shipping Method
+
+1. Go to the **Shipping** collection under **Settings**.
+2. Click **"Create New"**.
+
+### Fill in the Fields:
+
+#### **Shipping Name**
+
+- The name of this shipping option, e.g. `Standard Shipping`, `Express Delivery`.
+
+#### **Enabled**
+
+- Toggle this on to make the shipping method available at checkout.
+
+#### **Location**
+
+- Select a location where this shipping method should apply. This connects to your **Locations** collection.
+
+---
+
+## 📦 Add a Shipping Provider
+
+Inside the **Shipping Provider** section, click **“Add Block”** and select:
+
+### `Custom Shipping`
+
+This is a simple flat-rate shipping option with optional features.
+
+#### **Label Shown to Customer**
+
+- The label customers will see during checkout.
+- Example: `Standard Shipping`, `2-Day Express`.
+
+#### **Base Rate (flat rate)**
+
+- The flat cost for this shipping method.
+- Example: `5` (for $5.00 shipping).
+
+#### **Free Shipping Over (optional)**
+
+- Leave blank to always charge the base rate.
+- Set a number to offer free shipping for orders over that amount.
+
+#### **Estimated Delivery (optional)**
+
+- Example: `3-5 business days`.
+
+#### **Notes (optional)**
+
+- Any extra message shown to the customer. Example: “Ships from our warehouse in 24 hours.”
+
+---
+
+## ✅ Example Setup
+
+| Field                   | Value                    |
+| ----------------------- | ------------------------ |
+| Shipping Name           | `Standard Shipping`      |
+| Enabled                 | ✅                       |
+| Location                | `United States`          |
+| Label Shown to Customer | `Standard Shipping`      |
+| Base Rate               | `5`                      |
+| Free Shipping Over      | `50`                     |
+| Estimated Delivery      | `3-5 business days`      |
+| Notes                   | `Ships within 24 hours.` |
+
+---
+
+You can add multiple shipping methods for different regions or delivery speeds.  
+Use the toggle to enable or disable them as needed.

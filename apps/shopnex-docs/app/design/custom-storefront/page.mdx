@@ -1,0 +1,62 @@
+# 🧩 Connect Your Custom Storefront to Builder.io
+
+Builder.io supports integration with your **own custom frontend**—like a Next.js app—using **Custom Storefront** mode.
+
+This allows you to use Builder as a headless visual editor while fully controlling your storefront implementation.
+
+---
+
+## 🧱 Step 1: Choose "Custom Storefront" Mode
+
+1. Go to your space's **Dashboard** → Design\*\*
+2. Scroll to the **Editor Mode** section
+3. Select `Custom Storefront` from the dropdown
+
+---
+
+## 🔑 Step 2: Set Your API Key
+
+In the **API Key** field, enter the public API key that your frontend will use to load Builder content.
+
+You can get this key by:
+
+1. Opening your space in Builder
+2. Going to **Settings (⚙️)** → **API Keys**
+3. Copy the **Public API Key**
+
+Paste it into the **API Key** field (it will look like `SHOPNEX_API_KEY=...` if you're using Shopnex).
+
+> 💡 This key is safe to expose in frontend code. Do **not** use your Private API key here.
+
+---
+
+## 🌐 Step 3: Add Storefront URLs (Optional)
+
+In the **Storefront URLs** field:
+
+- Enter the public URLs where your storefront is hosted
+- Press **Enter** after each one to add multiple
+
+---
+
+Here's a clearer and more polished version of **Step 4**, emphasizing the CLI scaffolding:
+
+---
+
+## ⚙️ Step 4: Scaffold Your Storefront via CLI
+
+Select a design template you’d like to use for your storefront—such as **Next.js + Tailwind**, **Shopify-style**, or others—and copy the CLI command provided.
+
+Then, run the command in your terminal to scaffold a preconfigured storefront application:
+
+```bash
+npx create-builder-storefront@latest ...
+```
+
+This command will:
+
+- Automatically set up a ready-to-use project with Builder integrated in **Custom Storefront** mode
+
+Once it's installed, follow the instructions in the terminal to start the development server and view your storefront.
+
+> 💡 You can always customize the components, styles, and routing to fit your brand after installation.

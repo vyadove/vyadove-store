@@ -1,0 +1,116 @@
+## Deployment Guide
+
+### 🐳 1. Docker Build (Production)
+
+Shopnex AI uses a multi-stage Docker build optimized for Payload CMS + Next.js. The included `Dockerfile` handles:
+
+- Turbo-powered monorepo pruning
+- SDK + CMS builds
+- Payload database migrations
+- Final production startup
+
+**Environment variables required:**
+
+```env
+NODE_ENV=production
+DATABASE_URI=mongodb://mongo/db OR postgres://...
+PAYLOAD_SECRET=your-long-secret
+NEXT_PUBLIC_SERVER_URL=https://yourdomain.com
+NEXT_PUBLIC_POSTHOG_KEY=your-posthog-key (optional)
+```
+
+**Build & run:**
+
+```bash
+docker build -t shopnex-ai . -f ./apps/cms/Dockerfile
+docker run -p 3000:3000 --env-file .env shopnex-ai
+```
+
+---
+
+### 🗄️ 2. Database Support
+
+Shopnex supports either:
+
+- ✅ **MongoDB** (easiest to get started)
+- ✅ **PostgreSQL** (via `@payloadcms/db-postgres`)
+
+Update `.env` with one of the following:
+
+```env
+# MongoDB
+DATABASE_URI=mongodb://mongo/db
+
+# OR PostgreSQL
+DATABASE_URI=postgres://user:pass@host:5432/dbname
+```
+
+Your `docker-compose.yml` can include either `mongo` or `postgres`, but **only one should be active** at a time.
+
+---
+
+### ⚙️ 3. Migrations
+
+Payload migrations are automatically run during Docker build:
+
+```bash
+RUN npx payload migrate
+```
+
+If your migration involves **destructive changes** (like data deletion or schema-breaking updates), create a **separate migration script** and run it manually.
+
+Keep auto-migrations safe for general updates.
+
+---
+
+### 🧱 4. Building CMS App
+
+The build is optimized using `turbo`:
+
+```Dockerfile
+# Prune unnecessary files
+RUN turbo prune @shopnex/cms --docker
+
+# Install deps & build SDK
+RUN pnpm install --frozen-lockfile
+RUN pnpm turbo run build --filter=@shopnex/payload-sdk
+
+# Final CMS build
+RUN pnpm turbo run build --filter=@shopnex/cms
+```
+
+You can adjust this pipeline in the `Dockerfile` if you split concerns or extend functionality.
+
+---
+
+### 📂 5. File Storage
+
+Shopnex supports file uploads via Payload CMS. For production, use a **persistent storage backend** like:
+
+- Amazon S3
+- DigitalOcean Spaces
+- Uploadthing
+- Vercel Blob
+
+Use a Payload storage plugin and configure via `.env` and plugin setup.
+
+---
+
+### 📬 6. Email + CDN
+
+To support transactional email and performance:
+
+- Use a service like **Resend** or **SendGrid** for emails.
+- Use **Cloudflare** or similar CDN for asset delivery.
+
+---
+
+## ✅ Summary
+
+| Component        | Requirement                               |
+| ---------------- | ----------------------------------------- |
+| Database         | MongoDB or PostgreSQL                     |
+| Persistent Files | S3, Spaces, or compatible plugin          |
+| Environment      | See `.env` variables above                |
+| Build Tooling    | TurboRepo, Payload, Next.js               |
+| Migrations       | Auto-run, separate destructive operations |

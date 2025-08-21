@@ -1,6 +1,3 @@
-[submodule "apps/docs"]
-	path = apps/docs
-	url = https://github.com/shopnex-ai/shopnex-docs
 [submodule "plugins"]
 	path = plugins
 	url = https://github.com/shopnex-ai/shopnex-plugins.git
