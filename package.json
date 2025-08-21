@@ -8,21 +8,24 @@
         "dev": "pnpm --filter ./apps/cms dev",
         "build": "turbo run build",
         "format": "prettier --write .",
-        "db:seed": "pnpm --filter ./apps/cms db:seed"
+        "db:seed": "pnpm --filter ./apps/cms db:seed",
+        "test:e2e": "pnpm exec playwright test"
     },
     "dependencies": {
-        "@payloadcms/plugin-seo": "3.49.1",
         "@payloadcms/db-sqlite": "3.49.1",
         "@payloadcms/next": "3.49.1",
+        "@payloadcms/plugin-seo": "3.49.1",
         "@payloadcms/richtext-lexical": "3.49.1",
         "@payloadcms/translations": "3.49.1",
         "@payloadcms/ui": "3.49.1",
         "@shopnex/types": "workspace:*",
+        "dotenv": "^17.2.1",
         "payload": "3.49.1"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.2.0",
         "@payloadcms/eslint-config": "^3.28.0",
+        "@playwright/test": "^1.55.0",
         "@types/jsdom": "^21.1.7",
         "@types/lodash": "^4.17.16",
         "@types/node": "^22.5.4",
