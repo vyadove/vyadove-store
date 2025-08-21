@@ -23,7 +23,6 @@ import { CheckoutSessions } from "./collections/CheckoutSessions/CheckoutSession
 import { HeroPage } from "./collections/pages/Hero";
 import { FooterPage } from "./collections/pages/Footer";
 import { Campaigns } from "./collections/Campaigns/Campaigns";
-import { postgresAdapter } from "@payloadcms/db-postgres";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);

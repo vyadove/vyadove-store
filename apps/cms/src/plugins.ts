@@ -7,8 +7,7 @@ import { stripePlugin } from "@shopnex/stripe-plugin";
 import { builderIoPlugin } from "@shopnex/builder-io-plugin";
 
 import { adminPluginAccess, admins } from "./access/roles";
-import { paymentCanceled } from "./webhooks/payment-canceled";
-import { paymentSucceeded } from "./webhooks/payment-succeeded";
+import { paymentCanceled, paymentSucceeded } from "./webhooks";
 import { quickActionsPlugin } from "@shopnex/quick-actions-plugin";
 import { easyEmailPlugin } from "@shopnex/easy-email-plugin";
 import { seoPlugin } from "@payloadcms/plugin-seo";
