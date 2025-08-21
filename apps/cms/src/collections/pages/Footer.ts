@@ -1,8 +1,8 @@
 import { admins, anyone } from "@/access/roles";
-import { Block, CollectionConfig } from "payload";
+import type { BaseBlock, PageCollectionConfig } from "@/types/common";
 import { groups } from "../groups";
 
-const BasicFooter: Block = {
+const BasicFooter: BaseBlock = {
     slug: "basic-footer",
     fields: [
         {
@@ -13,7 +13,7 @@ const BasicFooter: Block = {
     ],
 };
 
-export const FooterPage: CollectionConfig = {
+export const FooterPage: PageCollectionConfig = {
     slug: "footer-page",
     labels: {
         singular: "Footer Page",

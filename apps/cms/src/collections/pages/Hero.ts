@@ -1,8 +1,8 @@
 import { admins, anyone } from "@/access/roles";
-import { Block, CollectionConfig } from "payload";
+import type { BaseBlock, PageCollectionConfig } from "@/types/common";
 import { groups } from "../groups";
 
-const HeroBlock: Block = {
+const HeroBlock: BaseBlock = {
     slug: "hero",
     fields: [
         {
@@ -32,7 +32,7 @@ const HeroBlock: Block = {
     ],
 };
 
-const CarouselBlock: Block = {
+const CarouselBlock: BaseBlock = {
     slug: "carousel",
     fields: [
         {
@@ -58,7 +58,7 @@ const CarouselBlock: Block = {
     ],
 };
 
-export const HeroPage: CollectionConfig = {
+export const HeroPage: PageCollectionConfig = {
     slug: "hero-page",
     labels: {
         singular: "Hero Page",
