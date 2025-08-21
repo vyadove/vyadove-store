@@ -81,9 +81,9 @@ export default buildConfig({
         shopUrl:
             process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3020",
     },
-    db: postgresAdapter({
-        pool: {
-            connectionString: process.env.DATABASE_URI || "",
+    db: sqliteAdapter({
+        client: {
+            url: process.env.DATABASE_URI || "",
         },
     }),
     editor: lexicalEditor(),
