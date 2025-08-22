@@ -71,19 +71,19 @@ export interface Config {
     collections: Collection;
     products: Product;
     users: User;
+    campaigns: Campaign;
     media: Media;
     policies: Policy;
     'gift-cards': GiftCard;
+    themes: Theme;
+    carts: Cart;
+    'hero-page': HeroPage;
+    'footer-page': FooterPage;
+    plugins: Plugin;
     payments: Payment;
     locations: Location;
     shipping: Shipping;
-    carts: Cart;
-    themes: Theme;
     'checkout-sessions': CheckoutSession;
-    'hero-page': HeroPage;
-    'footer-page': FooterPage;
-    campaigns: Campaign;
-    'plugins-space': PluginsSpace;
     'cj-settings': CjSetting;
     exports: Export;
     'email-templates': EmailTemplate;
@@ -102,19 +102,19 @@ export interface Config {
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    campaigns: CampaignsSelect<false> | CampaignsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     policies: PoliciesSelect<false> | PoliciesSelect<true>;
     'gift-cards': GiftCardsSelect<false> | GiftCardsSelect<true>;
+    themes: ThemesSelect<false> | ThemesSelect<true>;
+    carts: CartsSelect<false> | CartsSelect<true>;
+    'hero-page': HeroPageSelect<false> | HeroPageSelect<true>;
+    'footer-page': FooterPageSelect<false> | FooterPageSelect<true>;
+    plugins: PluginsSelect<false> | PluginsSelect<true>;
     payments: PaymentsSelect<false> | PaymentsSelect<true>;
     locations: LocationsSelect<false> | LocationsSelect<true>;
     shipping: ShippingSelect<false> | ShippingSelect<true>;
-    carts: CartsSelect<false> | CartsSelect<true>;
-    themes: ThemesSelect<false> | ThemesSelect<true>;
     'checkout-sessions': CheckoutSessionsSelect<false> | CheckoutSessionsSelect<true>;
-    'hero-page': HeroPageSelect<false> | HeroPageSelect<true>;
-    'footer-page': FooterPageSelect<false> | FooterPageSelect<true>;
-    campaigns: CampaignsSelect<false> | CampaignsSelect<true>;
-    'plugins-space': PluginsSpaceSelect<false> | PluginsSpaceSelect<true>;
     'cj-settings': CjSettingsSelect<false> | CjSettingsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     'email-templates': EmailTemplatesSelect<false> | EmailTemplatesSelect<true>;
@@ -534,6 +534,65 @@ export interface Location {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "campaigns".
+ */
+export interface Campaign {
+  id: number;
+  name: string;
+  type: 'email' | 'sms';
+  status?: ('draft' | 'scheduled' | 'sent' | 'paused') | null;
+  subject?: string | null;
+  emailTemplate?: (number | null) | EmailTemplate;
+  profile?: {
+    from?: string | null;
+    replyTo?: string | null;
+  };
+  /**
+   * Optional variables for template rendering. Here admin keys that you can use: name, picture, user, issuerName, scope, sub.
+   */
+  templateData?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Select the users who will receive this campaign.
+   */
+  recipients?: (number | User)[] | null;
+  metrics?: {
+    sent?: number | null;
+    opened?: number | null;
+    clicked?: number | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-templates".
+ */
+export interface EmailTemplate {
+  id: number;
+  name?: string | null;
+  html?: string | null;
+  json?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "policies".
  */
 export interface Policy {
@@ -608,38 +667,6 @@ export interface Theme {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "checkout-sessions".
- */
-export interface CheckoutSession {
-  id: number;
-  sessionId?: string | null;
-  customer?: (number | null) | User;
-  cart: number | Cart;
-  shipping?: (number | null) | Shipping;
-  payment?: (number | null) | Payment;
-  shippingAddress?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  billingAddress?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero-page".
  */
 export interface HeroPage {
@@ -701,52 +728,33 @@ export interface FooterPage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "campaigns".
+ * via the `definition` "plugins".
  */
-export interface Campaign {
-  id: number;
-  name: string;
-  type: 'email' | 'sms';
-  status?: ('draft' | 'scheduled' | 'sent' | 'paused') | null;
-  subject?: string | null;
-  profile?: {
-    from?: string | null;
-    replyTo?: string | null;
-  };
-  emailTemplate?: (number | null) | EmailTemplate;
-  /**
-   * Optional variables for template rendering. Here admin keys that you can use: name, picture, user, issuerName, scope, sub.
-   */
-  templateData?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  /**
-   * Select the users who will receive this campaign.
-   */
-  recipients?: (number | User)[] | null;
-  metrics?: {
-    sent?: number | null;
-    opened?: number | null;
-    clicked?: number | null;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "email-templates".
- */
-export interface EmailTemplate {
+export interface Plugin {
   id: number;
   name?: string | null;
-  html?: string | null;
-  json?:
+  description?: string | null;
+  enabled?: boolean | null;
+  pluginId?: string | null;
+  svgIcon?: string | null;
+  category?: string | null;
+  author?: string | null;
+  license?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "checkout-sessions".
+ */
+export interface CheckoutSession {
+  id: number;
+  sessionId?: string | null;
+  customer?: (number | null) | User;
+  cart: number | Cart;
+  shipping?: (number | null) | Shipping;
+  payment?: (number | null) | Payment;
+  shippingAddress?:
     | {
         [k: string]: unknown;
       }
@@ -755,18 +763,15 @@ export interface EmailTemplate {
     | number
     | boolean
     | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "plugins-space".
- */
-export interface PluginsSpace {
-  id: number;
-  pluginName?: string | null;
-  displayName?: string | null;
-  pluginVersion?: string | null;
+  billingAddress?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -946,6 +951,10 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
+        relationTo: 'campaigns';
+        value: number | Campaign;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -956,6 +965,26 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'gift-cards';
         value: number | GiftCard;
+      } | null)
+    | ({
+        relationTo: 'themes';
+        value: number | Theme;
+      } | null)
+    | ({
+        relationTo: 'carts';
+        value: number | Cart;
+      } | null)
+    | ({
+        relationTo: 'hero-page';
+        value: number | HeroPage;
+      } | null)
+    | ({
+        relationTo: 'footer-page';
+        value: number | FooterPage;
+      } | null)
+    | ({
+        relationTo: 'plugins';
+        value: number | Plugin;
       } | null)
     | ({
         relationTo: 'payments';
@@ -970,32 +999,8 @@ export interface PayloadLockedDocument {
         value: number | Shipping;
       } | null)
     | ({
-        relationTo: 'carts';
-        value: number | Cart;
-      } | null)
-    | ({
-        relationTo: 'themes';
-        value: number | Theme;
-      } | null)
-    | ({
         relationTo: 'checkout-sessions';
         value: number | CheckoutSession;
-      } | null)
-    | ({
-        relationTo: 'hero-page';
-        value: number | HeroPage;
-      } | null)
-    | ({
-        relationTo: 'footer-page';
-        value: number | FooterPage;
-      } | null)
-    | ({
-        relationTo: 'campaigns';
-        value: number | Campaign;
-      } | null)
-    | ({
-        relationTo: 'plugins-space';
-        value: number | PluginsSpace;
       } | null)
     | ({
         relationTo: 'cj-settings';
@@ -1192,6 +1197,34 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "campaigns_select".
+ */
+export interface CampaignsSelect<T extends boolean = true> {
+  name?: T;
+  type?: T;
+  status?: T;
+  subject?: T;
+  emailTemplate?: T;
+  profile?:
+    | T
+    | {
+        from?: T;
+        replyTo?: T;
+      };
+  templateData?: T;
+  recipients?: T;
+  metrics?:
+    | T
+    | {
+        sent?: T;
+        opened?: T;
+        clicked?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -1228,6 +1261,121 @@ export interface GiftCardsSelect<T extends boolean = true> {
   value?: T;
   customer?: T;
   expiryDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "themes_select".
+ */
+export interface ThemesSelect<T extends boolean = true> {
+  title?: T;
+  editorMode?:
+    | T
+    | {
+        'builder-io'?:
+          | T
+          | {
+              builderIoPublicKey?: T;
+              builderIoPrivateKey?: T;
+              id?: T;
+              blockName?: T;
+            };
+        'custom-storefront-block'?:
+          | T
+          | {
+              storefrontUrls?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  customStorefrontThemes?: T | {};
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "carts_select".
+ */
+export interface CartsSelect<T extends boolean = true> {
+  customer?: T;
+  cartItems?:
+    | T
+    | {
+        variantId?: T;
+        product?: T;
+        quantity?: T;
+        id?: T;
+      };
+  completed?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-page_select".
+ */
+export interface HeroPageSelect<T extends boolean = true> {
+  type?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              ctaButtonText?: T;
+              ctaButtonLink?: T;
+              backgroundImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+        carousel?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              featuredProducts?: T;
+              backgroundImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer-page_select".
+ */
+export interface FooterPageSelect<T extends boolean = true> {
+  type?:
+    | T
+    | {
+        'basic-footer'?:
+          | T
+          | {
+              copyright?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plugins_select".
+ */
+export interface PluginsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  enabled?: T;
+  pluginId?: T;
+  svgIcon?: T;
+  category?: T;
+  author?: T;
+  license?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1314,53 +1462,6 @@ export interface ShippingSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "carts_select".
- */
-export interface CartsSelect<T extends boolean = true> {
-  customer?: T;
-  cartItems?:
-    | T
-    | {
-        variantId?: T;
-        product?: T;
-        quantity?: T;
-        id?: T;
-      };
-  completed?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "themes_select".
- */
-export interface ThemesSelect<T extends boolean = true> {
-  title?: T;
-  editorMode?:
-    | T
-    | {
-        'builder-io'?:
-          | T
-          | {
-              builderIoPublicKey?: T;
-              builderIoPrivateKey?: T;
-              id?: T;
-              blockName?: T;
-            };
-        'custom-storefront-block'?:
-          | T
-          | {
-              storefrontUrls?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
-  customStorefrontThemes?: T | {};
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "checkout-sessions_select".
  */
 export interface CheckoutSessionsSelect<T extends boolean = true> {
@@ -1371,97 +1472,6 @@ export interface CheckoutSessionsSelect<T extends boolean = true> {
   payment?: T;
   shippingAddress?: T;
   billingAddress?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "hero-page_select".
- */
-export interface HeroPageSelect<T extends boolean = true> {
-  type?:
-    | T
-    | {
-        hero?:
-          | T
-          | {
-              title?: T;
-              subtitle?: T;
-              ctaButtonText?: T;
-              ctaButtonLink?: T;
-              backgroundImage?: T;
-              id?: T;
-              blockName?: T;
-            };
-        carousel?:
-          | T
-          | {
-              title?: T;
-              subtitle?: T;
-              featuredProducts?: T;
-              backgroundImage?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer-page_select".
- */
-export interface FooterPageSelect<T extends boolean = true> {
-  type?:
-    | T
-    | {
-        'basic-footer'?:
-          | T
-          | {
-              copyright?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "campaigns_select".
- */
-export interface CampaignsSelect<T extends boolean = true> {
-  name?: T;
-  type?: T;
-  status?: T;
-  subject?: T;
-  profile?:
-    | T
-    | {
-        from?: T;
-        replyTo?: T;
-      };
-  emailTemplate?: T;
-  templateData?: T;
-  recipients?: T;
-  metrics?:
-    | T
-    | {
-        sent?: T;
-        opened?: T;
-        clicked?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "plugins-space_select".
- */
-export interface PluginsSpaceSelect<T extends boolean = true> {
-  pluginName?: T;
-  displayName?: T;
-  pluginVersion?: T;
   updatedAt?: T;
   createdAt?: T;
 }

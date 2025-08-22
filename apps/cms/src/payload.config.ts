@@ -23,6 +23,7 @@ import { CheckoutSessions } from "./collections/CheckoutSessions/CheckoutSession
 import { HeroPage } from "./collections/pages/Hero";
 import { FooterPage } from "./collections/pages/Footer";
 import { Campaigns } from "./collections/Campaigns/Campaigns";
+import { Plugins } from "./collections/Plugins/Plugins";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -58,14 +59,15 @@ export default buildConfig({
         Media,
         Policies,
         GiftCards,
+        Themes,
+        Carts,
+        HeroPage,
+        FooterPage,
+        Plugins,
         Payments,
         Locations,
         Shipping,
-        Carts,
-        Themes,
         CheckoutSessions,
-        HeroPage,
-        FooterPage,
     ],
     globals: [StoreSettings],
     cors: {

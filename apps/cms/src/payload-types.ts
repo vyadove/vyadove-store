@@ -75,14 +75,15 @@ export interface Config {
     media: Media;
     policies: Policy;
     'gift-cards': GiftCard;
+    themes: Theme;
+    carts: Cart;
+    'hero-page': HeroPage;
+    'footer-page': FooterPage;
+    plugins: Plugin;
     payments: Payment;
     locations: Location;
     shipping: Shipping;
-    carts: Cart;
-    themes: Theme;
     'checkout-sessions': CheckoutSession;
-    'hero-page': HeroPage;
-    'footer-page': FooterPage;
     'cj-settings': CjSetting;
     exports: Export;
     'email-templates': EmailTemplate;
@@ -105,14 +106,15 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     policies: PoliciesSelect<false> | PoliciesSelect<true>;
     'gift-cards': GiftCardsSelect<false> | GiftCardsSelect<true>;
+    themes: ThemesSelect<false> | ThemesSelect<true>;
+    carts: CartsSelect<false> | CartsSelect<true>;
+    'hero-page': HeroPageSelect<false> | HeroPageSelect<true>;
+    'footer-page': FooterPageSelect<false> | FooterPageSelect<true>;
+    plugins: PluginsSelect<false> | PluginsSelect<true>;
     payments: PaymentsSelect<false> | PaymentsSelect<true>;
     locations: LocationsSelect<false> | LocationsSelect<true>;
     shipping: ShippingSelect<false> | ShippingSelect<true>;
-    carts: CartsSelect<false> | CartsSelect<true>;
-    themes: ThemesSelect<false> | ThemesSelect<true>;
     'checkout-sessions': CheckoutSessionsSelect<false> | CheckoutSessionsSelect<true>;
-    'hero-page': HeroPageSelect<false> | HeroPageSelect<true>;
-    'footer-page': FooterPageSelect<false> | FooterPageSelect<true>;
     'cj-settings': CjSettingsSelect<false> | CjSettingsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     'email-templates': EmailTemplatesSelect<false> | EmailTemplatesSelect<true>;
@@ -665,38 +667,6 @@ export interface Theme {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "checkout-sessions".
- */
-export interface CheckoutSession {
-  id: number;
-  sessionId?: string | null;
-  customer?: (number | null) | User;
-  cart: number | Cart;
-  shipping?: (number | null) | Shipping;
-  payment?: (number | null) | Payment;
-  shippingAddress?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  billingAddress?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero-page".
  */
 export interface HeroPage {
@@ -752,6 +722,55 @@ export interface FooterPage {
         blockName?: string | null;
         blockType: 'basic-footer';
       }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plugins".
+ */
+export interface Plugin {
+  id: number;
+  name?: string | null;
+  description?: string | null;
+  enabled?: boolean | null;
+  pluginId?: string | null;
+  svgIcon?: string | null;
+  category?: string | null;
+  author?: string | null;
+  license?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "checkout-sessions".
+ */
+export interface CheckoutSession {
+  id: number;
+  sessionId?: string | null;
+  customer?: (number | null) | User;
+  cart: number | Cart;
+  shipping?: (number | null) | Shipping;
+  payment?: (number | null) | Payment;
+  shippingAddress?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  billingAddress?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
     | null;
   updatedAt: string;
   createdAt: string;
@@ -948,6 +967,26 @@ export interface PayloadLockedDocument {
         value: number | GiftCard;
       } | null)
     | ({
+        relationTo: 'themes';
+        value: number | Theme;
+      } | null)
+    | ({
+        relationTo: 'carts';
+        value: number | Cart;
+      } | null)
+    | ({
+        relationTo: 'hero-page';
+        value: number | HeroPage;
+      } | null)
+    | ({
+        relationTo: 'footer-page';
+        value: number | FooterPage;
+      } | null)
+    | ({
+        relationTo: 'plugins';
+        value: number | Plugin;
+      } | null)
+    | ({
         relationTo: 'payments';
         value: number | Payment;
       } | null)
@@ -960,24 +999,8 @@ export interface PayloadLockedDocument {
         value: number | Shipping;
       } | null)
     | ({
-        relationTo: 'carts';
-        value: number | Cart;
-      } | null)
-    | ({
-        relationTo: 'themes';
-        value: number | Theme;
-      } | null)
-    | ({
         relationTo: 'checkout-sessions';
         value: number | CheckoutSession;
-      } | null)
-    | ({
-        relationTo: 'hero-page';
-        value: number | HeroPage;
-      } | null)
-    | ({
-        relationTo: 'footer-page';
-        value: number | FooterPage;
       } | null)
     | ({
         relationTo: 'cj-settings';
@@ -1243,6 +1266,121 @@ export interface GiftCardsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "themes_select".
+ */
+export interface ThemesSelect<T extends boolean = true> {
+  title?: T;
+  editorMode?:
+    | T
+    | {
+        'builder-io'?:
+          | T
+          | {
+              builderIoPublicKey?: T;
+              builderIoPrivateKey?: T;
+              id?: T;
+              blockName?: T;
+            };
+        'custom-storefront-block'?:
+          | T
+          | {
+              storefrontUrls?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  customStorefrontThemes?: T | {};
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "carts_select".
+ */
+export interface CartsSelect<T extends boolean = true> {
+  customer?: T;
+  cartItems?:
+    | T
+    | {
+        variantId?: T;
+        product?: T;
+        quantity?: T;
+        id?: T;
+      };
+  completed?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-page_select".
+ */
+export interface HeroPageSelect<T extends boolean = true> {
+  type?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              ctaButtonText?: T;
+              ctaButtonLink?: T;
+              backgroundImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+        carousel?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              featuredProducts?: T;
+              backgroundImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer-page_select".
+ */
+export interface FooterPageSelect<T extends boolean = true> {
+  type?:
+    | T
+    | {
+        'basic-footer'?:
+          | T
+          | {
+              copyright?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plugins_select".
+ */
+export interface PluginsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  enabled?: T;
+  pluginId?: T;
+  svgIcon?: T;
+  category?: T;
+  author?: T;
+  license?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payments_select".
  */
 export interface PaymentsSelect<T extends boolean = true> {
@@ -1324,53 +1462,6 @@ export interface ShippingSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "carts_select".
- */
-export interface CartsSelect<T extends boolean = true> {
-  customer?: T;
-  cartItems?:
-    | T
-    | {
-        variantId?: T;
-        product?: T;
-        quantity?: T;
-        id?: T;
-      };
-  completed?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "themes_select".
- */
-export interface ThemesSelect<T extends boolean = true> {
-  title?: T;
-  editorMode?:
-    | T
-    | {
-        'builder-io'?:
-          | T
-          | {
-              builderIoPublicKey?: T;
-              builderIoPrivateKey?: T;
-              id?: T;
-              blockName?: T;
-            };
-        'custom-storefront-block'?:
-          | T
-          | {
-              storefrontUrls?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
-  customStorefrontThemes?: T | {};
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "checkout-sessions_select".
  */
 export interface CheckoutSessionsSelect<T extends boolean = true> {
@@ -1381,58 +1472,6 @@ export interface CheckoutSessionsSelect<T extends boolean = true> {
   payment?: T;
   shippingAddress?: T;
   billingAddress?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "hero-page_select".
- */
-export interface HeroPageSelect<T extends boolean = true> {
-  type?:
-    | T
-    | {
-        hero?:
-          | T
-          | {
-              title?: T;
-              subtitle?: T;
-              ctaButtonText?: T;
-              ctaButtonLink?: T;
-              backgroundImage?: T;
-              id?: T;
-              blockName?: T;
-            };
-        carousel?:
-          | T
-          | {
-              title?: T;
-              subtitle?: T;
-              featuredProducts?: T;
-              backgroundImage?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer-page_select".
- */
-export interface FooterPageSelect<T extends boolean = true> {
-  type?:
-    | T
-    | {
-        'basic-footer'?:
-          | T
-          | {
-              copyright?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
   updatedAt?: T;
   createdAt?: T;
 }

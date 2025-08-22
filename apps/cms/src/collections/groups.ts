@@ -6,4 +6,5 @@ export const groups = {
     orders: "Orders",
     settings: "Settings",
     campaigns: "Campaigns",
+    plugins: "Plugins",
 };
