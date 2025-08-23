@@ -175,6 +175,7 @@ export interface Order {
   totalAmount: number;
   user?: (number | null) | User;
   cart?: (number | null) | Cart;
+  source?: ('manual' | 'cj') | null;
   currency: string;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
   orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'canceled';
@@ -1069,6 +1070,7 @@ export interface OrdersSelect<T extends boolean = true> {
   totalAmount?: T;
   user?: T;
   cart?: T;
+  source?: T;
   currency?: T;
   paymentStatus?: T;
   orderStatus?: T;

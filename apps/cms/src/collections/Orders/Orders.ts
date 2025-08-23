@@ -58,7 +58,15 @@ export const Orders: CollectionConfig = {
                 },
             ],
         },
-
+        {
+            name: "source",
+            type: "select",
+            admin: {
+                position: "sidebar",
+            },
+            defaultValue: "manual",
+            options: [{ label: "Manual", value: "manual" }],
+        },
         {
             name: "currency",
             type: "text",

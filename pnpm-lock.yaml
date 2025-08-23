@@ -96,11 +96,11 @@ importers:
   apps/cms:
     dependencies:
       '@shopnex/builder-io-plugin':
-        specifier: ^1.0.11
-        version: 1.0.11(encoding@0.1.13)(graphql-tag-pluck@0.8.7)(utf-8-validate@6.0.5)
+        specifier: ^1.0.12
+        version: 1.0.12(encoding@0.1.13)(graphql-tag-pluck@0.8.7)(utf-8-validate@6.0.5)
       '@shopnex/cj-plugin':
-        specifier: 1.2.2
-        version: 1.2.2(utf-8-validate@6.0.5)
+        specifier: 1.0.10
+        version: 1.0.10(utf-8-validate@6.0.5)
       '@shopnex/easy-email-plugin':
         specifier: ^0.0.5
         version: 0.0.5
@@ -111,14 +111,14 @@ importers:
         specifier: ^3.1.7
         version: 3.1.7(typescript@5.7.3)
       '@shopnex/quick-actions-plugin':
-        specifier: ^0.0.3
-        version: 0.0.3(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+        specifier: ^0.0.4
+        version: 0.0.4(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
       '@shopnex/store-plugin':
         specifier: ^1.0.15
         version: 1.0.15(@types/react@19.0.7)(react@19.0.0)
       '@shopnex/stripe-plugin':
-        specifier: ^3.31.9
-        version: 3.31.9
+        specifier: ^3.31.10
+        version: 3.31.10
       '@shopnex/utils':
         specifier: ^1.0.6
         version: 1.0.6
@@ -3324,11 +3324,11 @@ packages:
       zen-observable:
         optional: true
 
-  '@shopnex/builder-io-plugin@1.0.11':
-    resolution: {integrity: sha512-f4ThZXCCQ3tvFVM1KX5ezFANOP+MMM94HtEZwf0/c48tpnaW7Y9ioifMGCYvNSAOxjZL5vHxgbRHYLUVsXr7UQ==}
+  '@shopnex/builder-io-plugin@1.0.12':
+    resolution: {integrity: sha512-JHADCgwN5ncNU9qXPOH4SJThHxMwTOwU84pstNOa61y6aBODpFlV2WVRV1m1iNCM1xGxPRlXSgadi0QLbiOyJA==}
 
-  '@shopnex/cj-plugin@1.2.2':
-    resolution: {integrity: sha512-1mSiA/BOHQ6YlPBZHO4YNhiNElCNsio/1ZVo0HFAdfvU4Zlu+exZTGdYkUEzumrLylVx+QTTm2beIDnutP+WDA==}
+  '@shopnex/cj-plugin@1.0.10':
+    resolution: {integrity: sha512-CgWLmwDM1En90CcDv2HkW0yvji7gQn00sJWKsubJvM9cLR9ST5upIOq5qFVPBdHOwjJYUDYnPr+aDM0gxqlqLQ==}
 
   '@shopnex/easy-email-plugin@0.0.5':
     resolution: {integrity: sha512-mhKbivYJby9zHON7AFMaCyvGbey/KsLhXPnK41WINK9yzJTmsRJbco3vLhWDQLMeD6DTvXCZk+8r6W+FhPCZXQ==}
@@ -3339,20 +3339,17 @@ packages:
   '@shopnex/payload-sdk@3.1.7':
     resolution: {integrity: sha512-Nm3WiKwtVSHoeB14lNkHJKg2w4UZLdl4DVjYFLCagLbSPg1L7hL3vN3HVybCSlpS15X2fCzunkeZahRYoR8CQA==}
 
-  '@shopnex/quick-actions-plugin@0.0.3':
-    resolution: {integrity: sha512-VmXZEeO6jSH+LnrFX0bvHQBFvYj5MZ+65kty4/PZ1NZp7lrOt8ao9HzlezXxORexMMAyFjW/GaYtr67X9wiYYg==}
+  '@shopnex/quick-actions-plugin@0.0.4':
+    resolution: {integrity: sha512-dk70Xlf4U7sxQYSqavIybmyTKn++7fr1Wn9OxRpQNyIDmMuk8SAcso49IUivjXML6PtDOR6F9XIL5NpVd4Drxw==}
 
   '@shopnex/store-plugin@1.0.15':
     resolution: {integrity: sha512-RoLAr5Skaq3j/1znmhuDWfIDdd2K6l8vMz9pjxdtsxIik+2sdDg8YdMwZj4/KlQ7fDN4gqoNBqIwKyllWYfbLA==}
 
-  '@shopnex/stripe-plugin@3.31.9':
-    resolution: {integrity: sha512-JNtWk5Q9yHCITrzFbH43JoNAcXPEF2Vn+Rb5yQTui5BZtR694r4EkZwwpQfxnwIeSZRrhs6pZOpli2XQnfgCUw==}
+  '@shopnex/stripe-plugin@3.31.10':
+    resolution: {integrity: sha512-aS9hSxOTN3DHkYwlAxQnDS2KJJBnQa2WlHO2u+Nxr5a6FWiqFD0yn3uy9IG1c2UQULCvHzcvCGAXFnApgiuNxA==}
 
   '@shopnex/types@0.0.3':
     resolution: {integrity: sha512-a/JNFJCiXlBAdLM//5s0kV75etkCpD0fSaeEa2nr05EhND8Pk2y5TWWt/tAwrpu4ZwOwPf0jR7FSvRvRfimhqg==}
-
-  '@shopnex/utils@1.0.5':
-    resolution: {integrity: sha512-s+rxrFb/4kFC2uXpf6dd8Nr/ClVaZYfB7wRfTgzAxyrN6Vd8SLoXuPrIFxvoTwCcdgSLVFYpGNBuUF4A5fUSfA==}
 
   '@shopnex/utils@1.0.6':
     resolution: {integrity: sha512-A/WP8buTLPGm9aCE09dyf7gUUhHh3WP1Yx788XpUDawdDerjLwFywmxu+s0s/aLgZmQrLZL/WC0RkxpgWPDOWw==}
@@ -11851,14 +11848,13 @@ snapshots:
     transitivePeerDependencies:
       - zenObservable
 
-  '@shopnex/builder-io-plugin@1.0.11(encoding@0.1.13)(graphql-tag-pluck@0.8.7)(utf-8-validate@6.0.5)':
+  '@shopnex/builder-io-plugin@1.0.12(encoding@0.1.13)(graphql-tag-pluck@0.8.7)(utf-8-validate@6.0.5)':
     dependencies:
       '@builder.io/admin-sdk': 0.0.8(encoding@0.1.13)(graphql-tag-pluck@0.8.7)(utf-8-validate@6.0.5)
       '@builder.io/sdk': 6.1.2(encoding@0.1.13)
       '@paypal/checkout-server-sdk': 1.0.3
       '@paypal/paypal-server-sdk': 1.1.0
       '@shopnex/utils': 1.0.6
-      lodash.get: 4.4.2
       uuid: 10.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -11870,11 +11866,12 @@ snapshots:
       - zen-observable
       - zenObservable
 
-  '@shopnex/cj-plugin@1.2.2(utf-8-validate@6.0.5)':
+  '@shopnex/cj-plugin@1.0.10(utf-8-validate@6.0.5)':
     dependencies:
       '@lexical/headless': 0.28.0
       '@lexical/html': 0.28.0
-      '@shopnex/utils': 1.0.5
+      '@shopnex/types': 0.0.3
+      '@shopnex/utils': 1.0.6
       axios: 1.11.0
       decimal.js: 10.6.0
       jsdom: 26.1.0(utf-8-validate@6.0.5)
@@ -11915,7 +11912,7 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@shopnex/quick-actions-plugin@0.0.3(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
+  '@shopnex/quick-actions-plugin@0.0.4(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
     dependencies:
       kbar: 0.1.0-beta.48(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       qs-esm: 7.0.2
@@ -11937,7 +11934,7 @@ snapshots:
       - react
       - supports-color
 
-  '@shopnex/stripe-plugin@3.31.9':
+  '@shopnex/stripe-plugin@3.31.10':
     dependencies:
       '@shopnex/types': 0.0.3
       '@shopnex/utils': 1.0.6
@@ -11947,8 +11944,6 @@ snapshots:
       uuid: 10.0.0
 
   '@shopnex/types@0.0.3': {}
-
-  '@shopnex/utils@1.0.5': {}
 
   '@shopnex/utils@1.0.6': {}
 

@@ -24,6 +24,7 @@ import { HeroPage } from "./collections/pages/Hero";
 import { FooterPage } from "./collections/pages/Footer";
 import { Campaigns } from "./collections/Campaigns/Campaigns";
 import { Plugins } from "./collections/Plugins/Plugins";
+import { syncPlugin } from "./collections/Plugins/utils/sync-plugin";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -81,6 +82,7 @@ export default buildConfig({
     custom: {
         shopUrl:
             process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3020",
+        syncPlugin,
     },
     db: sqliteAdapter({
         client: {
