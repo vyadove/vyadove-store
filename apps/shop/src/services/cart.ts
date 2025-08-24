@@ -11,7 +11,6 @@ const emptyCart: Cart = {
     completed: false,
     id: 0,
     sessionId: "",
-    shop: 0,
     updatedAt: "",
     createdAt: "",
 };

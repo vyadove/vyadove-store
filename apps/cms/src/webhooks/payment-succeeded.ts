@@ -5,7 +5,10 @@ import Stripe from "stripe";
 /**
  * This webhook will run whenever a payment intent is successfully paid to create an order in Payload
  */
-export const paymentSucceeded: PaymentSucceededHandler = async ({ event, payload }) => {
+export const paymentSucceeded: PaymentSucceededHandler = async ({
+    event,
+    payload,
+}) => {
     const { logger } = payload;
     const paymentIntent = event.data.object;
 
@@ -25,7 +28,7 @@ export const paymentSucceeded: PaymentSucceededHandler = async ({ event, payload
 
     try {
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-            apiVersion: "2025-02-24.acacia",
+            apiVersion: "2025-02-24.acacia" as any,
         });
         const charges = await stripe.charges.list({
             payment_intent: paymentIntent.id,
@@ -107,4 +110,3 @@ export const paymentSucceeded: PaymentSucceededHandler = async ({ event, payload
         logger.error("❌ Error updating order status:", error);
     }
 };
-
