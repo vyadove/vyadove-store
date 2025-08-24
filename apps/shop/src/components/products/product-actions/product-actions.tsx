@@ -10,6 +10,7 @@ import { useCart } from "react-use-cart";
 import Divider from "../../divider";
 import ProductPrice from "../product-price/product-price";
 import OptionSelect from "./option-select";
+import { syncCartWithBackend } from "@/services/cart";
 
 type ProductActionsProps = {
     product: Product;
@@ -25,7 +26,7 @@ export default function ProductActions({
     setSelectedOptions,
 }: ProductActionsProps) {
     const [isAdding, setIsAdding] = useState(false);
-    const { addItem } = useCart();
+    const { addItem, removeItem } = useCart();
 
     const options = useMemo(() => {
         const optionsMap = new Map();
@@ -65,21 +66,22 @@ export default function ProductActions({
         const newItem = buildCartItem(selectedVariant);
 
         // Optimistic UI update
-        addItem(newItem, 1);
 
         try {
+            addItem(newItem, 1);
             const sessionId = getSessionId();
             await syncCartWithBackend(
                 {
                     id: newItem.id,
-                    productId: newItem.productId,
+                    product: newItem.productId,
+                    variantId: newItem.id,
                     quantity: 1,
                 },
                 sessionId
             );
         } catch (error) {
+            removeItem(newItem.id);
             console.error("Failed to sync cart:", error);
-            // Optionally: show error toast or revert optimistic update here
         } finally {
             setIsAdding(false);
         }
@@ -108,32 +110,9 @@ export default function ProductActions({
     };
 
     const getSessionId = () => {
-        return Cookies.get("cart-session");
+        return Cookies.get("cart-session") || "";
     };
 
-    async function syncCartWithBackend(
-        item: { id: string; productId: number; quantity: number },
-        sessionId?: string
-    ) {
-        if (sessionId) {
-            debugger;
-            await fetch(`/api/carts/session/${sessionId}`, {
-                method: "PATCH",
-                credentials: "include",
-                body: JSON.stringify({
-                    item,
-                }),
-            });
-        } else {
-            await fetch("/api/carts/session", {
-                method: "POST",
-                credentials: "include",
-                body: JSON.stringify({
-                    item,
-                }),
-            });
-        }
-    }
     const selectedVariant =
         product.variants?.find((variant) =>
             variant.options?.every(

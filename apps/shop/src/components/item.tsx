@@ -1,6 +1,6 @@
 "use client";
 
-import { updateCart } from "@/services/cart";
+import { syncCartWithBackend, updateCart } from "@/services/cart";
 import { clx, Table, Text } from "@medusajs/ui";
 import Link from "next/link";
 import { useState } from "react";
@@ -14,11 +14,16 @@ import LineItemOptions from "./line-item-options";
 import LineItemPrice from "./line-item-price";
 import LineItemUnitPrice from "./line-item-unit-price";
 import Thumbnail from "./thumbnail";
+import Cookies from "js-cookie";
 
 type ItemProps = {
     currencyCode: string;
     item: any;
     type?: "full" | "preview";
+};
+
+const getSessionId = () => {
+    return Cookies.get("cart-session") || "";
 };
 
 const Item = ({ type = "full", currencyCode, item }: ItemProps) => {
@@ -33,11 +38,21 @@ const Item = ({ type = "full", currencyCode, item }: ItemProps) => {
         setTimeout(async () => {
             updateItemQuantity(item.id, quantity);
 
-            await updateCart({
-                id: item.id,
-                productId: item.productId,
-                quantity,
-            });
+            try {
+                const sessionId = getSessionId();
+                await syncCartWithBackend(
+                    {
+                        id: item.id,
+                        product: item.productId,
+                        variantId: item.id,
+                        quantity,
+                        action: "update",
+                    },
+                    sessionId
+                );
+            } catch (error: any) {
+                setError(error.message);
+            }
             setUpdating(false);
         }, 200);
     };

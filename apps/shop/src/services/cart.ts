@@ -118,3 +118,34 @@ export async function updateCart(item: {
         },
     });
 }
+
+export async function syncCartWithBackend(
+    item: {
+        id: string;
+        product: number;
+        variantId: string;
+        quantity: number;
+        action?: "update";
+    },
+    sessionId: string
+) {
+    if (sessionId) {
+        await fetch(`/api/carts/session/${sessionId}`, {
+            method: "PATCH",
+            credentials: "include",
+            body: JSON.stringify({
+                item,
+                action: item.action,
+            }),
+        });
+    } else {
+        await fetch("/api/carts/session", {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify({
+                item,
+                action: item.action,
+            }),
+        });
+    }
+}

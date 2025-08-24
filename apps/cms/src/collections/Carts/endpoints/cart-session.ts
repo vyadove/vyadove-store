@@ -18,6 +18,21 @@ export const createCartSession: Endpoint = {
         const { item } = await req.json?.();
         const sessionId = crypto.randomUUID();
 
+        const cart = await req.payload.create({
+            collection: "carts",
+            data: {
+                sessionId,
+                cartItems: [
+                    {
+                        product: item.product,
+                        variantId: item.id,
+                        quantity: item.quantity,
+                    },
+                ],
+            },
+            req,
+        });
+
         const cartCookie = generateCookie({
             name: "cart-session",
             expires: getCookieExpiration({ seconds: 60 * 60 * 24 * 30 }),
@@ -33,21 +48,6 @@ export const createCartSession: Endpoint = {
         req.responseHeaders = req.responseHeaders
             ? mergeHeaders(req.responseHeaders, newHeaders)
             : newHeaders;
-
-        const cart = await req.payload.create({
-            collection: "carts",
-            data: {
-                sessionId,
-                cartItems: [
-                    {
-                        product: item.productId,
-                        variantId: item.id,
-                        quantity: item.quantity,
-                    },
-                ],
-            },
-            req,
-        });
 
         return Response.json(
             {
@@ -67,13 +67,12 @@ export const updateCartSession: Endpoint = {
     method: "patch",
     path: "/session/:sessionId",
     handler: async (req) => {
-        debugger;
         const guard = await rateLimitGuard(req);
 
         if (!guard.ok) {
             return guard.response;
         }
-        const { item } = await req.json?.();
+        const { item, action } = await req.json?.();
         const sessionId = req.routeParams?.sessionId;
 
         // Get existing cart first
@@ -84,6 +83,7 @@ export const updateCartSession: Endpoint = {
                     equals: sessionId,
                 },
             },
+            depth: 0,
             req,
         });
 
@@ -104,29 +104,38 @@ export const updateCartSession: Endpoint = {
                     if (index === existingItemIndex) {
                         return {
                             ...cartItem,
-                            quantity: cartItem.quantity + item.quantity,
+                            quantity:
+                                action === "update"
+                                    ? item.quantity
+                                    : cartItem.quantity + item.quantity,
                         };
                     }
                     return cartItem;
                 }
             );
         } else {
-            // Add new item
             updatedCartItems = [...existingItems, item];
         }
 
-        const updatedCart = await req.payload.update({
-            collection: "carts",
-            id: existingCart.id,
-            data: {
-                cartItems: updatedCartItems,
-            },
-            req,
-        });
-
-        return Response.json({
-            cartItems: updatedCart?.cartItems || [],
-            success: true,
-        });
+        try {
+            const updatedCart = await req.payload.update({
+                collection: "carts",
+                id: existingCart.id,
+                data: {
+                    cartItems: updatedCartItems,
+                },
+                req,
+            });
+            return Response.json({
+                cartItems: updatedCart?.cartItems || [],
+                success: true,
+            });
+        } catch (error) {
+            console.error("Error updating cart:", error);
+            return Response.json({
+                error: "Failed to update cart.",
+                success: false,
+            });
+        }
     },
 };
