@@ -458,7 +458,7 @@ export interface Payment {
               | null;
             id?: string | null;
             blockName?: string | null;
-            blockType: 'manualProvider';
+            blockType: 'manual';
           }
         | {
             providerName: string;
@@ -1393,7 +1393,7 @@ export interface PaymentsSelect<T extends boolean = true> {
   providers?:
     | T
     | {
-        manualProvider?:
+        manual?:
           | T
           | {
               methodType?: T;
