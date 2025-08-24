@@ -10,7 +10,7 @@
         "db:seed": "payload run ./src/seed",
         "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=\"${NODE_OPTIONS} --no-deprecation next dev",
         "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
-        "generate:types": "payload generate:types && mv ./src/payload-types.ts ../../packages/types/index.ts",
+        "generate:types": "payload generate:types",
         "generate:schema": "payload generate:db-schema",
         "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
         "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",

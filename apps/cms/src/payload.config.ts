@@ -105,6 +105,6 @@ export default buildConfig({
     sharp,
     telemetry: false,
     typescript: {
-        outputFile: path.resolve(dirname, "payload-types.ts"),
+        outputFile: path.resolve(dirname, "../../../packages/types/index.ts"),
     },
 });
