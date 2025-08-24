@@ -71,7 +71,8 @@
             "esbuild": "^0.25.0",
             "image-size": "^1.2.1",
             "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz",
-            "@eslint/plugin-kit": "^0.3.3"
+            "@eslint/plugin-kit": "^0.3.3",
+            "lodash": "4.17.21"
         }
     },
     "devDependencies": {
