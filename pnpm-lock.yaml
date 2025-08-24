@@ -12,6 +12,7 @@ overrides:
   react-dom: 19.1.0
   '@types/react': 19.1.0
   '@types/react-dom': 19.1.0
+  lodash: 4.17.21
 
 importers:
 
@@ -172,7 +173,7 @@ importers:
         specifier: ^0.5.13
         version: 0.5.17
       lodash:
-        specifier: ^4.17.21
+        specifier: 4.17.21
         version: 4.17.21
       lucide-react:
         specifier: ^0.484.0
@@ -6129,9 +6130,6 @@ packages:
 
   lodash.mergewith@4.6.2:
     resolution: {integrity: sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==}
-
-  lodash@4.17.14:
-    resolution: {integrity: sha512-mmKYbW3GLuJeX+iGP+Y7Gp1AiGHGbXHCOh/jZmrawMmsE7MS4znI3RL2FsjbqOyMayHInjOeykW7PEajUk1/xw==}
 
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
@@ -14557,7 +14555,7 @@ snapshots:
       graphql-tag-pluck: 0.8.7
       is-glob: 4.0.1
       is-valid-path: 0.1.1
-      lodash: 4.17.14
+      lodash: 4.17.21
       tslib: 1.14.1
       valid-url: 1.0.9
     transitivePeerDependencies:
@@ -15230,8 +15228,6 @@ snapshots:
   lodash.merge@4.6.2: {}
 
   lodash.mergewith@4.6.2: {}
-
-  lodash@4.17.14: {}
 
   lodash@4.17.21: {}
 
