@@ -18,21 +18,21 @@ export default function ReviewPage() {
             // Here you would typically create an order
             console.log("Placing order with:", checkoutSession);
 
-            const fetchResult = await fetch(
-                `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/checkout`,
-                {
-                    body: JSON.stringify({}),
-                    credentials: "include",
-                    method: "POST",
-                }
-            );
+            const fetchResult = await fetch(`/api/orders/checkout`, {
+                body: JSON.stringify({}),
+                credentials: "include",
+                method: "POST",
+            });
 
             if (!fetchResult.ok) {
                 throw new Error("Failed to create order");
             }
 
             const result = await fetchResult.json();
-            window.location.href = result.redirectUrl;
+            const redirectUrl = result.redirectUrl.startsWith("http")
+                ? result.redirectUrl
+                : new URL(result.redirectUrl, window.location.origin).href;
+            window.location.href = redirectUrl;
         } catch (error) {
             console.error("Error placing order:", error);
         } finally {

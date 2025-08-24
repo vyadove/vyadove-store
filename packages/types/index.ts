@@ -285,6 +285,7 @@ export interface User {
  */
 export interface Cart {
   id: number;
+  sessionId?: string | null;
   customer?: (number | null) | User;
   cartItems?:
     | {
@@ -1300,6 +1301,7 @@ export interface ThemesSelect<T extends boolean = true> {
  * via the `definition` "carts_select".
  */
 export interface CartsSelect<T extends boolean = true> {
+  sessionId?: T;
   customer?: T;
   cartItems?:
     | T

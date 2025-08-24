@@ -1,6 +1,5 @@
 "use client";
 
-import { payloadSdk } from "@/utils/payload-sdk";
 import { CheckoutSession } from "@shopnex/types";
 import Cookies from "js-cookie";
 
@@ -11,18 +10,27 @@ export const updateCheckoutSession = async (data: Partial<CheckoutSession>) => {
         return;
     }
 
-    const result = await payloadSdk.update({
-        collection: "checkout-sessions",
-        where: {
-            sessionId: {
-                equals: sessionId,
-            },
-        },
-        data,
+    const result = await fetch(`/api/checkout-sessions/session/${sessionId}`, {
+        method: "PATCH",
+        credentials: "include",
+        body: JSON.stringify(data),
     });
-    if (result.errors) {
-        result.errors.forEach((error) => {
-            console.error("Error updating checkout session:", error);
-        });
+
+    if (result.ok) {
+        const session = await result.json();
+        return session.checkoutSession;
+    }
+};
+
+export const createCheckoutSession = async (data: Partial<CheckoutSession>) => {
+    const result = await fetch("/api/checkout-sessions/session", {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(data),
+    });
+
+    if (result.ok) {
+        const session = await result.json();
+        return session.checkoutSession;
     }
 };

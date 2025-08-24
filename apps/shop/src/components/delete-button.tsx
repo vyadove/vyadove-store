@@ -8,12 +8,14 @@ import Trash from "./icons/trash";
 
 const DeleteButton = ({
     id,
+    productId,
     children,
     className,
 }: {
     children?: React.ReactNode;
     className?: string;
     id: string;
+    productId: number;
 }) => {
     const [isDeleting, setIsDeleting] = useState(false);
     const { removeItem } = useCart();
@@ -24,6 +26,7 @@ const DeleteButton = ({
             removeItem(id);
             await updateCart({
                 id,
+                productId,
                 quantity: 0,
             });
             setIsDeleting(false);

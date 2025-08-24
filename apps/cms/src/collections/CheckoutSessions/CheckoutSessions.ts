@@ -8,6 +8,10 @@ import {
     readSessionAccess,
     updateSessionAccess,
 } from "./access/session-access";
+import {
+    createCheckoutSession,
+    updateCheckoutSession,
+} from "./endpoints/checkout-session";
 
 export const CheckoutSessions: CollectionConfig = {
     slug: "checkout-sessions",
@@ -21,9 +25,7 @@ export const CheckoutSessions: CollectionConfig = {
         useAsTitle: "sessionId",
         group: groups.orders,
     },
-    hooks: {
-        beforeChange: [beforeCreateHook, checkoutSessionHook],
-    },
+    endpoints: [createCheckoutSession, updateCheckoutSession],
     fields: [
         {
             name: "sessionId",

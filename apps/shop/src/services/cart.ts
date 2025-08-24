@@ -1,15 +1,38 @@
 import { payloadSdk } from "@/utils/payload-sdk";
 import { Cart } from "@shopnex/types";
+import Cookies from "js-cookie";
 
 export const setAddresses = (cartId: string, addresses: any) => {
     return null;
 };
 
+const emptyCart: Cart = {
+    cartItems: [],
+    completed: false,
+    id: 0,
+    sessionId: "",
+    shop: 0,
+    updatedAt: "",
+    createdAt: "",
+};
+
 export const getCart = async () => {
-    const cart = await payloadSdk.find({
+    const sessionId = Cookies.get("cart-session");
+
+    if (!sessionId) {
+        return null;
+    }
+
+    const result = await payloadSdk.find({
         collection: "carts",
+        where: {
+            sessionId: {
+                equals: sessionId,
+            },
+        },
     });
-    return cart.docs?.[0];
+
+    return result.docs[0] || emptyCart;
 };
 
 export const initiatePaymentSession = (cartId: string, data: any) => {
@@ -41,13 +64,22 @@ export async function createCart(item: {
             ],
         },
     });
+
     return cart;
 }
 
-export async function updateCart(item: { id: string; quantity: number }) {
-    const cartResult = await getCart();
+export async function updateCart(item: {
+    id: string;
+    productId: number;
+    quantity: number;
+}) {
+    const cart = await getCart();
 
-    const existingItems = cartResult?.cartItems || [];
+    if (!cart) {
+        throw new Error("No cart found");
+    }
+
+    const existingItems = cart?.cartItems || [];
     const existingItemIndex = existingItems.findIndex(
         (cartItem: any) => cartItem.variantId === item.id
     );
@@ -72,6 +104,7 @@ export async function updateCart(item: { id: string; quantity: number }) {
         updatedCartItems = [
             ...existingItems,
             {
+                product: item.productId,
                 quantity: item.quantity,
                 variantId: item.id,
             },
@@ -79,7 +112,7 @@ export async function updateCart(item: { id: string; quantity: number }) {
     }
 
     await payloadSdk.update({
-        id: cartResult.id,
+        id: cart.id,
         collection: "carts",
         data: {
             cartItems: updatedCartItems,

@@ -35,6 +35,7 @@ const Item = ({ type = "full", currencyCode, item }: ItemProps) => {
 
             await updateCart({
                 id: item.id,
+                productId: item.productId,
                 quantity,
             });
             setUpdating(false);
@@ -53,7 +54,10 @@ const Item = ({ type = "full", currencyCode, item }: ItemProps) => {
                     })}
                     href={`/products/${item.handle}`}
                 >
-                    <Thumbnail size="square" thumbnail={item.imageUrl} />
+                    <Thumbnail
+                        size="square"
+                        thumbnail={item.gallery?.[0]?.url}
+                    />
                 </Link>
             </Table.Cell>
 
@@ -73,6 +77,7 @@ const Item = ({ type = "full", currencyCode, item }: ItemProps) => {
                         <DeleteButton
                             data-testid="product-delete-button"
                             id={item.id}
+                            productId={item.productId}
                         />
                         <CartItemSelect
                             className="w-14 h-10 p-4"

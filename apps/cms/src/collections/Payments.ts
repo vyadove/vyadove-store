@@ -5,7 +5,7 @@ import { admins, anyone } from "@/access/roles";
 import { groups } from "./groups";
 
 export const ManualProvider: Block = {
-    slug: "manualProvider",
+    slug: "manual",
     admin: {
         disableBlockName: true,
     },

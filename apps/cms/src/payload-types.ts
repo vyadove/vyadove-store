@@ -285,6 +285,7 @@ export interface User {
  */
 export interface Cart {
   id: number;
+  sessionId?: string | null;
   customer?: (number | null) | User;
   cartItems?:
     | {
@@ -457,7 +458,7 @@ export interface Payment {
               | null;
             id?: string | null;
             blockName?: string | null;
-            blockType: 'manualProvider';
+            blockType: 'manual';
           }
         | {
             providerName: string;
@@ -1300,6 +1301,7 @@ export interface ThemesSelect<T extends boolean = true> {
  * via the `definition` "carts_select".
  */
 export interface CartsSelect<T extends boolean = true> {
+  sessionId?: T;
   customer?: T;
   cartItems?:
     | T
@@ -1391,7 +1393,7 @@ export interface PaymentsSelect<T extends boolean = true> {
   providers?:
     | T
     | {
-        manualProvider?:
+        manual?:
           | T
           | {
               methodType?: T;

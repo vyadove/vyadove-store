@@ -53,7 +53,11 @@
         "overrides": {
             "tar-fs": "^3.0.9",
             "esbuild": "^0.25.0",
-            "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz"
+            "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz",
+            "react": "19.1.0",
+            "react-dom": "19.1.0",
+            "@types/react": "19.1.0",
+            "@types/react-dom": "19.1.0"
         }
     }
 }

@@ -9,6 +9,7 @@ import { Info } from "lucide-react";
 import { useCart } from "react-use-cart";
 import { useEffect, useState } from "react";
 import { payloadSdk } from "@/utils/payload-sdk";
+import Thumbnail from "@/components/thumbnail";
 
 export const OrderSummery = () => {
     const { cartTotal, items, metadata } = useCart();
@@ -52,13 +53,11 @@ export const OrderSummery = () => {
                             className="flex items-center space-x-4"
                             key={item.id}
                         >
-                            <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
-                                <img
-                                    alt={item.productName}
-                                    className="w-full h-full object-cover rounded-lg"
-                                    src={item.imageUrl}
-                                />
-                            </div>
+                            <Thumbnail
+                                className="small:w-24 w-12"
+                                size="square"
+                                thumbnail={item.gallery?.[0]?.url}
+                            />
                             <div className="flex-1">
                                 <h3 className="font-medium">
                                     {item.productName}

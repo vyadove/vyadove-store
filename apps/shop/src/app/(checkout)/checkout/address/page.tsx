@@ -14,7 +14,10 @@ import {
 } from "@/components/ui/select";
 import { Button, Label } from "@medusajs/ui";
 import { useCheckoutSession } from "@/hooks/use-checkout-session";
-import { updateCheckoutSession } from "@/services/checkout-session";
+import {
+    createCheckoutSession,
+    updateCheckoutSession,
+} from "@/services/checkout-session";
 
 interface AddressFormData {
     firstName: string;
@@ -88,7 +91,7 @@ export default function Address() {
                     : undefined,
             };
 
-            await updateCheckoutSession(updateData);
+            await createCheckoutSession(updateData);
 
             router.push("/checkout/shipping");
         } catch (error) {

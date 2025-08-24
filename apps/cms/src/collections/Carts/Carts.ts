@@ -1,8 +1,8 @@
 import { type CollectionConfig } from "payload";
-
 import { groups } from "../groups";
 import { canAccessOwnCart } from "./access/access-own-cart";
 import { sessionCartCreate } from "./hooks/session-cart-create";
+import { createCartSession, updateCartSession } from "./endpoints/cart-session";
 
 export const Carts: CollectionConfig = {
     slug: "carts",
@@ -16,7 +16,16 @@ export const Carts: CollectionConfig = {
         group: groups.customers,
         useAsTitle: "id",
     },
+    endpoints: [createCartSession, updateCartSession],
     fields: [
+        {
+            name: "sessionId",
+            type: "text",
+            admin: {
+                position: "sidebar",
+                readOnly: true,
+            },
+        },
         {
             name: "customer",
             type: "relationship",
@@ -56,7 +65,4 @@ export const Carts: CollectionConfig = {
             defaultValue: false,
         },
     ],
-    hooks: {
-        afterChange: [sessionCartCreate],
-    },
 };

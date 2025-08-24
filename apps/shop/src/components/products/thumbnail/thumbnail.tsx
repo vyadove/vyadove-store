@@ -1,26 +1,29 @@
-import type React from "react";
-
 import { clx, Container } from "@medusajs/ui";
 import Image from "next/image";
+import React from "react";
 
-import PlaceholderImage from "./placeholder-image";
+import PlaceholderImage from "../../placeholder-image";
 
 type ThumbnailProps = {
     className?: string;
     "data-testid"?: string;
     // TODO: Fix image typings
+    images?: any[] | null;
     isFeatured?: boolean;
     size?: "full" | "large" | "medium" | "small" | "square";
-    thumbnail?: string;
+    thumbnail?: null | string;
 };
 
 const Thumbnail: React.FC<ThumbnailProps> = ({
     className,
     "data-testid": dataTestid,
+    images,
     isFeatured,
     size = "small",
     thumbnail,
 }) => {
+    const initialImage = thumbnail || images?.[0]?.url;
+
     return (
         <Container
             className={clx(
@@ -38,7 +41,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
             )}
             data-testid={dataTestid}
         >
-            <ImageOrPlaceholder image={thumbnail} size={size} />
+            <ImageOrPlaceholder image={initialImage} size={size} />
         </Container>
     );
 };
@@ -47,9 +50,6 @@ const ImageOrPlaceholder = ({
     image,
     size,
 }: { image?: string } & Pick<ThumbnailProps, "size">) => {
-    if (process.env.NODE_ENV === "production") {
-        console.log("Thumbnail image src:", image);
-    }
     return image ? (
         <img
             alt="Product image"

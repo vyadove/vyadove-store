@@ -28,7 +28,6 @@ export const getVariants = async (variantIds: string[]) => {
                         variantGallery.length > 0
                             ? variantGallery
                             : firstVariantGallery,
-                    imageUrl: variant.imageUrl || firstVariantGallery[0],
                     product: product.id,
                 });
             }

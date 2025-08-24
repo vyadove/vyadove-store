@@ -126,7 +126,9 @@ const CartDropdown = () => {
                                             >
                                                 <Thumbnail
                                                     size="square"
-                                                    thumbnail={item.imageUrl}
+                                                    thumbnail={
+                                                        item.gallery?.[0]?.url
+                                                    }
                                                 />
                                             </Link>
                                             <div className="flex flex-col justify-between flex-1">
@@ -181,6 +183,7 @@ const CartDropdown = () => {
                                                     </div>
                                                 </div>
                                                 <DeleteButton
+                                                    productId={item.productId}
                                                     className="mt-1"
                                                     data-testid="cart-item-remove-button"
                                                     id={item.id}

@@ -19,11 +19,12 @@ export default async function HomePage() {
     const heroSection = heroSectionResult.docs?.[0];
     const hero = heroSection?.type?.find((f) => f.blockType === "hero");
 
-    let featuredCollections = await payloadSdk.find({
+    const featuredCollections = await payloadSdk.find({
         collection: "collections",
         limit: 3,
         sort: "createdAt",
     });
+
     return (
         <>
             {heroSection && <Hero hero={hero as any} />}

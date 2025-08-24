@@ -1,12 +1,10 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { OrderSummery } from "@/templates/checkout/order-summary";
 import { ShopNexIcon } from "@/components/icons/shopnex-icon";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { Steps } from "@/templates/checkout/steps";
-import { payloadSdk } from "@/utils/payload-sdk";
-import { StyledRichText } from "@/components/styled-rich-text";
 
 export const dynamic = "force-dynamic";
 
@@ -39,21 +37,9 @@ export const steps = [
 
 export default async function CheckoutLayout({
     children,
-    params,
 }: {
     children: ReactNode;
-    params: any;
 }) {
-    const footerResult = await payloadSdk.find({
-        collection: "footer-page",
-    });
-
-    const footer = footerResult.docs?.[0];
-
-    const basicFooter = footer?.type?.find(
-        (f) => f.blockType === "basic-footer"
-    );
-
     return (
         <div className="w-full bg-white relative small:min-h-screen">
             <div className="h-16 bg-white border-b ">
@@ -105,28 +91,21 @@ export default async function CheckoutLayout({
                 </div>
             </div>
             <div className="content-container flex flex-col w-full">
-                {footer && (
-                    <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
-                        <p className="font-normal font-sans txt-medium txt-compact-small">
-                            <StyledRichText
-                                data={basicFooter?.copyright}
-                                properties={{
-                                    dateYear: new Date().getFullYear(),
-                                }}
-                            />
-                        </p>
-                        <div className="flex gap-x-2 txt-compact-small-plus items-center">
-                            <Link
-                                className="font-normal font-sans txt-medium flex gap-x-2 txt-compact-small-plus items-center"
-                                href="https://github.com/shopnex-ai/shopnex"
-                                rel="noreferrer"
-                                target="_blank"
-                            >
-                                Powered by <ShopNexIcon fill="#9ca3af" />
-                            </Link>
-                        </div>
+                <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
+                    <p className="font-normal font-sans txt-medium txt-compact-small">
+                        ShopNex all rights reserved
+                    </p>
+                    <div className="flex gap-x-2 txt-compact-small-plus items-center">
+                        <Link
+                            className="font-normal font-sans txt-medium flex gap-x-2 txt-compact-small-plus items-center"
+                            href="https://github.com/shopnex-ai/shopnex"
+                            rel="noreferrer"
+                            target="_blank"
+                        >
+                            Powered by <ShopNexIcon fill="#9ca3af" />
+                        </Link>
                     </div>
-                )}
+                </div>
             </div>
         </div>
     );

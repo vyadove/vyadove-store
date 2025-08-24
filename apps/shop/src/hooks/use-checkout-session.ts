@@ -15,18 +15,11 @@ export const useCheckoutSession = () => {
         const fetchSession = async () => {
             try {
                 const sessionId = Cookies.get("checkout-session");
-                const cartId = Cookies.get("cart-session") || 0;
 
-                let sessionData;
+                let sessionData: CheckoutSession | null = null;
 
                 if (!sessionId) {
-                    sessionData = await payloadSdk.create(
-                        {
-                            collection: "checkout-sessions",
-                            data: { cart: +cartId },
-                        },
-                        { credentials: "include" }
-                    );
+                    setSession(null);
                 } else {
                     const existingSession = await payloadSdk.find({
                         collection: "checkout-sessions",
@@ -43,8 +36,8 @@ export const useCheckoutSession = () => {
                 setSession(sessionData);
 
                 if (
-                    !sessionData.shippingAddress ||
-                    !sessionData.billingAddress
+                    !sessionData?.shippingAddress ||
+                    !sessionData?.billingAddress
                 ) {
                     if (pathname !== "/checkout/address") {
                         router.replace("/checkout/address");
@@ -52,8 +45,8 @@ export const useCheckoutSession = () => {
                     }
                 }
                 if (
-                    !sessionData.shipping &&
-                    sessionData.shippingAddress &&
+                    !sessionData?.shipping &&
+                    sessionData?.shippingAddress &&
                     sessionData.billingAddress
                 ) {
                     if (pathname !== "/checkout/shipping") {
@@ -63,8 +56,8 @@ export const useCheckoutSession = () => {
                 }
 
                 if (
-                    !sessionData.payment &&
-                    sessionData.shipping &&
+                    !sessionData?.payment &&
+                    sessionData?.shipping &&
                     sessionData.billingAddress &&
                     sessionData.shippingAddress
                 ) {

@@ -52,6 +52,7 @@ export const updateOrderStatus = async (
 
 export const getOrder = async (orderId: string) => {
     try {
+        console.log("Getting order with id:", orderId);
         const order = await payloadSdk.find({
             collection: "orders",
             depth: 5,

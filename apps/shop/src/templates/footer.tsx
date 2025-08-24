@@ -9,16 +9,6 @@ export default async function Footer({
 }: {
     storeSettings: any;
 }) {
-    const footerResult = await payloadSdk.find({
-        collection: "footer-page",
-    });
-
-    const footer = footerResult.docs?.[0];
-
-    const basicFooter = footer?.type?.find(
-        (f) => f.blockType === "basic-footer"
-    );
-
     const collectionsPayload = await payloadSdk.find({
         collection: "collections",
         limit: 6,
@@ -73,7 +63,7 @@ export default async function Footer({
                                 <li>
                                     <a
                                         className="hover:text-ui-fg-base"
-                                        href="https://github.com/medusajs"
+                                        href="https://github.com/shopnex-ai/shopnex"
                                         rel="noreferrer"
                                         target="_blank"
                                     >
@@ -83,7 +73,7 @@ export default async function Footer({
                                 <li>
                                     <a
                                         className="hover:text-ui-fg-base"
-                                        href="https://docs.medusajs.com"
+                                        href="https://docs.shopnex.ai"
                                         rel="noreferrer"
                                         target="_blank"
                                     >
@@ -93,7 +83,7 @@ export default async function Footer({
                                 <li>
                                     <a
                                         className="hover:text-ui-fg-base"
-                                        href="https://github.com/medusajs/nextjs-starter-medusa"
+                                        href="https://github.com/shopnex-ai/shopnex"
                                         rel="noreferrer"
                                         target="_blank"
                                     >
@@ -104,16 +94,10 @@ export default async function Footer({
                         </div>
                     </div>
                 </div>
-                {footer && (
+                {
                     <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
                         <p className="font-normal font-sans txt-medium txt-compact-small">
-                            <StyledRichText
-                                data={basicFooter?.copyright}
-                                properties={{
-                                    dateYear: new Date().getFullYear(),
-                                    storeName: storeSettings?.name || "",
-                                }}
-                            />
+                            ShopNex all rights reserved
                         </p>
                         <div className="flex gap-x-2 txt-compact-small-plus items-center">
                             <Link
@@ -126,7 +110,7 @@ export default async function Footer({
                             </Link>
                         </div>
                     </div>
-                )}
+                }
             </div>
         </footer>
     );

@@ -6,7 +6,7 @@ import Radio from "../radio";
 import PaymentTest from "./payment-test";
 
 const isManual = (paymentProviderId: string) => {
-    return paymentProviderId === "manualProvider";
+    return paymentProviderId === "manual";
 };
 
 type PaymentContainerProps = {

@@ -2,7 +2,6 @@
 
 import type { Product } from "@shopnex/types";
 
-import { createCart, updateCart } from "@/services/cart";
 import { Button } from "@medusajs/ui";
 import Cookies from "js-cookie";
 import { useMemo, useState } from "react";
@@ -69,14 +68,14 @@ export default function ProductActions({
         addItem(newItem, 1);
 
         try {
-            const cartSessionId = getCartSessionId();
+            const sessionId = getSessionId();
             await syncCartWithBackend(
                 {
                     id: newItem.id,
                     productId: newItem.productId,
                     quantity: 1,
                 },
-                cartSessionId
+                sessionId
             );
         } catch (error) {
             console.error("Failed to sync cart:", error);
@@ -108,18 +107,31 @@ export default function ProductActions({
         };
     };
 
-    const getCartSessionId = () => {
+    const getSessionId = () => {
         return Cookies.get("cart-session");
     };
 
     async function syncCartWithBackend(
         item: { id: string; productId: number; quantity: number },
-        cartSessionId?: string
+        sessionId?: string
     ) {
-        if (cartSessionId) {
-            await updateCart(item);
+        if (sessionId) {
+            debugger;
+            await fetch(`/api/carts/session/${sessionId}`, {
+                method: "PATCH",
+                credentials: "include",
+                body: JSON.stringify({
+                    item,
+                }),
+            });
         } else {
-            await createCart(item);
+            await fetch("/api/carts/session", {
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify({
+                    item,
+                }),
+            });
         }
     }
     const selectedVariant =
