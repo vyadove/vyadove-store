@@ -11,6 +11,7 @@ import ShippingDetails from "@/components/order/shipping-details/shipping-detail
 import { Heading } from "@medusajs/ui";
 import { useLayoutEffect } from "react";
 import { useCart } from "react-use-cart";
+import Cookies from "js-cookie";
 
 type OrderCompletedTemplateProps = {
     order: Order;
@@ -23,6 +24,8 @@ export default function OrderCompletedTemplate({
 
     useLayoutEffect(() => {
         emptyCart();
+        Cookies.remove("cart-session");
+        Cookies.remove("checkout-session");
     }, [emptyCart]);
 
     return (
