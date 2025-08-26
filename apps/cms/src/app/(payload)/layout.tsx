@@ -9,7 +9,7 @@ import type React from "react";
 import config from "@payload-config";
 import { handleServerFunctions, RootLayout } from "@payloadcms/next/layouts";
 
-import { importMap } from "./admin/importMap.js";
+import { importMap } from "./importMap.js";
 import "./custom.scss";
 
 type Args = {

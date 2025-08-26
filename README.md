@@ -53,13 +53,13 @@ If you choose Builder.io as your storefront:
 - Start Payload CMS
 
 ```bash
-pnpm run dev:cms
+pnpm run dev:cms #  http://localhost:3000
 ```
 
 - Start Shop storefront
 
 ```bash
-pnpm run dev:shop
+pnpm run dev:shop # http://localhost:3020
 ```
 
 ---
