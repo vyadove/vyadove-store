@@ -1,4 +1,4 @@
-import type { Cart, Payment, Shipping, Shop } from "@shopnex/types";
+import type { Cart, Payment, Shipping } from "@shopnex/types";
 import { createCheckoutSession } from "../utilities/create-checkout-session";
 import { mapToStripeLineItems } from "../utilities/map-to-stripe";
 
@@ -9,7 +9,6 @@ type StripeCheckoutProps = {
     cart: Cart;
     payment: Payment;
     shipping: Shipping;
-    shop: Shop;
     total: number;
     orderId: string;
 };
@@ -19,14 +18,10 @@ export async function stripeCheckout({
     cart,
     payment,
     shipping,
-    shop,
     total,
     orderId,
 }: StripeCheckoutProps) {
-    const shopUrl = req.payload.config?.custom?.shopUrl.replace(
-        "app",
-        shop.handle
-    );
+    const shopUrl = req.payload.config?.custom?.shopUrl;
     const order = await req.payload.create({
         collection: "orders",
         data: {
@@ -39,7 +34,6 @@ export async function stripeCheckout({
             shipping: shipping?.id,
             paymentStatus: "pending",
             totalAmount: total,
-            shop: typeof shop === "object" ? shop?.id : shop,
         },
         req,
     });
