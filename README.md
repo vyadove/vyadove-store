@@ -48,6 +48,22 @@ If you choose Builder.io as your storefront:
 1. Configure your `.env` file with Builder.io credentials
 2. Run `pnpm run pages:seed` to seed your Builder.io pages
 
+#### To start app in development mode
+
+- Start Payload CMS
+
+```bash
+pnpm run dev:cms
+```
+
+- Start Shop storefront
+
+```bash
+pnpm run dev:shop
+```
+
+---
+
 ### 3. Optional CLI Flags
 
 You can customize the setup behavior using the following flags:
@@ -67,25 +83,11 @@ pnpm dlx create-shopnex-app my-store --fresh --skip-env
 ## 📁 Project Structure
 
 ```text
-├── src
-│   ├── access              # Role-based access logic
-│   ├── admin               # Custom admin panel components
-│   ├── app                 # Core app logic: frontend, API routes, Payload admin
-│   ├── collections         # Payload CMS collections
-│   │   ├── GiftCards.ts         # Gift cards collection
-│   │   ├── Locations.ts         # Locations collection
-│   │   ├── Users.ts             # Users collection
-│   │   ├── Products             # Example of modular collection structure
-│   │   │   ├── Products.ts      # Main collection config for products
-│   │   │   └── fields           # Subfolder for custom fields (e.g., price, inventory)
-│   │   ├── ...                  # Other collections
-│   │   └── Policies.ts          # Example of custom collection with custom fields
-│   ├── fields              # Reusable field definitions (e.g., slug, description)
-│   ├── globals             # Global site settings (Footer, Store config, etc.)
-│   ├── seed                # JSON and script-based seeding logic
-│   ├── utils               # Common utilities (formatting, mapping, etc.)
-│   └── webhooks            # Webhooks for external event handling (e.g., payments)
-└── tsconfig.json
+/apps
+  ├── cms      # Payload CMS backend
+  └── shop     # Next.js storefront
+/packages
+  └── types    # Shared TypeScript types
 ```
 
 ## ✨ Features

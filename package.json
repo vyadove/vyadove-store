@@ -5,7 +5,8 @@
     "license": "MIT",
     "type": "module",
     "scripts": {
-        "dev": "pnpm --filter ./apps/cms dev",
+        "dev:cms": "pnpm --filter ./apps/cms dev",
+        "dev:shop": "pnpm --filter ./apps/shop dev",
         "build": "turbo run build",
         "format": "prettier --write .",
         "db:seed": "pnpm --filter ./apps/cms db:seed",
