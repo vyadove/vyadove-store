@@ -1,6 +1,6 @@
 import type { BasePayload, CollectionAfterChangeHook, Document } from "payload";
 import { cjSdk } from "../sdk/cj-sdk";
-import { Order, Shop } from "@shopnex/types";
+import { Order } from "@shopnex/types";
 
 export const createOrderHook: CollectionAfterChangeHook<Order> = async ({
     doc,
@@ -12,11 +12,6 @@ export const createOrderHook: CollectionAfterChangeHook<Order> = async ({
     const payload: BasePayload = req.payload;
     const cjSettings = await payload.find({
         collection: "cj-settings" as any,
-        where: {
-            shop: {
-                equals: (doc.shop as Shop)?.id,
-            },
-        },
     });
     const cjConfig: any = cjSettings?.docs[0];
     const podProperties = cjConfig?.pod?.url

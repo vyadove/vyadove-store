@@ -20,25 +20,17 @@ const upsertImage = async ({
     imageUrl,
     filename,
     alt,
-    shopId,
 }: {
     payload: BasePayload;
     imageUrl: string;
     filename: string;
     alt: string;
-    shopId?: number;
 }) => {
     const whereClause: Where = {
         filename: {
             equals: filename,
         },
     };
-
-    if (shopId !== undefined) {
-        whereClause.shop = {
-            equals: shopId,
-        };
-    }
 
     const imageData = await payload.find({
         collection: "media",
@@ -53,7 +45,6 @@ const upsertImage = async ({
                 filename,
                 thumbnailURL: imageUrl,
                 url: imageUrl,
-                shop: shopId,
             },
         });
     }
@@ -85,7 +76,6 @@ async function mapMockProductToSchema({
             imageUrl,
             filename,
             alt,
-            shopId,
         });
 
         const imageId = imageData.id;
@@ -150,26 +140,20 @@ const createOrUpdateProduct = async ({
     shopId?: number;
 }) => {
     const { totalDocs } = await payload.count({
-        collection: "products" as any,
+        collection: "products",
         where: {
             pid: {
                 equals: product.pid,
             },
-            ...(shopId && {
-                shop: {
-                    equals: shopId,
-                },
-            }),
         },
     });
 
     if (totalDocs === 0) {
         return payload.create({
-            collection: "products" as any,
+            collection: "products",
             data: {
                 ...product,
-                shop: shopId,
-            } as any,
+            },
         });
     }
 };

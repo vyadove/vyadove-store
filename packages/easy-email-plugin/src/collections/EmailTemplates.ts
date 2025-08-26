@@ -15,7 +15,6 @@ export const EmailTemplates = ({
                 views: {
                     edit: {
                         default: {
-                            path: "@shopnex/easy-email-plugin/client#EmailTemplateEditView",
                             Component:
                                 "@shopnex/easy-email-plugin/client#EmailTemplateEditView",
                         },

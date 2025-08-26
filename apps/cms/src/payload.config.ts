@@ -102,7 +102,7 @@ export default buildConfig({
     plugins,
     secret: process.env.PAYLOAD_SECRET || "",
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",
-    sharp,
+    sharp: sharp as any,
     telemetry: false,
     typescript: {
         outputFile: path.resolve(dirname, "../../../packages/types/index.ts"),
