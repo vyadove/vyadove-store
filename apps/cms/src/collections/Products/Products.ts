@@ -2,7 +2,7 @@ import type { CollectionConfig } from "payload";
 
 import { admins, anyone } from "@/access/roles";
 import { description } from "@/fields/description";
-import { HandleField } from "@/fields/slug";
+import { HandleField } from "@/fields/handle";
 
 import { groups } from "../groups";
 import { deleteMedia } from "./hooks/delete-media";

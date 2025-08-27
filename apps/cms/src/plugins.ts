@@ -11,6 +11,7 @@ import { paymentCanceled, paymentSucceeded } from "./webhooks";
 import { quickActionsPlugin } from "@shopnex/quick-actions-plugin";
 import { easyEmailPlugin } from "@shopnex/easy-email-plugin";
 import { seoPlugin } from "@payloadcms/plugin-seo";
+import { puckEditorPlugin } from "@shopnex/puck-editor-plugin";
 
 export const plugins: Plugin[] = [
     // TODO: uncomment when ready
@@ -89,4 +90,5 @@ export const plugins: Plugin[] = [
             return resultFields;
         },
     }),
+    puckEditorPlugin(),
 ];

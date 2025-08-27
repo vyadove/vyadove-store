@@ -1,7 +1,7 @@
 import type { CollectionConfig } from "payload";
 
 import { admins, anyone } from "@/access/roles";
-import { HandleField } from "@/fields/slug";
+import { HandleField } from "@/fields/handle";
 
 export const Policies: CollectionConfig = {
     slug: "policies",

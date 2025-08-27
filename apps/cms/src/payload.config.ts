@@ -30,11 +30,14 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 export default buildConfig({
+    routes: {
+        admin: "/",
+    },
     admin: {
-        autoLogin: {
-            email: process.env.ADMIN_EMAIL,
-            password: process.env.ADMIN_PASSWORD,
-        },
+        // autoLogin: {
+        //     email: process.env.ADMIN_EMAIL,
+        //     password: process.env.ADMIN_PASSWORD,
+        // },
         importMap: {
             autoGenerate: false,
             baseDir: path.resolve(dirname),
