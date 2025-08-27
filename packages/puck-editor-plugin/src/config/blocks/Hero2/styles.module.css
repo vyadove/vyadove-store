@@ -1,0 +1,239 @@
+.hero2 {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+.overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+    z-index: 1;
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -15px;
+}
+
+.alignItemsCenter {
+    align-items: center;
+}
+
+.justifyContentBetween {
+    justify-content: space-between;
+}
+
+.colLg6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 15px;
+}
+
+.colLg5 {
+    flex: 0 0 41.666667%;
+    max-width: 41.666667%;
+    padding: 15px;
+}
+
+.mb5 {
+    margin-bottom: 3rem;
+}
+
+.ms5 {
+    margin-left: 3rem;
+}
+
+.heading {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.textWhite {
+    color: white !important;
+}
+
+.textWhite50 {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 1.125rem;
+    line-height: 1.6;
+}
+
+.buttonGroup {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.btnWhite {
+    background-color: white;
+    color: #667eea;
+    border-color: white;
+}
+
+.btnWhite:hover {
+    background-color: transparent;
+    color: white;
+    border-color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.videoWrap {
+    position: relative;
+    display: block;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.videoWrap:hover {
+    transform: scale(1.02);
+}
+
+.playButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    transition: all 0.3s ease;
+}
+
+.playButton:hover {
+    background: white;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.playIcon {
+    font-size: 24px;
+    color: #667eea;
+    margin-left: 4px;
+}
+
+.imgFluid {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.separatorBottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+
+.separatorSvg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.decoLayer1,
+.decoLayer2,
+.decoLayer3,
+.decoLayer4 {
+    fill: white;
+}
+
+@media (max-width: 992px) {
+    .colLg6,
+    .colLg5 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .ms5 {
+        margin-left: 0;
+    }
+    
+    .justifyContentBetween {
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .heading {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero2 {
+        min-height: 70vh;
+        background-attachment: scroll;
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+    
+    .heading {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .textWhite50 {
+        font-size: 1rem;
+    }
+    
+    .mb5 {
+        margin-bottom: 2rem;
+    }
+    
+    .buttonGroup {
+        justify-content: center;
+    }
+    
+    .btn {
+        min-width: 140px;
+    }
+    
+    .playButton {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .playIcon {
+        font-size: 18px;
+    }
+}

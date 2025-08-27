@@ -1,0 +1,140 @@
+.hero1 {
+    padding: 80px 20px;
+    text-align: center;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.heading {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.heading h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.heading h2 {
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+.btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.btnLg {
+    padding: 16px 32px;
+    font-size: 1.1rem;
+}
+
+.btnPrimary {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.btnPrimary:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btnOutlinePrimary {
+    background-color: transparent;
+    color: white;
+    border-color: white;
+}
+
+.btnOutlinePrimary:hover {
+    background-color: white;
+    color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.navItemDropdown {
+    position: relative;
+}
+
+.navLink {
+    /* Additional styles for nav links can be added here */
+}
+
+.textMuted {
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+}
+
+.textMuted small {
+    font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+    .hero1 {
+        padding: 60px 20px;
+    }
+    
+    .heading h1 {
+        font-size: 2.5rem;
+    }
+    
+    .heading h2 {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .btns {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero1 {
+        padding: 40px 15px;
+    }
+    
+    .heading h1 {
+        font-size: 2rem;
+    }
+    
+    .btnLg {
+        padding: 14px 24px;
+        font-size: 1rem;
+    }
+}

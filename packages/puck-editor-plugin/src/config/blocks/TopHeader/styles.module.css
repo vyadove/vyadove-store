@@ -1,0 +1,87 @@
+.topHeader {
+    width: 100%;
+    padding: 8px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+}
+
+.leftSection {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.rightSection {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.contactItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon {
+    font-size: 12px;
+}
+
+.selector {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.selector:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.chevron {
+    font-size: 10px;
+    opacity: 0.7;
+}
+
+.settings {
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.settings:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        gap: 8px;
+        padding: 0 16px;
+    }
+    
+    .leftSection {
+        gap: 16px;
+    }
+    
+    .rightSection {
+        gap: 12px;
+    }
+    
+    .topHeader {
+        padding: 12px 0;
+    }
+}
