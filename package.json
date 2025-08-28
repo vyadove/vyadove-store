@@ -5,6 +5,7 @@
     "license": "MIT",
     "type": "module",
     "scripts": {
+        "dev": "turbo run dev --parallel",
         "dev:cms": "pnpm --filter ./apps/cms dev",
         "dev:shop": "pnpm --filter ./apps/shop dev",
         "build": "turbo run build",
