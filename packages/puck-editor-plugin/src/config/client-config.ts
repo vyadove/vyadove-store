@@ -15,6 +15,10 @@ import { Hero2 } from "./blocks/Hero2";
 import { Hero3 } from "./blocks/Hero3";
 import { Hero4 } from "./blocks/Hero4";
 import { Hero5 } from "./blocks/Hero5";
+import { Footer } from "./blocks/Footer";
+import { ProductsGrid1 } from "./blocks/ProductsGrid1";
+import { Breadcrumb } from "./blocks/Breadcrumb";
+import { ProductDetails } from "./blocks/ProductDetails";
 import Root from "./root";
 
 export const clientConfig: UserConfig = {
@@ -22,11 +26,15 @@ export const clientConfig: UserConfig = {
     categories: {
         navigation: {
             title: "Navigation",
-            components: ["TopHeader", "NavBar"],
+            components: ["TopHeader", "NavBar", "Footer", "Breadcrumb"],
         },
         heroes: {
             title: "Heroes",
             components: ["Hero1", "Hero2", "Hero3", "Hero4", "Hero5"],
+        },
+        ecommerce: {
+            title: "E-commerce",
+            components: ["ProductsGrid1", "ProductDetails"],
         },
         layout: {
             components: ["Grid", "Flex", "Space"],
@@ -46,11 +54,15 @@ export const clientConfig: UserConfig = {
     components: {
         TopHeader,
         NavBar,
+        Footer,
+        Breadcrumb,
         Hero1,
         Hero2,
         Hero3,
         Hero4,
         Hero5,
+        ProductsGrid1,
+        ProductDetails,
         Button,
         Card,
         Grid,

@@ -1,0 +1,122 @@
+.breadcrumbNav {
+    margin-bottom: 1rem;
+}
+
+.breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin-bottom: 0;
+    list-style: none;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+.breadcrumbItem {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumbItem + .breadcrumbItem {
+    padding-left: 0;
+}
+
+.breadcrumbLink {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.15s ease-in-out;
+}
+
+.breadcrumbLink:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.breadcrumbText {
+    color: inherit;
+}
+
+.breadcrumbItem.active .breadcrumbText {
+    color: #6c757d;
+}
+
+.separator {
+    margin: 0 0.5rem;
+    color: #6c757d;
+    font-size: 0.875em;
+}
+
+/* Text Sizes */
+.textSmall {
+    font-size: 0.875rem;
+}
+
+.textNormal {
+    font-size: 1rem;
+}
+
+.textLarge {
+    font-size: 1.125rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .breadcrumb {
+        font-size: 0.8rem;
+    }
+    
+    .separator {
+        margin: 0 0.25rem;
+    }
+    
+    .breadcrumbItem {
+        margin-bottom: 0.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .breadcrumb {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .breadcrumbItem {
+        margin-bottom: 0.5rem;
+    }
+    
+    .separator {
+        display: none;
+    }
+    
+    .breadcrumbItem:not(.active)::after {
+        content: ">";
+        margin-left: 0.5rem;
+        color: #6c757d;
+    }
+    
+    .breadcrumbItem:last-child::after {
+        display: none;
+    }
+}
+
+/* Accessibility */
+.breadcrumbNav[aria-label] {
+    /* Ensure proper labeling for screen readers */
+}
+
+.breadcrumbItem[aria-current="page"] {
+    /* Active page styling */
+    font-weight: 500;
+}
+
+/* Custom separators support */
+.breadcrumb.customSeparator .separator {
+    font-family: inherit;
+}
+
+/* Hover effects */
+.breadcrumbLink:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+    border-radius: 2px;
+}

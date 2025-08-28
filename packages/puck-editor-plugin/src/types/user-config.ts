@@ -15,16 +15,24 @@ import { Hero2Props } from "../config/blocks/Hero2";
 import { Hero3Props } from "../config/blocks/Hero3";
 import { Hero4Props } from "../config/blocks/Hero4";
 import { Hero5Props } from "../config/blocks/Hero5";
+import { FooterProps } from "../config/blocks/Footer";
+import { ProductsGrid1Props } from "../config/blocks/ProductsGrid1";
+import { BreadcrumbProps } from "../config/blocks/Breadcrumb";
+import { ProductDetailsProps } from "../config/blocks/ProductDetails";
 import { RootProps } from "../config/root";
 
 export type Components = {
     TopHeader: TopHeaderProps;
     NavBar: NavBarProps;
+    Footer: FooterProps;
+    Breadcrumb: BreadcrumbProps;
     Hero1: Hero1Props;
     Hero2: Hero2Props;
     Hero3: Hero3Props;
     Hero4: Hero4Props;
     Hero5: Hero5Props;
+    ProductsGrid1: ProductsGrid1Props;
+    ProductDetails: ProductDetailsProps;
     Button: ButtonProps;
     Card: CardProps;
     Grid: GridProps;
@@ -39,7 +47,7 @@ export type Components = {
 export type UserConfig = Config<{
     components: Components;
     root: RootProps;
-    categories: ["navigation", "heroes", "layout", "typography", "interactive"];
+    categories: ["navigation", "heroes", "ecommerce", "layout", "typography", "interactive"];
     fields: {
         userField: {
             type: "userField";
