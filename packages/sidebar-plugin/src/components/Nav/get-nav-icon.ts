@@ -1,12 +1,12 @@
 import type { LucideProps } from "lucide-react";
 import type { ExoticComponent } from "react";
-
 import {
     Blocks,
-    ChartArea,
+    ChartSpline,
     Image,
     Palette,
     Settings,
+    Settings2,
     ShoppingCart,
     Tag,
     Target,
@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 const navIconMap = {
-    analytics: ChartArea,
+    analytics: ChartSpline,
     content: Image,
     customers: UserRound,
     design: Palette,
@@ -23,6 +23,7 @@ const navIconMap = {
     plugins: Blocks,
     products: Tag,
     settings: Settings,
+    platform: Settings2,
 };
 
 type NavIconSlug = keyof typeof navIconMap;

@@ -47,7 +47,7 @@ export const analyticsPlugin = (pluginConfig: EmailChannelPluginConfig) => {
                     ...(config.admin?.components?.views ?? {}),
                     dashboard: {
                         ...(config.admin?.components?.views?.dashboard ?? {}),
-                        Component: "@/admin/rsc#Dashboard",
+                        Component: "@shopnex/analytics-plugin/rsc#Dashboard",
                     },
                 },
             },

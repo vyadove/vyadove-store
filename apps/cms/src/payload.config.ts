@@ -44,15 +44,6 @@ export default buildConfig({
         },
         suppressHydrationWarning: true,
         user: Users.slug,
-
-        components: {
-            Nav: "@/admin/components/Nav/Nav.tsx",
-            views: {
-                dashboard: {
-                    Component: "@/admin/components/Dashboard/Dashboard",
-                },
-            },
-        },
     },
     collections: [
         Orders,

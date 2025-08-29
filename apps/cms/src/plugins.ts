@@ -2,7 +2,6 @@ import type { Plugin } from "payload";
 
 import { cjPlugin } from "@shopnex/cj-plugin";
 import { importExportPlugin } from "@shopnex/import-export-plugin";
-import { storePlugin } from "@shopnex/store-plugin";
 import { stripePlugin } from "@shopnex/stripe-plugin";
 import { builderIoPlugin } from "@shopnex/builder-io-plugin";
 
@@ -11,10 +10,10 @@ import { paymentCanceled, paymentSucceeded } from "./webhooks";
 import { quickActionsPlugin } from "@shopnex/quick-actions-plugin";
 import { easyEmailPlugin } from "@shopnex/easy-email-plugin";
 import { seoPlugin } from "@payloadcms/plugin-seo";
+import { analyticsPlugin } from "@shopnex/analytics-plugin";
+import { sidebarPlugin } from "@shopnex/sidebar-plugin";
 
 export const plugins: Plugin[] = [
-    // TODO: uncomment when ready
-    // storePlugin({}),
     cjPlugin({
         cjApiKey: process.env.CJ_PASSWORD || "",
         cjEmailAddress: process.env.CJ_EMAIL_ADDRESS || "",
@@ -89,4 +88,6 @@ export const plugins: Plugin[] = [
             return resultFields;
         },
     }),
+    analyticsPlugin({}),
+    sidebarPlugin(),
 ];

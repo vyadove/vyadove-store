@@ -34,8 +34,7 @@ const calculatePercentageChange = (
 const fetchOrders = async (
     payload: BasePayload,
     startDate: Date,
-    endDate: Date,
-    shopIds?: number[]
+    endDate: Date
 ) => {
     const result = await payload.find({
         collection: "orders",
@@ -46,15 +45,12 @@ const fetchOrders = async (
                 greater_than: startDate.toISOString(),
                 less_than: endDate.toISOString(),
             },
-            ...(shopIds && { shop: { in: shopIds } }),
         },
     });
     return result.docs;
 };
 
 const Dashboard = async (props: AdminViewServerProps) => {
-    // @ts-ignore
-    const userShopIds = [props.user?.shops?.[0]?.shop?.id || 0] as number[];
     const now = new Date();
     const getMonthRange = (monthOffset: number) => {
         const start = new Date(
@@ -79,8 +75,8 @@ const Dashboard = async (props: AdminViewServerProps) => {
 
     // Fetch current & last month orders
     const [currentOrders, lastOrders] = await Promise.all([
-        fetchOrders(props.payload, currentStart, currentEnd, userShopIds),
-        fetchOrders(props.payload, lastStart, lastEnd, userShopIds),
+        fetchOrders(props.payload, currentStart, currentEnd),
+        fetchOrders(props.payload, lastStart, lastEnd),
     ]);
 
     // Compute metrics
