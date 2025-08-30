@@ -88,6 +88,6 @@ export const plugins: Plugin[] = [
             return resultFields;
         },
     }),
-    // analyticsPlugin({}),
-    // sidebarPlugin(),
+    analyticsPlugin({}),
+    sidebarPlugin(),
 ];
