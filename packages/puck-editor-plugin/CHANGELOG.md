@@ -1,5 +1,17 @@
 # @shopnex/quick-actions-plugin
 
+## 0.0.5
+
+### Patch Changes
+
+- update types version
+
+## 0.0.3
+
+### Patch Changes
+
+- Init puck editor
+
 ## 0.0.2
 
 ### Patch Changes

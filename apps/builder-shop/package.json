@@ -13,7 +13,7 @@
     "@builder.io/sdk": "^6.1.1",
     "@payloadcms/richtext-lexical": "3.31.0",
     "@shopnex/payload-sdk": "^3.1.7",
-    "@shopnex/types": "^0.0.3",
+    "@shopnex/types": "workspace:^",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "next": "15.3.5",

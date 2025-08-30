@@ -1,6 +1,6 @@
 {
     "name": "@shopnex/puck-editor-plugin",
-    "version": "0.0.2",
+    "version": "0.0.5",
     "description": "Analytics plugin for ShopNext",
     "keywords": [
         "payload",
@@ -57,7 +57,7 @@
     },
     "dependencies": {
         "@measured/puck": "^0.20.1",
-        "@shopnex/types": "workspace:*",
+        "@shopnex/types": "workspace:^",
         "classnames": "^2.5.1",
         "recharts": "^2.15.3"
     },

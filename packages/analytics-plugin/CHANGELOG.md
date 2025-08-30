@@ -1,5 +1,11 @@
 # @shopnex/quick-actions-plugin
 
+## 0.0.3
+
+### Patch Changes
+
+- Fix Component path
+
 ## 0.0.2
 
 ### Patch Changes

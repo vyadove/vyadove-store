@@ -87,7 +87,6 @@ export interface Config {
     'cj-settings': CjSetting;
     exports: Export;
     'email-templates': EmailTemplate;
-    'puck-pages': PuckPage;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -119,7 +118,6 @@ export interface Config {
     'cj-settings': CjSettingsSelect<false> | CjSettingsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     'email-templates': EmailTemplatesSelect<false> | EmailTemplatesSelect<true>;
-    'puck-pages': PuckPagesSelect<false> | PuckPagesSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -841,26 +839,6 @@ export interface Export {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "puck-pages".
- */
-export interface PuckPage {
-  id: number;
-  title: string;
-  handle: string;
-  page:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
@@ -1037,10 +1015,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'email-templates';
         value: number | EmailTemplate;
-      } | null)
-    | ({
-        relationTo: 'puck-pages';
-        value: number | PuckPage;
       } | null)
     | ({
         relationTo: 'payload-jobs';
@@ -1560,17 +1534,6 @@ export interface EmailTemplatesSelect<T extends boolean = true> {
   name?: T;
   html?: T;
   json?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "puck-pages_select".
- */
-export interface PuckPagesSelect<T extends boolean = true> {
-  title?: T;
-  handle?: T;
-  page?: T;
   updatedAt?: T;
   createdAt?: T;
 }

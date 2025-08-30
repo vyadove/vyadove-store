@@ -1,6 +1,6 @@
 {
     "name": "@shopnex/analytics-plugin",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Analytics plugin for ShopNext",
     "keywords": [
         "payload",

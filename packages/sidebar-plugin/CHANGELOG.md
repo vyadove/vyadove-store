@@ -4,6 +4,12 @@
 
 ### Patch Changes
 
+- Fix Component path
+
+## 0.0.2
+
+### Patch Changes
+
 - Init
 
 ## 0.0.6
