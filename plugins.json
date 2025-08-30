@@ -1,0 +1,34 @@
+[
+    {
+        "displayName": "Builder.io - Drag and Drop storefront builder",
+        "packageName": "@shopnex/builder-io-plugin"
+    },
+    {
+        "displayName": "Import/Export - Import and Export data from/to CSV",
+        "packageName": "@shopnex/import-export-plugin"
+    },
+    {
+        "displayName": "Puck Editor - drag and drop visual editor for storefront",
+        "packageName": "@shopnex/puck-editor-plugin"
+    },
+    {
+        "displayName": "Quick Actions - Global Search and Actions",
+        "packageName": "@shopnex/quick-actions-plugin"
+    },
+    {
+        "displayName": "Easy Email Editor - drag and drop email template editor",
+        "packageName": "@shopnex/easy-email-plugin"
+    },
+    {
+        "displayName": "Analytics",
+        "packageName": "@shopnex/analytics-plugin"
+    },
+    {
+        "displayName": "Sidebar - styled sidebar for eCommerce",
+        "packageName": "@shopnex/sidebar-plugin"
+    },
+    {
+        "displayName": "Cj Dropshipping - dropshipping solution for eCommerce",
+        "packageName": "@shopnex/cj-plugin"
+    }
+]
