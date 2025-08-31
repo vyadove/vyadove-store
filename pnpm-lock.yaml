@@ -119,8 +119,8 @@ importers:
   apps/cms:
     dependencies:
       '@shopnex/analytics-plugin':
-        specifier: 0.0.3
-        version: 0.0.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: 0.0.4
+        version: 0.0.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@shopnex/builder-io-plugin':
         specifier: ^1.0.12
         version: 1.0.12
@@ -4042,8 +4042,8 @@ packages:
       zen-observable:
         optional: true
 
-  '@shopnex/analytics-plugin@0.0.3':
-    resolution: {integrity: sha512-t0S3fprGhgmF1Sg4fOOtc6sKMEE0Kqz4N2WbOZ+QHySRKm/H6sJs5wk6HD1xF/emU0B21pSs3QyhvRt1Jw85RA==}
+  '@shopnex/analytics-plugin@0.0.4':
+    resolution: {integrity: sha512-q2D6mZjOQPTbEOt2kM9jMrVraJpMF8r9JmBvpicJPgg2aGpPWBeRFiNnudyCiAZ32ZHGrEGkTaEJbWB4lpCSLQ==}
 
   '@shopnex/builder-io-plugin@1.0.12':
     resolution: {integrity: sha512-JHADCgwN5ncNU9qXPOH4SJThHxMwTOwU84pstNOa61y6aBODpFlV2WVRV1m1iNCM1xGxPRlXSgadi0QLbiOyJA==}
@@ -14017,7 +14017,7 @@ snapshots:
     transitivePeerDependencies:
       - zenObservable
 
-  '@shopnex/analytics-plugin@0.0.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@shopnex/analytics-plugin@0.0.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@shopnex/types': 0.0.3
       recharts: 2.15.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)

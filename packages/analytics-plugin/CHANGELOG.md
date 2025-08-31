@@ -1,5 +1,11 @@
 # @shopnex/quick-actions-plugin
 
+## 0.0.4
+
+### Patch Changes
+
+- Fix "the following path cannot be queried"
+
 ## 0.0.3
 
 ### Patch Changes
