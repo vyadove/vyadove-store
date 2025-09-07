@@ -47,9 +47,6 @@ const ImageOrPlaceholder = ({
     image,
     size,
 }: { image?: string } & Pick<ThumbnailProps, "size">) => {
-    if (process.env.NODE_ENV === "production") {
-        console.log("Thumbnail image src:", image);
-    }
     return image ? (
         <img
             alt="Product image"

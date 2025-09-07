@@ -1,7 +1,7 @@
 "use client";
 
 import Login from "@/components/login";
-import Register from "@/components/regiester";
+import Register from "@/components/register";
 import { useState } from "react";
 
 const LoginTemplate = () => {

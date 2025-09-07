@@ -1,5 +1,4 @@
-import { Heading, Text } from "@medusajs/ui";
-import _ from "lodash";
+import { Heading } from "@medusajs/ui";
 import Link from "next/link";
 
 type ProductInfoProps = {

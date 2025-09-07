@@ -100,11 +100,8 @@ const Shipping: React.FC<ShippingProps> = ({
                         setCalculatedPricesMap(pricesMap);
                         setIsLoadingPrices(false);
                     })
-                    .then((data) => {
-                        console.log(data);
-                    })
-                    .catch((err) => {
-                        console.log(err);
+                    .catch(() => {
+                        setIsLoadingPrices(false);
                     });
             }
         }
@@ -141,18 +138,7 @@ const Shipping: React.FC<ShippingProps> = ({
             return id;
         });
 
-        // setShippingMethod({ cartId: cart.id, shippingMethodId: id })
-        //     .then((data) => {
-        //         console.log(data);
-        //     })
-        //     .catch((err) => {
-        //         setShippingMethodId(currentId);
-
-        //         setError(err.message);
-        //     })
-        //     .finally(() => {
-        //         setIsLoading(false);
-        //     });
+        setIsLoading(false);
     };
 
     useEffect(() => {

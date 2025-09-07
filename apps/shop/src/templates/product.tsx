@@ -6,7 +6,7 @@ import type React from "react";
 import { notFound } from "next/navigation";
 import { useState } from "react";
 
-import ImageGallery from "@/components/products/image-gallery/image-gallary";
+import ImageGallery from "@/components/products/image-gallery/image-gallery";
 import ProductActions from "@/components/products/product-actions/product-actions";
 import ProductTabs from "@/components/products/product-tabs/product-tabs";
 import ProductInfo from "./product-info";
