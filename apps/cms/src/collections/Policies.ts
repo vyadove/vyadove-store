@@ -2,6 +2,7 @@ import type { CollectionConfig } from "payload";
 
 import { admins, anyone } from "@/access/roles";
 import { HandleField } from "@/fields/handle";
+import { RichTextEditor } from "@/fields/RichTextEditor/RichTextEditor";
 
 export const Policies: CollectionConfig = {
     slug: "policies",
@@ -22,10 +23,10 @@ export const Policies: CollectionConfig = {
             type: "text",
             required: true,
         },
-        {
+        RichTextEditor({
             name: "description",
-            type: "richText",
-        },
+            label: "Description",
+        }),
         HandleField(),
     ],
 };

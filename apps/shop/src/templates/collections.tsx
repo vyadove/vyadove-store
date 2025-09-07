@@ -25,6 +25,12 @@ export default function CollectionTemplate({
             <div className="w-full">
                 <div className="mb-8 text-2xl-semi">
                     <h1>{collection.title}</h1>
+                    {collection.description && (
+                        <div
+                            className="mt-4 text-base text-ui-fg-subtle prose prose-sm max-w-none"
+                            dangerouslySetInnerHTML={{ __html: collection.description }}
+                        />
+                    )}
                 </div>
                 <Suspense
                     fallback={

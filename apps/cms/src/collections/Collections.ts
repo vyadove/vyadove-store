@@ -6,6 +6,7 @@ import { HandleField } from "@/fields/handle";
 
 import { groups } from "./groups";
 import { SeoField } from "@/fields/seo";
+import { RichTextEditor } from "@/fields/RichTextEditor/RichTextEditor";
 
 export const Collections: CollectionConfig = {
     slug: "collections",
@@ -30,7 +31,10 @@ export const Collections: CollectionConfig = {
             type: "text",
         },
         HandleField(),
-        description(),
+        RichTextEditor({
+            name: "description",
+            label: "Description",
+        }),
         {
             name: "products",
             type: "join",

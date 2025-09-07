@@ -1,5 +1,4 @@
 import { Heading, Text } from "@medusajs/ui";
-import { RichText } from "@payloadcms/richtext-lexical/react";
 import _ from "lodash";
 import Link from "next/link";
 
@@ -27,17 +26,13 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
                     {product.title}
                 </Heading>
 
-                <RichText data={product.description} />
-                {/* <Text
-                    className="text-medium text-ui-fg-subtle whitespace-pre-line"
-                    data-testid="product-description"
-                >
-                    {_.get(
-                        product,
-                        "description.root.children[0].children[0].text",
-                        ""
-                    )}
-                </Text> */}
+                {product.description && (
+                    <div
+                        className="text-medium text-ui-fg-subtle prose prose-sm max-w-none"
+                        data-testid="product-description"
+                        dangerouslySetInnerHTML={{ __html: product.description }}
+                    />
+                )}
             </div>
         </div>
     );

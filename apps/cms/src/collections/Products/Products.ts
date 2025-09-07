@@ -1,7 +1,7 @@
 import type { CollectionConfig } from "payload";
 
 import { admins, anyone } from "@/access/roles";
-import { description } from "@/fields/description";
+import { RichTextEditor } from "@/fields/RichTextEditor/RichTextEditor";
 import { HandleField } from "@/fields/handle";
 
 import { groups } from "../groups";
@@ -94,7 +94,10 @@ export const Products: CollectionConfig = {
             defaultValue: "manual",
             options: [{ label: "Manual", value: "manual" }],
         },
-        description(),
+        RichTextEditor({
+            name: "description",
+            label: "Description",
+        }),
         {
             name: "collections",
             type: "relationship",
