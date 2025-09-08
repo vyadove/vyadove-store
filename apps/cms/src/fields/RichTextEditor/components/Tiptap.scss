@@ -34,6 +34,10 @@ $tiptap-active-bg: #eaeef2;
     overflow-y: auto;
     height: auto;
 
+    .btn--style-icon-label {
+        font-weight: 400;
+    }
+
     &:focus-within {
         border-color: $tiptap-focus-color;
     }
@@ -232,7 +236,6 @@ $tiptap-active-bg: #eaeef2;
             transition: background 0.15s ease;
 
             &.is-active {
-                font-weight: bold;
             }
 
             &.btn--disabled {
