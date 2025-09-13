@@ -4,4 +4,5 @@ packages:
     - "apps/cms"
     - "apps/shop"
     - "apps/shopnex-email"
+    - "apps/shopnex-docs"
 
