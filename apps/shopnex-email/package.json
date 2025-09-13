@@ -16,7 +16,7 @@
         "@types/react": "18.2.21",
         "@types/react-dom": "18.2.7",
         "autoprefixer": "10.4.15",
-        "axios": "^1.5.0",
+        "axios": "^1.12.0",
         "easy-email-core": "^4.16.4",
         "easy-email-editor": "^4.12.2",
         "easy-email-extensions": "^4.14.1",
