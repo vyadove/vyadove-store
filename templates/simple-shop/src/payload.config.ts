@@ -11,7 +11,6 @@ import { plugins } from './plugins'
 import { Orders } from './collections/Orders/Orders'
 import { Collections } from './collections/Collections'
 import { Products } from './collections/Products/Products'
-import { Campaigns } from './collections/Campaigns/Campaigns'
 import { Policies } from './collections/Policies'
 import { GiftCards } from './collections/GiftCards'
 import { Payments } from './collections/Payments'
@@ -22,6 +21,9 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  routes: {
+    admin: '/admin',
+  },
   admin: {
     user: Users.slug,
     importMap: {
@@ -33,7 +35,6 @@ export default buildConfig({
     Collections,
     Products,
     Users,
-    Campaigns,
     Media,
     Policies,
     GiftCards,

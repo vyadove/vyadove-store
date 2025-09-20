@@ -67,22 +67,46 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    orders: Order;
+    collections: Collection;
+    products: Product;
     users: User;
     media: Media;
+    policies: Policy;
+    'gift-cards': GiftCard;
+    payments: Payment;
+    locations: Location;
+    shipping: Shipping;
+    exports: Export;
+    'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    collections: {
+      products: 'products';
+    };
+  };
   collectionsSelect: {
+    orders: OrdersSelect<false> | OrdersSelect<true>;
+    collections: CollectionsSelect<false> | CollectionsSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    policies: PoliciesSelect<false> | PoliciesSelect<true>;
+    'gift-cards': GiftCardsSelect<false> | GiftCardsSelect<true>;
+    payments: PaymentsSelect<false> | PaymentsSelect<true>;
+    locations: LocationsSelect<false> | LocationsSelect<true>;
+    shipping: ShippingSelect<false> | ShippingSelect<true>;
+    exports: ExportsSelect<false> | ExportsSelect<true>;
+    'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   globals: {};
   globalsSelect: {};
@@ -91,7 +115,13 @@ export interface Config {
     collection: 'users';
   };
   jobs: {
-    tasks: unknown;
+    tasks: {
+      createCollectionExport: TaskCreateCollectionExport;
+      inline: {
+        input: unknown;
+        output: unknown;
+      };
+    };
     workflows: unknown;
   };
 }
@@ -115,10 +145,99 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  orderId: string;
+  totalAmount: number;
+  user?: (number | null) | User;
+  source?: 'manual' | null;
+  currency: string;
+  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
+  orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'canceled';
+  payment?: (number | null) | Payment;
+  shipping?: (number | null) | Shipping;
+  paymentIntentId?: string | null;
+  sessionId?: string | null;
+  sessionUrl?: string | null;
+  paymentMethod?: string | null;
+  receiptUrl?: string | null;
+  metadata?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  shippingAddress?: {
+    name?: string;
+    address?: {
+      city?: string;
+      country?: string;
+      line1?: string;
+      line2?: string;
+      postal_code?: string;
+      state?: string;
+      street?: string;
+      [k: string]: unknown;
+    };
+    phone?: string;
+    [k: string]: unknown;
+  };
+  billingAddress?: {
+    name?: string;
+    address?: {
+      city?: string;
+      country?: string;
+      line1?: string;
+      line2?: string;
+      postal_code?: string;
+      state?: string;
+      [k: string]: unknown;
+    };
+    email?: string;
+    phone?: string;
+    [k: string]: unknown;
+  };
+  /**
+   * Track important order events (e.g. status changes, payments, shipments, notes).
+   */
+  timeline?:
+    | {
+        title: string;
+        date: string;
+        type:
+          | 'note'
+          | 'order_created'
+          | 'order_paid'
+          | 'order_cancelled'
+          | 'refund_issued'
+          | 'fulfillment_started'
+          | 'shipped'
+          | 'delivered'
+          | 'return_requested'
+          | 'return_completed'
+          | 'other';
+        createdBy?: (number | null) | User;
+        details?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  roles?: ('admin' | 'customer')[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -139,10 +258,185 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments".
+ */
+export interface Payment {
+  id: number;
+  name: string;
+  enabled?: boolean | null;
+  providers?:
+    | {
+        methodType: 'cod' | 'bankTransfer' | 'inStore' | 'other';
+        /**
+         * Shown to customers at checkout.
+         */
+        instructions: string;
+        details?:
+          | {
+              label: string;
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'manual';
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shipping".
+ */
+export interface Shipping {
+  id: number;
+  name: string;
+  enabled?: boolean | null;
+  location?: (number | null) | Location;
+  /**
+   * Select a shipping provider
+   */
+  shippingProvider?:
+    | {
+        baseRate: number;
+        /**
+         * If set, shipping is free for orders above this amount.
+         */
+        freeShippingMinOrder?: number | null;
+        /**
+         * Example: '3-5 business days'
+         */
+        estimatedDeliveryDays?: string | null;
+        /**
+         * Visible to customers if needed.
+         */
+        notes?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'custom-shipping';
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "locations".
+ */
+export interface Location {
+  id: number;
+  name: string;
+  address: string;
+  /**
+   * @minItems 2
+   * @maxItems 2
+   */
+  coordinates?: [number, number] | null;
+  contactPhone?: string | null;
+  /**
+   * e.g., Mon-Fri: 9am - 6pm
+   */
+  hours?: string | null;
+  enabled?: boolean | null;
+  isPickupLocation?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "collections".
+ */
+export interface Collection {
+  id: number;
+  title: string;
+  imageUrl?: string | null;
+  handle?: string | null;
+  description?: string | null;
+  products?: {
+    docs?: (number | Product)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  pid?: string | null;
+  title: string;
+  currency?: string | null;
+  visible?: boolean | null;
+  /**
+   * Choose where this product should be available to customers.
+   */
+  salesChannels?: ('all' | 'onlineStore' | 'pos' | 'mobileApp')[] | null;
+  source?: 'manual' | null;
+  description?: string | null;
+  collections?: (number | Collection)[] | null;
+  handle?: string | null;
+  /**
+   * Choose the options for this product.
+   */
+  variantOptions?:
+    | {
+        option: string;
+        /**
+         * (press enter to add multiple values)
+         */
+        value: string[];
+        id?: string | null;
+      }[]
+    | null;
+  variants: {
+    vid?: string | null;
+    sku?: string | null;
+    imageUrl?: string | null;
+    gallery?: (number | Media)[] | null;
+    price: number;
+    originalPrice?: number | null;
+    stockCount?: number | null;
+    options?:
+      | {
+          option: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  /**
+   * Add additional product info such as care instructions, materials, or sizing notes.
+   */
+  customFields?:
+    | {
+        name: string;
+        value?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -158,23 +452,218 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "policies".
+ */
+export interface Policy {
+  id: number;
+  title: string;
+  description?: string | null;
+  handle?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gift-cards".
+ */
+export interface GiftCard {
+  id: number;
+  code: string;
+  value: number;
+  customer?: (number | null) | User;
+  /**
+   * Date gift card will expire
+   */
+  expiryDate?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exports".
+ */
+export interface Export {
+  id: number;
+  name?: string | null;
+  format: 'csv' | 'json';
+  limit?: number | null;
+  sort?: string | null;
+  drafts?: ('yes' | 'no') | null;
+  selectionToUse?: ('currentSelection' | 'currentFilters' | 'all') | null;
+  fields?: string[] | null;
+  collectionSlug: string;
+  where?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs".
+ */
+export interface PayloadJob {
+  id: number;
+  /**
+   * Input data provided to the job
+   */
+  input?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  taskStatus?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  completedAt?: string | null;
+  totalTried?: number | null;
+  /**
+   * If hasError is true this job will not be retried
+   */
+  hasError?: boolean | null;
+  /**
+   * If hasError is true, this is the error that caused it
+   */
+  error?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Task execution log
+   */
+  log?:
+    | {
+        executedAt: string;
+        completedAt: string;
+        taskSlug: 'inline' | 'createCollectionExport';
+        taskID: string;
+        input?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        output?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        state: 'failed' | 'succeeded';
+        error?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  taskSlug?: ('inline' | 'createCollectionExport') | null;
+  queue?: string | null;
+  waitUntil?: string | null;
+  processing?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
+        relationTo: 'orders';
+        value: number | Order;
+      } | null)
+    | ({
+        relationTo: 'collections';
+        value: number | Collection;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: number | Product;
+      } | null)
+    | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'policies';
+        value: number | Policy;
+      } | null)
+    | ({
+        relationTo: 'gift-cards';
+        value: number | GiftCard;
+      } | null)
+    | ({
+        relationTo: 'payments';
+        value: number | Payment;
+      } | null)
+    | ({
+        relationTo: 'locations';
+        value: number | Location;
+      } | null)
+    | ({
+        relationTo: 'shipping';
+        value: number | Shipping;
+      } | null)
+    | ({
+        relationTo: 'exports';
+        value: number | Export;
+      } | null)
+    | ({
+        relationTo: 'payload-jobs';
+        value: number | PayloadJob;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -184,10 +673,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -207,7 +696,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -215,9 +704,122 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  orderId?: T;
+  totalAmount?: T;
+  user?: T;
+  source?: T;
+  currency?: T;
+  paymentStatus?: T;
+  orderStatus?: T;
+  payment?: T;
+  shipping?: T;
+  paymentIntentId?: T;
+  sessionId?: T;
+  sessionUrl?: T;
+  paymentMethod?: T;
+  receiptUrl?: T;
+  metadata?: T;
+  shippingAddress?: T;
+  billingAddress?: T;
+  timeline?:
+    | T
+    | {
+        title?: T;
+        date?: T;
+        type?: T;
+        createdBy?: T;
+        details?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "collections_select".
+ */
+export interface CollectionsSelect<T extends boolean = true> {
+  title?: T;
+  imageUrl?: T;
+  handle?: T;
+  description?: T;
+  products?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  pid?: T;
+  title?: T;
+  currency?: T;
+  visible?: T;
+  salesChannels?: T;
+  source?: T;
+  description?: T;
+  collections?: T;
+  handle?: T;
+  variantOptions?:
+    | T
+    | {
+        option?: T;
+        value?: T;
+        id?: T;
+      };
+  variants?:
+    | T
+    | {
+        vid?: T;
+        sku?: T;
+        imageUrl?: T;
+        gallery?: T;
+        price?: T;
+        originalPrice?: T;
+        stockCount?: T;
+        options?:
+          | T
+          | {
+              option?: T;
+              value?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  customFields?:
+    | T
+    | {
+        name?: T;
+        value?: T;
+        id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  roles?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -255,6 +857,155 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "policies_select".
+ */
+export interface PoliciesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  handle?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gift-cards_select".
+ */
+export interface GiftCardsSelect<T extends boolean = true> {
+  code?: T;
+  value?: T;
+  customer?: T;
+  expiryDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments_select".
+ */
+export interface PaymentsSelect<T extends boolean = true> {
+  name?: T;
+  enabled?: T;
+  providers?:
+    | T
+    | {
+        manual?:
+          | T
+          | {
+              methodType?: T;
+              instructions?: T;
+              details?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "locations_select".
+ */
+export interface LocationsSelect<T extends boolean = true> {
+  name?: T;
+  address?: T;
+  coordinates?: T;
+  contactPhone?: T;
+  hours?: T;
+  enabled?: T;
+  isPickupLocation?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shipping_select".
+ */
+export interface ShippingSelect<T extends boolean = true> {
+  name?: T;
+  enabled?: T;
+  location?: T;
+  shippingProvider?:
+    | T
+    | {
+        'custom-shipping'?:
+          | T
+          | {
+              baseRate?: T;
+              freeShippingMinOrder?: T;
+              estimatedDeliveryDays?: T;
+              notes?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exports_select".
+ */
+export interface ExportsSelect<T extends boolean = true> {
+  name?: T;
+  format?: T;
+  limit?: T;
+  sort?: T;
+  drafts?: T;
+  selectionToUse?: T;
+  fields?: T;
+  collectionSlug?: T;
+  where?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs_select".
+ */
+export interface PayloadJobsSelect<T extends boolean = true> {
+  input?: T;
+  taskStatus?: T;
+  completedAt?: T;
+  totalTried?: T;
+  hasError?: T;
+  error?: T;
+  log?:
+    | T
+    | {
+        executedAt?: T;
+        completedAt?: T;
+        taskSlug?: T;
+        taskID?: T;
+        input?: T;
+        output?: T;
+        state?: T;
+        error?: T;
+        id?: T;
+      };
+  taskSlug?: T;
+  queue?: T;
+  waitUntil?: T;
+  processing?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
@@ -284,6 +1035,37 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskCreateCollectionExport".
+ */
+export interface TaskCreateCollectionExport {
+  input: {
+    name?: string | null;
+    format: 'csv' | 'json';
+    limit?: number | null;
+    sort?: string | null;
+    drafts?: ('yes' | 'no') | null;
+    selectionToUse?: ('currentSelection' | 'currentFilters' | 'all') | null;
+    fields?: string[] | null;
+    collectionSlug: string;
+    where?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+    user?: string | null;
+    userCollection?: string | null;
+    exportsCollection?: string | null;
+  };
+  output: {
+    success?: boolean | null;
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
