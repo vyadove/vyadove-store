@@ -3,11 +3,8 @@ import type { Plugin } from 'payload'
 import { cjPlugin } from '@shopnex/cj-plugin'
 import { importExportPlugin } from '@shopnex/import-export-plugin'
 import { stripePlugin } from '@shopnex/stripe-plugin'
-import { builderIoPlugin } from '@shopnex/builder-io-plugin'
-
-import { adminPluginAccess, admins } from './access/roles'
+import { admins } from './access/roles'
 import { quickActionsPlugin } from '@shopnex/quick-actions-plugin'
-import { easyEmailPlugin } from '@shopnex/easy-email-plugin'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { analyticsPlugin } from '@shopnex/analytics-plugin'
 import { sidebarPlugin } from '@shopnex/sidebar-plugin'
@@ -41,27 +38,6 @@ export const plugins: Plugin[] = [
         collectionSlug: 'orders',
       },
     ],
-  }),
-  builderIoPlugin({
-    collectionDesignSlug: 'themes',
-    collectionOverrides: {
-      access: {
-        create: admins,
-        delete: admins,
-        read: admins,
-        update: admins,
-      },
-    },
-  }),
-  easyEmailPlugin({
-    collectionOverrides: {
-      access: {
-        create: adminPluginAccess,
-        delete: adminPluginAccess,
-        read: adminPluginAccess,
-        update: adminPluginAccess,
-      },
-    },
   }),
   quickActionsPlugin({
     position: 'before-nav-links',
