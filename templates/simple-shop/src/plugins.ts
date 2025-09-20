@@ -10,11 +10,11 @@ import { analyticsPlugin } from '@shopnex/analytics-plugin'
 import { sidebarPlugin } from '@shopnex/sidebar-plugin'
 
 export const plugins: Plugin[] = [
-  cjPlugin({
-    cjApiKey: process.env.CJ_PASSWORD || '',
-    cjEmailAddress: process.env.CJ_EMAIL_ADDRESS || '',
-    cjRefreshToken: process.env.CJ_REFRESH_TOKEN,
-  }),
+  //   cjPlugin({
+  //     cjApiKey: process.env.CJ_PASSWORD || '',
+  //     cjEmailAddress: process.env.CJ_EMAIL_ADDRESS || '',
+  //     cjRefreshToken: process.env.CJ_REFRESH_TOKEN,
+  //   }),
   stripePlugin({
     isTestKey: Boolean(process.env.NEXT_PUBLIC_STRIPE_IS_TEST_KEY),
     logs: true,

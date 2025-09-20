@@ -77,7 +77,6 @@ export interface Config {
     payments: Payment;
     locations: Location;
     shipping: Shipping;
-    'cj-settings': CjSetting;
     exports: Export;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -100,7 +99,6 @@ export interface Config {
     payments: PaymentsSelect<false> | PaymentsSelect<true>;
     locations: LocationsSelect<false> | LocationsSelect<true>;
     shipping: ShippingSelect<false> | ShippingSelect<true>;
-    'cj-settings': CjSettingsSelect<false> | CjSettingsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -154,7 +152,7 @@ export interface Order {
   orderId: string;
   totalAmount: number;
   user?: (number | null) | User;
-  source?: ('manual' | 'cj') | null;
+  source?: 'manual' | null;
   currency: string;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
   orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'canceled';
@@ -395,7 +393,7 @@ export interface Product {
    * Choose where this product should be available to customers.
    */
   salesChannels?: ('all' | 'onlineStore' | 'pos' | 'mobileApp')[] | null;
-  source?: ('manual' | 'cj') | null;
+  source?: 'manual' | null;
   description?: string | null;
   collections?: (number | Collection)[] | null;
   handle?: string | null;
@@ -490,31 +488,6 @@ export interface GiftCard {
    * Date gift card will expire
    */
   expiryDate?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "cj-settings".
- */
-export interface CjSetting {
-  id: number;
-  emailAddress?: string | null;
-  apiToken?: string | null;
-  refreshToken?: string | null;
-  refreshTokenExpiry?: string | null;
-  accessToken?: string | null;
-  accessTokenExpiry?: string | null;
-  pod?: (number | null) | Media;
-  /**
-   * A list of product URLs to sync with CJ Dropshipping
-   */
-  items?:
-    | {
-        productUrl?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -691,10 +664,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'shipping';
         value: number | Shipping;
-      } | null)
-    | ({
-        relationTo: 'cj-settings';
-        value: number | CjSetting;
       } | null)
     | ({
         relationTo: 'exports';
@@ -999,27 +968,6 @@ export interface ShippingSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "cj-settings_select".
- */
-export interface CjSettingsSelect<T extends boolean = true> {
-  emailAddress?: T;
-  apiToken?: T;
-  refreshToken?: T;
-  refreshTokenExpiry?: T;
-  accessToken?: T;
-  accessTokenExpiry?: T;
-  pod?: T;
-  items?:
-    | T
-    | {
-        productUrl?: T;
-        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
