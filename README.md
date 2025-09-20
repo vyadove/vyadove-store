@@ -13,102 +13,108 @@
 
 # ShopNex – The Open Source eCommerce Built on Payload CMS
 
-**ShopNex** is a modern eCommerce template powered by **Payload CMS**, designed to help you launch a fully functional online store with ease. Whether you're starting a new store or building a scalable commerce platform, ShopNex provides a robust set of features and tools to streamline your development process.
+**ShopNex** is a modern eCommerce platform powered by **Payload CMS**, designed to help you launch a fully functional online store with minimal setup. Build scalable commerce solutions with our streamlined development experience.
 
-Here’s a cleaner and more polished version of your **Getting Started** section with better formatting, a clearer explanation of the CLI command, and flag descriptions:
+## 🚀 Quick Start
 
----
-
-## 🚀 Getting Started
-
-Spin up a new **ShopNex** project in seconds using our CLI tool:
-
-### 1. Create a New Project
-
-Run one of the following commands:
+Get your ShopNex store running in under 2 minutes:
 
 ```bash
-pnpm dlx create-shopnex-app
-# or
-npx create-shopnex-app
+npx create-shopnex-app my-store
+cd my-store
+pnpm dev
 ```
 
-This command will guide you through the setup process, prompting you for options like your preferred database and environment configuration.
+That's it! Your store will be running at:
+- **CMS Admin**: http://localhost:3000
+- **Storefront**: http://localhost:3020
 
----
-
-### 2. Choose Your Storefront
-
-ShopNex offers two options for your storefront:
-
-#### Builder.io Visual Builder
-
-If you choose Builder.io as your storefront:
-
-1. Configure your `.env` file with Builder.io credentials
-2. Run `pnpm run pages:seed` to seed your Builder.io pages
-
-#### To start app in development mode
-
-- Start Payload CMS
+### Alternative Package Managers
 
 ```bash
-pnpm run dev:cms #  http://localhost:3000
+# Using pnpm (recommended)
+pnpm dlx create-shopnex-app my-store
+
+# Using yarn
+yarn create shopnex-app my-store
+
+# Using npx
+npx create-shopnex-app my-store
 ```
 
-- Start Shop storefront
+### CLI Options
+
+| Option | Description |
+|--------|-------------|
+| `-t, --template` | Choose template: `simple-shop` (default), `blank`, `ecommerce` |
+| `--use-pnpm` | Use pnpm for dependencies (recommended) |
+| `--use-npm` | Use npm for dependencies |
+| `--use-yarn` | Use yarn for dependencies |
+| `--no-deps` | Skip dependency installation |
+
+### Examples
 
 ```bash
-pnpm run dev:shop # http://localhost:3020
-```
+# Create with specific template
+npx create-shopnex-app my-store -t simple-shop
 
----
+# Skip automatic dependency installation
+npx create-shopnex-app my-store --no-deps
 
-### 3. Optional CLI Flags
-
-You can customize the setup behavior using the following flags:
-
-| Flag         | Description                                                                |
-| ------------ | -------------------------------------------------------------------------- |
-| `--fresh`    | Skips seeding of initial data. Starts a clean setup.                       |
-| `--skip-env` | Skips environment variable setup. You can configure `.env` manually later. |
-| `--skip-dev` | Does not automatically start the development server after setup.           |
-
-Example usage:
-
-```bash
-pnpm dlx create-shopnex-app my-store --fresh --skip-env
+# Use specific package manager
+npx create-shopnex-app my-store --use-pnpm
 ```
 
 ## 📁 Project Structure
 
 ```text
-/apps
-  ├── cms      # Payload CMS backend
-  └── shop     # Next.js storefront
-/packages
-  └── types    # Shared TypeScript types
+my-store/
+├── src/
+│   ├── app/
+│   │   ├── (payload)/        # Payload CMS admin & API
+│   │   └── (storefront)/     # Next.js storefront
+│   ├── collections/          # Data models
+│   │   ├── Products/
+│   │   ├── Orders/
+│   │   ├── Collections/
+│   │   └── Users/
+│   ├── fields/              # Reusable field types
+│   └── utils/               # Helper functions
+├── payload.config.ts        # Payload CMS configuration
+└── package.json
 ```
 
-## ✨ Features
+## ✨ Core Features
 
-- 📊 Analytics Dashboard - Track performance with a sales chart
+### 🛒 Complete E-commerce
+- **Product Management** - Variants, pricing, inventory tracking
+- **Order Processing** - Cart, checkout, order management
+- **Collections & Categories** - Organize your product catalog
+- **Gift Cards** - Digital gift card system
 
-- 🛍️ Beautiful Storefront - Built using Next.js & Tailwind CSS
+### 💳 Payments & Shipping
+- **Stripe Integration** - Secure payment processing
+- **Multiple Payment Methods** - Cards, digital wallets
+- **Shipping Management** - Rates, locations, tracking
+- **Tax Calculation** - Automated tax handling
 
-- 💳 Stripe Checkout Integration - Seamless and secure payment experience
+### 📊 Business Intelligence
+- **Analytics Dashboard** - Sales tracking with charts
+- **Store Settings** - Currency, policies, branding
+- **Import/Export** - Bulk data management via CSV
+- **Rate Limiting** - API protection and security
 
-- 📦 CJ Dropshipping Integration - Effortless product sourcing and fulfillment
+### 🎨 Customization
+- **Rich Text Editor** - Tiptap-powered content editing
+- **Media Management** - Optimized image handling
+- **Theme System** - Customizable store appearance
+- **Plugin Architecture** - Extensible functionality
 
-- 📁 Customer & Order Management - Manage customers, orders, and store operations easily
-
-- 🎨 Custom Branding & UI Customization - Make the store truly yours with flexible design options
-
-- 🧩 Plugin Marketplace - Integrate third-party tools with just a few clicks
-
-- 🗂️ Import Mapping – Easily import collection data from various systems via CSV or Excel
-
-- 📦 Monorepo Architecture - Streamlined development with workspace management and shared dependencies
+### 🚀 Developer Experience
+- **TypeScript** - Full type safety
+- **Next.js 15** - Latest React features
+- **SQLite/Database** - Flexible data storage
+- **Testing Suite** - E2E and integration tests
 
 ## 🛠️ Contributing
 
