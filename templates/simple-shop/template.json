@@ -1,0 +1,96 @@
+{
+  "name": "simple-shop",
+  "displayName": "Simple Shop Template",
+  "description": "A complete e-commerce template with CMS, collections, and store functionality",
+  "version": "1.0.0",
+  "copyFromApps": {
+    "cms": {
+      "files": [
+        "src/collections/**/*",
+        "src/globals/**/*",
+        "src/fields/**/*",
+        "src/types/**/*",
+        "src/utils/**/*",
+        "src/access/**/*",
+        "src/webhooks/**/*",
+        "src/admin/**/*",
+        "src/seed/**/*",
+        "src/payload.config.ts",
+        "src/plugins.ts",
+        "components.json",
+        "tailwind.config.js",
+        "postcss.config.mjs",
+        ".env.example"
+      ],
+      "exclude": [
+        "src/app/**/*",
+        "dev.db",
+        "media/**/*",
+        ".env",
+        "node_modules/**/*",
+        ".next/**/*",
+        ".turbo/**/*"
+      ]
+    }
+  },
+  "replacements": {
+    "@shopnex/cms": "{{projectName}}",
+    "../../packages/types": "./src/types",
+    "../../../packages/types/index.ts": "./src/types/index.ts"
+  },
+  "scripts": {
+    "postInstall": [
+      "pnpm install",
+      "pnpm generate:types"
+    ]
+  },
+  "dependencies": {
+    "merge": [
+      "@shopnex/analytics-plugin",
+      "@shopnex/builder-io-plugin",
+      "@shopnex/cj-plugin",
+      "@shopnex/easy-email-plugin",
+      "@shopnex/import-export-plugin",
+      "@shopnex/payload-sdk",
+      "@shopnex/quick-actions-plugin",
+      "@shopnex/sidebar-plugin",
+      "@shopnex/store-plugin",
+      "@shopnex/stripe-plugin",
+      "@shopnex/utils",
+      "@tailwindcss/postcss",
+      "@tailwindcss/typography",
+      "@tiptap/extension-color",
+      "@tiptap/extension-highlight",
+      "@tiptap/extension-image",
+      "@tiptap/extension-text-style",
+      "@tiptap/react",
+      "@tiptap/starter-kit",
+      "axios",
+      "cheerio",
+      "class-variance-authority",
+      "clsx",
+      "currency-codes",
+      "decimal.js",
+      "js-cookie",
+      "jsdom",
+      "libsql",
+      "lodash",
+      "lucide-react",
+      "postcss",
+      "pretty",
+      "rate-limiter-flexible",
+      "react-use-cart",
+      "recharts",
+      "slugify",
+      "stripe"
+    ],
+    "devDependencies": {
+      "merge": [
+        "@types/js-cookie",
+        "@types/pretty",
+        "@types/stripe",
+        "tw-animate-css"
+      ]
+    }
+  }
+}
