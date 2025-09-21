@@ -74,6 +74,7 @@ export interface Config {
     media: Media;
     policies: Policy;
     'gift-cards': GiftCard;
+    pages: Page;
     payments: Payment;
     locations: Location;
     shipping: Shipping;
@@ -96,6 +97,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     policies: PoliciesSelect<false> | PoliciesSelect<true>;
     'gift-cards': GiftCardsSelect<false> | GiftCardsSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     payments: PaymentsSelect<false> | PaymentsSelect<true>;
     locations: LocationsSelect<false> | LocationsSelect<true>;
     shipping: ShippingSelect<false> | ShippingSelect<true>;
@@ -493,6 +495,26 @@ export interface GiftCard {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  handle: string;
+  page:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "exports".
  */
 export interface Export {
@@ -652,6 +674,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'gift-cards';
         value: number | GiftCard;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
       } | null)
     | ({
         relationTo: 'payments';
@@ -888,6 +914,17 @@ export interface GiftCardsSelect<T extends boolean = true> {
   value?: T;
   customer?: T;
   expiryDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  handle?: T;
+  page?: T;
   updatedAt?: T;
   createdAt?: T;
 }

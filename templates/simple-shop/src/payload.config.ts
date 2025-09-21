@@ -16,6 +16,7 @@ import { GiftCards } from './collections/GiftCards'
 import { Payments } from './collections/Payments'
 import { Locations } from './collections/Locations'
 import { Shipping } from './collections/Shipping'
+import { Pages } from './collections/Pages/Pages'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -38,6 +39,7 @@ export default buildConfig({
     Media,
     Policies,
     GiftCards,
+    Pages,
     Payments,
     Locations,
     Shipping,

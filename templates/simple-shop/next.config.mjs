@@ -3,6 +3,7 @@ import { withPayload } from '@payloadcms/next/withPayload'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Your Next.js config here
+  serverExternalPackages: [],
   webpack: (webpackConfig, { isServer }) => {
     if (isServer) {
       webpackConfig.externals = [...(webpackConfig.externals || []), 'bufferutil', 'utf-8-validate']
