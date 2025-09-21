@@ -33,10 +33,18 @@ const PuckEditor = () => {
   }
   return (
     <div
-      className={`h-screen w-full overflow-auto ${theme === 'dark' ? 'dark' : ''}`}
+      className={`twp h-screen w-full overflow-auto ${theme === 'dark' ? 'dark' : ''}`}
       data-theme={theme}
     >
-      <Puck config={config} data={value || initialData} onPublish={save} onChange={onChange} />
+      <Puck
+        config={config}
+        data={value || initialData}
+        onPublish={save}
+        onChange={onChange}
+        overrides={{
+          headerActions: () => <></>,
+        }}
+      />
     </div>
   )
 }

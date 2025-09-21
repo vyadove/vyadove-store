@@ -1,29 +1,44 @@
+import { admins, anyone } from '@/access/roles'
 import { CollectionConfig } from 'payload'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
-    group: 'Plugins',
+    group: 'Design',
     useAsTitle: 'title',
     defaultColumns: ['title', 'handle', 'createdAt', 'updatedAt'],
   },
+  access: {
+    read: anyone,
+    create: admins,
+    update: admins,
+    delete: admins,
+  },
   fields: [
     {
-      type: 'row',
-      fields: [
-        {
-          name: 'title',
-          type: 'text',
-          required: true,
-          defaultValue: 'New Page',
-        },
-        {
-          name: 'handle',
-          type: 'text',
-          required: true,
-          defaultValue: 'new-page',
-        },
-      ],
+      name: 'title',
+      type: 'text',
+      required: true,
+      defaultValue: 'New Page',
+      admin: {
+        disabled: true,
+      },
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+      admin: {
+        disabled: true,
+      },
+    },
+    {
+      name: 'handle',
+      type: 'text',
+      required: true,
+      defaultValue: 'new-page',
+      admin: {
+        disabled: true,
+      },
     },
     {
       name: 'page',
