@@ -16,30 +16,27 @@ export const Pages: CollectionConfig = {
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
-      required: true,
-      defaultValue: 'New Page',
-      admin: {
-        disabled: true,
-      },
+      type: 'row',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+          defaultValue: 'New Page',
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+        },
+        {
+          name: 'handle',
+          type: 'text',
+          required: true,
+          defaultValue: 'new-page',
+        },
+      ],
     },
-    {
-      name: 'description',
-      type: 'textarea',
-      admin: {
-        disabled: true,
-      },
-    },
-    {
-      name: 'handle',
-      type: 'text',
-      required: true,
-      defaultValue: 'new-page',
-      admin: {
-        disabled: true,
-      },
-    },
+
     {
       name: 'page',
       type: 'json',
