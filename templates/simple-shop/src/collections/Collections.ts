@@ -25,15 +25,37 @@ export const Collections: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    {
-      name: 'imageUrl',
-      type: 'text',
-    },
-    HandleField(),
     RichTextEditor({
       name: 'description',
       label: 'Description',
     }),
+    {
+      name: 'image',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Category image for display in shop',
+      },
+    },
+    {
+      name: 'featured',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Display this category prominently on the homepage',
+      },
+    },
+    {
+      name: 'visible',
+      type: 'checkbox',
+      defaultValue: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Show this category in the shop navigation',
+      },
+    },
+    HandleField(),
     {
       name: 'products',
       type: 'join',
