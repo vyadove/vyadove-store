@@ -59,6 +59,7 @@
             "sharp"
         ],
         "overrides": {
+            "sharp": "0.34.4",
             "tar-fs": "^3.0.9",
             "esbuild": "^0.25.0",
             "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz",
