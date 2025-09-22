@@ -26,6 +26,7 @@ pnpm dev
 ```
 
 That's it! Your store will be running at:
+
 - **CMS Admin**: http://localhost:3000
 - **Storefront**: http://localhost:3020
 
@@ -40,29 +41,6 @@ yarn create shopnex-app my-store
 
 # Using npx
 npx create-shopnex-app my-store
-```
-
-### CLI Options
-
-| Option | Description |
-|--------|-------------|
-| `-t, --template` | Choose template: `simple-shop` (default), `blank`, `ecommerce` |
-| `--use-pnpm` | Use pnpm for dependencies (recommended) |
-| `--use-npm` | Use npm for dependencies |
-| `--use-yarn` | Use yarn for dependencies |
-| `--no-deps` | Skip dependency installation |
-
-### Examples
-
-```bash
-# Create with specific template
-npx create-shopnex-app my-store -t simple-shop
-
-# Skip automatic dependency installation
-npx create-shopnex-app my-store --no-deps
-
-# Use specific package manager
-npx create-shopnex-app my-store --use-pnpm
 ```
 
 ## 📁 Project Structure
@@ -87,30 +65,35 @@ my-store/
 ## ✨ Core Features
 
 ### 🛒 Complete E-commerce
+
 - **Product Management** - Variants, pricing, inventory tracking
 - **Order Processing** - Cart, checkout, order management
 - **Collections & Categories** - Organize your product catalog
 - **Gift Cards** - Digital gift card system
 
 ### 💳 Payments & Shipping
+
 - **Stripe Integration** - Secure payment processing
 - **Multiple Payment Methods** - Cards, digital wallets
 - **Shipping Management** - Rates, locations, tracking
 - **Tax Calculation** - Automated tax handling
 
 ### 📊 Business Intelligence
+
 - **Analytics Dashboard** - Sales tracking with charts
 - **Store Settings** - Currency, policies, branding
 - **Import/Export** - Bulk data management via CSV
 - **Rate Limiting** - API protection and security
 
 ### 🎨 Customization
+
 - **Rich Text Editor** - Tiptap-powered content editing
 - **Media Management** - Optimized image handling
 - **Theme System** - Customizable store appearance
 - **Plugin Architecture** - Extensible functionality
 
 ### 🚀 Developer Experience
+
 - **TypeScript** - Full type safety
 - **Next.js 15** - Latest React features
 - **SQLite/Database** - Flexible data storage
