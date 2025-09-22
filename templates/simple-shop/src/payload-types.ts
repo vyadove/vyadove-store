@@ -500,6 +500,7 @@ export interface GiftCard {
 export interface Page {
   id: number;
   title: string;
+  description?: string | null;
   handle: string;
   page:
     | {
@@ -923,6 +924,7 @@ export interface GiftCardsSelect<T extends boolean = true> {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
+  description?: T;
   handle?: T;
   page?: T;
   updatedAt?: T;

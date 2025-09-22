@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { MobileNav } from "./mobile-nav";
 import { SearchDialog } from "@/components/search/search-dialog";
+import { AccountMenu } from "@/components/account/account-menu";
 
 export function Header() {
     return (
@@ -47,6 +48,8 @@ export function Header() {
                     {/* Actions */}
                     <div className="flex items-center space-x-4">
                         <SearchDialog />
+
+                        <AccountMenu />
 
                         <CartDrawer />
 
