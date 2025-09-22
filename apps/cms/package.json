@@ -69,17 +69,6 @@
         "node": "^18.20.2 || >=20.9.0",
         "pnpm": "^9 || ^10"
     },
-    "pnpm": {
-        "onlyBuiltDependencies": [
-            "sharp"
-        ],
-        "overrides": {
-            "tar-fs": "^3.0.9",
-            "esbuild": "^0.25.0",
-            "image-size": "^1.2.1",
-            "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz"
-        }
-    },
     "devDependencies": {
         "@types/js-cookie": "^3.0.6",
         "@types/pretty": "^2.0.3",
