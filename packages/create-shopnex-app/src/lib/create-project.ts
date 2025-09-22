@@ -62,6 +62,32 @@ async function installDeps(args: {
   }
 }
 
+async function seedDatabase(args: {
+  packageManager: PackageManager
+  projectDir: string
+}): Promise<boolean> {
+  const { packageManager, projectDir } = args
+  let seedCmd = 'npm run db:seed'
+
+  if (packageManager === 'yarn') {
+    seedCmd = 'yarn db:seed'
+  } else if (packageManager === 'pnpm') {
+    seedCmd = 'pnpm db:seed'
+  } else if (packageManager === 'bun') {
+    seedCmd = 'bun run db:seed'
+  }
+
+  try {
+    await execa.command(seedCmd, {
+      cwd: path.resolve(projectDir),
+    })
+    return true
+  } catch (err: unknown) {
+    error(`Error seeding database${err instanceof Error ? `: ${err.message}` : ''}.`)
+    return false
+  }
+}
+
 type TemplateOrExample =
   | {
       example: ProjectExample
@@ -169,6 +195,14 @@ export async function createProject(
     const result = await installDeps({ cliArgs, packageManager, projectDir })
     if (result) {
       spinner.stop('Successfully installed Payload and dependencies')
+
+      spinner.start('Seeding database...')
+      const seedResult = await seedDatabase({ packageManager, projectDir })
+      if (seedResult) {
+        spinner.stop('Successfully seeded database')
+      } else {
+        spinner.stop('Error seeding database', 1)
+      }
     } else {
       spinner.stop('Error installing dependencies', 1)
     }
