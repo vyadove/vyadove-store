@@ -462,6 +462,126 @@ const seed = async () => {
     },
   })
 
+  // Create payment methods
+  console.log('Creating payment methods...')
+  await payload.create({
+    collection: 'payments',
+    data: {
+      name: 'Cash on Delivery',
+      enabled: true,
+      providers: [
+        {
+          blockType: 'manual',
+          methodType: 'cod',
+          instructions: 'Pay with cash when your order is delivered to your doorstep. Our delivery partner will collect the payment upon delivery.',
+        },
+      ],
+    },
+  })
+
+  await payload.create({
+    collection: 'payments',
+    data: {
+      name: 'Bank Transfer',
+      enabled: true,
+      providers: [
+        {
+          blockType: 'manual',
+          methodType: 'bankTransfer',
+          instructions: 'Transfer the total amount to our bank account. Your order will be processed once payment is confirmed.',
+          details: [
+            { label: 'Bank Name', value: 'First National Bank' },
+            { label: 'Account Number', value: '1234567890' },
+            { label: 'Routing Number', value: '021000021' },
+            { label: 'Account Holder', value: 'ShopNex LLC' },
+          ],
+        },
+      ],
+    },
+  })
+
+  await payload.create({
+    collection: 'payments',
+    data: {
+      name: 'In-Store Payment',
+      enabled: false,
+      providers: [
+        {
+          blockType: 'manual',
+          methodType: 'inStore',
+          instructions: 'Visit our store to pay in person. You can pay with cash, card, or check at our location.',
+        },
+      ],
+    },
+  })
+
+  // Create shipping methods
+  console.log('Creating shipping methods...')
+  await payload.create({
+    collection: 'shipping',
+    data: {
+      name: 'Standard Shipping',
+      enabled: true,
+      shippingProvider: [
+        {
+          blockType: 'custom-shipping',
+          baseRate: 9.99,
+          freeShippingMinOrder: 100,
+          estimatedDeliveryDays: '5-7 business days',
+          notes: 'Free shipping on orders over $100. Tracking information will be provided once your order ships.',
+        },
+      ],
+    },
+  })
+
+  await payload.create({
+    collection: 'shipping',
+    data: {
+      name: 'Express Shipping',
+      enabled: true,
+      shippingProvider: [
+        {
+          blockType: 'custom-shipping',
+          baseRate: 24.99,
+          estimatedDeliveryDays: '2-3 business days',
+          notes: 'Express delivery with priority handling. Perfect for urgent orders.',
+        },
+      ],
+    },
+  })
+
+  await payload.create({
+    collection: 'shipping',
+    data: {
+      name: 'Next Day Delivery',
+      enabled: true,
+      shippingProvider: [
+        {
+          blockType: 'custom-shipping',
+          baseRate: 39.99,
+          estimatedDeliveryDays: '1 business day',
+          notes: 'Next day delivery available for orders placed before 2 PM. Not available on weekends and holidays.',
+        },
+      ],
+    },
+  })
+
+  await payload.create({
+    collection: 'shipping',
+    data: {
+      name: 'Local Pickup',
+      enabled: true,
+      shippingProvider: [
+        {
+          blockType: 'custom-shipping',
+          baseRate: 0,
+          estimatedDeliveryDays: 'Same day',
+          notes: 'Pick up your order from our store. We will notify you when your order is ready for pickup.',
+        },
+      ],
+    },
+  })
+
   await payload.create({
     collection: 'pages',
     data: {
