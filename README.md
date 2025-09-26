@@ -105,7 +105,7 @@ my-store/
 
 We welcome contributions! If you find any bugs or have ideas for improvements, feel free to:
 
-- 🐛 [Open an issue](https://github.com/your-repo/issues) to report bugs or request features.
+- 🐛 [Open an issue](https://github.com/shopnex-ai/shopnex/issues) to report bugs or request features.
 - 🔧 Fork the repo and submit a pull request with your improvements.
 - 💬 Join our [Discord](https://discord.gg/MFc9x7vdXK) community for discussions and support.
 
