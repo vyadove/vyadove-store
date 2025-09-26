@@ -366,9 +366,20 @@ export interface Location {
 export interface Collection {
   id: number;
   title: string;
-  imageUrl?: string | null;
-  handle?: string | null;
   description?: string | null;
+  /**
+   * Category image for display in shop
+   */
+  image?: (number | null) | Media;
+  /**
+   * Display this category prominently on the homepage
+   */
+  featured?: boolean | null;
+  /**
+   * Show this category in the shop navigation
+   */
+  visible?: boolean | null;
+  handle?: string | null;
   products?: {
     docs?: (number | Product)[];
     hasNextPage?: boolean;
@@ -383,6 +394,25 @@ export interface Collection {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
 export interface Product {
@@ -391,6 +421,8 @@ export interface Product {
   title: string;
   currency?: string | null;
   visible?: boolean | null;
+  featured?: boolean | null;
+  inStock?: boolean | null;
   /**
    * Choose where this product should be available to customers.
    */
@@ -415,7 +447,6 @@ export interface Product {
   variants: {
     vid?: string | null;
     sku?: string | null;
-    imageUrl?: string | null;
     gallery?: (number | Media)[] | null;
     price: number;
     originalPrice?: number | null;
@@ -445,25 +476,6 @@ export interface Product {
   };
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -783,9 +795,11 @@ export interface OrdersSelect<T extends boolean = true> {
  */
 export interface CollectionsSelect<T extends boolean = true> {
   title?: T;
-  imageUrl?: T;
-  handle?: T;
   description?: T;
+  image?: T;
+  featured?: T;
+  visible?: T;
+  handle?: T;
   products?: T;
   meta?:
     | T
@@ -805,6 +819,8 @@ export interface ProductsSelect<T extends boolean = true> {
   title?: T;
   currency?: T;
   visible?: T;
+  featured?: T;
+  inStock?: T;
   salesChannels?: T;
   source?: T;
   description?: T;
@@ -822,7 +838,6 @@ export interface ProductsSelect<T extends boolean = true> {
     | {
         vid?: T;
         sku?: T;
-        imageUrl?: T;
         gallery?: T;
         price?: T;
         originalPrice?: T;
