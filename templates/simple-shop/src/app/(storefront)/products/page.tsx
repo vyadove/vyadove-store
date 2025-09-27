@@ -1,10 +1,32 @@
+import type { Metadata } from 'next'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { ProductListing } from '@/components/product/product-listing'
 import { getProducts, getCategories } from '@/lib/products'
+import { generatePageMetadata } from '@/lib/seo'
+import { seoConfig } from '@/lib/seo-config'
 
 // Enable ISR for dynamic multi-tenant pages
 export const revalidate = 3600
+
+export async function generateMetadata({ searchParams }: ProductsPageProps): Promise<Metadata> {
+  const searchQuery = (await searchParams).search
+
+  if (searchQuery) {
+    return generatePageMetadata({
+      pageKey: 'search',
+      title: searchQuery,
+      url: `${seoConfig.siteUrl}/products?search=${encodeURIComponent(searchQuery)}`,
+      templateData: [searchQuery],
+    })
+  }
+
+  return generatePageMetadata({
+    pageKey: 'products',
+    title: 'All Products',
+    url: `${seoConfig.siteUrl}/products`,
+  })
+}
 
 interface ProductsPageProps {
   searchParams: Promise<{ search?: string }>
