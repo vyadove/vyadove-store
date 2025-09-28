@@ -1,14 +1,12 @@
 import type { Config } from "payload";
 import pkg from "../package.json";
-import { getNavIcon } from "./components/Nav/get-nav-icon";
-import { ExoticComponent } from "react";
-import { LucideProps } from "lucide-react";
 
-type EmailChannelPluginConfig = {
+type SidebarPluginConfig = {
     enabled?: boolean;
+    groups?: Record<string, { name: string; icon: string }>;
 };
 
-export const sidebarPlugin = (pluginConfig: EmailChannelPluginConfig = {}) => {
+export const sidebarPlugin = (pluginConfig: SidebarPluginConfig = {}) => {
     return (config: Config): Config => {
         if (pluginConfig.enabled === false) {
             return config;
@@ -19,7 +17,10 @@ export const sidebarPlugin = (pluginConfig: EmailChannelPluginConfig = {}) => {
             components: {
                 ...(config.admin?.components ?? {}),
                 Nav: {
-                    path: "@shopnex/sidebar-plugin/rsc#Nav",
+                    path: "@shopnex/sidebar-plugin/rsc#NavWithGroups",
+                    clientProps: {
+                        groupsConfig: pluginConfig.groups,
+                    },
                 },
             },
         };
