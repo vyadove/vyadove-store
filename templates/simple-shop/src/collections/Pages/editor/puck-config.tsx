@@ -21,6 +21,8 @@ import { Spacer } from './components/Spacer'
 import { Logo } from './components/Logo'
 import { StatItem } from './components/StatItem'
 import { Badge } from './components/Badge'
+import { AuthProvider } from '@/contexts/auth-context'
+
 export const config: Config<PuckProps> = {
   root: {
     fields: {
@@ -31,7 +33,7 @@ export const config: Config<PuckProps> = {
     render: ({ children }) => {
       return (
         <div className="twp">
-          {children}
+          <AuthProvider>{children}</AuthProvider>
         </div>
       )
     },
