@@ -2,6 +2,7 @@ import { ComponentConfig } from "@measured/puck";
 import { Button } from "@/components/ui/button";
 import { StatItemComponent } from "../components/StatItem";
 import { BadgeComponent } from "../components/Badge";
+import { ImagePickerField } from "../components/ImagePickerField";
 
 export interface HeroSectionProps {
     title: string;
@@ -24,12 +25,34 @@ export const HeroSection: ComponentConfig<HeroSectionProps> = {
     fields: {
         title: { type: "text" },
         subtitle: { type: "textarea" },
-        backgroundImage: { type: "text" },
+        backgroundImage: {
+          type: "custom",
+          label: "Background Image",
+          render: ({ onChange, value }) => (
+            <ImagePickerField
+              label="Background Image"
+              value={value || ""}
+              onChange={onChange}
+              placeholder="Select a background image from your media library"
+            />
+          ),
+        },
         ctaText: { type: "text" },
         ctaLink: { type: "text" },
         secondaryCtaText: { type: "text" },
         secondaryCtaLink: { type: "text" },
-        heroImage: { type: "text" },
+        heroImage: {
+          type: "custom",
+          label: "Hero Image",
+          render: ({ onChange, value }) => (
+            <ImagePickerField
+              label="Hero Image"
+              value={value || ""}
+              onChange={onChange}
+              placeholder="Select a hero image from your media library"
+            />
+          ),
+        },
         stats: {
             type: "array",
             getItemSummary: (item) => `${item.value} - ${item.label}` || "Stat",

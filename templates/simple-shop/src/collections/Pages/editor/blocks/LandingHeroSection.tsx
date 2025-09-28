@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ShoppingBag, ArrowRight, Eye, Download, Play } from "lucide-react";
 import { StatItemComponent } from "../components/StatItem";
 import { BadgeComponent } from "../components/Badge";
+import { createImageField } from "../utils/image-field";
 
 export interface LandingHeroSectionProps {
     title: string;
@@ -49,7 +50,7 @@ export const LandingHeroSection: ComponentConfig<LandingHeroSectionProps> = {
     fields: {
         title: { type: "text", contentEditable: true },
         subtitle: { type: "textarea", contentEditable: true },
-        heroImage: { type: "text" },
+        heroImage: createImageField("Hero Image", "Select a hero image for the landing section"),
         showImage: {
             type: "radio",
             options: [
