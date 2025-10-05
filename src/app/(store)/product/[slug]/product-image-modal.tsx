@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { Fragment, startTransition, useEffect, useState } from "react";
 import { useRouterNoRender } from "@/lib/use-router-no-render";
 import { cn } from "@/lib/utils";
-import { YnsLink } from "@/ui/yns-link";
+import { VyaLink } from "@ui/vya-link";
 
 type ImageModalProps = {
 	images: string[];
@@ -119,7 +119,7 @@ export function ProductImageModal({ images }: ImageModalProps) {
 			<div className="flex justify-center gap-4 py-2">
 				{images.map((image, idx) => (
 					<Fragment key={idx}>
-						<YnsLink
+						<VyaLink
 							className={cn(
 								"border-transparent border rounded-lg overflow-hidden",
 								src === image && "border-black",
@@ -134,7 +134,7 @@ export function ProductImageModal({ images }: ImageModalProps) {
 							scroll={false}
 						>
 							<Image src={image} alt={""} width={80} height={80} className="object-cover" sizes="80px" />
-						</YnsLink>
+						</VyaLink>
 						{/* preload images */}
 						<div className="relative pointer-events-none opacity-0">
 							<ImageElement src={src} />

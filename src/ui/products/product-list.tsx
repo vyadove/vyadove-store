@@ -3,7 +3,7 @@ import Image from "next/image";
 import { getLocale } from "@/i18n/server";
 import { formatMoney } from "@/lib/utils";
 import { JsonLd, mappedProductsToJsonLd } from "@/ui/json-ld";
-import { YnsLink } from "@/ui/yns-link";
+import { VyaLink } from "@ui/vya-link";
 
 export const ProductList = async ({ products }: { products: Product[] }) => {
 	const locale = await getLocale();
@@ -14,7 +14,7 @@ export const ProductList = async ({ products }: { products: Product[] }) => {
 				{products.map((product, idx) => {
 					return (
 						<li key={product.id} className="group">
-							<YnsLink href={`/product/${product.slug}`}>
+							<VyaLink href={`/product/${product.slug}`}>
 								<article className="overflow-hidden bg-white">
 									{product.images[0] && (
 										<div className="rounded-lg aspect-square w-full overflow-hidden bg-neutral-100">
@@ -45,7 +45,7 @@ export const ProductList = async ({ products }: { products: Product[] }) => {
 										</footer>
 									</div>
 								</article>
-							</YnsLink>
+							</VyaLink>
 						</li>
 					);
 				})}

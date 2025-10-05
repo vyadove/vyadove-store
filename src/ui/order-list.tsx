@@ -36,47 +36,59 @@ export function OrderList() {
 
 	return (
 		<div className="space-y-4">
-			<div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+			<div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
 				<div className="relative w-full sm:w-64">
-					<Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+					<Search className="text-muted-foreground absolute top-2.5 left-2 h-4 w-4" />
+
 					<Input
+						className="pl-8"
+						onChange={(e) => setSearchTerm(e.target.value)}
 						placeholder="Search orders..."
 						value={searchTerm}
-						onChange={(e) => setSearchTerm(e.target.value)}
-						className="pl-8"
 					/>
 				</div>
-				<Select value={statusFilter} onValueChange={setStatusFilter}>
+
+				<Select onValueChange={setStatusFilter} value={statusFilter}>
 					<SelectTrigger className="w-full sm:w-40">
 						<SelectValue placeholder="Filter by status" />
 					</SelectTrigger>
+
 					<SelectContent>
 						<SelectItem value="All">All</SelectItem>
+
 						<SelectItem value="Completed">Completed</SelectItem>
+
 						<SelectItem value="Processing">Processing</SelectItem>
+
 						<SelectItem value="Shipped">Shipped</SelectItem>
 					</SelectContent>
 				</Select>
 			</div>
 
-			<div className="border rounded-md">
+			<div className="rounded-md border">
 				<Table>
 					<TableHeader>
 						<TableRow>
 							<TableHead>Order ID</TableHead>
+
 							<TableHead>Customer</TableHead>
+
 							<TableHead>Date</TableHead>
+
 							<TableHead>Total</TableHead>
+
 							<TableHead>Status</TableHead>
 						</TableRow>
 					</TableHeader>
+
 					<TableBody>
 						{currentOrders.map((order) => (
-							<TableRow key={order.id}>
+              <TableRow key={order.id}>
 								<TableCell>{order.id}</TableCell>
 								<TableCell>{order.customer}</TableCell>
 								<TableCell>{order.date}</TableCell>
 								<TableCell>${order.total.toFixed(2)}</TableCell>
+
 								<TableCell>{order.status}</TableCell>
 							</TableRow>
 						))}
@@ -84,25 +96,28 @@ export function OrderList() {
 				</Table>
 			</div>
 
-			<div className="flex justify-between items-center">
-				<div className="text-sm text-muted-foreground">
+			<div className="flex items-center justify-between">
+				<div className="text-muted-foreground text-sm">
 					Showing {indexOfFirstOrder + 1}-{Math.min(indexOfLastOrder, filteredOrders.length)} of{" "}
+
 					{filteredOrders.length} orders
 				</div>
+
 				<div className="flex items-center space-x-2">
 					<Button
-						variant="outline"
-						size="icon"
-						onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
 						disabled={currentPage === 1}
+						onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+						size="icon"
+						variant="outline"
 					>
 						<ChevronLeft className="h-4 w-4" />
 					</Button>
+
 					<Button
-						variant="outline"
-						size="icon"
-						onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
 						disabled={currentPage === totalPages}
+						onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+						size="icon"
+						variant="outline"
 					>
 						<ChevronRight className="h-4 w-4" />
 					</Button>

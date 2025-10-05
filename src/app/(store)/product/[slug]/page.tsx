@@ -22,7 +22,7 @@ import { deslugify, formatMoney } from "@/lib/utils";
 import { JsonLd, mappedProductToJsonLd } from "@/ui/json-ld";
 import { Markdown } from "@/ui/markdown";
 import { MainProductImage } from "@/ui/products/main-product-image";
-import { YnsLink } from "@/ui/yns-link";
+import { VyaLink } from "@ui/vya-link";
 
 export const generateMetadata = async (props: {
 	params: Promise<{ slug: string }>;
@@ -71,7 +71,7 @@ export default async function SingleProductPage(props: {
 				<BreadcrumbList>
 					<BreadcrumbItem>
 						<BreadcrumbLink asChild className="inline-flex min-h-12 min-w-12 items-center justify-center">
-							<YnsLink href="/products">{t("allProducts")}</YnsLink>
+							<VyaLink href="/products">{t("allProducts")}</VyaLink>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					{category && (
@@ -79,7 +79,7 @@ export default async function SingleProductPage(props: {
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
 								<BreadcrumbLink className="inline-flex min-h-12 min-w-12 items-center justify-center" asChild>
-									<YnsLink href={`/category/${category}`}>{deslugify(category)}</YnsLink>
+									<VyaLink href={`/category/${category}`}>{deslugify(category)}</VyaLink>
 								</BreadcrumbLink>
 							</BreadcrumbItem>
 						</>
@@ -113,7 +113,7 @@ export default async function SingleProductPage(props: {
 								image: idx.toString(),
 							});
 							return (
-								<YnsLink key={idx} href={`?${params}`} scroll={false}>
+								<VyaLink key={idx} href={`?${params}`} scroll={false}>
 									{idx === 0 ? (
 										<MainProductImage
 											key={image}
@@ -136,7 +136,7 @@ export default async function SingleProductPage(props: {
 											alt=""
 										/>
 									)}
-								</YnsLink>
+								</VyaLink>
 							);
 						})}
 					</div>

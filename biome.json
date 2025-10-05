@@ -77,7 +77,6 @@
 				"**/src/i18n.ts",
 				"**/*.d.ts",
 				"**/tailwind.config.ts",
-				"**/prettier.config.js",
 				"**/middleware.ts",
 				"**/commitlint.config.ts",
 				"**/vitest.config.ts"

@@ -20,13 +20,13 @@ const links = [
 export const NavMenu = () => {
 	return (
 		<>
-			<div className="sm:block hidden">
+			<div className="hidden sm:block">
 				<ul className="flex flex-row items-center justify-center gap-x-1">
 					{links.map((link) => (
 						<li key={link.href}>
 							<Link
+								className="group hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors focus:outline-hidden"
 								href={link.href}
-								className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-hidden"
 							>
 								{link.label}
 							</Link>
@@ -34,14 +34,14 @@ export const NavMenu = () => {
 					))}
 				</ul>
 			</div>
-			<div className="sm:hidden flex items-center">
+			<div className="flex items-center sm:hidden">
 				<NavMobileMenu>
-					<ul className="flex pb-8 flex-col items-stretch justify-center gap-x-1">
+					<ul className="flex flex-col items-stretch justify-center gap-x-1 pb-8">
 						{links.map((link) => (
 							<li key={link.href}>
 								<Link
+									className="group hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground inline-flex h-9 w-full items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors focus:outline-hidden"
 									href={link.href}
-									className="group inline-flex h-9 w-full items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-hidden"
 								>
 									{link.label}
 								</Link>

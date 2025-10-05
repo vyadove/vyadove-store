@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 // import { Link, useTransitionRouter } from 'next-view-transitions'
 import type { ComponentPropsWithRef } from "react";
 
-export const YnsLink = (props: ComponentPropsWithRef<typeof Link>) => {
+export const VyaLink = (props: ComponentPropsWithRef<typeof Link>) => {
 	// const router = useTransitionRouter();
 	const router = useRouter();
 	const strHref = typeof props.href === "string" ? props.href : props.href.href;
@@ -19,23 +19,27 @@ export const YnsLink = (props: ComponentPropsWithRef<typeof Link>) => {
 	return (
 		<Link
 			{...props}
-			prefetch={false}
+			onFocus={(e) => {
+				conditionalPrefetch();
+
+				return props.onFocus?.(e);
+			}}
 			onMouseEnter={(e) => {
 				conditionalPrefetch();
+
 				return props.onMouseEnter?.(e);
 			}}
 			onPointerEnter={(e) => {
 				conditionalPrefetch();
+
 				return props.onPointerEnter?.(e);
 			}}
 			onTouchStart={(e) => {
 				conditionalPrefetch();
+
 				return props.onTouchStart?.(e);
 			}}
-			onFocus={(e) => {
-				conditionalPrefetch();
-				return props.onFocus?.(e);
-			}}
+			prefetch={false}
 		/>
 	);
 };

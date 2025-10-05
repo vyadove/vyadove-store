@@ -40,17 +40,19 @@
 	--breakpoint-xs: 400px;
 	--breakpoint-smb: 720px;
 
+	--app-width: 1400px;
+
 	@keyframes accordion-down {
 		from {
 			height: 0;
 		}
 		to {
-			height: var(--radix-accordion-content-height);
+			/*height: var(--radix-accordion-content-height);*/
 		}
 	}
 	@keyframes accordion-up {
 		from {
-			height: var(--radix-accordion-content-height);
+			/*height: var(--radix-accordion-content-height);*/
 		}
 		to {
 			height: 0;
@@ -199,13 +201,13 @@ input[type="search" i]::-webkit-search-cancel-button {
 		height: 0;
 	}
 	to {
-		height: var(--radix-collapsible-content-height);
+		/*height: var(--radix-collapsible-content-height);*/
 	}
 }
 
 @keyframes slideUp {
 	from {
-		height: var(--radix-collapsible-content-height);
+		/*height: var(--radix-collapsible-content-height);*/
 	}
 	to {
 		height: 0;
@@ -234,7 +236,7 @@ input[type="search" i]::-webkit-search-cancel-button {
 	@apply content-[''] w-full h-px absolute bottom-0 bg-neutral-200;
 
 	animation: nav-border-reveal;
-	animation-timeline: scroll();
+	/*animation-timeline: scroll();*/
 	animation-range: 0 100px;
 }
 

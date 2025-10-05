@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "@/i18n/client";
-import { YnsLink } from "@/ui/yns-link";
+import { VyaLink } from "@ui/vya-link";
 
 export default function Error({ error }: { error: Error & { digest?: string }; reset: () => void }) {
 	useEffect(() => {
@@ -16,7 +16,7 @@ export default function Error({ error }: { error: Error & { digest?: string }; r
 		<main className="mx-auto max-w-xl flex-auto text-center">
 			<h1 className="mb-8 mt-8 text-4xl font-black">{t("title")}</h1>
 			<Button variant="link" asChild>
-				<YnsLink href="/">{t("goBackLink")}</YnsLink>
+				<VyaLink href="/">{t("goBackLink")}</VyaLink>
 			</Button>
 		</main>
 	);

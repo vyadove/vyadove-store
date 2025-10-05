@@ -11,15 +11,13 @@ import { signForNewsletter } from "@/ui/footer/actions";
 export const Newsletter = () => {
 	const t = useTranslations("Global.newsletter");
 	const [loading, setLoading] = useState(false);
+
 	return (
 		<form
-			className="flex gap-x-2"
-			onSubmit={() => {
-				setLoading(true);
-			}}
 			action={async (formData) => {
 				try {
 					const result = await signForNewsletter(formData);
+
 					if (result?.status && result.status < 400) {
 						toast.info(t("success"), {
 							position: "bottom-left",
@@ -33,15 +31,19 @@ export const Newsletter = () => {
 					setLoading(false);
 				}
 			}}
+			className="flex gap-x-2"
+			onSubmit={() => {
+				setLoading(true);
+			}}
 		>
 			<Input
-				className="max-w-lg flex-1"
-				placeholder={t("emailPlaceholder")}
-				type="email"
+				className="max-w-2xl flex-1 bg-white"
 				name="email"
+				placeholder={t("emailPlaceholder")}
 				required
+				type="email"
 			/>
-			<Button type="submit" className="w-24 rounded-full" variant="default" disabled={loading}>
+			<Button className="w-24 rounded-full" disabled={loading} type="submit" variant="default">
 				{loading ? <Loader2Icon className="h-4 w-4 animate-spin" /> : t("subscribeButton")}
 			</Button>
 		</form>
