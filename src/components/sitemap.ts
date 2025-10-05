@@ -4,6 +4,7 @@ import { commerce } from "@/lib/commerce";
 import StoreConfig from "@/store.config";
 
 type Item = MetadataRoute.Sitemap[number];
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const result = await commerce.product.browse({ first: 100 });
 	const productUrls = result.data.map(
