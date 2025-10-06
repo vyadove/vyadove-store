@@ -9,6 +9,9 @@ import {
 	updateCartItemAction,
 } from "@/actions/cart-actions";
 
+import FavIcon from "@/public/favicon.ico";
+import { useFavicon } from "react-use";
+
 type CartAction =
 	| { type: "ADD_ITEM"; variantId: string; quantity: number; product?: ProductInfo }
 	| { type: "UPDATE_ITEM"; variantId: string; quantity: number }
@@ -56,12 +59,15 @@ function cartReducer(state: Cart | null, action: CartAction): Cart | null {
 			if (existingItemIndex >= 0) {
 				// Update existing item
 				const existingItem = state.items[existingItemIndex];
+
 				if (existingItem) {
 					const updatedItems = [...state.items];
+
 					updatedItems[existingItemIndex] = {
 						...existingItem,
 						quantity: existingItem.quantity + action.quantity,
 					};
+
 					return {
 						...state,
 						items: updatedItems,
@@ -101,6 +107,7 @@ function cartReducer(state: Cart | null, action: CartAction): Cart | null {
 				if ((item.variantId || item.productId) === action.variantId) {
 					return { ...item, quantity: action.quantity };
 				}
+
 				return item;
 			});
 
@@ -135,6 +142,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
 	const [optimisticCart, setOptimisticCart] = useOptimistic(actualCart, cartReducer);
 	const [isCartOpen, setIsCartOpen] = useState(false);
 
+	useFavicon(FavIcon.src);
+
 	// Calculate item count from optimistic cart
 	const itemCount = optimisticCart?.items.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
@@ -160,6 +169,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		try {
 			// Perform server action
 			const updatedCart = await addToCartAction(variantId, quantity);
+
 			setActualCart(updatedCart);
 		} catch (error) {
 			// Rollback will happen automatically via useEffect
@@ -175,6 +185,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		try {
 			// Perform server action
 			const updatedCart = await updateCartItemAction(variantId, quantity);
+
 			setActualCart(updatedCart);
 		} catch (error) {
 			// Rollback will happen automatically via useEffect
@@ -190,6 +201,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		try {
 			// Perform server action
 			const updatedCart = await removeFromCartAction(variantId);
+
 			setActualCart(updatedCart);
 		} catch (error) {
 			// Rollback will happen automatically via useEffect
@@ -218,8 +230,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 export function useCart() {
 	const context = useContext(CartContext);
+
 	if (!context) {
 		throw new Error("useCart must be used within a CartProvider");
 	}
+
 	return context;
 }

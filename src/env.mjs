@@ -56,4 +56,5 @@ if (!publicUrl) {
 
 // force type inference to string
 const _publicUrl = publicUrl;
+
 export { _publicUrl as publicUrl };

@@ -1,12 +1,10 @@
 import AccessoriesImage from "@/images/accessories.jpg";
 import ApparelImage from "@/images/apparel.jpg";
 
-const name = process.env.NEXT_PUBLIC_BLOG_DISPLAY_NAME || "Travel.";
-const copyright = process.env.NEXT_PUBLIC_BLOG_COPYRIGHT || "Samantha";
-const defaultTitle =
-	process.env.NEXT_DEFAULT_METADATA_DEFAULT_TITLE || "Travel with Samantha";
-const defaultDescription = process.env.NEXT_PUBLIC_BLOG_DESCRIPTION || "Blog about travel and lifestyle.";
-
+const name = process.env.NEXT_PUBLIC_BLOG_DISPLAY_NAME || "Vyadove.";
+const copyright = process.env.NEXT_PUBLIC_BLOG_COPYRIGHT || "Vyadove";
+const defaultTitle = process.env.NEXT_DEFAULT_METADATA_DEFAULT_TITLE || "Vyadove";
+const defaultDescription = process.env.NEXT_PUBLIC_BLOG_DESCRIPTION || "Vyadove — Gift Joy. Share Peace.";
 
 export const config = {
 	categories: [
@@ -40,10 +38,7 @@ export const config = {
 			description: defaultDescription,
 		},
 	},
-	ogImageSecret:
-		process.env.OG_IMAGE_SECRET ||
-		"secret_used_for_signing_and_verifying_the_og_image_url",
-
+	ogImageSecret: process.env.OG_IMAGE_SECRET || "secret_used_for_signing_and_verifying_the_og_image_url",
 };
 
 export type StoreConfig = typeof config;

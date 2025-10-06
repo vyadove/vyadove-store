@@ -1,7 +1,6 @@
 "use client";
 
-import type React from "react";
-import { type PropsWithChildren, useEffect, useMemo, useRef, useState } from "react";
+import React, { type PropsWithChildren, useEffect, useMemo, useRef, useState } from "react";
 
 import { twMerge } from "tailwind-merge";
 

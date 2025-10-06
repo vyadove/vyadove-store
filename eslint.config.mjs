@@ -117,6 +117,7 @@ export default [
       // React
       "react/boolean-prop-naming": ["warn"],
       "react/jsx-newline": ["off"],
+      "lint/style/useImportType": ["off"],
       "react/jsx-no-useless-fragment": [
         "error",
         {
