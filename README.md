@@ -27,8 +27,8 @@ pnpm dev
 
 That's it! Your store will be running at:
 
-- **CMS Admin**: http://localhost:3000
-- **Storefront**: http://localhost:3020
+- **CMS Admin**: http://localhost:3000/admin
+- **Storefront**: http://localhost:3000
 
 ### Alternative Package Managers
 
