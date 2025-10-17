@@ -8,6 +8,8 @@ import products from "./products.json";
 const seed = async () => {
     const payload = await getPayload({ config });
 
+    console.log('seed payload : ', payload);
+
     await payload.updateGlobal({
         slug: "store-settings",
         data: {

@@ -17,8 +17,9 @@ export const Collections: CollectionConfig = {
         update: admins,
     },
     admin: {
-        group: groups.catalog,
+        // group: groups.catalog,
         useAsTitle: "title",
+
     },
     fields: [
         {
@@ -27,14 +28,29 @@ export const Collections: CollectionConfig = {
             required: true,
         },
         {
+            name: "description",
+            type: "text",
+            required: true,
+            defaultValue: '',
+        },
+
+        // RichTextEditor({
+        //     name: "description",
+        //     label: "Description",
+        // }),
+        // {
+        //     name: "thumbnail",
+        //     // label: "Image",
+        //     // hasMany: true,
+        //     type: "upload",
+        //     relationTo: "media",
+        // },
+        {
             name: "imageUrl",
             type: "text",
         },
         HandleField(),
-        RichTextEditor({
-            name: "description",
-            label: "Description",
-        }),
+
         {
             name: "products",
             type: "join",

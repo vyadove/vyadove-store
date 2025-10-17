@@ -1,23 +1,59 @@
 [
+
     {
-        "title": "Sale",
-        "handle": "sale",
-        "description": null,
+        "title": "Food & Dining",
+        "description": "Food & Dining",
+        "imageUrl": "https://images.unsplash.com/photo-1605651531144-51381895e23d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=774",
+        "handle": "food",
 
         "products": []
     },
     {
-        "title": "Latest Drops",
-        "handle": "latest-drops",
-        "description": null,
+        "title": "Most Popular Gifts",
+        "description": "Our top used lists",
+        "imageUrl": "https://images.unsplash.com/photo-1605651531144-51381895e23d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=774",
+        "handle": "popular",
 
         "products": []
     },
     {
-        "title": "Weekly Picks",
+        "title": "Wellness & Spa",
+        "description": "Wellness & Spa",
+        "imageUrl": "https://images.unsplash.com/photo-1600334129128-685c5582fd35?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740",
+        "handle": "wellness-and-spa",
+
+        "products":  []
+    },
+    {
+        "title": "Adventure & Tours",
+        "description": "Adventure & Tours",
+        "imageUrl": "https://plus.unsplash.com/premium_photo-1664304476568-0266b152bf9c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1784",
         "handle": "weekly-picks",
-        "description": null,
 
-        "products": []
+        "products":  []
+    },
+    {
+        "title": "Life Celebrations",
+        "description": "Life Celebrations",
+        "imageUrl": "https://images.unsplash.com/photo-1686716804051-30c28572427c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1788",
+        "handle": "latest-drops",
+
+        "products":  []
+    },
+    {
+        "title": "Stays & Escapes",
+        "description": " Getaways that inspire connection.",
+        "imageUrl": "https://plus.unsplash.com/premium_photo-1661964304872-7b715cf38cd1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740",
+        "handle": "sale",
+
+        "products":  []
+    },
+    {
+        "title": "Vya Special",
+        "description": "Discover hidden gems together.",
+        "imageUrl": "https://images.unsplash.com/photo-1594621663599-037203c826d7?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1714",
+        "handle": "weekly-picks",
+
+        "products":  []
     }
 ]

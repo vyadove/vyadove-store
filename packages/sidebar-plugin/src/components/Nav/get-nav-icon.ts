@@ -1,5 +1,5 @@
 import type { LucideProps } from "lucide-react";
-import type { ExoticComponent } from "react";
+import React, { ExoticComponent } from "react";
 import {
     Blocks,
     ChartSpline,
@@ -11,6 +11,7 @@ import {
     Tag,
     Target,
     UserRound,
+    Library
 } from "lucide-react";
 
 const navIconMap = {
@@ -22,6 +23,7 @@ const navIconMap = {
     orders: ShoppingCart,
     plugins: Blocks,
     products: Tag,
+    collections: Library,
     settings: Settings,
     platform: Settings2,
 };

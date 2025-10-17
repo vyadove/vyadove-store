@@ -1,57 +1,35 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from "next/types";
 
 const nextConfig: NextConfig = {
-    images: {
-        remotePatterns: [
-            {
-                protocol: "https",
-                hostname: "next.medusajs.com",
-            },
-            {
-                protocol: "https",
-                hostname: "medusa-server-testing.s3.us-east-1.amazonaws.com",
-            },
-            {
-                protocol: "https",
-                hostname: "cf.cjdropshipping.com",
-            },
-            {
-                protocol: "https",
-                hostname: "cbu01.alicdn.com",
-            },
-            {
-                protocol: "https",
-                hostname: "oss-cf.cjdropshipping.com",
-            },
-            {
-                protocol: "https",
-                hostname: "pub-e0a548fa3e234baf8e41a8fd95bb8ad5.r2.dev",
-            },
-            {
-                protocol: "https",
-                hostname: "images.unsplash.com",
-            },
-            {
-                protocol: "http",
-                hostname: "localhost",
-            },
-            {
-                protocol: "https",
-                hostname: "cdn.shopnex.ai",
-                pathname: "/**",
-            },
-        ],
-        unoptimized: true,
-    },
-    // skipTrailingSlashRedirect: true,
-    async rewrites() {
-        return [
-            {
-                source: "/api/:path*",
-                destination: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/:path*`,
-            },
-        ];
-    },
+	reactStrictMode: true,
+	// eslint: {
+	// 	ignoreDuringBuilds: true,
+	// },
+	// output: process.env.DOCKER ? "standalone" : undefined,
+	logging: {
+		fetches: {
+			fullUrl: true,
+		},
+	},
+	images: {
+		remotePatterns: [
+			{ hostname: "files.stripe.com" },
+			{ hostname: "localhost" },
+			{ hostname: "images.unsplash.com" },
+			{ hostname: "plus.unsplash.com" },
+			{ hostname: "d1wqzb5bdbcre6.cloudfront.net" },
+			{ hostname: "*.blob.vercel-storage.com" },
+		],
+		// formats: ["image/avif", "image/webp"],
+	},
+	transpilePackages: ["commerce-kit"],
+	experimental: {
+		esmExternals: true,
+		scrollRestoration: true,
+		ppr: false,
+		reactCompiler: true,
+		inlineCss: true,
+	},
 };
 
 export default nextConfig;

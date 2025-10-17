@@ -16,7 +16,7 @@ const StoreSettings: GlobalConfig = {
         {
             name: "name",
             type: "text",
-            defaultValue: "ShopNex",
+            defaultValue: "Vya-dove",
         },
         {
             name: "currency",

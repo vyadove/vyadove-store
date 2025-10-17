@@ -314,7 +314,7 @@ export interface Product {
    */
   salesChannels?: ('all' | 'onlineStore' | 'pos' | 'mobileApp')[] | null;
   source?: ('manual' | 'cj') | null;
-  description?: string | null;
+  description: string;
   collections?: (number | Collection)[] | null;
   handle?: string | null;
   /**
@@ -371,9 +371,9 @@ export interface Product {
 export interface Collection {
   id: number;
   title: string;
+  description: string;
   imageUrl?: string | null;
   handle?: string | null;
-  description?: string | null;
   products?: {
     docs?: (number | Product)[];
     hasNextPage?: boolean;
@@ -1062,9 +1062,9 @@ export interface OrdersSelect<T extends boolean = true> {
  */
 export interface CollectionsSelect<T extends boolean = true> {
   title?: T;
+  description?: T;
   imageUrl?: T;
   handle?: T;
-  description?: T;
   products?: T;
   meta?:
     | T

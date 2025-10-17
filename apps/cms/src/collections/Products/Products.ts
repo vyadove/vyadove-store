@@ -20,6 +20,7 @@ export const Products: CollectionConfig = {
         defaultColumns: ["title", "image", "variants", "collections"],
         group: groups.catalog,
         useAsTitle: "title",
+
     },
     fields: [
         {
@@ -94,10 +95,15 @@ export const Products: CollectionConfig = {
             defaultValue: "manual",
             options: [{ label: "Manual", value: "manual" }],
         },
-        RichTextEditor({
+        {
             name: "description",
-            label: "Description",
-        }),
+            type: "text",
+            required: true,
+        },
+        // RichTextEditor({
+        //     name: "description",
+        //     label: "Description",
+        // }),
         {
             name: "collections",
             type: "relationship",
@@ -218,7 +224,6 @@ export const Products: CollectionConfig = {
                             type: "number",
                             required: true,
                         },
-
                         {
                             name: "originalPrice",
                             type: "number",

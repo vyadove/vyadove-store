@@ -1,4 +1,4 @@
-import { rootEslintConfig, rootParserOptions } from "../../eslint.config.js";
+import { rootEslintConfig, rootParserOptions } from "../../__eslint.config.js";
 
 /** @typedef {import('eslint').Linter.Config} Config */
 

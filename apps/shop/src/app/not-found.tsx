@@ -1,28 +1,16 @@
-import type { Metadata } from "next";
+import { getTranslations } from "@/i18n/server";
+import { VyaLink } from "@ui/vya-link";
 
-import { ArrowUpRightMini } from "@medusajs/icons";
-import { Text } from "@medusajs/ui";
-import Link from "next/link";
+export default async function NotFound() {
+	const t = await getTranslations("Global.notFound");
 
-export const metadata: Metadata = {
-    description: "Something went wrong",
-    title: "404",
-};
-
-export default function NotFound() {
-    return (
-        <div className="flex flex-col gap-4 items-center justify-center min-h-[calc(100vh-64px)]">
-            <h1 className="text-2xl-semi text-ui-fg-base">Page not found</h1>
-            <p className="text-small-regular text-ui-fg-base">
-                The page you tried to access does not exist.
-            </p>
-            <Link className="flex gap-x-1 items-center group" href="/">
-                <Text className="text-ui-fg-interactive">Go to frontpage</Text>
-                <ArrowUpRightMini
-                    className="group-hover:rotate-45 ease-in-out duration-150"
-                    color="var(--fg-interactive)"
-                />
-            </Link>
-        </div>
-    );
+	return (
+		<main className="mx-auto max-w-xl flex-1 text-center">
+			<h1 className="mt-4 text-4xl font-black">{t("title")}</h1>
+			<p className="mt-4 text-lg">{t("description")}</p>
+			<VyaLink className="mt-4 text-blue-600 underline" href="/">
+				{t("goBackLink")}
+			</VyaLink>
+		</main>
+	);
 }

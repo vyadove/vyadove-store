@@ -54,3 +54,6 @@ test-results
 playwright-report
 
 dist
+/.husky/pre-commit
+.husky
+/.husky/*

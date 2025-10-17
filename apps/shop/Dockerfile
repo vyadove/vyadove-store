@@ -1,33 +1,67 @@
-# syntax=docker/dockerfile:1.4
+FROM node:20-alpine AS base
 
-# Base image
-FROM node:22-slim AS base
+# Install dependencies only when needed
+FROM base AS deps
 
-# Set up PNPM
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-ARG NEXT_PUBLIC_SERVER_URL
-ARG NEXT_PUBLIC_BUILDER_IO_PUBLIC_KEY
-
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Enable corepack & install turbo globally
-RUN corepack enable
-RUN pnpm i -g turbo
+# Install dependencies based on the preferred package manager
+COPY package.json yarn.lock* package-lock.json* bun.lock* ./
+RUN \
+  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f bun.lock ]; then curl -fsSL https://bun.sh/install | bash && /root/.bun/bin/bun install --frozen-lockfile; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
 
-# Copy everything (you may optimize this in multi-stage builds)
+
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Prune for Docker
-RUN turbo prune @shopnex/shop --docker
+# Uncomment to disable Next.js telemetry
+# ENV NEXT_TELEMETRY_DISABLED 1
 
-# Restore and cache node_modules + turbo cache
-RUN pnpm install --frozen-lockfile
+# Build the Next.js application
+RUN \
+  if [ -f yarn.lock ]; then yarn run build; \
+  elif [ -f package-lock.json ]; then npm run build; \
+  elif [ -f bun.lock ]; then /root/.bun/bin/bun run build; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
 
-# Build with turbo and cache
-RUN pnpm turbo run build --filter=@shopnex/shop
+# Production image, copy all the files and run next
+FROM base AS runner
+WORKDIR /app
 
-WORKDIR /app/apps/shop
+ENV NODE_ENV production
 
-CMD ["pnpm", "start"]
+# Uncomment to disable Next.js telemetry
+# ENV NEXT_TELEMETRY_DISABLED 1
 
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT 3000
+
+# server.js is created by next build from the standalone output
+# https://nextjs.org/docs/pages/api-reference/next-config-js/output
+CMD HOSTNAME="0.0.0.0" node server.js
