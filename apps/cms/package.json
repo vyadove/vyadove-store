@@ -6,7 +6,8 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+        "build": "cross-env NODE_OPTIONS=--no-deprecation payload migrate && next build",
+        "ci": "cross-env NODE_OPTIONS=--no-deprecation payload migrate && next build",
         "dev": "cross-env NODE_OPTIONS=\"${NODE_OPTIONS} --no-deprecation\" next dev",
         "db:seed": "cross-env PAYLOAD_SECRET=0c2661e8291dd55114c7e89f DATABASE_URI=file:./payload-tut-2.db  tsx ./src/seed",
         "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=\"${NODE_OPTIONS} --no-deprecation next dev",
