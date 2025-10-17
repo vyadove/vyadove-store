@@ -4,7 +4,17 @@
         "build": {
             "dependsOn": ["^build"],
             "outputs": ["dist/**", "build/**", ".next/**"],
-            "cache": true
+            "cache": true,
+            "env": [
+                "DATABASE_URI",
+                "PAYLOAD_SECRET",
+                "NEXT_PUBLIC_SERVER_URL",
+                "CRON_SECRET",
+                "PREVIEW_SECRET",
+                "NEXT_PUBLIC_STOREFRONT_URL",
+                "ADMIN_EMAIL",
+                "ADMIN_PASSWORD"
+            ]
         },
         "dev": {
             "cache": false
