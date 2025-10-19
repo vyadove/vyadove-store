@@ -26,6 +26,8 @@ import { Campaigns } from "./collections/Campaigns/Campaigns";
 import { Plugins } from "./collections/Plugins/Plugins";
 import { syncPlugin } from "./collections/Plugins/utils/sync-plugin";
 
+import { postgresAdapter } from '@payloadcms/db-postgres';
+
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
@@ -78,11 +80,25 @@ export default buildConfig({
             process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3020",
         syncPlugin,
     },
-    db: sqliteAdapter({
-        client: {
-            url: process.env.DATABASE_URI || "",
+    // db: sqliteAdapter({
+    //     client: {
+    //         url: process.env.DATABASE_URI || "",
+    //     },
+    // }),
+
+    db: postgresAdapter({
+        // Postgres-specific arguments go here.
+        // `pool` is required.
+
+        pool: {
+            // connectionString: process.env.DATABASE_URI,
+            connectionString: process.env.vyadove_POSTGRES_URL,
+            ssl: {
+                rejectUnauthorized: false, // Disables SSL certificate verification
+            },
         },
     }),
+
     editor: lexicalEditor(),
     endpoints: [
         {

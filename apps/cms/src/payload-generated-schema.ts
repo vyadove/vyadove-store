@@ -6,47 +6,303 @@
  * and re-run `payload generate:db-schema` to regenerate this file.
  */
 
-import type {} from "@payloadcms/db-sqlite";
+import type {} from "@payloadcms/db-postgres";
 import {
-    sqliteTable,
+    pgTable,
     index,
     uniqueIndex,
     foreignKey,
     integer,
-    text,
+    varchar,
+    timestamp,
+    serial,
     numeric,
-} from "@payloadcms/db-sqlite/drizzle/sqlite-core";
-import { sql, relations } from "@payloadcms/db-sqlite/drizzle";
+    jsonb,
+    boolean,
+    text,
+    pgEnum,
+} from "@payloadcms/db-postgres/drizzle/pg-core";
+import { sql, relations } from "@payloadcms/db-postgres/drizzle";
+import { geometryColumn } from "@payloadcms/db-postgres";
+export const enum_orders_timeline_type = pgEnum("enum_orders_timeline_type", [
+    "note",
+    "order_created",
+    "order_paid",
+    "order_cancelled",
+    "refund_issued",
+    "fulfillment_started",
+    "shipped",
+    "delivered",
+    "return_requested",
+    "return_completed",
+    "other",
+]);
+export const enum_orders_source = pgEnum("enum_orders_source", [
+    "manual",
+    "cj",
+]);
+export const enum_orders_payment_status = pgEnum("enum_orders_payment_status", [
+    "pending",
+    "paid",
+    "failed",
+    "refunded",
+]);
+export const enum_orders_order_status = pgEnum("enum_orders_order_status", [
+    "pending",
+    "processing",
+    "shipped",
+    "delivered",
+    "canceled",
+]);
+export const enum_products_sales_channels = pgEnum(
+    "enum_products_sales_channels",
+    ["all", "onlineStore", "pos", "mobileApp"]
+);
+export const enum_products_source = pgEnum("enum_products_source", [
+    "manual",
+    "cj",
+]);
+export const enum_users_roles = pgEnum("enum_users_roles", [
+    "admin",
+    "customer",
+]);
+export const enum_campaigns_type = pgEnum("enum_campaigns_type", [
+    "email",
+    "sms",
+]);
+export const enum_campaigns_status = pgEnum("enum_campaigns_status", [
+    "draft",
+    "scheduled",
+    "sent",
+    "paused",
+]);
+export const enum_payments_blocks_manual_method_type = pgEnum(
+    "enum_payments_blocks_manual_method_type",
+    ["cod", "bankTransfer", "inStore", "other"]
+);
+export const enum_payments_blocks_stripe_method_type = pgEnum(
+    "enum_payments_blocks_stripe_method_type",
+    ["card", "ach", "auto"]
+);
+export const enum_exports_format = pgEnum("enum_exports_format", [
+    "csv",
+    "json",
+]);
+export const enum_exports_drafts = pgEnum("enum_exports_drafts", ["yes", "no"]);
+export const enum_payload_jobs_log_task_slug = pgEnum(
+    "enum_payload_jobs_log_task_slug",
+    ["inline", "createCollectionExport"]
+);
+export const enum_payload_jobs_log_state = pgEnum(
+    "enum_payload_jobs_log_state",
+    ["failed", "succeeded"]
+);
+export const enum_payload_jobs_task_slug = pgEnum(
+    "enum_payload_jobs_task_slug",
+    ["inline", "createCollectionExport"]
+);
+export const enum_store_settings_currency = pgEnum(
+    "enum_store_settings_currency",
+    [
+        "AED",
+        "AFN",
+        "ALL",
+        "AMD",
+        "ANG",
+        "AOA",
+        "ARS",
+        "AUD",
+        "AWG",
+        "AZN",
+        "BAM",
+        "BBD",
+        "BDT",
+        "BGN",
+        "BHD",
+        "BIF",
+        "BMD",
+        "BND",
+        "BOB",
+        "BOV",
+        "BRL",
+        "BSD",
+        "BTN",
+        "BWP",
+        "BYN",
+        "BZD",
+        "CAD",
+        "CDF",
+        "CHE",
+        "CHF",
+        "CHW",
+        "CLF",
+        "CLP",
+        "CNY",
+        "COP",
+        "COU",
+        "CRC",
+        "CUC",
+        "CUP",
+        "CVE",
+        "CZK",
+        "DJF",
+        "DKK",
+        "DOP",
+        "DZD",
+        "EGP",
+        "ERN",
+        "ETB",
+        "EUR",
+        "FJD",
+        "FKP",
+        "GBP",
+        "GEL",
+        "GHS",
+        "GIP",
+        "GMD",
+        "GNF",
+        "GTQ",
+        "GYD",
+        "HKD",
+        "HNL",
+        "HTG",
+        "HUF",
+        "IDR",
+        "ILS",
+        "INR",
+        "IQD",
+        "IRR",
+        "ISK",
+        "JMD",
+        "JOD",
+        "JPY",
+        "KES",
+        "KGS",
+        "KHR",
+        "KMF",
+        "KPW",
+        "KRW",
+        "KWD",
+        "KYD",
+        "KZT",
+        "LAK",
+        "LBP",
+        "LKR",
+        "LRD",
+        "LSL",
+        "LYD",
+        "MAD",
+        "MDL",
+        "MGA",
+        "MKD",
+        "MMK",
+        "MNT",
+        "MOP",
+        "MRU",
+        "MUR",
+        "MVR",
+        "MWK",
+        "MXN",
+        "MXV",
+        "MYR",
+        "MZN",
+        "NAD",
+        "NGN",
+        "NIO",
+        "NOK",
+        "NPR",
+        "NZD",
+        "OMR",
+        "PAB",
+        "PEN",
+        "PGK",
+        "PHP",
+        "PKR",
+        "PLN",
+        "PYG",
+        "QAR",
+        "RON",
+        "RSD",
+        "RUB",
+        "RWF",
+        "SAR",
+        "SBD",
+        "SCR",
+        "SDG",
+        "SEK",
+        "SGD",
+        "SHP",
+        "SLE",
+        "SOS",
+        "SRD",
+        "SSP",
+        "STN",
+        "SVC",
+        "SYP",
+        "SZL",
+        "THB",
+        "TJS",
+        "TMT",
+        "TND",
+        "TOP",
+        "TRY",
+        "TTD",
+        "TWD",
+        "TZS",
+        "UAH",
+        "UGX",
+        "USD",
+        "USN",
+        "UYI",
+        "UYU",
+        "UYW",
+        "UZS",
+        "VED",
+        "VES",
+        "VND",
+        "VUV",
+        "WST",
+        "XAF",
+        "XAG",
+        "XAU",
+        "XBA",
+        "XBB",
+        "XBC",
+        "XBD",
+        "XCD",
+        "XDR",
+        "XOF",
+        "XPD",
+        "XPF",
+        "XPT",
+        "XSU",
+        "XTS",
+        "XUA",
+        "XXX",
+        "YER",
+        "ZAR",
+        "ZMW",
+        "ZWG",
+    ]
+);
 
-export const orders_timeline = sqliteTable(
+export const orders_timeline = pgTable(
     "orders_timeline",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
-        id: text("id").primaryKey(),
-        title: text("title").notNull(),
-        date: text("date")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        type: text("type", {
-            enum: [
-                "note",
-                "order_created",
-                "order_paid",
-                "order_cancelled",
-                "refund_issued",
-                "fulfillment_started",
-                "shipped",
-                "delivered",
-                "return_requested",
-                "return_completed",
-                "other",
-            ],
+        id: varchar("id").primaryKey(),
+        title: varchar("title").notNull(),
+        date: timestamp("date", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
         }).notNull(),
+        type: enum_orders_timeline_type("type").notNull(),
         createdBy: integer("created_by_id").references(() => users.id, {
             onDelete: "set null",
         }),
-        details: text("details"),
+        details: varchar("details"),
     },
     (columns) => ({
         _orderIdx: index("orders_timeline_order_idx").on(columns._order),
@@ -64,11 +320,11 @@ export const orders_timeline = sqliteTable(
     })
 );
 
-export const orders = sqliteTable(
+export const orders = pgTable(
     "orders",
     {
-        id: integer("id").primaryKey(),
-        orderId: text("order_id").notNull(),
+        id: serial("id").primaryKey(),
+        orderId: varchar("order_id").notNull(),
         totalAmount: numeric("total_amount").notNull(),
         user: integer("user_id").references(() => users.id, {
             onDelete: "set null",
@@ -76,16 +332,12 @@ export const orders = sqliteTable(
         cart: integer("cart_id").references(() => carts.id, {
             onDelete: "set null",
         }),
-        source: text("source", { enum: ["manual", "cj"] }).default("manual"),
-        currency: text("currency").notNull(),
-        paymentStatus: text("payment_status", {
-            enum: ["pending", "paid", "failed", "refunded"],
-        })
+        source: enum_orders_source("source").default("manual"),
+        currency: varchar("currency").notNull(),
+        paymentStatus: enum_orders_payment_status("payment_status")
             .notNull()
             .default("pending"),
-        orderStatus: text("order_status", {
-            enum: ["pending", "processing", "shipped", "delivered", "canceled"],
-        })
+        orderStatus: enum_orders_order_status("order_status")
             .notNull()
             .default("pending"),
         payment: integer("payment_id").references(() => payments.id, {
@@ -94,20 +346,28 @@ export const orders = sqliteTable(
         shipping: integer("shipping_id").references(() => shipping.id, {
             onDelete: "set null",
         }),
-        paymentIntentId: text("payment_intent_id"),
-        sessionId: text("session_id"),
-        sessionUrl: text("session_url"),
-        paymentMethod: text("payment_method"),
-        receiptUrl: text("receipt_url"),
-        metadata: text("metadata", { mode: "json" }),
-        shippingAddress: text("shipping_address", { mode: "json" }),
-        billingAddress: text("billing_address", { mode: "json" }),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        paymentIntentId: varchar("payment_intent_id"),
+        sessionId: varchar("session_id"),
+        sessionUrl: varchar("session_url"),
+        paymentMethod: varchar("payment_method"),
+        receiptUrl: varchar("receipt_url"),
+        metadata: jsonb("metadata"),
+        shippingAddress: jsonb("shipping_address"),
+        billingAddress: jsonb("billing_address"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         orders_order_id_idx: uniqueIndex("orders_order_id_idx").on(
@@ -126,22 +386,30 @@ export const orders = sqliteTable(
     })
 );
 
-export const collections = sqliteTable(
+export const collections = pgTable(
     "collections",
     {
-        id: integer("id").primaryKey(),
-        title: text("title").notNull(),
-        imageUrl: text("image_url"),
-        handle: text("handle"),
-        description: text("description"),
-        meta_title: text("meta_title"),
-        meta_description: text("meta_description"),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: serial("id").primaryKey(),
+        title: varchar("title").notNull(),
+        description: varchar("description").notNull().default(""),
+        imageUrl: varchar("image_url"),
+        handle: varchar("handle"),
+        meta_title: varchar("meta_title"),
+        meta_description: varchar("meta_description"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         collections_handle_idx: index("collections_handle_idx").on(
@@ -156,15 +424,13 @@ export const collections = sqliteTable(
     })
 );
 
-export const products_sales_channels = sqliteTable(
+export const products_sales_channels = pgTable(
     "products_sales_channels",
     {
         order: integer("order").notNull(),
         parent: integer("parent_id").notNull(),
-        value: text("value", {
-            enum: ["all", "onlineStore", "pos", "mobileApp"],
-        }),
-        id: integer("id").primaryKey(),
+        value: enum_products_sales_channels("value"),
+        id: serial("id").primaryKey(),
     },
     (columns) => ({
         orderIdx: index("products_sales_channels_order_idx").on(columns.order),
@@ -179,13 +445,13 @@ export const products_sales_channels = sqliteTable(
     })
 );
 
-export const products_variant_options = sqliteTable(
+export const products_variant_options = pgTable(
     "products_variant_options",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
-        id: text("id").primaryKey(),
-        option: text("option").notNull(),
+        id: varchar("id").primaryKey(),
+        option: varchar("option").notNull(),
     },
     (columns) => ({
         _orderIdx: index("products_variant_options_order_idx").on(
@@ -202,14 +468,14 @@ export const products_variant_options = sqliteTable(
     })
 );
 
-export const products_variants_options = sqliteTable(
+export const products_variants_options = pgTable(
     "products_variants_options",
     {
         _order: integer("_order").notNull(),
-        _parentID: text("_parent_id").notNull(),
-        id: text("id").primaryKey(),
-        option: text("option").notNull(),
-        value: text("value").notNull(),
+        _parentID: varchar("_parent_id").notNull(),
+        id: varchar("id").primaryKey(),
+        option: varchar("option").notNull(),
+        value: varchar("value").notNull(),
     },
     (columns) => ({
         _orderIdx: index("products_variants_options_order_idx").on(
@@ -226,15 +492,15 @@ export const products_variants_options = sqliteTable(
     })
 );
 
-export const products_variants = sqliteTable(
+export const products_variants = pgTable(
     "products_variants",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
-        id: text("id").primaryKey(),
-        vid: text("vid"),
-        sku: text("sku"),
-        imageUrl: text("image_url"),
+        id: varchar("id").primaryKey(),
+        vid: varchar("vid"),
+        sku: varchar("sku"),
+        imageUrl: varchar("image_url"),
         price: numeric("price").notNull(),
         originalPrice: numeric("original_price"),
         stockCount: numeric("stock_count").default("0"),
@@ -252,14 +518,14 @@ export const products_variants = sqliteTable(
     })
 );
 
-export const products_custom_fields = sqliteTable(
+export const products_custom_fields = pgTable(
     "products_custom_fields",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
-        id: text("id").primaryKey(),
-        name: text("name").notNull(),
-        value: text("value"),
+        id: varchar("id").primaryKey(),
+        name: varchar("name").notNull(),
+        value: varchar("value"),
     },
     (columns) => ({
         _orderIdx: index("products_custom_fields_order_idx").on(columns._order),
@@ -274,25 +540,33 @@ export const products_custom_fields = sqliteTable(
     })
 );
 
-export const products = sqliteTable(
+export const products = pgTable(
     "products",
     {
-        id: integer("id").primaryKey(),
-        pid: text("pid"),
-        title: text("title").notNull(),
-        currency: text("currency"),
-        visible: integer("visible", { mode: "boolean" }).default(true),
-        source: text("source", { enum: ["manual", "cj"] }).default("manual"),
-        description: text("description").notNull(),
-        handle: text("handle"),
-        meta_title: text("meta_title"),
-        meta_description: text("meta_description"),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: serial("id").primaryKey(),
+        pid: varchar("pid"),
+        title: varchar("title").notNull(),
+        currency: varchar("currency"),
+        visible: boolean("visible").default(true),
+        source: enum_products_source("source").default("manual"),
+        description: varchar("description").notNull(),
+        handle: varchar("handle"),
+        meta_title: varchar("meta_title"),
+        meta_description: varchar("meta_description"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         products_handle_idx: index("products_handle_idx").on(columns.handle),
@@ -305,14 +579,14 @@ export const products = sqliteTable(
     })
 );
 
-export const products_texts = sqliteTable(
+export const products_texts = pgTable(
     "products_texts",
     {
-        id: integer("id").primaryKey(),
+        id: serial("id").primaryKey(),
         order: integer("order").notNull(),
         parent: integer("parent_id").notNull(),
-        path: text("path").notNull(),
-        text: text("text"),
+        path: varchar("path").notNull(),
+        text: varchar("text"),
     },
     (columns) => ({
         orderParentIdx: index("products_texts_order_parent_idx").on(
@@ -327,13 +601,13 @@ export const products_texts = sqliteTable(
     })
 );
 
-export const products_rels = sqliteTable(
+export const products_rels = pgTable(
     "products_rels",
     {
-        id: integer("id").primaryKey(),
+        id: serial("id").primaryKey(),
         order: integer("order"),
         parent: integer("parent_id").notNull(),
-        path: text("path").notNull(),
+        path: varchar("path").notNull(),
         collectionsID: integer("collections_id"),
         mediaID: integer("media_id"),
     },
@@ -365,13 +639,13 @@ export const products_rels = sqliteTable(
     })
 );
 
-export const users_roles = sqliteTable(
+export const users_roles = pgTable(
     "users_roles",
     {
         order: integer("order").notNull(),
         parent: integer("parent_id").notNull(),
-        value: text("value", { enum: ["admin", "customer"] }),
-        id: integer("id").primaryKey(),
+        value: enum_users_roles("value"),
+        id: serial("id").primaryKey(),
     },
     (columns) => ({
         orderIdx: index("users_roles_order_idx").on(columns.order),
@@ -384,18 +658,22 @@ export const users_roles = sqliteTable(
     })
 );
 
-export const users_sessions = sqliteTable(
+export const users_sessions = pgTable(
     "users_sessions",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
-        id: text("id").primaryKey(),
-        createdAt: text("created_at").default(
-            sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`
-        ),
-        expiresAt: text("expires_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: varchar("id").primaryKey(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
+        expiresAt: timestamp("expires_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }).notNull(),
     },
     (columns) => ({
         _orderIdx: index("users_sessions_order_idx").on(columns._order),
@@ -410,29 +688,41 @@ export const users_sessions = sqliteTable(
     })
 );
 
-export const users = sqliteTable(
+export const users = pgTable(
     "users",
     {
-        id: integer("id").primaryKey(),
-        firstName: text("first_name"),
-        lastName: text("last_name"),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        email: text("email").notNull(),
-        resetPasswordToken: text("reset_password_token"),
-        resetPasswordExpiration: text("reset_password_expiration").default(
-            sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`
-        ),
-        salt: text("salt"),
-        hash: text("hash"),
+        id: serial("id").primaryKey(),
+        firstName: varchar("first_name"),
+        lastName: varchar("last_name"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        email: varchar("email").notNull(),
+        resetPasswordToken: varchar("reset_password_token"),
+        resetPasswordExpiration: timestamp("reset_password_expiration", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
+        salt: varchar("salt"),
+        hash: varchar("hash"),
         loginAttempts: numeric("login_attempts").default("0"),
-        lockUntil: text("lock_until").default(
-            sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`
-        ),
+        lockUntil: timestamp("lock_until", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
     },
     (columns) => ({
         users_updated_at_idx: index("users_updated_at_idx").on(
@@ -445,36 +735,40 @@ export const users = sqliteTable(
     })
 );
 
-export const campaigns = sqliteTable(
+export const campaigns = pgTable(
     "campaigns",
     {
-        id: integer("id").primaryKey(),
-        name: text("name").notNull(),
-        type: text("type", { enum: ["email", "sms"] })
-            .notNull()
-            .default("email"),
-        status: text("status", {
-            enum: ["draft", "scheduled", "sent", "paused"],
-        }).default("draft"),
-        subject: text("subject"),
+        id: serial("id").primaryKey(),
+        name: varchar("name").notNull(),
+        type: enum_campaigns_type("type").notNull().default("email"),
+        status: enum_campaigns_status("status").default("draft"),
+        subject: varchar("subject"),
         emailTemplate: integer("email_template_id").references(
             () => email_templates.id,
             {
                 onDelete: "set null",
             }
         ),
-        profile_from: text("profile_from"),
-        profile_replyTo: text("profile_reply_to"),
-        templateData: text("template_data", { mode: "json" }),
+        profile_from: varchar("profile_from"),
+        profile_replyTo: varchar("profile_reply_to"),
+        templateData: jsonb("template_data"),
         metrics_sent: numeric("metrics_sent").default("0"),
         metrics_opened: numeric("metrics_opened").default("0"),
         metrics_clicked: numeric("metrics_clicked").default("0"),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         campaigns_email_template_idx: index("campaigns_email_template_idx").on(
@@ -489,13 +783,13 @@ export const campaigns = sqliteTable(
     })
 );
 
-export const campaigns_rels = sqliteTable(
+export const campaigns_rels = pgTable(
     "campaigns_rels",
     {
-        id: integer("id").primaryKey(),
+        id: serial("id").primaryKey(),
         order: integer("order"),
         parent: integer("parent_id").notNull(),
-        path: text("path").notNull(),
+        path: varchar("path").notNull(),
         usersID: integer("users_id"),
     },
     (columns) => ({
@@ -518,21 +812,29 @@ export const campaigns_rels = sqliteTable(
     })
 );
 
-export const media = sqliteTable(
+export const media = pgTable(
     "media",
     {
-        id: integer("id").primaryKey(),
-        alt: text("alt").notNull(),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        url: text("url"),
-        thumbnailURL: text("thumbnail_u_r_l"),
-        filename: text("filename"),
-        mimeType: text("mime_type"),
+        id: serial("id").primaryKey(),
+        alt: varchar("alt").notNull(),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        url: varchar("url"),
+        thumbnailURL: varchar("thumbnail_u_r_l"),
+        filename: varchar("filename"),
+        mimeType: varchar("mime_type"),
         filesize: numeric("filesize"),
         width: numeric("width"),
         height: numeric("height"),
@@ -552,19 +854,27 @@ export const media = sqliteTable(
     })
 );
 
-export const policies = sqliteTable(
+export const policies = pgTable(
     "policies",
     {
-        id: integer("id").primaryKey(),
-        title: text("title").notNull(),
-        description: text("description"),
-        handle: text("handle"),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: serial("id").primaryKey(),
+        title: varchar("title").notNull(),
+        description: varchar("description"),
+        handle: varchar("handle"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         policies_handle_idx: index("policies_handle_idx").on(columns.handle),
@@ -577,24 +887,34 @@ export const policies = sqliteTable(
     })
 );
 
-export const gift_cards = sqliteTable(
+export const gift_cards = pgTable(
     "gift_cards",
     {
-        id: integer("id").primaryKey(),
-        code: text("code").notNull(),
+        id: serial("id").primaryKey(),
+        code: varchar("code").notNull(),
         value: numeric("value").notNull(),
         customer: integer("customer_id").references(() => users.id, {
             onDelete: "set null",
         }),
-        expiryDate: text("expiry_date").default(
-            sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`
-        ),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        expiryDate: timestamp("expiry_date", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         gift_cards_customer_idx: index("gift_cards_customer_idx").on(
@@ -609,16 +929,16 @@ export const gift_cards = sqliteTable(
     })
 );
 
-export const themes_blocks_builder_io = sqliteTable(
+export const themes_blocks_builder_io = pgTable(
     "themes_blocks_builder_io",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
         _path: text("_path").notNull(),
-        id: text("id").primaryKey(),
-        builderIoPublicKey: text("builder_io_public_key").notNull(),
-        builderIoPrivateKey: text("builder_io_private_key").notNull(),
-        blockName: text("block_name"),
+        id: varchar("id").primaryKey(),
+        builderIoPublicKey: varchar("builder_io_public_key").notNull(),
+        builderIoPrivateKey: varchar("builder_io_private_key").notNull(),
+        blockName: varchar("block_name"),
     },
     (columns) => ({
         _orderIdx: index("themes_blocks_builder_io_order_idx").on(
@@ -636,14 +956,14 @@ export const themes_blocks_builder_io = sqliteTable(
     })
 );
 
-export const themes_blocks_custom_storefront_block = sqliteTable(
+export const themes_blocks_custom_storefront_block = pgTable(
     "themes_blocks_custom_storefront_block",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
         _path: text("_path").notNull(),
-        id: text("id").primaryKey(),
-        blockName: text("block_name"),
+        id: varchar("id").primaryKey(),
+        blockName: varchar("block_name"),
     },
     (columns) => ({
         _orderIdx: index("themes_blocks_custom_storefront_block_order_idx").on(
@@ -663,17 +983,25 @@ export const themes_blocks_custom_storefront_block = sqliteTable(
     })
 );
 
-export const themes = sqliteTable(
+export const themes = pgTable(
     "themes",
     {
-        id: integer("id").primaryKey(),
-        title: text("title").default("Themes"),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: serial("id").primaryKey(),
+        title: varchar("title").default("Themes"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         themes_updated_at_idx: index("themes_updated_at_idx").on(
@@ -685,14 +1013,14 @@ export const themes = sqliteTable(
     })
 );
 
-export const themes_texts = sqliteTable(
+export const themes_texts = pgTable(
     "themes_texts",
     {
-        id: integer("id").primaryKey(),
+        id: serial("id").primaryKey(),
         order: integer("order").notNull(),
         parent: integer("parent_id").notNull(),
-        path: text("path").notNull(),
-        text: text("text"),
+        path: varchar("path").notNull(),
+        text: varchar("text"),
     },
     (columns) => ({
         orderParentIdx: index("themes_texts_order_parent_idx").on(
@@ -707,13 +1035,13 @@ export const themes_texts = sqliteTable(
     })
 );
 
-export const carts_cart_items = sqliteTable(
+export const carts_cart_items = pgTable(
     "carts_cart_items",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
-        id: text("id").primaryKey(),
-        variantId: text("variant_id").notNull(),
+        id: varchar("id").primaryKey(),
+        variantId: varchar("variant_id").notNull(),
         product: integer("product_id")
             .notNull()
             .references(() => products.id, {
@@ -737,21 +1065,29 @@ export const carts_cart_items = sqliteTable(
     })
 );
 
-export const carts = sqliteTable(
+export const carts = pgTable(
     "carts",
     {
-        id: integer("id").primaryKey(),
-        sessionId: text("session_id"),
+        id: serial("id").primaryKey(),
+        sessionId: varchar("session_id"),
         customer: integer("customer_id").references(() => users.id, {
             onDelete: "set null",
         }),
-        completed: integer("completed", { mode: "boolean" }).default(false),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        completed: boolean("completed").default(false),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         carts_customer_idx: index("carts_customer_idx").on(columns.customer),
@@ -764,24 +1100,24 @@ export const carts = sqliteTable(
     })
 );
 
-export const hero_page_blocks_hero = sqliteTable(
+export const hero_page_blocks_hero = pgTable(
     "hero_page_blocks_hero",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
         _path: text("_path").notNull(),
-        id: text("id").primaryKey(),
-        title: text("title").notNull(),
-        subtitle: text("subtitle"),
-        ctaButtonText: text("cta_button_text"),
-        ctaButtonLink: text("cta_button_link"),
+        id: varchar("id").primaryKey(),
+        title: varchar("title").notNull(),
+        subtitle: varchar("subtitle"),
+        ctaButtonText: varchar("cta_button_text"),
+        ctaButtonLink: varchar("cta_button_link"),
         backgroundImage: integer("background_image_id").references(
             () => media.id,
             {
                 onDelete: "set null",
             }
         ),
-        blockName: text("block_name"),
+        blockName: varchar("block_name"),
     },
     (columns) => ({
         _orderIdx: index("hero_page_blocks_hero_order_idx").on(columns._order),
@@ -800,22 +1136,22 @@ export const hero_page_blocks_hero = sqliteTable(
     })
 );
 
-export const hero_page_blocks_carousel = sqliteTable(
+export const hero_page_blocks_carousel = pgTable(
     "hero_page_blocks_carousel",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
         _path: text("_path").notNull(),
-        id: text("id").primaryKey(),
-        title: text("title").notNull(),
-        subtitle: text("subtitle"),
+        id: varchar("id").primaryKey(),
+        title: varchar("title").notNull(),
+        subtitle: varchar("subtitle"),
         backgroundImage: integer("background_image_id").references(
             () => media.id,
             {
                 onDelete: "set null",
             }
         ),
-        blockName: text("block_name"),
+        blockName: varchar("block_name"),
     },
     (columns) => ({
         _orderIdx: index("hero_page_blocks_carousel_order_idx").on(
@@ -836,16 +1172,24 @@ export const hero_page_blocks_carousel = sqliteTable(
     })
 );
 
-export const hero_page = sqliteTable(
+export const hero_page = pgTable(
     "hero_page",
     {
-        id: integer("id").primaryKey(),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: serial("id").primaryKey(),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         hero_page_updated_at_idx: index("hero_page_updated_at_idx").on(
@@ -857,13 +1201,13 @@ export const hero_page = sqliteTable(
     })
 );
 
-export const hero_page_rels = sqliteTable(
+export const hero_page_rels = pgTable(
     "hero_page_rels",
     {
-        id: integer("id").primaryKey(),
+        id: serial("id").primaryKey(),
         order: integer("order"),
         parent: integer("parent_id").notNull(),
-        path: text("path").notNull(),
+        path: varchar("path").notNull(),
         mediaID: integer("media_id"),
     },
     (columns) => ({
@@ -886,15 +1230,15 @@ export const hero_page_rels = sqliteTable(
     })
 );
 
-export const footer_page_blocks_basic_footer = sqliteTable(
+export const footer_page_blocks_basic_footer = pgTable(
     "footer_page_blocks_basic_footer",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
         _path: text("_path").notNull(),
-        id: text("id").primaryKey(),
-        copyright: text("copyright", { mode: "json" }).notNull(),
-        blockName: text("block_name"),
+        id: varchar("id").primaryKey(),
+        copyright: jsonb("copyright").notNull(),
+        blockName: varchar("block_name"),
     },
     (columns) => ({
         _orderIdx: index("footer_page_blocks_basic_footer_order_idx").on(
@@ -914,16 +1258,24 @@ export const footer_page_blocks_basic_footer = sqliteTable(
     })
 );
 
-export const footer_page = sqliteTable(
+export const footer_page = pgTable(
     "footer_page",
     {
-        id: integer("id").primaryKey(),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: serial("id").primaryKey(),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         footer_page_updated_at_idx: index("footer_page_updated_at_idx").on(
@@ -935,24 +1287,32 @@ export const footer_page = sqliteTable(
     })
 );
 
-export const plugins = sqliteTable(
+export const plugins = pgTable(
     "plugins",
     {
-        id: integer("id").primaryKey(),
-        name: text("name"),
-        description: text("description"),
-        enabled: integer("enabled", { mode: "boolean" }),
-        pluginId: text("plugin_id"),
-        svgIcon: text("svg_icon"),
-        category: text("category"),
-        author: text("author"),
-        license: text("license"),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: serial("id").primaryKey(),
+        name: varchar("name"),
+        description: varchar("description"),
+        enabled: boolean("enabled"),
+        pluginId: varchar("plugin_id"),
+        svgIcon: varchar("svg_icon"),
+        category: varchar("category"),
+        author: varchar("author"),
+        license: varchar("license"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         plugins_updated_at_idx: index("plugins_updated_at_idx").on(
@@ -964,14 +1324,14 @@ export const plugins = sqliteTable(
     })
 );
 
-export const payments_blocks_manual_details = sqliteTable(
+export const payments_blocks_manual_details = pgTable(
     "payments_blocks_manual_details",
     {
         _order: integer("_order").notNull(),
-        _parentID: text("_parent_id").notNull(),
-        id: text("id").primaryKey(),
-        label: text("label"),
-        value: text("value"),
+        _parentID: varchar("_parent_id").notNull(),
+        id: varchar("id").primaryKey(),
+        label: varchar("label"),
+        value: varchar("value"),
     },
     (columns) => ({
         _orderIdx: index("payments_blocks_manual_details_order_idx").on(
@@ -988,18 +1348,17 @@ export const payments_blocks_manual_details = sqliteTable(
     })
 );
 
-export const payments_blocks_manual = sqliteTable(
+export const payments_blocks_manual = pgTable(
     "payments_blocks_manual",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
         _path: text("_path").notNull(),
-        id: text("id").primaryKey(),
-        methodType: text("method_type", {
-            enum: ["cod", "bankTransfer", "inStore", "other"],
-        }).notNull(),
-        instructions: text("instructions").notNull(),
-        blockName: text("block_name"),
+        id: varchar("id").primaryKey(),
+        methodType:
+            enum_payments_blocks_manual_method_type("method_type").notNull(),
+        instructions: varchar("instructions").notNull(),
+        blockName: varchar("block_name"),
     },
     (columns) => ({
         _orderIdx: index("payments_blocks_manual_order_idx").on(columns._order),
@@ -1015,24 +1374,25 @@ export const payments_blocks_manual = sqliteTable(
     })
 );
 
-export const payments_blocks_stripe = sqliteTable(
+export const payments_blocks_stripe = pgTable(
     "payments_blocks_stripe",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
         _path: text("_path").notNull(),
-        id: text("id").primaryKey(),
-        providerName: text("provider_name").notNull().default("Stripe"),
-        testMode: integer("test_mode", { mode: "boolean" }),
-        methodType: text("method_type", {
-            enum: ["card", "ach", "auto"],
-        }).default("auto"),
-        stripeSecretKey: text("stripe_secret_key").notNull(),
-        stripeWebhooksEndpointSecret: text(
+        id: varchar("id").primaryKey(),
+        providerName: varchar("provider_name").notNull().default("Stripe"),
+        testMode: boolean("test_mode"),
+        methodType:
+            enum_payments_blocks_stripe_method_type("method_type").default(
+                "auto"
+            ),
+        stripeSecretKey: varchar("stripe_secret_key").notNull(),
+        stripeWebhooksEndpointSecret: varchar(
             "stripe_webhooks_endpoint_secret"
         ).notNull(),
-        publishableKey: text("publishable_key").notNull(),
-        blockName: text("block_name"),
+        publishableKey: varchar("publishable_key").notNull(),
+        blockName: varchar("block_name"),
     },
     (columns) => ({
         _orderIdx: index("payments_blocks_stripe_order_idx").on(columns._order),
@@ -1048,18 +1408,26 @@ export const payments_blocks_stripe = sqliteTable(
     })
 );
 
-export const payments = sqliteTable(
+export const payments = pgTable(
     "payments",
     {
-        id: integer("id").primaryKey(),
-        name: text("name").notNull(),
-        enabled: integer("enabled", { mode: "boolean" }).default(true),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: serial("id").primaryKey(),
+        name: varchar("name").notNull(),
+        enabled: boolean("enabled").default(true),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         payments_updated_at_idx: index("payments_updated_at_idx").on(
@@ -1071,25 +1439,31 @@ export const payments = sqliteTable(
     })
 );
 
-export const locations = sqliteTable(
+export const locations = pgTable(
     "locations",
     {
-        id: integer("id").primaryKey(),
-        name: text("name").notNull(),
-        address: text("address").notNull(),
-        coordinates: text("coordinates", { mode: "json" }),
-        contactPhone: text("contact_phone"),
-        hours: text("hours"),
-        enabled: integer("enabled", { mode: "boolean" }).default(true),
-        isPickupLocation: integer("is_pickup_location", {
-            mode: "boolean",
-        }).default(false),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: serial("id").primaryKey(),
+        name: varchar("name").notNull(),
+        address: varchar("address").notNull(),
+        coordinates: geometryColumn("coordinates"),
+        contactPhone: varchar("contact_phone"),
+        hours: varchar("hours"),
+        enabled: boolean("enabled").default(true),
+        isPickupLocation: boolean("is_pickup_location").default(false),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         locations_updated_at_idx: index("locations_updated_at_idx").on(
@@ -1101,18 +1475,18 @@ export const locations = sqliteTable(
     })
 );
 
-export const shipping_blocks_custom_shipping = sqliteTable(
+export const shipping_blocks_custom_shipping = pgTable(
     "shipping_blocks_custom_shipping",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
         _path: text("_path").notNull(),
-        id: text("id").primaryKey(),
+        id: varchar("id").primaryKey(),
         baseRate: numeric("base_rate").notNull(),
         freeShippingMinOrder: numeric("free_shipping_min_order"),
-        estimatedDeliveryDays: text("estimated_delivery_days"),
-        notes: text("notes"),
-        blockName: text("block_name"),
+        estimatedDeliveryDays: varchar("estimated_delivery_days"),
+        notes: varchar("notes"),
+        blockName: varchar("block_name"),
     },
     (columns) => ({
         _orderIdx: index("shipping_blocks_custom_shipping_order_idx").on(
@@ -1132,21 +1506,29 @@ export const shipping_blocks_custom_shipping = sqliteTable(
     })
 );
 
-export const shipping = sqliteTable(
+export const shipping = pgTable(
     "shipping",
     {
-        id: integer("id").primaryKey(),
-        name: text("name").notNull(),
-        enabled: integer("enabled", { mode: "boolean" }).default(true),
+        id: serial("id").primaryKey(),
+        name: varchar("name").notNull(),
+        enabled: boolean("enabled").default(true),
         location: integer("location_id").references(() => locations.id, {
             onDelete: "set null",
         }),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         shipping_location_idx: index("shipping_location_idx").on(
@@ -1161,11 +1543,11 @@ export const shipping = sqliteTable(
     })
 );
 
-export const checkout_sessions = sqliteTable(
+export const checkout_sessions = pgTable(
     "checkout_sessions",
     {
-        id: integer("id").primaryKey(),
-        sessionId: text("session_id"),
+        id: serial("id").primaryKey(),
+        sessionId: varchar("session_id"),
         customer: integer("customer_id").references(() => users.id, {
             onDelete: "set null",
         }),
@@ -1180,14 +1562,22 @@ export const checkout_sessions = sqliteTable(
         payment: integer("payment_id").references(() => payments.id, {
             onDelete: "set null",
         }),
-        shippingAddress: text("shipping_address", { mode: "json" }),
-        billingAddress: text("billing_address", { mode: "json" }),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        shippingAddress: jsonb("shipping_address"),
+        billingAddress: jsonb("billing_address"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         checkout_sessions_customer_idx: index(
@@ -1211,13 +1601,13 @@ export const checkout_sessions = sqliteTable(
     })
 );
 
-export const cj_settings_items = sqliteTable(
+export const cj_settings_items = pgTable(
     "cj_settings_items",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
-        id: text("id").primaryKey(),
-        productUrl: text("product_url"),
+        id: varchar("id").primaryKey(),
+        productUrl: varchar("product_url"),
     },
     (columns) => ({
         _orderIdx: index("cj_settings_items_order_idx").on(columns._order),
@@ -1232,29 +1622,41 @@ export const cj_settings_items = sqliteTable(
     })
 );
 
-export const cj_settings = sqliteTable(
+export const cj_settings = pgTable(
     "cj_settings",
     {
-        id: integer("id").primaryKey(),
-        emailAddress: text("email_address"),
-        apiToken: text("api_token"),
-        refreshToken: text("refresh_token"),
-        refreshTokenExpiry: text("refresh_token_expiry").default(
-            sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`
-        ),
-        accessToken: text("access_token"),
-        accessTokenExpiry: text("access_token_expiry").default(
-            sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`
-        ),
+        id: serial("id").primaryKey(),
+        emailAddress: varchar("email_address"),
+        apiToken: varchar("api_token"),
+        refreshToken: varchar("refresh_token"),
+        refreshTokenExpiry: timestamp("refresh_token_expiry", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
+        accessToken: varchar("access_token"),
+        accessTokenExpiry: timestamp("access_token_expiry", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
         pod: integer("pod_id").references(() => media.id, {
             onDelete: "set null",
         }),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         cj_settings_pod_idx: index("cj_settings_pod_idx").on(columns.pod),
@@ -1267,29 +1669,35 @@ export const cj_settings = sqliteTable(
     })
 );
 
-export const exports = sqliteTable(
+export const exports = pgTable(
     "exports",
     {
-        id: integer("id").primaryKey(),
-        name: text("name"),
-        format: text("format", { enum: ["csv", "json"] })
-            .notNull()
-            .default("csv"),
+        id: serial("id").primaryKey(),
+        name: varchar("name"),
+        format: enum_exports_format("format").notNull().default("csv"),
         limit: numeric("limit"),
-        sort: text("sort"),
-        drafts: text("drafts", { enum: ["yes", "no"] }).default("yes"),
-        collectionSlug: text("collection_slug").notNull(),
-        where: text("where", { mode: "json" }).default("{}"),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        url: text("url"),
-        thumbnailURL: text("thumbnail_u_r_l"),
-        filename: text("filename"),
-        mimeType: text("mime_type"),
+        sort: varchar("sort"),
+        drafts: enum_exports_drafts("drafts").default("yes"),
+        collectionSlug: varchar("collection_slug").notNull(),
+        where: jsonb("where").default(sql`'{}'::jsonb`),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        url: varchar("url"),
+        thumbnailURL: varchar("thumbnail_u_r_l"),
+        filename: varchar("filename"),
+        mimeType: varchar("mime_type"),
         filesize: numeric("filesize"),
         width: numeric("width"),
         height: numeric("height"),
@@ -1309,14 +1717,14 @@ export const exports = sqliteTable(
     })
 );
 
-export const exports_texts = sqliteTable(
+export const exports_texts = pgTable(
     "exports_texts",
     {
-        id: integer("id").primaryKey(),
+        id: serial("id").primaryKey(),
         order: integer("order").notNull(),
         parent: integer("parent_id").notNull(),
-        path: text("path").notNull(),
-        text: text("text"),
+        path: varchar("path").notNull(),
+        text: varchar("text"),
     },
     (columns) => ({
         orderParentIdx: index("exports_texts_order_parent_idx").on(
@@ -1331,19 +1739,27 @@ export const exports_texts = sqliteTable(
     })
 );
 
-export const email_templates = sqliteTable(
+export const email_templates = pgTable(
     "email_templates",
     {
-        id: integer("id").primaryKey(),
-        name: text("name"),
-        html: text("html"),
-        json: text("json", { mode: "json" }),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: serial("id").primaryKey(),
+        name: varchar("name"),
+        html: varchar("html"),
+        json: jsonb("json"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         email_templates_updated_at_idx: index(
@@ -1355,26 +1771,28 @@ export const email_templates = sqliteTable(
     })
 );
 
-export const payload_jobs_log = sqliteTable(
+export const payload_jobs_log = pgTable(
     "payload_jobs_log",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
-        id: text("id").primaryKey(),
-        executedAt: text("executed_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        completedAt: text("completed_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        taskSlug: text("task_slug", {
-            enum: ["inline", "createCollectionExport"],
+        id: varchar("id").primaryKey(),
+        executedAt: timestamp("executed_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
         }).notNull(),
-        taskID: text("task_i_d").notNull(),
-        input: text("input", { mode: "json" }),
-        output: text("output", { mode: "json" }),
-        state: text("state", { enum: ["failed", "succeeded"] }).notNull(),
-        error: text("error", { mode: "json" }),
+        completedAt: timestamp("completed_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }).notNull(),
+        taskSlug: enum_payload_jobs_log_task_slug("task_slug").notNull(),
+        taskID: varchar("task_i_d").notNull(),
+        input: jsonb("input"),
+        output: jsonb("output"),
+        state: enum_payload_jobs_log_state("state").notNull(),
+        error: jsonb("error"),
     },
     (columns) => ({
         _orderIdx: index("payload_jobs_log_order_idx").on(columns._order),
@@ -1389,31 +1807,41 @@ export const payload_jobs_log = sqliteTable(
     })
 );
 
-export const payload_jobs = sqliteTable(
+export const payload_jobs = pgTable(
     "payload_jobs",
     {
-        id: integer("id").primaryKey(),
-        input: text("input", { mode: "json" }),
-        completedAt: text("completed_at").default(
-            sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`
-        ),
-        totalTried: numeric("total_tried").default("0"),
-        hasError: integer("has_error", { mode: "boolean" }).default(false),
-        error: text("error", { mode: "json" }),
-        taskSlug: text("task_slug", {
-            enum: ["inline", "createCollectionExport"],
+        id: serial("id").primaryKey(),
+        input: jsonb("input"),
+        completedAt: timestamp("completed_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
         }),
-        queue: text("queue").default("default"),
-        waitUntil: text("wait_until").default(
-            sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`
-        ),
-        processing: integer("processing", { mode: "boolean" }).default(false),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        totalTried: numeric("total_tried").default("0"),
+        hasError: boolean("has_error").default(false),
+        error: jsonb("error"),
+        taskSlug: enum_payload_jobs_task_slug("task_slug"),
+        queue: varchar("queue").default("default"),
+        waitUntil: timestamp("wait_until", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
+        processing: boolean("processing").default(false),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         payload_jobs_completed_at_idx: index(
@@ -1446,17 +1874,25 @@ export const payload_jobs = sqliteTable(
     })
 );
 
-export const payload_locked_documents = sqliteTable(
+export const payload_locked_documents = pgTable(
     "payload_locked_documents",
     {
-        id: integer("id").primaryKey(),
-        globalSlug: text("global_slug"),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: serial("id").primaryKey(),
+        globalSlug: varchar("global_slug"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         payload_locked_documents_global_slug_idx: index(
@@ -1471,13 +1907,13 @@ export const payload_locked_documents = sqliteTable(
     })
 );
 
-export const payload_locked_documents_rels = sqliteTable(
+export const payload_locked_documents_rels = pgTable(
     "payload_locked_documents_rels",
     {
-        id: integer("id").primaryKey(),
+        id: serial("id").primaryKey(),
         order: integer("order"),
         parent: integer("parent_id").notNull(),
-        path: text("path").notNull(),
+        path: varchar("path").notNull(),
         ordersID: integer("orders_id"),
         collectionsID: integer("collections_id"),
         productsID: integer("products_id"),
@@ -1686,18 +2122,26 @@ export const payload_locked_documents_rels = sqliteTable(
     })
 );
 
-export const payload_preferences = sqliteTable(
+export const payload_preferences = pgTable(
     "payload_preferences",
     {
-        id: integer("id").primaryKey(),
-        key: text("key"),
-        value: text("value", { mode: "json" }),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: serial("id").primaryKey(),
+        key: varchar("key"),
+        value: jsonb("value"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         payload_preferences_key_idx: index("payload_preferences_key_idx").on(
@@ -1712,13 +2156,13 @@ export const payload_preferences = sqliteTable(
     })
 );
 
-export const payload_preferences_rels = sqliteTable(
+export const payload_preferences_rels = pgTable(
     "payload_preferences_rels",
     {
-        id: integer("id").primaryKey(),
+        id: serial("id").primaryKey(),
         order: integer("order"),
         parent: integer("parent_id").notNull(),
-        path: text("path").notNull(),
+        path: varchar("path").notNull(),
         usersID: integer("users_id"),
     },
     (columns) => ({
@@ -1743,18 +2187,26 @@ export const payload_preferences_rels = sqliteTable(
     })
 );
 
-export const payload_migrations = sqliteTable(
+export const payload_migrations = pgTable(
     "payload_migrations",
     {
-        id: integer("id").primaryKey(),
-        name: text("name"),
+        id: serial("id").primaryKey(),
+        name: varchar("name"),
         batch: numeric("batch"),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
     },
     (columns) => ({
         payload_migrations_updated_at_idx: index(
@@ -1766,198 +2218,20 @@ export const payload_migrations = sqliteTable(
     })
 );
 
-export const store_settings = sqliteTable("store_settings", {
-    id: integer("id").primaryKey(),
-    name: text("name").default("Vya-dove"),
-    currency: text("currency", {
-        enum: [
-            "AED",
-            "AFN",
-            "ALL",
-            "AMD",
-            "ANG",
-            "AOA",
-            "ARS",
-            "AUD",
-            "AWG",
-            "AZN",
-            "BAM",
-            "BBD",
-            "BDT",
-            "BGN",
-            "BHD",
-            "BIF",
-            "BMD",
-            "BND",
-            "BOB",
-            "BOV",
-            "BRL",
-            "BSD",
-            "BTN",
-            "BWP",
-            "BYN",
-            "BZD",
-            "CAD",
-            "CDF",
-            "CHE",
-            "CHF",
-            "CHW",
-            "CLF",
-            "CLP",
-            "CNY",
-            "COP",
-            "COU",
-            "CRC",
-            "CUC",
-            "CUP",
-            "CVE",
-            "CZK",
-            "DJF",
-            "DKK",
-            "DOP",
-            "DZD",
-            "EGP",
-            "ERN",
-            "ETB",
-            "EUR",
-            "FJD",
-            "FKP",
-            "GBP",
-            "GEL",
-            "GHS",
-            "GIP",
-            "GMD",
-            "GNF",
-            "GTQ",
-            "GYD",
-            "HKD",
-            "HNL",
-            "HTG",
-            "HUF",
-            "IDR",
-            "ILS",
-            "INR",
-            "IQD",
-            "IRR",
-            "ISK",
-            "JMD",
-            "JOD",
-            "JPY",
-            "KES",
-            "KGS",
-            "KHR",
-            "KMF",
-            "KPW",
-            "KRW",
-            "KWD",
-            "KYD",
-            "KZT",
-            "LAK",
-            "LBP",
-            "LKR",
-            "LRD",
-            "LSL",
-            "LYD",
-            "MAD",
-            "MDL",
-            "MGA",
-            "MKD",
-            "MMK",
-            "MNT",
-            "MOP",
-            "MRU",
-            "MUR",
-            "MVR",
-            "MWK",
-            "MXN",
-            "MXV",
-            "MYR",
-            "MZN",
-            "NAD",
-            "NGN",
-            "NIO",
-            "NOK",
-            "NPR",
-            "NZD",
-            "OMR",
-            "PAB",
-            "PEN",
-            "PGK",
-            "PHP",
-            "PKR",
-            "PLN",
-            "PYG",
-            "QAR",
-            "RON",
-            "RSD",
-            "RUB",
-            "RWF",
-            "SAR",
-            "SBD",
-            "SCR",
-            "SDG",
-            "SEK",
-            "SGD",
-            "SHP",
-            "SLE",
-            "SOS",
-            "SRD",
-            "SSP",
-            "STN",
-            "SVC",
-            "SYP",
-            "SZL",
-            "THB",
-            "TJS",
-            "TMT",
-            "TND",
-            "TOP",
-            "TRY",
-            "TTD",
-            "TWD",
-            "TZS",
-            "UAH",
-            "UGX",
-            "USD",
-            "USN",
-            "UYI",
-            "UYU",
-            "UYW",
-            "UZS",
-            "VED",
-            "VES",
-            "VND",
-            "VUV",
-            "WST",
-            "XAF",
-            "XAG",
-            "XAU",
-            "XBA",
-            "XBB",
-            "XBC",
-            "XBD",
-            "XCD",
-            "XDR",
-            "XOF",
-            "XPD",
-            "XPF",
-            "XPT",
-            "XSU",
-            "XTS",
-            "XUA",
-            "XXX",
-            "YER",
-            "ZAR",
-            "ZMW",
-            "ZWG",
-        ],
-    }).default("USD"),
-    updatedAt: text("updated_at").default(
-        sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`
-    ),
-    createdAt: text("created_at").default(
-        sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`
-    ),
+export const store_settings = pgTable("store_settings", {
+    id: serial("id").primaryKey(),
+    name: varchar("name").default("Vya-dove"),
+    currency: enum_store_settings_currency("currency").default("USD"),
+    updatedAt: timestamp("updated_at", {
+        mode: "string",
+        withTimezone: true,
+        precision: 3,
+    }),
+    createdAt: timestamp("created_at", {
+        mode: "string",
+        withTimezone: true,
+        precision: 3,
+    }),
 });
 
 export const relations_orders_timeline = relations(
@@ -2589,6 +2863,23 @@ export const relations_payload_migrations = relations(
 export const relations_store_settings = relations(store_settings, () => ({}));
 
 type DatabaseSchema = {
+    enum_orders_timeline_type: typeof enum_orders_timeline_type;
+    enum_orders_source: typeof enum_orders_source;
+    enum_orders_payment_status: typeof enum_orders_payment_status;
+    enum_orders_order_status: typeof enum_orders_order_status;
+    enum_products_sales_channels: typeof enum_products_sales_channels;
+    enum_products_source: typeof enum_products_source;
+    enum_users_roles: typeof enum_users_roles;
+    enum_campaigns_type: typeof enum_campaigns_type;
+    enum_campaigns_status: typeof enum_campaigns_status;
+    enum_payments_blocks_manual_method_type: typeof enum_payments_blocks_manual_method_type;
+    enum_payments_blocks_stripe_method_type: typeof enum_payments_blocks_stripe_method_type;
+    enum_exports_format: typeof enum_exports_format;
+    enum_exports_drafts: typeof enum_exports_drafts;
+    enum_payload_jobs_log_task_slug: typeof enum_payload_jobs_log_task_slug;
+    enum_payload_jobs_log_state: typeof enum_payload_jobs_log_state;
+    enum_payload_jobs_task_slug: typeof enum_payload_jobs_task_slug;
+    enum_store_settings_currency: typeof enum_store_settings_currency;
     orders_timeline: typeof orders_timeline;
     orders: typeof orders;
     collections: typeof collections;
@@ -2697,7 +2988,7 @@ type DatabaseSchema = {
     relations_store_settings: typeof relations_store_settings;
 };
 
-declare module "@payloadcms/db-sqlite" {
+declare module "@payloadcms/db-postgres" {
     export interface GeneratedDatabaseSchema {
         schema: DatabaseSchema;
     }
