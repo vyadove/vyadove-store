@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
 		remotePatterns: [
 			{ hostname: "files.stripe.com" },
 			{ hostname: "localhost" },
+			{ hostname: "admin.vyadove.com" },
 			{ hostname: "images.unsplash.com" },
 			{ hostname: "plus.unsplash.com" },
 			{ hostname: "d1wqzb5bdbcre6.cloudfront.net" },
