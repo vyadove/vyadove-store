@@ -1,6 +1,7 @@
 import { sqliteAdapter } from "@payloadcms/db-sqlite";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import path from "node:path";
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from "node:url";
 import { buildConfig } from "payload";
 import sharp from "sharp";
@@ -25,11 +26,13 @@ import { FooterPage } from "./collections/pages/Footer";
 import { Campaigns } from "./collections/Campaigns/Campaigns";
 import { Plugins } from "./collections/Plugins/Plugins";
 import { syncPlugin } from "./collections/Plugins/utils/sync-plugin";
-
 import { postgresAdapter } from '@payloadcms/db-postgres';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
+
+// Define the path to your certificate file
+const sslCert = readFileSync(path.resolve(dirname, './certs/supabase-ca.crt'));
 
 export default buildConfig({
     routes: {
@@ -92,7 +95,7 @@ export default buildConfig({
 
         pool: {
             // connectionString: process.env.DATABASE_URI,
-            connectionString: process.env.vyadove_POSTGRES_URL,
+            connectionString: process.env.VYADOVE_POSTGRES_URL,
             ssl: {
                 rejectUnauthorized: false, // Disables SSL certificate verification
             },
