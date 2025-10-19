@@ -14,6 +14,8 @@ import {
     Library
 } from "lucide-react";
 
+import * as LucideIcons from "lucide-react";
+
 const navIconMap = {
     analytics: ChartSpline,
     content: Image,
