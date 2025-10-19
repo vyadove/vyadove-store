@@ -57,3 +57,25 @@ dist
 /.husky/pre-commit
 .husky
 /.husky/*
+
+
+# Node modules
+node_modules/
+
+# Build artifacts and generated files
+dist/
+.next/
+out/
+build/
+coverage/
+
+# Turborepo specific
+.turbo/
+
+# Editor/OS specific files
+.DS_Store
+.env.local
+.vscode/
+
+# Logs
+*.log
