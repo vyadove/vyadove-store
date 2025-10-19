@@ -27,7 +27,8 @@
                 "vyadove_NEXT_PUBLIC_SUPABASE_ANON_KEY",
                 "vyadove_NEXT_PUBLIC_SUPABASE_URL",
                 "vyadove_SUPABASE_SERVICE_ROLE_KEY",
-                "vyadove_POSTGRES_URL_NON_POOLING"
+                "vyadove_POSTGRES_URL_NON_POOLING",
+                "VYADOVE_POSTGRES_URL"
             ]
         },
         "dev": {
