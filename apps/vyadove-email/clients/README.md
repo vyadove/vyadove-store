@@ -34,17 +34,20 @@ clients/
 ## 🏗️ Architecture
 
 ### Component Structure
+
 - **EmailEditor.tsx**: Main application component that orchestrates everything
 - **Components**: Modular, reusable UI components with clear props interfaces
 - **Hooks**: Custom hooks containing business logic, separated from UI concerns
 
 ### Data Flow
+
 1. URL parameters determine template loading strategy
 2. `useEmailEditor` hook manages all state and operations
 3. Components receive data and callbacks via props
 4. Template changes are tracked and saved via PayloadSDK
 
 ### Key Features
+
 - ✅ **Modular Architecture**: Each concern separated into its own file
 - ✅ **Type Safety**: Full TypeScript support with proper interfaces
 - ✅ **Reusable Components**: UI components can be easily reused
@@ -56,54 +59,60 @@ clients/
 ## 🚀 Usage
 
 ### Main Component
+
 ```tsx
-import EmailEditor from './EmailEditor';
+import EmailEditor from "./EmailEditor";
 
 function App() {
-  return <EmailEditor />;
+    return <EmailEditor />;
 }
 ```
 
 ### Using Components Individually
+
 ```tsx
-import { EditorToolbar, TemplateSelectionModal } from './components';
-import { useEmailEditor } from './hooks';
+import { EditorToolbar, TemplateSelectionModal } from "./components";
+import { useEmailEditor } from "./hooks";
 
 function CustomEditor() {
-  const { openTemplateModal, handleTemplateSave } = useEmailEditor();
-  
-  return (
-    <EditorToolbar 
-      onOpenTemplateModal={openTemplateModal}
-      onSaveTemplate={handleTemplateSave}
-      hasUnsavedChanges={true}
-    />
-  );
+    const { openTemplateModal, handleTemplateSave } = useEmailEditor();
+
+    return (
+        <EditorToolbar
+            onOpenTemplateModal={openTemplateModal}
+            onSaveTemplate={handleTemplateSave}
+            hasUnsavedChanges={true}
+        />
+    );
 }
 ```
 
 ### Using Utilities
-```tsx
-import { createPayloadSDK, checkForTemplateChanges } from './utils';
-import { TemplateData } from './types';
 
-const sdk = createPayloadSDK('your-token');
+```tsx
+import { createPayloadSDK, checkForTemplateChanges } from "./utils";
+import { TemplateData } from "./types";
+
+const sdk = createPayloadSDK("your-token");
 const hasChanges = checkForTemplateChanges(current, initial);
 ```
 
 ## 🛠️ Development
 
 ### Adding New Templates
+
 1. Add template JSON file to `data/` directory
 2. Import in `constants/index.ts`
 3. Add to `AVAILABLE_TEMPLATES` array
 
 ### Adding New Components
+
 1. Create component file in `components/`
 2. Define props interface in `types/index.ts`
 3. Export from `components/index.ts`
 
 ### Adding Utilities
+
 1. Create utility file in `utils/`
 2. Export functions from the file
 3. Re-export from `utils/index.ts`
@@ -112,7 +121,7 @@ const hasChanges = checkForTemplateChanges(current, initial);
 
 - **easy-email-core**: Email template core functionality
 - **easy-email-editor**: Email editor components
-- **easy-email-extensions**: Additional editor extensions  
+- **easy-email-extensions**: Additional editor extensions
 - **@arco-design/web-react**: UI component library
 - **@shopnex/payload-sdk**: Backend API integration
 - **react-use**: React utility hooks

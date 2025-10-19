@@ -25,7 +25,11 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+    background: linear-gradient(
+        135deg,
+        rgba(102, 126, 234, 0.8) 0%,
+        rgba(118, 75, 162, 0.8) 100%
+    );
     z-index: 2;
 }
 
@@ -118,7 +122,7 @@
     background-color: #0056b3;
     border-color: #0056b3;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btnWhite {
@@ -131,7 +135,7 @@
     background-color: white;
     color: #667eea;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .me4 {
@@ -156,7 +160,7 @@
     .heading {
         font-size: 3rem;
     }
-    
+
     .heading + h3 {
         font-size: 1.25rem;
         margin-bottom: 2rem;
@@ -167,33 +171,33 @@
     .hero3 {
         min-height: 80vh;
     }
-    
+
     .container {
         padding: 0 15px;
     }
-    
+
     .heading {
         font-size: 2.5rem;
         margin-bottom: 1rem;
     }
-    
+
     .heading + h3 {
         font-size: 1.1rem;
         margin-bottom: 1.5rem;
     }
-    
+
     .buttons {
         flex-direction: column;
         gap: 0.75rem;
     }
-    
+
     .btn {
         width: 100%;
         max-width: 280px;
         padding: 14px 24px;
         font-size: 1rem;
     }
-    
+
     .me4 {
         margin-right: 0;
     }
@@ -203,11 +207,11 @@
     .hero3 {
         min-height: 70vh;
     }
-    
+
     .heading {
         font-size: 2rem;
     }
-    
+
     .heading + h3 {
         font-size: 1rem;
     }

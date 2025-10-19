@@ -79,30 +79,30 @@
         padding: 16px 0;
         font-size: 13px;
     }
-    
+
     .container {
         padding: 0 16px;
     }
-    
+
     .footerContent {
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
     }
-    
+
     .rightSection {
         width: 100%;
         justify-content: flex-start;
     }
-    
+
     .links {
         gap: 6px;
     }
-    
+
     .separator {
         margin: 0 2px;
     }
-    
+
     .copyrightAndPowered {
         gap: 6px;
     }
@@ -113,25 +113,25 @@
         padding: 12px 0;
         font-size: 12px;
     }
-    
+
     .container {
         padding: 0 12px;
     }
-    
+
     .footerContent {
         gap: 8px;
     }
-    
+
     .links {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
     }
-    
+
     .separator {
         display: none;
     }
-    
+
     .copyrightAndPowered {
         flex-direction: column;
         align-items: flex-start;

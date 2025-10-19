@@ -1,4 +1,4 @@
-import { defaultFiles } from './defaults'
+import { defaultFiles } from "./defaults";
 
 const AppJs = `import { TourProvider } from '@reactour/tour'
 import { steps } from './steps.js'
@@ -20,11 +20,11 @@ export default function App () {
     </TourProvider>
   )
 }
-`
+`;
 
 export const maskClickFiles = {
-  ...defaultFiles,
-  '/App.js': {
-    code: AppJs,
-  },
-}
+    ...defaultFiles,
+    "/App.js": {
+        code: AppJs,
+    },
+};

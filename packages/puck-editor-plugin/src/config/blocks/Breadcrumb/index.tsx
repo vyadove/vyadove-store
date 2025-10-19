@@ -78,7 +78,14 @@ export const Breadcrumb: ComponentConfig<BreadcrumbProps> = {
         showSeparator: true,
         separatorIcon: "/",
     },
-    render: ({ items, textSize, textColor, showSeparator, separatorIcon, puck }) => {
+    render: ({
+        items,
+        textSize,
+        textColor,
+        showSeparator,
+        separatorIcon,
+        puck,
+    }) => {
         const getSizeClass = (size: string) => {
             const sizeMap = {
                 small: styles.textSmall,
@@ -89,47 +96,55 @@ export const Breadcrumb: ComponentConfig<BreadcrumbProps> = {
         };
 
         return (
-            <nav 
+            <nav
                 aria-label="breadcrumb"
                 className={`${styles.breadcrumbNav} ${getSizeClass(textSize)}`}
                 style={{ color: textColor }}
             >
                 <ol className={styles.breadcrumb}>
-                    {items && items.length > 0 && items.map((item, index) => {
-                        const isLast = index === items.length - 1;
-                        const isActive = item.isActive || isLast;
-                        
-                        return (
-                            <li 
-                                key={index}
-                                className={`${styles.breadcrumbItem} ${isActive ? styles.active : ''}`}
-                                {...(isActive ? { 'aria-current': 'page' } : {})}
-                            >
-                                {item.url && !isActive ? (
-                                    <a 
-                                        href={puck?.isEditing ? "#" : item.url}
-                                        className={styles.breadcrumbLink}
-                                        tabIndex={puck?.isEditing ? -1 : undefined}
-                                    >
-                                        {item.text}
-                                    </a>
-                                ) : (
-                                    <span className={styles.breadcrumbText}>
-                                        {item.text}
-                                    </span>
-                                )}
-                                
-                                {!isLast && showSeparator && (
-                                    <span 
-                                        className={styles.separator}
-                                        aria-hidden="true"
-                                    >
-                                        {separatorIcon}
-                                    </span>
-                                )}
-                            </li>
-                        );
-                    })}
+                    {items &&
+                        items.length > 0 &&
+                        items.map((item, index) => {
+                            const isLast = index === items.length - 1;
+                            const isActive = item.isActive || isLast;
+
+                            return (
+                                <li
+                                    key={index}
+                                    className={`${styles.breadcrumbItem} ${isActive ? styles.active : ""}`}
+                                    {...(isActive
+                                        ? { "aria-current": "page" }
+                                        : {})}
+                                >
+                                    {item.url && !isActive ? (
+                                        <a
+                                            href={
+                                                puck?.isEditing ? "#" : item.url
+                                            }
+                                            className={styles.breadcrumbLink}
+                                            tabIndex={
+                                                puck?.isEditing ? -1 : undefined
+                                            }
+                                        >
+                                            {item.text}
+                                        </a>
+                                    ) : (
+                                        <span className={styles.breadcrumbText}>
+                                            {item.text}
+                                        </span>
+                                    )}
+
+                                    {!isLast && showSeparator && (
+                                        <span
+                                            className={styles.separator}
+                                            aria-hidden="true"
+                                        >
+                                            {separatorIcon}
+                                        </span>
+                                    )}
+                                </li>
+                            );
+                        })}
                 </ol>
             </nav>
         );

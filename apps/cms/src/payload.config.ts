@@ -25,7 +25,7 @@ import { FooterPage } from "./collections/pages/Footer";
 import { Campaigns } from "./collections/Campaigns/Campaigns";
 import { Plugins } from "./collections/Plugins/Plugins";
 import { syncPlugin } from "./collections/Plugins/utils/sync-plugin";
-import { postgresAdapter } from '@payloadcms/db-postgres';
+import { postgresAdapter } from "@payloadcms/db-postgres";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);

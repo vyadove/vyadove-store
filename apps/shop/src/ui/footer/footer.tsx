@@ -48,7 +48,7 @@ export async function Footer() {
     <footer className="mx-auto flex w-full max-w-[var(--app-width)] flex-1 flex-col px-4 pt-4 pb-6 sm:px-6 lg:px-8">
       <InvertedCornerMask
         // className="mx-auto w-full max-w-full"
-          className="flex w-full bg-linear-45 from-[rgba(243,224,214,1)] from-20%  to-green-900/50 bg-[length:140%_100%] "
+        className="flex w-full bg-linear-45 from-[rgba(243,224,214,1)] from-20%  to-green-900/50 bg-[length:140%_100%] "
         cornerContent={
           <div className="flex items-center justify-center gap-4 px-8 py-2">
             <VyaDoveLogo />

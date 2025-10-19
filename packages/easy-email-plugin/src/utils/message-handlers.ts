@@ -1,6 +1,9 @@
-import { NAVIGATION_PATHS } from './constants';
+import { NAVIGATION_PATHS } from "./constants";
 
-export const createNavigationItems = (templateName: string, identifier: string) => [
+export const createNavigationItems = (
+    templateName: string,
+    identifier: string
+) => [
     {
         label: "Email Templates",
         url: NAVIGATION_PATHS.EMAIL_TEMPLATES,

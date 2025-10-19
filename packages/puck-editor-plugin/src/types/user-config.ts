@@ -47,7 +47,14 @@ export type Components = {
 export type UserConfig = Config<{
     components: Components;
     root: RootProps;
-    categories: ["navigation", "heroes", "ecommerce", "layout", "typography", "interactive"];
+    categories: [
+        "navigation",
+        "heroes",
+        "ecommerce",
+        "layout",
+        "typography",
+        "interactive",
+    ];
     fields: {
         userField: {
             type: "userField";

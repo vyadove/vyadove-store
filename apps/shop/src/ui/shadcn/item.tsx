@@ -1,9 +1,10 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
-import { Separator } from "@/ui/shadcn/separator"
+import { Separator } from "@/ui/shadcn/separator";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
 
 function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -13,7 +14,7 @@ function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
       role="list"
       {...props}
     />
-  )
+  );
 }
 
 function ItemSeparator({
@@ -27,7 +28,7 @@ function ItemSeparator({
       orientation="horizontal"
       {...props}
     />
-  )
+  );
 }
 
 const itemVariants = cva(
@@ -48,8 +49,8 @@ const itemVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
-)
+  },
+);
 
 function Item({
   className,
@@ -59,7 +60,7 @@ function Item({
   ...props
 }: React.ComponentProps<"div"> &
   VariantProps<typeof itemVariants> & { asChild?: boolean }) {
-  const Comp = asChild ? Slot : "div"
+  const Comp = asChild ? Slot : "div";
 
   return (
     <Comp
@@ -69,7 +70,7 @@ function Item({
       data-variant={variant}
       {...props}
     />
-  )
+  );
 }
 
 const itemMediaVariants = cva(
@@ -86,8 +87,8 @@ const itemMediaVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
-)
+  },
+);
 
 function ItemMedia({
   className,
@@ -101,7 +102,7 @@ function ItemMedia({
       data-variant={variant}
       {...props}
     />
-  )
+  );
 }
 
 function ItemContent({ className, ...props }: React.ComponentProps<"div">) {
@@ -109,12 +110,12 @@ function ItemContent({ className, ...props }: React.ComponentProps<"div">) {
     <div
       className={cn(
         "flex flex-1 flex-col gap-1 [&+[data-slot=item-content]]:flex-none",
-        className
+        className,
       )}
       data-slot="item-content"
       {...props}
     />
-  )
+  );
 }
 
 function ItemTitle({ className, ...props }: React.ComponentProps<"div">) {
@@ -122,12 +123,12 @@ function ItemTitle({ className, ...props }: React.ComponentProps<"div">) {
     <div
       className={cn(
         "flex w-fit items-center gap-2 text-sm font-medium leading-snug",
-        className
+        className,
       )}
       data-slot="item-title"
       {...props}
     />
-  )
+  );
 }
 
 function ItemDescription({ className, ...props }: React.ComponentProps<"p">) {
@@ -136,12 +137,12 @@ function ItemDescription({ className, ...props }: React.ComponentProps<"p">) {
       className={cn(
         "text-muted-foreground line-clamp-2 text-balance text-sm font-normal leading-normal",
         "[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
-        className
+        className,
       )}
       data-slot="item-description"
       {...props}
     />
-  )
+  );
 }
 
 function ItemActions({ className, ...props }: React.ComponentProps<"div">) {
@@ -151,7 +152,7 @@ function ItemActions({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="item-actions"
       {...props}
     />
-  )
+  );
 }
 
 function ItemHeader({ className, ...props }: React.ComponentProps<"div">) {
@@ -159,12 +160,12 @@ function ItemHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       className={cn(
         "flex basis-full items-center justify-between gap-2",
-        className
+        className,
       )}
       data-slot="item-header"
       {...props}
     />
-  )
+  );
 }
 
 function ItemFooter({ className, ...props }: React.ComponentProps<"div">) {
@@ -172,12 +173,12 @@ function ItemFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       className={cn(
         "flex basis-full items-center justify-between gap-2",
-        className
+        className,
       )}
       data-slot="item-footer"
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -191,4 +192,4 @@ export {
   ItemDescription,
   ItemHeader,
   ItemFooter,
-}
+};

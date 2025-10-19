@@ -1,8 +1,8 @@
-import type { Config } from '@/payload-types'
+import type { Config } from "@/payload-types";
 
-import { PayloadSDK } from '@shopnex/payload-sdk'
+import { PayloadSDK } from "@shopnex/payload-sdk";
 
-const isBrowser = typeof window !== 'undefined'
+const isBrowser = typeof window !== "undefined";
 
 export const payloadSdk = new PayloadSDK<Config>({
     baseInit: {

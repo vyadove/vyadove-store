@@ -96,9 +96,9 @@ export const Footer: ComponentConfig<FooterProps> = {
         puck,
     }) => {
         return (
-            <footer 
+            <footer
                 className={styles.footer}
-                style={{ 
+                style={{
                     backgroundColor,
                     color: textColor,
                     borderTopColor: dividerColor,
@@ -113,15 +113,23 @@ export const Footer: ComponentConfig<FooterProps> = {
                                     {leftLinks.map((link, index) => (
                                         <React.Fragment key={index}>
                                             <a
-                                                href={puck?.isEditing ? "#" : link.href}
+                                                href={
+                                                    puck?.isEditing
+                                                        ? "#"
+                                                        : link.href
+                                                }
                                                 className={styles.link}
                                                 style={{ color: linkColor }}
-                                                tabIndex={puck?.isEditing ? -1 : undefined}
+                                                tabIndex={
+                                                    puck?.isEditing
+                                                        ? -1
+                                                        : undefined
+                                                }
                                             >
                                                 {link.text}
                                             </a>
                                             {index < leftLinks.length - 1 && (
-                                                <span 
+                                                <span
                                                     className={styles.separator}
                                                     style={{ color: textColor }}
                                                 >
@@ -141,7 +149,7 @@ export const Footer: ComponentConfig<FooterProps> = {
                                 <span className={styles.copyright}>
                                     © {copyrightYear} {copyrightText}.
                                 </span>
-                                
+
                                 {/* Powered By */}
                                 <a
                                     href={puck?.isEditing ? "#" : poweredByLink}

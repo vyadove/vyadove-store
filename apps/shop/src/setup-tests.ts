@@ -1,8 +1,9 @@
 import "next";
-import { afterEach, expect } from "bun:test";
+
 import { loadEnvConfig } from "@next/env";
 import * as matchers from "@testing-library/jest-dom/matchers";
 import { cleanup } from "@testing-library/react";
+import { afterEach, expect } from "bun:test";
 
 loadEnvConfig(".");
 
@@ -13,5 +14,5 @@ loadEnvConfig(".");
 expect.extend(matchers);
 
 afterEach(() => {
-	cleanup();
+  cleanup();
 });

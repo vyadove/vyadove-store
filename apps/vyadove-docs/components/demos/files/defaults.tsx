@@ -9,7 +9,7 @@ export default function App () {
     </TourProvider>
   )
 }
-`
+`;
 
 export const DefaultMainJs = `import { useTour } from '@reactour/tour'
 
@@ -31,7 +31,7 @@ export default function Main () {
     </div>
   )
 }
-`
+`;
 
 export const defaultStepsjs = `export const steps = [
   {
@@ -48,7 +48,7 @@ export const defaultStepsjs = `export const steps = [
   },
   // ...
 ]
-`
+`;
 
 const stylesCss = `
 body {
@@ -97,20 +97,20 @@ body {
 .demo-selectors.column code {
   flex-direction: column
 }
-`
+`;
 
 export const defaultFiles = {
-  '/App.js': {
-    code: DefautltAppJs,
-  },
-  '/Main.js': {
-    code: DefaultMainJs,
-  },
-  '/steps.js': {
-    code: defaultStepsjs,
-  },
-  '/styles.css': {
-    code: stylesCss,
-    hidden: true,
-  },
-}
+    "/App.js": {
+        code: DefautltAppJs,
+    },
+    "/Main.js": {
+        code: DefaultMainJs,
+    },
+    "/steps.js": {
+        code: defaultStepsjs,
+    },
+    "/styles.css": {
+        code: stylesCss,
+        hidden: true,
+    },
+};

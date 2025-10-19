@@ -1,1 +1,1 @@
-export const indentType = 'indent'
+export const indentType = "indent";

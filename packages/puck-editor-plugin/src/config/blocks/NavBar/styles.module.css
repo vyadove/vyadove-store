@@ -107,21 +107,21 @@
     .centerSection {
         display: none;
     }
-    
+
     .rightSection {
         gap: 12px;
     }
-    
+
     .iconButton {
         font-size: 16px;
         padding: 6px;
     }
-    
+
     .mobileMenuButton {
         display: block;
         margin-left: 16px;
     }
-    
+
     .container {
         padding: 0 16px;
     }
@@ -131,7 +131,7 @@
     .rightSection {
         gap: 8px;
     }
-    
+
     .logoText {
         font-size: 20px;
     }

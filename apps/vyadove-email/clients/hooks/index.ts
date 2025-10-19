@@ -1,1 +1,1 @@
-export { useEmailEditor } from './useEmailEditor';
+export { useEmailEditor } from "./useEmailEditor";

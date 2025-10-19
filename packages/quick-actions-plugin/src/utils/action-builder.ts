@@ -63,18 +63,18 @@ export class QuickActionBuilder {
         if (!this.action.id || !this.action.name) {
             throw new Error("Action must have both id and name");
         }
-        
+
         return {
             ...this.action,
             priority: this.action.priority ?? 50,
-            keywords: this.action.keywords ?? this.action.name
+            keywords: this.action.keywords ?? this.action.name,
         } as QuickAction;
     }
 }
 
 export const createAction = (config: ActionBuilder): QuickAction => {
     const builder = QuickActionBuilder.create(config.id, config.name);
-    
+
     if (config.icon) {
         builder.withIcon(config.icon);
     }
@@ -93,6 +93,6 @@ export const createAction = (config: ActionBuilder): QuickAction => {
     if (config.subtitle) {
         builder.withSubtitle(config.subtitle);
     }
-    
+
     return builder.build();
 };

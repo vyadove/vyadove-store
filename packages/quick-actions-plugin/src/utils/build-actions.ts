@@ -18,20 +18,23 @@ export const buildActions = ({
     defaultCreateActions,
     enableDefaultActions,
     excludeCollections,
-    excludeGlobals
+    excludeGlobals,
 }: BuildActionsParams): QuickAction[] => {
     const collections = config.collections || [];
     const globals = config.globals || [];
     const actions: QuickAction[] = [];
     const createActions: QuickAction[] = [];
     const adminRoute = config.routes?.admin || "/admin";
-    
+
     // Build collection actions
     for (const collection of collections) {
-        if (collection.admin?.hidden || excludeCollections.includes(collection.slug)) {
+        if (
+            collection.admin?.hidden ||
+            excludeCollections.includes(collection.slug)
+        ) {
             continue;
         }
-        
+
         const { plural, singular } = formatLabels(collection.slug);
 
         actions.push({
@@ -41,9 +44,9 @@ export const buildActions = ({
             keywords: `${collection.slug} ${plural}`,
             link: `${adminRoute}/collections/${collection.slug}`,
             priority: 80,
-            group: "collections"
+            group: "collections",
         });
-        
+
         if (defaultCreateActions) {
             createActions.push({
                 id: `${collection.slug}-quick-actions-create`,
@@ -52,7 +55,7 @@ export const buildActions = ({
                 keywords: `create ${collection.slug} ${singular}`,
                 link: `${adminRoute}/collections/${collection.slug}/create`,
                 priority: 20,
-                group: "create"
+                group: "create",
             });
         }
     }
@@ -62,7 +65,7 @@ export const buildActions = ({
         if (global.admin?.hidden || excludeGlobals.includes(global.slug)) {
             continue;
         }
-        
+
         const { plural } = formatLabels(global.slug);
         actions.push({
             id: `${global.slug}-quick-actions`,
@@ -71,10 +74,12 @@ export const buildActions = ({
             keywords: `${global.slug} ${plural}`,
             link: `${adminRoute}/globals/${global.slug}`,
             priority: 80,
-            group: "globals"
+            group: "globals",
         });
     }
-    
-    const defaultActions = enableDefaultActions ? getDefaultActions({ adminRoute }) : [];
+
+    const defaultActions = enableDefaultActions
+        ? getDefaultActions({ adminRoute })
+        : [];
     return [...defaultActions, ...actions, ...createActions];
 };

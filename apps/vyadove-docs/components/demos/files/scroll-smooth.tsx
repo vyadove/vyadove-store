@@ -1,4 +1,4 @@
-import { defaultFiles } from './defaults'
+import { defaultFiles } from "./defaults";
 
 const AppJs = `import { TourProvider } from '@reactour/tour'
 import { steps } from './steps.js'
@@ -11,7 +11,7 @@ export default function App () {
     </TourProvider>
   )
 }
-`
+`;
 
 const MainJs = `import { useTour } from '@reactour/tour'
 
@@ -36,14 +36,14 @@ export default function Main () {
     </div>
   )
 }
-`
+`;
 
 export const scrollSmoothFiles = {
-  ...defaultFiles,
-  '/App.js': {
-    code: AppJs,
-  },
-  '/Main.js': {
-    code: MainJs,
-  },
-}
+    ...defaultFiles,
+    "/App.js": {
+        code: AppJs,
+    },
+    "/Main.js": {
+        code: MainJs,
+    },
+};

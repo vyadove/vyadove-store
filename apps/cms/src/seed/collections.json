@@ -1,5 +1,4 @@
 [
-
     {
         "title": "Food & Dining",
         "description": "Food & Dining",
@@ -22,7 +21,7 @@
         "imageUrl": "https://images.unsplash.com/photo-1600334129128-685c5582fd35?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740",
         "handle": "wellness-and-spa",
 
-        "products":  []
+        "products": []
     },
     {
         "title": "Adventure & Tours",
@@ -30,7 +29,7 @@
         "imageUrl": "https://plus.unsplash.com/premium_photo-1664304476568-0266b152bf9c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1784",
         "handle": "weekly-picks",
 
-        "products":  []
+        "products": []
     },
     {
         "title": "Life Celebrations",
@@ -38,7 +37,7 @@
         "imageUrl": "https://images.unsplash.com/photo-1686716804051-30c28572427c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1788",
         "handle": "latest-drops",
 
-        "products":  []
+        "products": []
     },
     {
         "title": "Stays & Escapes",
@@ -46,7 +45,7 @@
         "imageUrl": "https://plus.unsplash.com/premium_photo-1661964304872-7b715cf38cd1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740",
         "handle": "sale",
 
-        "products":  []
+        "products": []
     },
     {
         "title": "Vya Special",
@@ -54,6 +53,6 @@
         "imageUrl": "https://images.unsplash.com/photo-1594621663599-037203c826d7?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1714",
         "handle": "weekly-picks",
 
-        "products":  []
+        "products": []
     }
 ]

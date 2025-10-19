@@ -3,7 +3,7 @@ import type React from "react";
 export {};
 
 declare global {
-  type CornerKey = 'tl' | 'tr' | 'br' | 'bl';
+  type CornerKey = "tl" | "tr" | "br" | "bl";
 
   interface Setup {
     width: number;

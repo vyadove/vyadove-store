@@ -1,0 +1,15 @@
+/packages/puck-editor-plugin/src/config/blocks/product.html
+# Ignore artifacts
+build/
+dist/
+node_modules/
+.env
+.DS_Store
+
+# Ignore specific files
+*.min.js
+*.min.css
+
+# Ignore configuration files that should not be formatted
+package-lock.json
+yarn.lock

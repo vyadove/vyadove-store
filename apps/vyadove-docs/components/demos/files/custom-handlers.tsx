@@ -1,4 +1,4 @@
-import { defaultFiles } from './defaults'
+import { defaultFiles } from "./defaults";
 
 const AppJs = `import { useState } from 'react'
 import { TourProvider } from '@reactour/tour'
@@ -24,11 +24,11 @@ export default function App () {
     </TourProvider>
   )
 }
-`
+`;
 
 export const customHandlersFiles = {
-  ...defaultFiles,
-  '/App.js': {
-    code: AppJs,
-  },
-}
+    ...defaultFiles,
+    "/App.js": {
+        code: AppJs,
+    },
+};

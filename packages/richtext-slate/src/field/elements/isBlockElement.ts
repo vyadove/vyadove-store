@@ -1,20 +1,23 @@
-import { Editor, Element } from 'slate'
+import { Editor, Element } from "slate";
 
 /**
  * Returns true, if the provided node is an Element (optionally of a specific type)
  */
-const isElement = (node: any, specificType?: string | string[]): node is Element => {
-  if (Editor.isEditor(node) || !Element.isElement(node)) {
-    return false
-  }
-  if (undefined === specificType) {
-    return true
-  }
-  if (typeof specificType === 'string') {
-    return node.type === specificType
-  }
-  return specificType.includes(node.type)
-}
+const isElement = (
+    node: any,
+    specificType?: string | string[]
+): node is Element => {
+    if (Editor.isEditor(node) || !Element.isElement(node)) {
+        return false;
+    }
+    if (undefined === specificType) {
+        return true;
+    }
+    if (typeof specificType === "string") {
+        return node.type === specificType;
+    }
+    return specificType.includes(node.type);
+};
 
 /**
  * Returns true, if the provided node is a Block Element.
@@ -24,4 +27,4 @@ const isElement = (node: any, specificType?: string | string[]): node is Element
  */
 
 export const isBlockElement = (editor: Editor, node: any): node is Element =>
-  Editor.isBlock(editor, node) && isElement(node)
+    Editor.isBlock(editor, node) && isElement(node);

@@ -1,1 +1,1 @@
-export const listTypes = ['ol', 'ul']
+export const listTypes = ["ol", "ul"];

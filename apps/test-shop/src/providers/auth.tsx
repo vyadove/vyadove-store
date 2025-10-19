@@ -90,7 +90,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             method: "POST",
         });
 
-        console.log('login data --- : ', data);
+        console.log("login data --- : ", data);
 
         if (data.errors) {
             throw new Error(data.errors[0]?.message || "Unknown error");

@@ -17,7 +17,7 @@ export function getOAuthProviders(
     providers: ProvidersConfig[]
 ): Record<string, OAuthProviderConfig> {
     const records: Record<string, OAuthProviderConfig> = {};
-    
+
     providers.forEach((provider) => {
         if (provider.kind === "oauth") {
             if (records[provider.id]) {
@@ -26,7 +26,7 @@ export function getOAuthProviders(
             records[provider.id] = provider;
         }
     });
-    
+
     return records;
 }
 
@@ -36,7 +36,11 @@ export function getOAuthProviders(
 export function getPasskeyProvider(
     providers: ProvidersConfig[]
 ): PasskeyProviderConfig | null {
-    return providers.find(provider => provider.kind === "passkey") as PasskeyProviderConfig || null;
+    return (
+        (providers.find(
+            (provider) => provider.kind === "passkey"
+        ) as PasskeyProviderConfig) || null
+    );
 }
 
 /**
@@ -45,5 +49,9 @@ export function getPasskeyProvider(
 export function getPasswordProvider(
     providers: ProvidersConfig[]
 ): PasswordProviderConfig | null {
-    return providers.find(provider => provider.kind === "password") as PasswordProviderConfig || null;
+    return (
+        (providers.find(
+            (provider) => provider.kind === "password"
+        ) as PasswordProviderConfig) || null
+    );
 }

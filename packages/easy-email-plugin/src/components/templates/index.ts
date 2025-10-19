@@ -1,2 +1,2 @@
-export { defaultTemplate } from './default-template';
-export { emptyTemplate } from './empty-template';
+export { defaultTemplate } from "./default-template";
+export { emptyTemplate } from "./empty-template";

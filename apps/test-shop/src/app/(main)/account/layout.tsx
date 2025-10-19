@@ -18,17 +18,16 @@ export default async function AccountPageLayout({
             collection: "users",
         })) || {};
 
-   try {
-       const { user } =
-       (await payloadSdk.me({
-           collection: "users",
-       })) || {};
+    try {
+        const { user } =
+            (await payloadSdk.me({
+                collection: "users",
+            })) || {};
 
-       console.log('user ', user);
-
-   }catch (error) {
-       console.log( 'error : ',  error);
-   }
+        console.log("user ", user);
+    } catch (error) {
+        console.log("error : ", error);
+    }
 
     if (user == null) {
         return (

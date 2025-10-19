@@ -7,6 +7,7 @@ import { HandleField } from "@/fields/handle";
 import { groups } from "../groups";
 import { deleteMedia } from "./hooks/delete-media";
 import { SeoField } from "@/fields/seo";
+import { revalidateShop } from "@/collections/Products/hooks/revalidate-shop";
 
 export const Products: CollectionConfig = {
     slug: "products",
@@ -20,7 +21,6 @@ export const Products: CollectionConfig = {
         defaultColumns: ["title", "image", "variants", "collections"],
         group: groups.catalog,
         useAsTitle: "title",
-
     },
     fields: [
         {
@@ -296,5 +296,6 @@ export const Products: CollectionConfig = {
     ],
     hooks: {
         afterDelete: [deleteMedia],
+        afterChange: [revalidateShop],
     },
 };

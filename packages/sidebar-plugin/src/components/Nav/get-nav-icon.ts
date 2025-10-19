@@ -11,7 +11,7 @@ import {
     Tag,
     Target,
     UserRound,
-    Library
+    Library,
 } from "lucide-react";
 
 import * as LucideIcons from "lucide-react";
@@ -38,7 +38,9 @@ export const getNavIcon = (
 ): ExoticComponent<LucideProps> | undefined => {
     if (groupsConfig && groupsConfig[slug]) {
         const iconName = groupsConfig[slug].icon;
-        console.log(`getNavIcon: found icon name "${iconName}" for slug="${slug}" in groups config`);
+        console.log(
+            `getNavIcon: found icon name "${iconName}" for slug="${slug}" in groups config`
+        );
 
         // Dynamically get icon from Lucide
         const IconComponent = (LucideIcons as any)[iconName];

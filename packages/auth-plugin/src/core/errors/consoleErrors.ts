@@ -26,7 +26,6 @@ export class ProviderAlreadyExists extends PluginError {
     }
 }
 
-
 export class InvalidOAuthResource extends PluginError {
     constructor() {
         super(

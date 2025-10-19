@@ -8,13 +8,17 @@
 }
 
 .overlay::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+    background: linear-gradient(
+        135deg,
+        rgba(102, 126, 234, 0.8) 0%,
+        rgba(118, 75, 162, 0.8) 100%
+    );
     z-index: 1;
 }
 
@@ -107,7 +111,7 @@
     color: white;
     border-color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .videoWrap {
@@ -182,16 +186,16 @@
         flex: 0 0 100%;
         max-width: 100%;
     }
-    
+
     .ms5 {
         margin-left: 0;
     }
-    
+
     .justifyContentBetween {
         justify-content: center;
         text-align: center;
     }
-    
+
     .heading {
         font-size: 2.5rem;
     }
@@ -202,37 +206,37 @@
         min-height: 70vh;
         background-attachment: scroll;
     }
-    
+
     .container {
         padding: 0 15px;
     }
-    
+
     .heading {
         font-size: 2rem;
         margin-bottom: 1rem;
     }
-    
+
     .textWhite50 {
         font-size: 1rem;
     }
-    
+
     .mb5 {
         margin-bottom: 2rem;
     }
-    
+
     .buttonGroup {
         justify-content: center;
     }
-    
+
     .btn {
         min-width: 140px;
     }
-    
+
     .playButton {
         width: 60px;
         height: 60px;
     }
-    
+
     .playIcon {
         font-size: 18px;
     }

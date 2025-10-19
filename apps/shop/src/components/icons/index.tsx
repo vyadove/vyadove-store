@@ -1,2 +1,2 @@
 // import and export from logo.tsx
-export { default } from './logo';
+export { default } from "./logo";

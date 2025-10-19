@@ -1,9 +1,9 @@
-@import '~@payloadcms/ui/scss';
+@import "~@payloadcms/ui/scss";
 
 @layer payload-default {
-  .upload-rich-text-button {
-    display: flex;
-    align-items: center;
-    height: 100%;
-  }
+    .upload-rich-text-button {
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
 }

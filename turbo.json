@@ -28,7 +28,10 @@
                 "vyadove_NEXT_PUBLIC_SUPABASE_URL",
                 "vyadove_SUPABASE_SERVICE_ROLE_KEY",
                 "vyadove_POSTGRES_URL_NON_POOLING",
-                "VYADOVE_POSTGRES_URL"
+                "VYADOVE_POSTGRES_URL",
+
+                "NEXT_PUBLIC_URL",
+                "REVALIDATION_SECRET_TOKEN"
             ]
         },
         "dev": {

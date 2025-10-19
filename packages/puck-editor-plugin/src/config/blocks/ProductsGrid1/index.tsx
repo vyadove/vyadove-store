@@ -102,7 +102,8 @@ export const ProductsGrid1: ComponentConfig<ProductsGrid1Props> = {
                 name: "Product 1",
                 price: "$100.00",
                 image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=999&q=80",
-                hoverImage: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                hoverImage:
+                    "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
                 url: "/product/1",
             },
             {
@@ -110,7 +111,8 @@ export const ProductsGrid1: ComponentConfig<ProductsGrid1Props> = {
                 name: "Product 2",
                 price: "$85.00",
                 image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                hoverImage: "https://images.unsplash.com/photo-1484704849700-f032a568e944?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                hoverImage:
+                    "https://images.unsplash.com/photo-1484704849700-f032a568e944?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
                 url: "/product/2",
             },
             {
@@ -118,7 +120,8 @@ export const ProductsGrid1: ComponentConfig<ProductsGrid1Props> = {
                 name: "Product 3",
                 price: "$120.00",
                 image: "https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                hoverImage: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                hoverImage:
+                    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
                 url: "/product/3",
             },
             {
@@ -126,7 +129,8 @@ export const ProductsGrid1: ComponentConfig<ProductsGrid1Props> = {
                 name: "Product 4",
                 price: "$95.00",
                 image: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                hoverImage: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                hoverImage:
+                    "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
                 url: "/product/4",
             },
         ],
@@ -136,7 +140,16 @@ export const ProductsGrid1: ComponentConfig<ProductsGrid1Props> = {
         addToCartText: "Add to cart",
         backgroundColor: "#ffffff",
     },
-    render: ({ title, products, columnsPerRow, showFavorite, showCompare, addToCartText, backgroundColor, puck }) => {
+    render: ({
+        title,
+        products,
+        columnsPerRow,
+        showFavorite,
+        showCompare,
+        addToCartText,
+        backgroundColor,
+        puck,
+    }) => {
         const getColumnClass = (columns: number) => {
             const colMap = {
                 2: styles.col6,
@@ -148,14 +161,16 @@ export const ProductsGrid1: ComponentConfig<ProductsGrid1Props> = {
         };
 
         return (
-            <section 
+            <section
                 className={styles.productsGrid}
                 style={{ backgroundColor }}
             >
                 <div className={styles.container}>
                     <div className={styles.row}>
                         <div className={styles.col12}>
-                            <div className={`${styles.sectionHeading} ${styles.textCenter}`}>
+                            <div
+                                className={`${styles.sectionHeading} ${styles.textCenter}`}
+                            >
                                 <h2>{title}</h2>
                             </div>
                         </div>
@@ -164,76 +179,129 @@ export const ProductsGrid1: ComponentConfig<ProductsGrid1Props> = {
 
                 <div className={styles.container}>
                     <div className={styles.row}>
-                        {products && products.length > 0 && products.map((product, index) => (
-                            <div key={product.id || index} className={getColumnClass(columnsPerRow)}>
-                                <article className={styles.singleProductWrapper}>
-                                    {/* Product Image */}
-                                    <div className={styles.productImage}>
-                                        <a 
-                                            href={puck?.isEditing ? "#" : product.url}
-                                            tabIndex={puck?.isEditing ? -1 : undefined}
-                                        >
-                                            <img 
-                                                src={product.image}
-                                                loading="lazy"
-                                                alt={product.name}
-                                                className={styles.mainImage}
-                                            />
-                                            {product.hoverImage && (
-                                                <img 
-                                                    className={styles.hoverImg}
-                                                    src={product.hoverImage}
+                        {products &&
+                            products.length > 0 &&
+                            products.map((product, index) => (
+                                <div
+                                    key={product.id || index}
+                                    className={getColumnClass(columnsPerRow)}
+                                >
+                                    <article
+                                        className={styles.singleProductWrapper}
+                                    >
+                                        {/* Product Image */}
+                                        <div className={styles.productImage}>
+                                            <a
+                                                href={
+                                                    puck?.isEditing
+                                                        ? "#"
+                                                        : product.url
+                                                }
+                                                tabIndex={
+                                                    puck?.isEditing
+                                                        ? -1
+                                                        : undefined
+                                                }
+                                            >
+                                                <img
+                                                    src={product.image}
                                                     loading="lazy"
                                                     alt={product.name}
+                                                    className={styles.mainImage}
                                                 />
-                                            )}
-                                        </a>
+                                                {product.hoverImage && (
+                                                    <img
+                                                        className={
+                                                            styles.hoverImg
+                                                        }
+                                                        src={product.hoverImage}
+                                                        loading="lazy"
+                                                        alt={product.name}
+                                                    />
+                                                )}
+                                            </a>
 
-                                        {/* Favorite */}
-                                        {showFavorite && (
-                                            <div className={styles.productFavourite}>
-                                                <button className={styles.iconBtn} aria-label="Add to wishlist">
-                                                    ♡
-                                                </button>
-                                            </div>
-                                        )}
-
-                                        {/* Compare */}
-                                        {showCompare && (
-                                            <div className={styles.productCompare}>
-                                                <button className={styles.iconBtn} aria-label="Add to compare">
-                                                    ⚖
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    {/* Product Content */}
-                                    <div className={styles.productContent}>
-                                        <a 
-                                            href={puck?.isEditing ? "#" : product.url}
-                                            tabIndex={puck?.isEditing ? -1 : undefined}
-                                        >
-                                            <h6>{product.name}</h6>
-                                        </a>
-
-                                        <p className={styles.productPrice}>{product.price}</p>
-
-                                        {/* Hover Content */}
-                                        <div className={styles.hoverContent}>
-                                            <div className={styles.addToCartBtn}>
-                                                <button 
-                                                    className={`${styles.btn} ${styles.btnPrimary} ${styles.w100}`}
-                                                    disabled={puck?.isEditing}
+                                            {/* Favorite */}
+                                            {showFavorite && (
+                                                <div
+                                                    className={
+                                                        styles.productFavourite
+                                                    }
                                                 >
-                                                    {addToCartText}
-                                                </button>
+                                                    <button
+                                                        className={
+                                                            styles.iconBtn
+                                                        }
+                                                        aria-label="Add to wishlist"
+                                                    >
+                                                        ♡
+                                                    </button>
+                                                </div>
+                                            )}
+
+                                            {/* Compare */}
+                                            {showCompare && (
+                                                <div
+                                                    className={
+                                                        styles.productCompare
+                                                    }
+                                                >
+                                                    <button
+                                                        className={
+                                                            styles.iconBtn
+                                                        }
+                                                        aria-label="Add to compare"
+                                                    >
+                                                        ⚖
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Product Content */}
+                                        <div className={styles.productContent}>
+                                            <a
+                                                href={
+                                                    puck?.isEditing
+                                                        ? "#"
+                                                        : product.url
+                                                }
+                                                tabIndex={
+                                                    puck?.isEditing
+                                                        ? -1
+                                                        : undefined
+                                                }
+                                            >
+                                                <h6>{product.name}</h6>
+                                            </a>
+
+                                            <p className={styles.productPrice}>
+                                                {product.price}
+                                            </p>
+
+                                            {/* Hover Content */}
+                                            <div
+                                                className={styles.hoverContent}
+                                            >
+                                                <div
+                                                    className={
+                                                        styles.addToCartBtn
+                                                    }
+                                                >
+                                                    <button
+                                                        className={`${styles.btn} ${styles.btnPrimary} ${styles.w100}`}
+                                                        disabled={
+                                                            puck?.isEditing
+                                                        }
+                                                    >
+                                                        {addToCartText}
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </article>
-                            </div>
-                        ))}
+                                    </article>
+                                </div>
+                            ))}
                     </div>
                 </div>
             </section>

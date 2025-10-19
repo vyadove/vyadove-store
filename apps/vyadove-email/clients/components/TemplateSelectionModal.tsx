@@ -17,9 +17,9 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
         visible={visible}
         onCancel={onCancel}
         footer={null}
-        style={{ 
-            width: TEMPLATE_MODAL_CONFIG.width, 
-            maxWidth: TEMPLATE_MODAL_CONFIG.maxWidth 
+        style={{
+            width: TEMPLATE_MODAL_CONFIG.width,
+            maxWidth: TEMPLATE_MODAL_CONFIG.maxWidth,
         }}
     >
         <div
@@ -31,7 +31,14 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
         >
             <Grid.Row gutter={[16, 16]}>
                 {AVAILABLE_TEMPLATES.map((template) => (
-                    <Grid.Col key={template.id} xs={12} sm={8} md={6} lg={4} xl={4}>
+                    <Grid.Col
+                        key={template.id}
+                        xs={12}
+                        sm={8}
+                        md={6}
+                        lg={4}
+                        xl={4}
+                    >
                         <TemplateCard
                             template={template}
                             onSelect={() => onSelectTemplate(template)}
