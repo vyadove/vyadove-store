@@ -28,7 +28,19 @@
                 "vyadove_NEXT_PUBLIC_SUPABASE_URL",
                 "vyadove_SUPABASE_SERVICE_ROLE_KEY",
                 "vyadove_POSTGRES_URL_NON_POOLING",
-                "VYADOVE_POSTGRES_URL"
+                "VYADOVE_POSTGRES_URL",
+
+                "ENABLE_EXPERIMENTAL_COREPACK",
+                "NEXT_PUBLIC_URL",
+                "YNS_ENDPOINT",
+                "YNS_TOKEN",
+                "SECRET",
+                "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
+                "STRIPE_SECRET_KEY",
+                "STRIPE_WEBHOOK_SECRET",
+                "STRIPE_CURRENCY",
+                "ENABLE_STRIPE_TAX",
+                "NEXT_PUBLIC_LANGUAGE"
             ]
         },
         "dev": {
