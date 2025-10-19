@@ -31,7 +31,18 @@ const navIconMap = {
 type NavIconSlug = keyof typeof navIconMap;
 
 export const getNavIcon = (
-    slug: NavIconSlug
+    slug: string,
+    groupsConfig?: Record<string, { name: string; icon: string }>
 ): ExoticComponent<LucideProps> | undefined => {
-    return navIconMap[slug];
+    if (groupsConfig && groupsConfig[slug]) {
+        const iconName = groupsConfig[slug].icon;
+        console.log(`getNavIcon: found icon name "${iconName}" for slug="${slug}" in groups config`);
+
+        // Dynamically get icon from Lucide
+        const IconComponent = (LucideIcons as any)[iconName];
+        return IconComponent;
+    }
+
+    console.log(`getNavIcon: no icon found for slug="${slug}"`);
+    return undefined;
 };

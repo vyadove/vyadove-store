@@ -17,11 +17,12 @@ import {
 
 type NavProps = {
     groups: NavGroupType[];
+    groupsConfig?: Record<string, { name: string; icon: string }>;
 };
 
 const baseClass = "nav";
 
-export const NavClient = ({ groups }: NavProps) => {
+export const NavClient = ({ groups, groupsConfig }: NavProps) => {
     const pathname = usePathname();
     const {
         config: {
@@ -46,7 +47,7 @@ export const NavClient = ({ groups }: NavProps) => {
             </li>
             {sortedGroups.map(({ entities, label: groupLabel }, key) => {
                 const groupSlug = groupLabel.toLowerCase();
-                const Icon = getNavIcon(groupSlug as any);
+                const Icon = getNavIcon(groupSlug, groupsConfig);
                 const selectedGroup =
                     entities.find(
                         (el) =>

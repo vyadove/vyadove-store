@@ -11,7 +11,11 @@ import { NavWrapper } from "./NavWrapper";
 
 const baseClass = "nav";
 
-const Nav = (props: ServerProps) => {
+type NavProps = ServerProps & {
+    groupsConfig?: Record<string, { name: string; icon: string }>;
+};
+
+const Nav = (props: NavProps) => {
     const {
         documentSubViewType,
         i18n,
@@ -23,6 +27,7 @@ const Nav = (props: ServerProps) => {
         user,
         viewType,
         visibleEntities,
+        groupsConfig,
     } = props;
     const {
         admin: {
@@ -96,7 +101,7 @@ const Nav = (props: ServerProps) => {
                     user,
                 },
             })}
-            <NavClient groups={groups} />
+            <NavClient groups={groups} groupsConfig={groupsConfig} />
             {RenderServerComponent({
                 clientProps: {
                     documentSubViewType,
