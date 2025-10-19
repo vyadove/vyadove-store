@@ -1,4 +1,4 @@
-import { defaultFiles } from './defaults'
+import { defaultFiles } from "./defaults";
 
 const AppJs = `import { TourProvider } from '@reactour/tour'
 import { useState } from 'react'
@@ -79,11 +79,11 @@ export default function App () {
     </>
   )
 }
-`
+`;
 
 export const toggleNavPartsFiles = {
-  ...defaultFiles,
-  '/App.js': {
-    code: AppJs,
-  },
-}
+    ...defaultFiles,
+    "/App.js": {
+        code: AppJs,
+    },
+};

@@ -100,11 +100,21 @@ export const NavBar: ComponentConfig<NavBarProps> = {
         backgroundColor: "#ffffff",
         textColor: "#333333",
     },
-    render: ({ logo, logoText, menuItems, showSearch, showUserAccount, showCart, backgroundColor, textColor, puck }) => {
+    render: ({
+        logo,
+        logoText,
+        menuItems,
+        showSearch,
+        showUserAccount,
+        showCart,
+        backgroundColor,
+        textColor,
+        puck,
+    }) => {
         return (
-            <nav 
+            <nav
                 className={styles.navbar}
-                style={{ 
+                style={{
                     backgroundColor,
                     color: textColor,
                 }}
@@ -113,49 +123,75 @@ export const NavBar: ComponentConfig<NavBarProps> = {
                     <div className={styles.leftSection}>
                         <div className={styles.logo}>
                             {logo ? (
-                                <img src={logo} alt={logoText} className={styles.logoImage} />
+                                <img
+                                    src={logo}
+                                    alt={logoText}
+                                    className={styles.logoImage}
+                                />
                             ) : (
-                                <span className={styles.logoText}>{logoText}</span>
+                                <span className={styles.logoText}>
+                                    {logoText}
+                                </span>
                             )}
                         </div>
                     </div>
-                    
+
                     <div className={styles.centerSection}>
                         <ul className={styles.menuList}>
                             {menuItems.map((item, index) => (
                                 <li key={index} className={styles.menuItem}>
-                                    <a 
+                                    <a
                                         href={puck?.isEditing ? "#" : item.href}
                                         className={styles.menuLink}
-                                        tabIndex={puck?.isEditing ? -1 : undefined}
+                                        tabIndex={
+                                            puck?.isEditing ? -1 : undefined
+                                        }
                                     >
                                         {item.label}
-                                        {item.hasDropdown && <span className={styles.dropdownIcon}>▼</span>}
+                                        {item.hasDropdown && (
+                                            <span
+                                                className={styles.dropdownIcon}
+                                            >
+                                                ▼
+                                            </span>
+                                        )}
                                     </a>
                                 </li>
                             ))}
                         </ul>
                     </div>
-                    
+
                     <div className={styles.rightSection}>
                         {showSearch && (
-                            <button className={styles.iconButton} aria-label="Search">
+                            <button
+                                className={styles.iconButton}
+                                aria-label="Search"
+                            >
                                 🔍
                             </button>
                         )}
                         {showUserAccount && (
-                            <button className={styles.iconButton} aria-label="User Account">
+                            <button
+                                className={styles.iconButton}
+                                aria-label="User Account"
+                            >
                                 👤
                             </button>
                         )}
                         {showCart && (
-                            <button className={styles.iconButton} aria-label="Shopping Cart">
+                            <button
+                                className={styles.iconButton}
+                                aria-label="Shopping Cart"
+                            >
                                 🛒
                             </button>
                         )}
                     </div>
-                    
-                    <button className={styles.mobileMenuButton} aria-label="Mobile Menu">
+
+                    <button
+                        className={styles.mobileMenuButton}
+                        aria-label="Mobile Menu"
+                    >
                         ☰
                     </button>
                 </div>

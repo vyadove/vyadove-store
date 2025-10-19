@@ -9,22 +9,26 @@ Your Next Store (YNS) is a Next.js 15 e-commerce boilerplate tightly integrated 
 ## Development Commands
 
 ### Package Management & Installation
+
 ```bash
 bun install                    # Install dependencies
 ```
 
 ### Development Server
+
 ```bash
 bun run dev                   # Start development server with Turbo
 ```
 
 ### Building & Production
+
 ```bash
 bun run build                 # Build for production
 bun run start                 # Start production server
 ```
 
 ### Code Quality & Testing
+
 ```bash
 bun run lint                  # Run Biome linter/formatter (auto-fix)
 bun run test                  # Run Vitest tests
@@ -32,6 +36,7 @@ tsgo                         # TypeScript type checking (use tsgo command)
 ```
 
 ### Docker
+
 ```bash
 bun run docker:build        # Build Docker image
 bun run docker:run          # Run Docker container
@@ -40,6 +45,7 @@ bun run docker:run          # Run Docker container
 ## Architecture & Structure
 
 ### Core Technologies
+
 - **Framework**: Next.js 15 with App Router
 - **Runtime**: React 19 with React Compiler enabled
 - **TypeScript**: Strict configuration with path aliases
@@ -50,6 +56,7 @@ bun run docker:run          # Run Docker container
 - **Linting**: Biome (replaces ESLint/Prettier)
 
 ### Directory Structure
+
 ```
 src/
 ├── app/                     # Next.js App Router pages
@@ -69,6 +76,7 @@ src/
 ```
 
 ### Key Architectural Patterns
+
 - **Route Groups**: `(store)` group for main store pages with shared layout
 - **Server Components**: Extensive use for performance optimization
 - **Server Actions**: Form handling and data mutations
@@ -77,6 +85,7 @@ src/
 - **Parallel Routing**: Modal implementations using `@modal` slots
 
 ### Path Aliases
+
 - `@/*` → `./src/*`
 - `@ui/*` → `./src/ui/*`
 - `@/components/ui/*` → `./src/ui/shadcn/*`
@@ -84,12 +93,14 @@ src/
 ## Environment Configuration
 
 ### Required Environment Variables
+
 - `STRIPE_SECRET_KEY` - Stripe secret key
 - `STRIPE_CURRENCY` - Currency code (e.g., "usd")
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Stripe publishable key
 - `NEXT_PUBLIC_URL` - Store URL (optional on Vercel)
 
 ### Optional Environment Variables
+
 - `ENABLE_STRIPE_TAX` - Enable Stripe Tax calculations
 - `STRIPE_WEBHOOK_SECRET` - For Stripe webhook handling
 - `NEXT_PUBLIC_UMAMI_WEBSITE_ID` - Analytics tracking
@@ -99,6 +110,7 @@ src/
 ## Code Style & Standards
 
 ### Biome Configuration
+
 - **Indentation**: Tabs, width 2
 - **Line Width**: 110 characters
 - **Quotes**: Double quotes for JS/JSX
@@ -107,6 +119,7 @@ src/
 - **Arrow Parentheses**: Always
 
 ### TypeScript Standards
+
 - Strict mode enabled with additional strictness (`noUncheckedIndexedAccess`)
 - No unused locals enforced
 - Import type enforcement for type-only imports
@@ -122,12 +135,14 @@ src/
 ## Commerce Integration
 
 ### Stripe Integration
+
 - Products managed in Stripe Dashboard with metadata
 - Required metadata: `slug` (for URLs)
 - Optional metadata: `category`, `order`, `variant`
 - Webhooks handle payment events and cache revalidation
 
 ### Search Functionality
+
 - Simple search implementation for products
 - Search functionality in `src/lib/search/`
 

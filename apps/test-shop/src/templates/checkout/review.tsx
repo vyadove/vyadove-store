@@ -37,7 +37,10 @@ export const Review = ({ checkoutData, prevStep }: ReviewProps) => {
             };
 
             console.log("Order data to be sent to API:", orderData);
-            console.log("process.env.NEXT_PUBLIC_SERVER_URL : ", process.env.NEXT_PUBLIC_SERVER_URL);
+            console.log(
+                "process.env.NEXT_PUBLIC_SERVER_URL : ",
+                process.env.NEXT_PUBLIC_SERVER_URL
+            );
 
             const fetchResult = await fetch(
                 // `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/checkout`,

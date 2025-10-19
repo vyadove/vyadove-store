@@ -5,13 +5,17 @@
 }
 
 .overlay::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(118, 75, 162, 0.4) 100%);
+    background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(118, 75, 162, 0.4) 100%
+    );
     z-index: 1;
 }
 
@@ -142,7 +146,7 @@
 .btnPrimary:hover {
     background-color: #0056b3;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btnLg {
@@ -197,7 +201,7 @@
 }
 
 .shadowLg {
-    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 .roundedCircle {
@@ -231,42 +235,42 @@
     .hero5 {
         background-attachment: scroll;
     }
-    
+
     .colMd6 {
         flex: 0 0 100%;
         max-width: 100%;
     }
-    
+
     .container {
         padding: 0 15px;
     }
-    
+
     .display3 {
         font-size: 2.5rem;
     }
-    
+
     .lead {
         font-size: 1.1rem;
     }
-    
+
     .justifyContentBetween {
         justify-content: center;
         text-align: center;
     }
-    
+
     .mt5 {
         margin-top: 2rem;
     }
-    
+
     .pb5 {
         padding-bottom: 2rem;
     }
-    
+
     .icon {
         width: 60px !important;
         height: 60px !important;
     }
-    
+
     .playIcon {
         font-size: 20px;
     }
@@ -276,21 +280,21 @@
     .display3 {
         font-size: 2rem;
     }
-    
+
     .lead {
         font-size: 1rem;
     }
-    
+
     .btnLg {
         padding: 14px 28px;
         font-size: 1rem;
     }
-    
+
     .icon {
         width: 50px !important;
         height: 50px !important;
     }
-    
+
     .playIcon {
         font-size: 16px;
     }

@@ -29,7 +29,9 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
                     <div
                         className="text-medium text-ui-fg-subtle prose prose-sm max-w-none"
                         data-testid="product-description"
-                        dangerouslySetInnerHTML={{ __html: product.description }}
+                        dangerouslySetInnerHTML={{
+                            __html: product.description,
+                        }}
                     />
                 )}
             </div>

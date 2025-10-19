@@ -15,33 +15,40 @@ export async function UnifiedOAuthCallback(
 ): Promise<Response> {
     const parsedCookies = parseCookies(request.headers);
     const code_verifier = parsedCookies.get("__session-code-verifier");
-    
-    const clientOrigin = parsedCookies.get("__session-client-origin") || 
-                        parsedCookies.get("__client-origin");
+
+    const clientOrigin =
+        parsedCookies.get("__session-client-origin") ||
+        parsedCookies.get("__client-origin");
 
     if (!code_verifier || !clientOrigin) {
         throw new MissingOrInvalidSession();
     }
 
-    const { client_id, client_secret, algorithm, profile, client_auth_type } = providerConfig;
+    const { client_id, client_secret, algorithm, profile, client_auth_type } =
+        providerConfig;
     const client: oauth.Client = { client_id };
 
     let as: oauth.AuthorizationServer;
-    
+
     if (algorithm === "oidc" && providerConfig.issuer) {
         const issuer_url = new URL(providerConfig.issuer);
         as = await oauth
             .discoveryRequest(issuer_url, { algorithm })
-            .then((response) => oauth.processDiscoveryResponse(issuer_url, response));
+            .then((response) =>
+                oauth.processDiscoveryResponse(issuer_url, response)
+            );
     } else if (algorithm === "oauth2" && providerConfig.authorization_server) {
         as = providerConfig.authorization_server;
     } else {
-        throw new Error(`Invalid provider configuration for ${providerConfig.id}`);
+        throw new Error(
+            `Invalid provider configuration for ${providerConfig.id}`
+        );
     }
 
-    const clientAuth = client_auth_type === "client_secret_basic"
-        ? oauth.ClientSecretBasic(client_secret ?? "")
-        : oauth.ClientSecretPost(client_secret ?? "");
+    const clientAuth =
+        client_auth_type === "client_secret_basic"
+            ? oauth.ClientSecretBasic(client_secret ?? "")
+            : oauth.ClientSecretPost(client_secret ?? "");
 
     const current_url = new URL(request.url as string);
     const callback_url = getCallbackURL(
@@ -51,7 +58,7 @@ export async function UnifiedOAuthCallback(
     );
 
     let params: URLSearchParams;
-    
+
     if (algorithm === "oidc") {
         params = oauth.validateAuthResponse(as, client, current_url);
     } else {
@@ -70,7 +77,7 @@ export async function UnifiedOAuthCallback(
 
     let body = (await grantResponse.json()) as { scope: string | string[] };
     let response = new Response(JSON.stringify(body), grantResponse);
-    
+
     if (Array.isArray(body.scope)) {
         body.scope = body.scope.join(" ");
         response = new Response(JSON.stringify(body), grantResponse);
@@ -80,10 +87,14 @@ export async function UnifiedOAuthCallback(
         as,
         client,
         response,
-        algorithm === "oidc" ? {
-            expectedNonce: parsedCookies.get("__session-oauth-nonce") as string,
-            requireIdToken: true,
-        } : undefined
+        algorithm === "oidc"
+            ? {
+                  expectedNonce: parsedCookies.get(
+                      "__session-oauth-nonce"
+                  ) as string,
+                  requireIdToken: true,
+              }
+            : undefined
     );
 
     let userInfo: Record<string, any>;
@@ -114,14 +125,17 @@ export async function UnifiedOAuthCallback(
             token_result.access_token
         );
         userInfo = (await userInfoResponse.json()) as Record<string, string>;
-        
+
         if (providerConfig.id === "github" && !userInfo.email) {
-            const emailResponse = await fetch("https://api.github.com/user/emails", {
-                headers: {
-                    Authorization: `Bearer ${token_result.access_token}`,
-                    Accept: "application/vnd.github+json",
-                },
-            });
+            const emailResponse = await fetch(
+                "https://api.github.com/user/emails",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token_result.access_token}`,
+                        Accept: "application/vnd.github+json",
+                    },
+                }
+            );
             const emails = (await emailResponse.json()) as {
                 email: string;
                 primary: boolean;

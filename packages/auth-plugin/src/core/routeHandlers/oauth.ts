@@ -1,9 +1,6 @@
 import type { PayloadRequest } from "payload";
 import type { AccountInfo, OAuthProviderConfig } from "../../types";
-import {
-    InvalidOAuthResource,
-    InvalidProvider,
-} from "../errors/consoleErrors";
+import { InvalidOAuthResource, InvalidProvider } from "../errors/consoleErrors";
 import { UnifiedOAuthAuthorization } from "../protocols/oauth/unified_authorization";
 import { UnifiedOAuthCallback } from "../protocols/oauth/unified_callback";
 

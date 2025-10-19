@@ -4,7 +4,10 @@ import { TemplateCardProps } from "../types";
 /**
  * Individual template card with thumbnail and hover effects
  */
-export const TemplateCard: React.FC<TemplateCardProps> = ({ template, onSelect }) => (
+export const TemplateCard: React.FC<TemplateCardProps> = ({
+    template,
+    onSelect,
+}) => (
     <div
         onClick={onSelect}
         style={{

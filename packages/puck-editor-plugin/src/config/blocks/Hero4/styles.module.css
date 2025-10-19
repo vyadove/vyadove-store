@@ -8,7 +8,7 @@
 }
 
 .overlay::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -111,7 +111,7 @@
     background-color: white;
     color: #333;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .me4 {
@@ -137,7 +137,7 @@
         flex: 0 0 100%;
         max-width: 100%;
     }
-    
+
     .heading {
         font-size: 3rem;
     }
@@ -147,26 +147,26 @@
     .hero4 {
         min-height: 80vh;
     }
-    
+
     .container {
         padding: 0 15px;
     }
-    
+
     .heading {
         font-size: 2.5rem;
         margin-bottom: 1.5rem;
     }
-    
+
     .buttons {
         flex-direction: column;
         gap: 0.75rem;
     }
-    
+
     .btn {
         width: 100%;
         max-width: 250px;
     }
-    
+
     .me4 {
         margin-right: 0;
     }
@@ -176,11 +176,11 @@
     .hero4 {
         min-height: 70vh;
     }
-    
+
     .heading {
         font-size: 2rem;
     }
-    
+
     .btn {
         padding: 12px 20px;
         font-size: 0.9rem;

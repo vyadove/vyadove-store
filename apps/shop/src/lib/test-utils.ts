@@ -9,7 +9,7 @@
  * @returns Sum of a and b
  */
 export function add(a: number, b: number): number {
-	return a + b;
+  return a + b;
 }
 
 /**
@@ -19,7 +19,7 @@ export function add(a: number, b: number): number {
  * @returns Product of a and b
  */
 export function multiply(a: number, b: number): number {
-	return a * b;
+  return a * b;
 }
 
 /**
@@ -28,7 +28,7 @@ export function multiply(a: number, b: number): number {
  * @returns True if string is empty or whitespace only
  */
 export function isEmpty(str: string): boolean {
-	return str.trim().length === 0;
+  return str.trim().length === 0;
 }
 
 /**
@@ -37,9 +37,9 @@ export function isEmpty(str: string): boolean {
  * @returns String with first letter capitalized
  */
 export function capitalize(str: string): string {
-	if (isEmpty(str)) return str;
+  if (isEmpty(str)) return str;
 
-	return str.charAt(0).toUpperCase() + str.slice(1);
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 /**
@@ -48,7 +48,7 @@ export function capitalize(str: string): string {
  * @returns Formatted price string (e.g., "$12.34")
  */
 export function formatPrice(priceInCents: number): string {
-	const dollars = priceInCents / 100;
+  const dollars = priceInCents / 100;
 
-	return `$${dollars.toFixed(2)}`;
+  return `$${dollars.toFixed(2)}`;
 }

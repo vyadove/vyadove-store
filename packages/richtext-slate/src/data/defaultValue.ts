@@ -1,5 +1,5 @@
 export const defaultRichTextValue = [
-  {
-    children: [{ text: '' }],
-  },
-]
+    {
+        children: [{ text: "" }],
+    },
+];

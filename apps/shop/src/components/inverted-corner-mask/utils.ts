@@ -1,7 +1,6 @@
 /* eslint-disable */
 // @ts-nocheck
 
-
 export const gcd = (a: number, b: number): number =>
   b === 0 ? a : gcd(b, a % b); // greatest common divisor
 const A = (r: number, x: number, y: number, sweep = 1) =>
@@ -23,7 +22,7 @@ function drawInvertedCorner(
     corners,
   }: { width: number; height: number; corners: [number, number, number] },
   origin: { x: number; y: number },
-  direction: "tr" | "br" | "bl" | "tl"
+  direction: "tr" | "br" | "bl" | "tl",
 ) {
   const [c0, c1, c2] = corners;
   const { x, y } = origin;
@@ -71,7 +70,7 @@ export const generatePath = (
   setup: Setup,
   cornerRadius: CornerRadius,
   invertedCorners: InvertedCorners,
-  position = { x: 0, y: 0 }
+  position = { x: 0, y: 0 },
 ) => {
   const { width, height } = setup;
   const {
@@ -80,8 +79,8 @@ export const generatePath = (
     bl: bottomLeft,
     br: bottomRight,
   } = cornerRadius;
-  const { tl, tr, bl, br } =  invertedCorners;
-  const { x, y } =  position;
+  const { tl, tr, bl, br } = invertedCorners;
+  const { x, y } = position;
 
   let path = M(x + topLeft, y);
 
@@ -105,7 +104,7 @@ export const generatePath = (
     path += drawInvertedCorner(
       br,
       { x: x + width, y: y + height - br.height },
-      "br"
+      "br",
     );
   } else path += A(bottomRight, x + width - bottomRight, y + height);
 
@@ -134,7 +133,7 @@ export const generateBorderPath = (
   setup: Setup,
   cornerRadius: CornerRadius,
   invertedCorners: InvertedCorners,
-  borderWidth: number
+  borderWidth: number,
 ) => {
   const { width, height } = setup;
   const {
@@ -163,26 +162,26 @@ export const generateBorderPath = (
       A(
         tr.corners[0] + borderWidth,
         outerWidth - tr?.width + borderWidth,
-        tr.corners[0] + borderWidth
+        tr.corners[0] + borderWidth,
       ) +
       V(tr?.height - tr.corners[1] + borderWidth) +
       A(
         tr.corners[1] - borderWidth,
         outerWidth - tr?.width + tr.corners[1],
         tr.height,
-        0
+        0,
       ) +
       H(outerWidth - tr.corners[2]) +
       A(
         tr.corners[2] + borderWidth,
         outerWidth + borderWidth,
-        tr.height + tr.corners[2] + borderWidth
+        tr.height + tr.corners[2] + borderWidth,
       );
   } else
     path += A(
       topRight + borderWidth,
       outerWidth + borderWidth,
-      topRight + borderWidth
+      topRight + borderWidth,
     );
 
   // Right Side
@@ -196,26 +195,26 @@ export const generateBorderPath = (
       A(
         br.corners[0] + borderWidth,
         outerWidth - br.corners[0],
-        outerHeight - br.height + borderWidth
+        outerHeight - br.height + borderWidth,
       ) +
       H(outerWidth - br.width + br.corners[1]) +
       A(
         br.corners[1] - borderWidth,
         outerWidth - br.width + borderWidth,
         outerHeight - br.height + br.corners[1],
-        0
+        0,
       ) +
       V(outerHeight - br.corners[2]) +
       A(
         br.corners[2] + borderWidth,
         outerWidth - br.width - br.corners[2],
-        outerHeight + borderWidth
+        outerHeight + borderWidth,
       );
   } else
     path += A(
       bottomRight + borderWidth,
       outerWidth - bottomRight,
-      outerHeight + borderWidth
+      outerHeight + borderWidth,
     );
 
   // Bottom Side
@@ -231,13 +230,13 @@ export const generateBorderPath = (
         bl.corners[1] - borderWidth,
         bl.width - bl.corners[1] + borderWidth,
         outerHeight - bl.height + borderWidth,
-        0
+        0,
       ) +
       H(bl.corners[2] + borderWidth) +
       A(
         bl.corners[2] + borderWidth,
         0,
-        outerHeight - bl.height - bl.corners[2]
+        outerHeight - bl.height - bl.corners[2],
       );
   } else path += A(bottomLeft + borderWidth, 0, outerHeight - bottomLeft);
 
@@ -254,7 +253,7 @@ export const generateBorderPath = (
         tl.corners[1] - borderWidth,
         tl.width,
         tl.height - tl.corners[1] + borderWidth,
-        0
+        0,
       ) +
       V(tl.corners[2] + borderWidth) +
       A(tl.corners[2] + borderWidth, tl.width + tl.corners[2] + borderWidth, 0);
@@ -295,7 +294,7 @@ export function normalizeSVGPath(path: string, width: number, height: number): s
 }
 
 export function debounce(func: Function, wait: number) {
-  let timeout:  NodeJS.Timeout;
+  let timeout: NodeJS.Timeout;
   const debounced = (...args: any[]) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(args), wait);
@@ -310,7 +309,9 @@ export function areAllEqual(arr: number[]): boolean {
   return arr.every((val) => val === arr[0]);
 }
 
-export function getCorners(rList: [number, number] | [number]): [number, number, number] {
+export function getCorners(
+  rList: [number, number] | [number],
+): [number, number, number] {
   if (rList.length === 1) return [rList[0], rList[0], rList[0]];
   if (rList.length === 2) return [rList[0], rList[1], 0];
 

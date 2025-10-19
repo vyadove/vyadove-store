@@ -1,2 +1,2 @@
-export { EmailTemplateHeader } from './EmailTemplateHeader';
-export { EmailTemplateIframe } from './EmailTemplateIframe';
+export { EmailTemplateHeader } from "./EmailTemplateHeader";
+export { EmailTemplateIframe } from "./EmailTemplateIframe";

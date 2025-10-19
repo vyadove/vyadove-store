@@ -4,7 +4,10 @@ import { sendOrderCancellationEmail } from "./payment-handlers";
 /**
  * This webhook will run whenever a payment intent is canceled
  */
-export const paymentCanceled: PaymentCanceledHandler = async ({ event, payload }) => {
+export const paymentCanceled: PaymentCanceledHandler = async ({
+    event,
+    payload,
+}) => {
     const paymentIntent = event.data.object;
 
     // Extract relevant details
@@ -13,7 +16,7 @@ export const paymentCanceled: PaymentCanceledHandler = async ({ event, payload }
         paymentIntent.receipt_email || paymentIntent.metadata?.email;
 
     const { logger } = payload;
-    
+
     logger.info(`🔔 Received Stripe Event: ${event.id}`);
 
     if (!orderId) {
@@ -45,4 +48,3 @@ export const paymentCanceled: PaymentCanceledHandler = async ({ event, payload }
         logger.error("❌ Error updating order status:", error);
     }
 };
-

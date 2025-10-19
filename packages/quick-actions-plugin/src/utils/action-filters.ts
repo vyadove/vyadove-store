@@ -8,8 +8,11 @@ export interface ActionFilter {
     excludeGroups?: string[];
 }
 
-export const filterActions = (actions: QuickAction[], filter: ActionFilter): QuickAction[] => {
-    return actions.filter(action => {
+export const filterActions = (
+    actions: QuickAction[],
+    filter: ActionFilter
+): QuickAction[] => {
+    return actions.filter((action) => {
         if (filter.byGroup && action.group !== filter.byGroup) {
             return false;
         }
@@ -21,9 +24,13 @@ export const filterActions = (actions: QuickAction[], filter: ActionFilter): Qui
         if (filter.byKeyword) {
             const keyword = filter.byKeyword.toLowerCase();
             const matchesName = action.name.toLowerCase().includes(keyword);
-            const matchesKeywords = action.keywords?.toLowerCase().includes(keyword);
-            const matchesSubtitle = action.subtitle?.toLowerCase().includes(keyword);
-            
+            const matchesKeywords = action.keywords
+                ?.toLowerCase()
+                .includes(keyword);
+            const matchesSubtitle = action.subtitle
+                ?.toLowerCase()
+                .includes(keyword);
+
             if (!matchesName && !matchesKeywords && !matchesSubtitle) {
                 return false;
             }
@@ -33,7 +40,11 @@ export const filterActions = (actions: QuickAction[], filter: ActionFilter): Qui
             return false;
         }
 
-        if (filter.excludeGroups && action.group && filter.excludeGroups.includes(action.group)) {
+        if (
+            filter.excludeGroups &&
+            action.group &&
+            filter.excludeGroups.includes(action.group)
+        ) {
             return false;
         }
 
@@ -41,17 +52,24 @@ export const filterActions = (actions: QuickAction[], filter: ActionFilter): Qui
     });
 };
 
-export const sortActionsByPriority = (actions: QuickAction[]): QuickAction[] => {
+export const sortActionsByPriority = (
+    actions: QuickAction[]
+): QuickAction[] => {
     return [...actions].sort((a, b) => (b.priority || 50) - (a.priority || 50));
 };
 
-export const groupActionsByCategory = (actions: QuickAction[]): Record<string, QuickAction[]> => {
-    return actions.reduce((groups, action) => {
-        const group = action.group || "default";
-        if (!groups[group]) {
-            groups[group] = [];
-        }
-        groups[group].push(action);
-        return groups;
-    }, {} as Record<string, QuickAction[]>);
+export const groupActionsByCategory = (
+    actions: QuickAction[]
+): Record<string, QuickAction[]> => {
+    return actions.reduce(
+        (groups, action) => {
+            const group = action.group || "default";
+            if (!groups[group]) {
+                groups[group] = [];
+            }
+            groups[group].push(action);
+            return groups;
+        },
+        {} as Record<string, QuickAction[]>
+    );
 };

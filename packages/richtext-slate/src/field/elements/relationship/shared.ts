@@ -1,1 +1,1 @@
-export const relationshipName = 'relationship'
+export const relationshipName = "relationship";

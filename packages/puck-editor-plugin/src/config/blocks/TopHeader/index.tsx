@@ -55,11 +55,18 @@ export const TopHeader: ComponentConfig<TopHeaderProps> = {
         backgroundColor: "#f8f9fa",
         textColor: "#333333",
     },
-    render: ({ phone, email, showLanguageSelector, showCurrencySelector, backgroundColor, textColor }) => {
+    render: ({
+        phone,
+        email,
+        showLanguageSelector,
+        showCurrencySelector,
+        backgroundColor,
+        textColor,
+    }) => {
         return (
-            <div 
-                className={styles.topHeader} 
-                style={{ 
+            <div
+                className={styles.topHeader}
+                style={{
                     backgroundColor,
                     color: textColor,
                 }}
@@ -79,7 +86,7 @@ export const TopHeader: ComponentConfig<TopHeaderProps> = {
                             </div>
                         )}
                     </div>
-                    
+
                     <div className={styles.rightSection}>
                         {showCurrencySelector && (
                             <div className={styles.selector}>

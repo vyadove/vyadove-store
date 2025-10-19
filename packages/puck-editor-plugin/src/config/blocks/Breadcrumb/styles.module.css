@@ -64,11 +64,11 @@
     .breadcrumb {
         font-size: 0.8rem;
     }
-    
+
     .separator {
         margin: 0 0.25rem;
     }
-    
+
     .breadcrumbItem {
         margin-bottom: 0.25rem;
     }
@@ -79,21 +79,21 @@
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .breadcrumbItem {
         margin-bottom: 0.5rem;
     }
-    
+
     .separator {
         display: none;
     }
-    
+
     .breadcrumbItem:not(.active)::after {
         content: ">";
         margin-left: 0.5rem;
         color: #6c757d;
     }
-    
+
     .breadcrumbItem:last-child::after {
         display: none;
     }

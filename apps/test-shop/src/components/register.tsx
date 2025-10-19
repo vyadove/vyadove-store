@@ -25,8 +25,7 @@ const Register = ({ setCurrentView }: Props) => {
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-
-        console.log('handle sumit  ---------');
+        console.log("handle sumit  ---------");
 
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -35,15 +34,13 @@ const Register = ({ setCurrentView }: Props) => {
             password: string;
         };
 
-
         try {
             await login(data);
             router.refresh();
-        }catch (error : any) {
-            console.error( 'Login error -- : ', error);
+        } catch (error: any) {
+            console.error("Login error -- : ", error);
             setMessage(`Error logging in ${error?.message}`);
         }
-
     };
 
     return (

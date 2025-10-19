@@ -15,23 +15,28 @@ export async function UnifiedOAuthAuthorization(
         providerConfig.id
     );
     const code_verifier = oauth.generateRandomCodeVerifier();
-    const code_challenge = await oauth.calculatePKCECodeChallenge(code_verifier);
+    const code_challenge =
+        await oauth.calculatePKCECodeChallenge(code_verifier);
     const code_challenge_method = "S256";
 
     const { client_id, scope, params, algorithm } = providerConfig;
     const client: oauth.Client = { client_id };
 
     let as: oauth.AuthorizationServer;
-    
+
     if (algorithm === "oidc" && providerConfig.issuer) {
         const issuer_url = new URL(providerConfig.issuer);
         as = await oauth
             .discoveryRequest(issuer_url, { algorithm })
-            .then((response) => oauth.processDiscoveryResponse(issuer_url, response));
+            .then((response) =>
+                oauth.processDiscoveryResponse(issuer_url, response)
+            );
     } else if (algorithm === "oauth2" && providerConfig.authorization_server) {
         as = providerConfig.authorization_server;
     } else {
-        throw new Error(`Invalid provider configuration for ${providerConfig.id}`);
+        throw new Error(
+            `Invalid provider configuration for ${providerConfig.id}`
+        );
     }
 
     const cookies: string[] = [];
@@ -43,7 +48,10 @@ export async function UnifiedOAuthAuthorization(
     authorizationURL.searchParams.set("response_type", "code");
     authorizationURL.searchParams.set("scope", scope as string);
     authorizationURL.searchParams.set("code_challenge", code_challenge);
-    authorizationURL.searchParams.set("code_challenge_method", code_challenge_method);
+    authorizationURL.searchParams.set(
+        "code_challenge_method",
+        code_challenge_method
+    );
 
     if (params) {
         Object.entries(params).forEach(([key, value]) => {
@@ -67,9 +75,16 @@ export async function UnifiedOAuthAuthorization(
         }
     }
 
-    const origin = clientOrigin || request.headers.get("origin") || request.headers.get("referer") || "";
+    const origin =
+        clientOrigin ||
+        request.headers.get("origin") ||
+        request.headers.get("referer") ||
+        "";
     if (origin) {
-        const cookieName = algorithm === "oidc" ? "__session-client-origin" : "__client-origin";
+        const cookieName =
+            algorithm === "oidc"
+                ? "__session-client-origin"
+                : "__client-origin";
         cookies.push(
             `${cookieName}=${encodeURIComponent(origin)};Path=/;HttpOnly;SameSite=lax;Expires=${cookieMaxage.toUTCString()}`
         );

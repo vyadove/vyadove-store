@@ -168,7 +168,8 @@ export const ProductDetails: ComponentConfig<ProductDetailsProps> = {
                 alt: "Product image 3",
             },
         ],
-        description: "Elegant one shoulder glitter midi dress perfect for special occasions. Made with high-quality materials and attention to detail.",
+        description:
+            "Elegant one shoulder glitter midi dress perfect for special occasions. Made with high-quality materials and attention to detail.",
         showManufacturer: true,
         showVendor: true,
         showAvailability: true,
@@ -178,16 +179,16 @@ export const ProductDetails: ComponentConfig<ProductDetailsProps> = {
         wishlistText: "Add to Wish List",
         compareText: "Compare product",
     },
-    render: ({ 
-        name, 
-        manufacturer, 
-        vendor, 
-        availability, 
-        rating, 
-        reviewsCount, 
-        price, 
-        originalPrice, 
-        discount, 
+    render: ({
+        name,
+        manufacturer,
+        vendor,
+        availability,
+        rating,
+        reviewsCount,
+        price,
+        originalPrice,
+        discount,
         priceExcludingTax,
         images,
         description,
@@ -199,7 +200,7 @@ export const ProductDetails: ComponentConfig<ProductDetailsProps> = {
         buyNowText,
         wishlistText,
         compareText,
-        puck 
+        puck,
     }) => {
         const [activeImageIndex, setActiveImageIndex] = useState(0);
         const [quantity, setQuantity] = useState(1);
@@ -231,20 +232,24 @@ export const ProductDetails: ComponentConfig<ProductDetailsProps> = {
                                         />
                                     )}
                                 </div>
-                                
+
                                 {images && images.length > 1 && (
                                     <div className={styles.thumbnails}>
                                         {images.map((image, index) => (
                                             <button
                                                 key={index}
-                                                className={`${styles.thumbnail} ${index === activeImageIndex ? styles.active : ''}`}
-                                                onClick={() => setActiveImageIndex(index)}
+                                                className={`${styles.thumbnail} ${index === activeImageIndex ? styles.active : ""}`}
+                                                onClick={() =>
+                                                    setActiveImageIndex(index)
+                                                }
                                                 disabled={puck?.isEditing}
                                             >
                                                 <img
                                                     src={image.src}
                                                     alt={image.alt}
-                                                    className={styles.thumbnailImage}
+                                                    className={
+                                                        styles.thumbnailImage
+                                                    }
                                                 />
                                             </button>
                                         ))}
@@ -260,22 +265,34 @@ export const ProductDetails: ComponentConfig<ProductDetailsProps> = {
 
                                 {showManufacturer && manufacturer && (
                                     <div className={styles.infoRow}>
-                                        <span className={styles.label}>Manufacturer:</span>
-                                        <span className={styles.value}>{manufacturer}</span>
+                                        <span className={styles.label}>
+                                            Manufacturer:
+                                        </span>
+                                        <span className={styles.value}>
+                                            {manufacturer}
+                                        </span>
                                     </div>
                                 )}
 
                                 {showVendor && vendor && (
                                     <div className={styles.infoRow}>
-                                        <span className={styles.label}>Vendor:</span>
-                                        <span className={styles.value}>{vendor}</span>
+                                        <span className={styles.label}>
+                                            Vendor:
+                                        </span>
+                                        <span className={styles.value}>
+                                            {vendor}
+                                        </span>
                                     </div>
                                 )}
 
                                 {showAvailability && availability && (
                                     <div className={styles.infoRow}>
-                                        <span className={styles.label}>Availability:</span>
-                                        <span className={styles.value}>{availability}</span>
+                                        <span className={styles.label}>
+                                            Availability:
+                                        </span>
+                                        <span className={styles.value}>
+                                            {availability}
+                                        </span>
                                     </div>
                                 )}
 
@@ -285,7 +302,9 @@ export const ProductDetails: ComponentConfig<ProductDetailsProps> = {
                                             {renderStars(rating)}
                                         </div>
                                         {reviewsCount > 0 && (
-                                            <span className={styles.reviewsLink}>
+                                            <span
+                                                className={styles.reviewsLink}
+                                            >
                                                 ({reviewsCount} reviews)
                                             </span>
                                         )}
@@ -294,11 +313,23 @@ export const ProductDetails: ComponentConfig<ProductDetailsProps> = {
 
                                 <div className={styles.priceSection}>
                                     <div className={styles.priceRow}>
-                                        <span className={styles.currentPrice}>{price}</span>
+                                        <span className={styles.currentPrice}>
+                                            {price}
+                                        </span>
                                         {originalPrice && discount && (
                                             <>
-                                                <span className={styles.originalPrice}>{originalPrice}</span>
-                                                <span className={styles.discount}>{discount}% Off</span>
+                                                <span
+                                                    className={
+                                                        styles.originalPrice
+                                                    }
+                                                >
+                                                    {originalPrice}
+                                                </span>
+                                                <span
+                                                    className={styles.discount}
+                                                >
+                                                    {discount}% Off
+                                                </span>
                                             </>
                                         )}
                                     </div>
@@ -311,10 +342,19 @@ export const ProductDetails: ComponentConfig<ProductDetailsProps> = {
 
                                 <div className={styles.actionsSection}>
                                     <div className={styles.quantitySection}>
-                                        <div className={styles.quantityControls}>
-                                            <button 
+                                        <div
+                                            className={styles.quantityControls}
+                                        >
+                                            <button
                                                 className={styles.quantityBtn}
-                                                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                                                onClick={() =>
+                                                    setQuantity(
+                                                        Math.max(
+                                                            1,
+                                                            quantity - 1
+                                                        )
+                                                    )
+                                                }
                                                 disabled={puck?.isEditing}
                                             >
                                                 -
@@ -322,28 +362,36 @@ export const ProductDetails: ComponentConfig<ProductDetailsProps> = {
                                             <input
                                                 type="number"
                                                 value={quantity}
-                                                onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
+                                                onChange={(e) =>
+                                                    setQuantity(
+                                                        parseInt(
+                                                            e.target.value
+                                                        ) || 1
+                                                    )
+                                                }
                                                 className={styles.quantityInput}
                                                 min="1"
                                                 disabled={puck?.isEditing}
                                             />
-                                            <button 
+                                            <button
                                                 className={styles.quantityBtn}
-                                                onClick={() => setQuantity(quantity + 1)}
+                                                onClick={() =>
+                                                    setQuantity(quantity + 1)
+                                                }
                                                 disabled={puck?.isEditing}
                                             >
                                                 +
                                             </button>
                                         </div>
 
-                                        <button 
+                                        <button
                                             className={`${styles.btn} ${styles.btnPrimary}`}
                                             disabled={puck?.isEditing}
                                         >
                                             🛒 {addToCartText}
                                         </button>
 
-                                        <button 
+                                        <button
                                             className={`${styles.btn} ${styles.btnSecondary}`}
                                             disabled={puck?.isEditing}
                                         >
@@ -352,13 +400,13 @@ export const ProductDetails: ComponentConfig<ProductDetailsProps> = {
                                     </div>
 
                                     <div className={styles.secondaryActions}>
-                                        <button 
+                                        <button
                                             className={styles.actionBtn}
                                             disabled={puck?.isEditing}
                                         >
                                             ♡ {wishlistText}
                                         </button>
-                                        <button 
+                                        <button
                                             className={styles.actionBtn}
                                             disabled={puck?.isEditing}
                                         >

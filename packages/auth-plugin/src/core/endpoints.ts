@@ -49,12 +49,13 @@ export class OAuthEndpointStrategy implements EndpointStrategy {
                 path: `/${pluginType}/oauth/:resource/:provider`,
                 method: "get",
                 handler: (request: PayloadRequest) => {
-                    const provider = this.providers[
-                        request.routeParams?.provider as string
-                    ];
+                    const provider =
+                        this.providers[request.routeParams?.provider as string];
 
                     if (!provider) {
-                        throw new Error(`Provider ${request.routeParams?.provider} not found`);
+                        throw new Error(
+                            `Provider ${request.routeParams?.provider} not found`
+                        );
                     }
 
                     return OAuthHandlers(

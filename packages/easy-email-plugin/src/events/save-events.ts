@@ -1,5 +1,5 @@
 import { toast } from "@payloadcms/ui";
-import { SaveOutput, EmailTemplateData } from '../types/email-template.types';
+import { SaveOutput, EmailTemplateData } from "../types/email-template.types";
 
 export type SaveSuccessHandler = (data: EmailTemplateData) => void;
 export type SaveErrorHandler = (error: Error) => void;

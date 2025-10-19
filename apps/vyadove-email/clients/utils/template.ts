@@ -21,7 +21,9 @@ export const checkForTemplateChanges = (
  * @param templateData - Template data to convert
  * @returns Formatted email template
  */
-export const createEmailTemplate = (templateData: TemplateData): IEmailTemplate => {
+export const createEmailTemplate = (
+    templateData: TemplateData
+): IEmailTemplate => {
     return {
         subject: templateData.name,
         subTitle: "Easy Email Template",

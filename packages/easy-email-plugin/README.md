@@ -54,6 +54,7 @@ The app will run on `http://localhost:3040` by default.
 5. **Deploy for production** (optional):
 
 The email editor app can be deployed separately to any static hosting:
+
 - Cloudflare Pages
 - Vercel
 - Netlify
@@ -220,6 +221,7 @@ This plugin follows a decoupled architecture:
 ```
 
 **Benefits:**
+
 - 🔐 **Better Security** – Editor runs in isolated iframe
 - 🚀 **Faster Loading** – Editor can be cached separately
 - 📦 **Smaller Bundle** – Email editor code not included in main app

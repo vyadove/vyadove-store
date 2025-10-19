@@ -53,7 +53,7 @@ export default function ShippingPage() {
                     }
                 );
 
-                console.log('sortedMethods --', sortedMethods);
+                console.log("sortedMethods --", sortedMethods);
 
                 setDeliveryMethods(sortedMethods);
 

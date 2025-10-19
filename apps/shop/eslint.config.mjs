@@ -4,9 +4,9 @@ import eslintConfigPrettier from "eslint-config-prettier";
 import pluginJest from "eslint-plugin-jest";
 import tailwind from "eslint-plugin-tailwindcss";
 import path from "node:path";
-import ts from "typescript-eslint";
 // import prettier from "prettier";
 import { fileURLToPath } from "node:url";
+import ts from "typescript-eslint";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,7 +20,6 @@ const compat = new FlatCompat({
 //
 // /** @type {import("eslint").Linter.Config[]} */
 // export default nextJsConfig;
-
 
 export default [
   ...compat.extends(
@@ -127,26 +126,28 @@ export default [
       // TypeScript:
       //   "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
 
-        // 1. Turn OFF the base ESLint rule
-        'no-unused-vars': 'off',
+      // 1. Turn OFF the base ESLint rule
+      "no-unused-vars": "off",
 
-        // 2. Configure the TypeScript-aware rule
-        '@typescript-eslint/no-unused-vars': [
-          'warn', // Set to 'error' to enforce it
-          {
-            argsIgnorePattern: '^_', // Ignore variables starting with an underscore (like _event)
-            varsIgnorePattern: '^_',
-            caughtErrorsIgnorePattern: '^_',
-            ignoreRestSiblings: true, // Useful for object destructuring
-          },
-        ],
+      // 2. Configure the TypeScript-aware rule
+      "@typescript-eslint/no-unused-vars": [
+        "warn", // Set to 'error' to enforce it
+        {
+          argsIgnorePattern: "^_", // Ignore variables starting with an underscore (like _event)
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+          ignoreRestSiblings: true, // Useful for object destructuring
+        },
+      ],
 
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/consistent-type-imports": ["error", { "prefer": "type-imports", "disallowTypeAnnotations": false }],
-        "@typescript-eslint/ban-ts-comment": "off",
-        "@typescript-eslint/ban-types": "off",
-        "@typescript-eslint/no-non-null-assertion": "off",
-
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        { prefer: "type-imports", disallowTypeAnnotations: false },
+      ],
+      "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/ban-types": "off",
+      "@typescript-eslint/no-non-null-assertion": "off",
 
       // React
       "react/boolean-prop-naming": ["warn"],

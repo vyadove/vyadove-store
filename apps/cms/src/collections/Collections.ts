@@ -19,7 +19,6 @@ export const Collections: CollectionConfig = {
     admin: {
         // group: groups.catalog,
         useAsTitle: "title",
-
     },
     fields: [
         {
@@ -31,7 +30,7 @@ export const Collections: CollectionConfig = {
             name: "description",
             type: "text",
             required: true,
-            defaultValue: '',
+            defaultValue: "",
         },
 
         // RichTextEditor({
