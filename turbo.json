@@ -14,7 +14,20 @@
                 "PREVIEW_SECRET",
                 "NEXT_PUBLIC_STOREFRONT_URL",
                 "ADMIN_EMAIL",
-                "ADMIN_PASSWORD"
+                "ADMIN_PASSWORD",
+                "vyadove_POSTGRES_URL",
+                "vyadove_POSTGRES_USER",
+                "vyadove_POSTGRES_HOST",
+                "vyadove_SUPABASE_JWT_SECRET",
+                "vyadove_NEXT_PUBLIC_SUPABASE_ANON_KEY",
+                "vyadove_POSTGRES_PRISMA_URL",
+                "vyadove_POSTGRES_PASSWORD",
+                "vyadove_POSTGRES_DATABASE",
+                "vyadove_SUPABASE_URL",
+                "vyadove_NEXT_PUBLIC_SUPABASE_ANON_KEY",
+                "vyadove_NEXT_PUBLIC_SUPABASE_URL",
+                "vyadove_SUPABASE_SERVICE_ROLE_KEY",
+                "vyadove_POSTGRES_URL_NON_POOLING"
             ]
         },
         "dev": {
