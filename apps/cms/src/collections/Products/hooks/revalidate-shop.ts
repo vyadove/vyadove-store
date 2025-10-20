@@ -23,7 +23,7 @@ export const revalidateShop = async ({
         }
 
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_URL}/api/revalidate?secret=${secret}`,
+            `${process.env.NEXT_PUBLIC_STOREFRONT_URL}/api/revalidate?secret=${secret}`,
             {
                 method: "GET",
             }

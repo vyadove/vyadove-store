@@ -198,9 +198,9 @@ export const Products: CollectionConfig = {
                     name: "imageUrl",
                     type: "text",
                     admin: {
-                        disabled: true,
+                        disabled: false,
                     },
-                    label: "Image",
+                    label: "Image-URL",
                 },
                 {
                     name: "gallery",

@@ -10,13 +10,11 @@ import {
   TypographyH1,
   TypographyH3,
   TypographyH6,
-  TypographyMuted,
   TypographyP,
 } from "@ui/shadcn/typography";
 import { VyaLink } from "@ui/vya-link";
 
 import InvertedCornerMask from "@/components/inverted-corner-mask";
-import { ItemDescription } from "@/components/ui/item";
 
 import { getVariantImage } from "@/utils/get-variant-image";
 import { payloadSdk } from "@/utils/payload-sdk";
@@ -85,6 +83,11 @@ const ProductPreview = ({
     return getVariantImage(v);
   });
   const thumbnail = getVariantImage(variantWithImage as Product["variants"][0]);
+  // const thumbnailUrl = thumbnail ? thumbnail : variantWithImage?.imageUrl;
+
+  const thumbnailUrl = product.variants?.find((v) => {
+    return Boolean(v.imageUrl);
+  })?.imageUrl;
 
   return (
     <Link
@@ -110,20 +113,20 @@ const ProductPreview = ({
             br: { inverted: true, corners: [15, 15, 15] },
           }}
         >
-          <div className="">
-            {thumbnail && (
+          <div className="relative flex size-[300px] w-full items-start">
+            {thumbnailUrl && (
               <Image
                 alt={"model.name"}
-                className="w-full rounded-xl object-cover"
-                height={128}
-                src={thumbnail}
-                width={128}
+                className="w-full rounded-xl object-cover object-top"
+                fill
+                src={thumbnailUrl}
               />
             )}
           </div>
         </InvertedCornerMask>
       </div>
 
+      {/* -- PRODUCT META --- */}
       <div className="flex flex-1 flex-col gap-2 rounded-xl p-4 shadow-sm">
         <TypographyH3 className="line-clamp-1" title={product.title}>
           {product.title}

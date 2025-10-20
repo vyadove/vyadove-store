@@ -20,8 +20,11 @@ const nextConfig: NextConfig = {
       { hostname: "plus.unsplash.com" },
       { hostname: "d1wqzb5bdbcre6.cloudfront.net" },
       { hostname: "*.blob.vercel-storage.com" },
+      {hostname: "cf.cjdropshipping.com"},
+      {hostname: "cbu01.alicdn.com"},
+      {hostname: "oss-cf.cjdropshipping.com"},
+      {hostname: "pub-e0a548fa3e234baf8e41a8fd95bb8ad5.r2.dev"},
     ],
-    // formats: ["image/avif", "image/webp"],
   },
   transpilePackages: ["commerce-kit"],
   experimental: {
