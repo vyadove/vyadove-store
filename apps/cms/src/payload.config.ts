@@ -45,6 +45,19 @@ export default buildConfig({
         },
         suppressHydrationWarning: true,
         user: Users.slug,
+
+        meta: {
+            title: "Vyadove CMS",
+            titleSuffix: " - Vyadove CMS",
+
+            icons: [
+                {
+                    rel: 'icon',
+                    type: 'image/png',
+                    url: '/favicon-16x16.png',
+                },
+            ],
+        },
     },
     collections: [
         Orders,

@@ -36,7 +36,6 @@
                 "VYADOVE_POSTGRES_URL",
 
                 "ENABLE_EXPERIMENTAL_COREPACK",
-                "NEXT_PUBLIC_URL",
                 "YNS_ENDPOINT",
                 "YNS_TOKEN",
                 "SECRET",
