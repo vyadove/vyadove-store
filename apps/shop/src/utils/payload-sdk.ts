@@ -7,7 +7,7 @@ export const payloadSdk = new PayloadSDK<Config>({
   baseInit: {
     credentials: "include", // Add this line to include cookies
   },
-  baseURL: `${process.env.NEXT_PUBLIC_URL}/api`,
+  baseURL: `${process.env.NEXT_PUBLIC_SERVER_URL}/api`,
   // baseURL: `http://localhost:3000/api`,
   fetch: isBrowser
     ? (...args) => window.fetch(...args)

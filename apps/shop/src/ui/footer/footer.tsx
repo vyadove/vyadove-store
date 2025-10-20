@@ -59,7 +59,7 @@ export async function Footer() {
           tl: { inverted: true, corners: [20, 20, 20] },
         }}
       >
-        <div className="mx-auto flex w-full flex-col gap-8 p-6 pt-36 lg:p-16 lg:px-6">
+        <div className="mx-auto flex w-full flex-col gap-8 p-6 pt-36 md:p-20 ">
           <TypographyH2 className="mx-auto">
             “Vyadove — Gift Joy. Share Peace.”
           </TypographyH2>

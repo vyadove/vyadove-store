@@ -1,12 +1,9 @@
 import type { CollectionConfig } from "payload";
 
 import { admins, anyone } from "@/access/roles";
-import { description } from "@/fields/description";
 import { HandleField } from "@/fields/handle";
-
-import { groups } from "./groups";
 import { SeoField } from "@/fields/seo";
-import { RichTextEditor } from "@/fields/RichTextEditor/RichTextEditor";
+import { revalidateShop } from "@/collections/Products/hooks/revalidate-shop";
 
 export const Collections: CollectionConfig = {
     slug: "collections",
@@ -60,4 +57,8 @@ export const Collections: CollectionConfig = {
         },
         SeoField(),
     ],
+
+    hooks: {
+        afterChange: [revalidateShop],
+    },
 };

@@ -38,10 +38,11 @@ const HowItWorks = () => {
     <div className="mt-24 flex flex-col gap-8">
       <div>
         <TypographyH1 className="lg:text-4xl">How It Works</TypographyH1>
-        <TypographyMuted>
-          Empowering you to give unforgettable experiences with ease and
-          confidence.
-        </TypographyMuted>
+
+        <TypographyP className="text-muted-foreground max-w-xl">
+          Explore our diverse range of categories to find the perfect experience
+          that suits your interests and desires.
+        </TypographyP>
       </div>
 
       <div className="grid w-full gap-8 sm:grid-cols-2 md:grid-cols-3">
@@ -61,10 +62,14 @@ const HowItWorks = () => {
             }}
             key={index}
           >
-            <div className="flex flex-col items-start gap-2 px-10 pt-22 pb-10 sm:py-24 sm:pb-12">
-              <TypographyH3 className="text-accent">{step.title}</TypographyH3>
+            <div className="flex flex-col items-start gap-2 px-10 pt-22 pb-10 sm:pt-32 sm:pb-10">
+              <TypographyH3 className="text-accent font-bold">
+                {step.title}
+              </TypographyH3>
 
-              <TypographyP>{step.description}</TypographyP>
+              <TypographyP className="font-light">
+                {step.description}
+              </TypographyP>
             </div>
           </InvertedCornerMask>
         ))}

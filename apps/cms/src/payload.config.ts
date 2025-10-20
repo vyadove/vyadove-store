@@ -91,7 +91,7 @@ export default buildConfig({
 
         pool: {
             // connectionString: process.env.DATABASE_URI,
-            connectionString: process.env.VYADOVE_POSTGRES_URL,
+            connectionString: process.env.VYADOVE_NO_SSL_POSTGRES_URL,
             ssl: {
                 rejectUnauthorized: false, // Disables SSL certificate verification
             },

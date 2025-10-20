@@ -3,6 +3,7 @@
 import React, {
   type PropsWithChildren,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -79,7 +80,7 @@ const InvertedCornerMask = (props: PropsWithChildren<Props>) => {
     // setInvertedCorners(getInitialInvertedCornersValues());
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setPathCode(
       generatePath(setup, cornerRadius, invertedCorners, {
         x: borderWidth,
@@ -89,7 +90,7 @@ const InvertedCornerMask = (props: PropsWithChildren<Props>) => {
   }, [setup, cornerRadius, invertedCorners, borderWidth, props]);
 
   // ADJUST SIZE BASED ON CONTAINER
-  useEffect(() => {
+  useLayoutEffect(() => {
     // set the setup based on the container size
     if (!containerRef.current) return;
 
@@ -102,7 +103,7 @@ const InvertedCornerMask = (props: PropsWithChildren<Props>) => {
     });
   }, [props]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!cornerContentRef.current) return;
 
     const contentRect = cornerContentRef.current.getBoundingClientRect();

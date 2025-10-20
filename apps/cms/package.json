@@ -15,6 +15,7 @@
         "generate:types": "payload generate:types",
         "generate:schema": "npx  payload generate:db-schema",
         "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation npx  payload migrate:create",
+        "migrate": "cross-env NODE_OPTIONS=--no-deprecation npx  payload migrate",
         "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
         "lint:quiet": "cross-env NODE_OPTIONS=--no-deprecation next lint --quiet",
         "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
