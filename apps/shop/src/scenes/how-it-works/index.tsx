@@ -63,9 +63,13 @@ const HowItWorks = () => {
             key={index}
           >
             <div className="flex flex-col items-start gap-2 px-10 pt-22 pb-10 sm:pt-32 sm:pb-10">
-              <TypographyH3 className="text-accent font-bold">{step.title}</TypographyH3>
+              <TypographyH3 className="text-accent font-bold">
+                {step.title}
+              </TypographyH3>
 
-              <TypographyP className='font-light'>{step.description}</TypographyP>
+              <TypographyP className="font-light">
+                {step.description}
+              </TypographyP>
             </div>
           </InvertedCornerMask>
         ))}

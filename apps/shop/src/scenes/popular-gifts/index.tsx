@@ -7,7 +7,11 @@ import Link from "next/link";
 import type { Product } from "@shopnex/types";
 import { Button } from "@ui/shadcn/button";
 import {
-  TypographyH1, TypographyH3, TypographyH6, TypographyMuted, TypographyP,
+  TypographyH1,
+  TypographyH3,
+  TypographyH6,
+  TypographyMuted,
+  TypographyP,
 } from "@ui/shadcn/typography";
 import { VyaLink } from "@ui/vya-link";
 
@@ -121,13 +125,17 @@ const ProductPreview = ({
       </div>
 
       <div className="flex flex-1 flex-col gap-2 rounded-xl p-4 shadow-sm">
-        <TypographyH3 className="line-clamp-1" title={product.title}>{product.title}</TypographyH3>
+        <TypographyH3 className="line-clamp-1" title={product.title}>
+          {product.title}
+        </TypographyH3>
 
         <div className="itmes-center mt-auto flex gap-2">
           {/*<FaInfoCircle className="mt-1" />*/}
-          <TypographyP className='font-light'>{product.description}</TypographyP>
+          <TypographyP className="font-light">
+            {product.description}
+          </TypographyP>
 
-           {/*<ItemDescription className="flex-1 text-wrap">
+          {/*<ItemDescription className="flex-1 text-wrap">
             {product.description}
           </ItemDescription> */}
         </div>
