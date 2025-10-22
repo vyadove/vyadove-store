@@ -13,30 +13,59 @@ import VyaDoveLogo from "@/components/icons";
 import InvertedCornerMask from "@/components/inverted-corner-mask";
 
 import { getTranslations } from "@/i18n/server";
+import { Routes } from "@/store.routes";
+
+const pageLinks = [
+  {
+    label: "Home",
+    href: "/",
+  },
+  {
+    label: "Shop",
+    href: "/shop",
+  },
+  {
+    label: "About",
+    href: "/about",
+  },
+  {
+    label: "Collections",
+    href: "/shop",
+  },
+];
 
 const sections = [
-  {
+  /* {
     header: "Products",
     links: StoreConfig.categories.map(({ name, slug }) => ({
       label: name,
       href: `/category/${slug}`,
     })),
+  }, */
+  {
+    header: "Pages",
+    links: pageLinks,
   },
   {
-    header: "Support",
+    header: "Information",
     links: [
       {
-        label: "Features",
-        href: "https://yournextstore.com/#features",
+        label: "Terms and Conditions",
+        href: Routes.termsAndConditions,
+      },
+      {
+        label: "Privacy policy",
+        href: Routes.privacyPolicy,
+      },
+      {
+        label: "Support",
+        href: "/support",
       },
       {
         label: "Pricing",
-        href: "https://yournextstore.com/#pricing",
+        href: "/",
       },
-      {
-        label: "Contact Us",
-        href: "mailto:hi@yournextstore.com",
-      },
+
     ],
   },
 ];
@@ -94,15 +123,15 @@ export async function Footer() {
               </div>
             </div>
 
-            <nav className="grid grid-cols-2 gap-16">
+            <nav className="grid grid-cols-2 gap-4">
               {sections.map((section) => (
                 <section key={section.header}>
                   <TypographyH4 className="mb-2">{section.header}</TypographyH4>
-                  <ul className="grid gap-1" role="list">
+                  <ul className="grid gap-4" role="list">
                     {section.links.map((link) => (
                       <li key={link.label}>
                         <VyaLink
-                          className="underline-offset-4 hover:underline"
+                          className="font-light underline-offset-4 hover:underline"
                           href={link.href}
                         >
                           {link.label}

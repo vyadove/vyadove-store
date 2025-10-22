@@ -1,33 +1,33 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  # Define the PostgreSQL database service
-  postgres:
-    # Use the official PostgreSQL image
-    image: postgres:16-alpine
+    # Define the PostgreSQL database service
+    postgres:
+        # Use the official PostgreSQL image
+        image: postgis/postgis:latest # <--- Use the official PostGIS image
 
-    # Map the container port 5432 to the host machine's port 5432.
-    # This allows your local Node.js app (and WebStorm) to connect via localhost:5432.
-    ports:
-      - "5432:5432"
+        # Map the container port 5432 to the host machine's port 5432.
+        # This allows your local Node.js app (and WebStorm) to connect via localhost:5432.
+        ports:
+            - "5432:5432"
 
-    # Define environment variables for the database setup
-    environment:
-      # CRITICAL: Database name must match what your Payload CMS expects
-      POSTGRES_DB: ${DB_NAME:-payloadcms}
-      # CRITICAL: User name
-      POSTGRES_USER: ${DB_USER:-payload}
-      # CRITICAL: Password
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+        # Define environment variables for the database setup
+        environment:
+            # CRITICAL: Database name must match what your Payload CMS expects
+            POSTGRES_DB: ${DB_NAME:-payloadcms}
+            # CRITICAL: User name
+            POSTGRES_USER: ${DB_USER:-payload}
+            # CRITICAL: Password
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
 
-    # Map a volume to persist the database data
-    # This ensures your data is saved even if the container is stopped or restarted.
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+        # Map a volume to persist the database data
+        # This ensures your data is saved even if the container is stopped or restarted.
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
 
-    # Always restart the container if it stops
-    restart: always
+        # Always restart the container if it stops
+        restart: always
 
 # Define the volume used for data persistence
 volumes:
-  postgres_data:
+    postgres_data:
