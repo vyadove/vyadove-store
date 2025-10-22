@@ -5,18 +5,10 @@ import collections from "./collections.json";
 import globals from "./globals.json";
 import products from "./products.json";
 
-const seed = async () => {
+export const seed = async () => {
     const payload = await getPayload({ config });
 
-    console.log("seed payload : ", payload);
-
-    await payload.updateGlobal({
-        slug: "store-settings",
-        data: {
-            name: "ShopNex",
-            currency: "USD",
-        },
-    });
+    console.log("seeding payload :  --");
 
     const backgroundImage = await payload.create({
         collection: "media",
@@ -121,7 +113,7 @@ const seed = async () => {
     );
 };
 
-console.log("Seeding...");
-await seed();
-console.log("Seeding complete!");
-process.exit(0);
+// console.log("Seeding...");
+// await seed();
+// console.log("Seeding complete!");
+// process.exit(0);

@@ -74,6 +74,8 @@ export interface Config {
     campaigns: Campaign;
     media: Media;
     policies: Policy;
+    'privacy-policy-page': PrivacyPolicyPage;
+    'terms-and-conditions-page': TermsAndConditionsPage;
     'gift-cards': GiftCard;
     themes: Theme;
     carts: Cart;
@@ -105,6 +107,8 @@ export interface Config {
     campaigns: CampaignsSelect<false> | CampaignsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     policies: PoliciesSelect<false> | PoliciesSelect<true>;
+    'privacy-policy-page': PrivacyPolicyPageSelect<false> | PrivacyPolicyPageSelect<true>;
+    'terms-and-conditions-page': TermsAndConditionsPageSelect<false> | TermsAndConditionsPageSelect<true>;
     'gift-cards': GiftCardsSelect<false> | GiftCardsSelect<true>;
     themes: ThemesSelect<false> | ThemesSelect<true>;
     carts: CartsSelect<false> | CartsSelect<true>;
@@ -579,6 +583,30 @@ export interface Policy {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacy-policy-page".
+ */
+export interface PrivacyPolicyPage {
+  id: number;
+  title: string;
+  description?: string | null;
+  handle?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "terms-and-conditions-page".
+ */
+export interface TermsAndConditionsPage {
+  id: number;
+  title: string;
+  description?: string | null;
+  handle?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "gift-cards".
  */
 export interface GiftCard {
@@ -923,6 +951,14 @@ export interface PayloadLockedDocument {
         value: number | Policy;
       } | null)
     | ({
+        relationTo: 'privacy-policy-page';
+        value: number | PrivacyPolicyPage;
+      } | null)
+    | ({
+        relationTo: 'terms-and-conditions-page';
+        value: number | TermsAndConditionsPage;
+      } | null)
+    | ({
         relationTo: 'gift-cards';
         value: number | GiftCard;
       } | null)
@@ -1207,6 +1243,28 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "policies_select".
  */
 export interface PoliciesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  handle?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacy-policy-page_select".
+ */
+export interface PrivacyPolicyPageSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  handle?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "terms-and-conditions-page_select".
+ */
+export interface TermsAndConditionsPageSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   handle?: T;

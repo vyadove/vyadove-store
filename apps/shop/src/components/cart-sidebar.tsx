@@ -1,20 +1,54 @@
 "use client";
 
-import Image from "next/image";
+// import Image from "next/image";
 
-import { Minus, Plus, ShoppingBag, X } from "lucide-react";
+// import { Minus, Plus, ShoppingBag, X } from "lucide-react";
+import { Drawer } from "vaul";
 
 import { useCart } from "@/context/cart-context";
 
-import { formatMoney } from "@/lib/utils";
+// import { formatMoney } from "@/lib/utils";
 
 interface CartSidebarProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+export default function VaulDrawer() {
+  return (
+    <Drawer.Root direction="right">
+      {/*<Drawer.Trigger className="relative flex h-10 shrink-0 items-center justify-center gap-2 overflow-hidden rounded-full bg-white px-4 text-sm font-medium shadow-sm transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:text-white dark:hover:bg-[#1A1A19]">
+        Open Drawer
+      </Drawer.Trigger>*/}
+      <Drawer.Portal>
+        <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+        <Drawer.Content
+          className="fixed top-2 right-2 bottom-2 z-10 flex w-[310px] outline-none"
+          // The gap between the edge of the screen and the drawer is 8px in this case.
+          style={
+            { "--initial-transform": "calc(100% + 8px)" } as React.CSSProperties
+          }
+        >
+          <div className="flex h-full w-full grow flex-col rounded-[16px] bg-zinc-50 p-5">
+            <div className="mx-auto max-w-md">
+              <Drawer.Title className="mb-2 font-medium text-zinc-900">
+                It supports all directions.
+              </Drawer.Title>
+              <Drawer.Description className="mb-2 text-zinc-600">
+                This one specifically is not touching the edge of the screen,
+                but that&apos;s not required for a side drawer.
+              </Drawer.Description>
+            </div>
+          </div>
+        </Drawer.Content>
+      </Drawer.Portal>
+    </Drawer.Root>
+  );
+}
+
 export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
-  const { cart, itemCount, optimisticUpdate, optimisticRemove } = useCart();
+  const { cart, itemCount, optimisticUpdate, optimisticRemove, closeCart } =
+    useCart();
 
   async function handleUpdateQuantity(variantId: string, quantity: number) {
     try {
@@ -32,20 +66,51 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
     }
   }
 
-  if (!isOpen) return null;
-
   return (
+    <Drawer.Root direction="right" open={isOpen}>
+      {/*<Drawer.Trigger className="relative flex h-10 shrink-0 items-center justify-center gap-2 overflow-hidden rounded-full bg-white px-4 text-sm font-medium shadow-sm transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:text-white dark:hover:bg-[#1A1A19]">
+        Open Drawer
+      </Drawer.Trigger>*/}
+      <Drawer.Portal>
+        <Drawer.Overlay
+          className="fixed inset-0 z-90 bg-black/40"
+          onClick={closeCart}
+        />
+        <Drawer.Content
+          className="fixed top-2 right-2 bottom-2 z-95 flex w-[310px] outline-none"
+          // The gap between the edge of the screen and the drawer is 8px in this case.
+          style={
+            { "--initial-transform": "calc(100% + 8px)" } as React.CSSProperties
+          }
+        >
+          <div className="flex h-full w-full grow flex-col rounded-[16px] bg-zinc-50 p-5">
+            <div className="mx-auto max-w-md">
+              <Drawer.Title className="mb-2 font-medium text-zinc-900">
+                It supports all directions.
+              </Drawer.Title>
+              <Drawer.Description className="mb-2 text-zinc-600">
+                This one specifically is not touching the edge of the screen,
+                but that&apos;s not required for a side drawer.
+              </Drawer.Description>
+            </div>
+          </div>
+        </Drawer.Content>
+      </Drawer.Portal>
+    </Drawer.Root>
+  );
+
+  /* return (
     <>
-      {/* Overlay with blur */}
+      {/!* Overlay with blur *!/}
       <div
         className="fixed inset-0 z-40 h-screen w-screen bg-black/30 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
-      {/* Sidebar */}
+      {/!* Sidebar *!/}
       <div className="fixed top-0 right-0 z-50 h-screen w-96 max-w-full bg-white shadow-xl transition-transform">
         <div className="flex h-full flex-col">
-          {/* Header */}
+          {/!* Header *!/}
           <div className="flex items-center justify-between border-b p-4">
             <div className="flex items-center gap-2">
               <ShoppingBag className="h-5 w-5" />
@@ -60,7 +125,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
             </button>
           </div>
 
-          {/* Content */}
+          {/!* Content *!/}
           <div className="flex-1 overflow-y-auto">
             {!cart || !cart.items || cart.items.length === 0 ? (
               <div className="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
@@ -86,7 +151,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                       className="flex items-start gap-3 border-b pb-4"
                       key={item.id}
                     >
-                      {/* Product Image */}
+                      {/!* Product Image *!/}
                       <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-gray-100">
                         {product?.images?.[0] ? (
                           <Image
@@ -103,7 +168,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                         )}
                       </div>
 
-                      {/* Product Info */}
+                      {/!* Product Info *!/}
                       <div className="min-w-0 flex-1">
                         <h3 className="truncate text-sm font-medium text-gray-900">
                           {product?.name || `Product ${item.productId}`}
@@ -117,7 +182,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                         </p>
                       </div>
 
-                      {/* Quantity Controls */}
+                      {/!* Quantity Controls *!/}
                       <div className="flex flex-col items-end gap-2">
                         <button
                           aria-label="Remove item"
@@ -164,7 +229,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
             )}
           </div>
 
-          {/* Footer with Total */}
+          {/!* Footer with Total *!/}
           {cart && cart.items.length > 0 && (
             <div className="space-y-4 border-t p-4">
               <div className="flex items-center justify-between text-lg font-semibold">
@@ -185,5 +250,5 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
         </div>
       </div>
     </>
-  );
+  ); */
 }

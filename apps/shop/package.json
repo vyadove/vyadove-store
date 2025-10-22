@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "next dev --turbo --port 3020",
     "build": "next build",
+    "ci": "next build",
     "start": "next start",
     "lint": "next lint --max-warnings 0",
     "test": "bun test",

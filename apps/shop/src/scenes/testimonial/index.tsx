@@ -22,6 +22,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import InvertedCornerMask from "@/components/inverted-corner-mask";
 
+import { cn } from "@/lib/utils";
+
 import Person from "./img.png";
 import Person2 from "./img_1.png";
 import Person3 from "./img_2.png";
@@ -61,7 +63,11 @@ const Testimonial = () => {
 
   return (
     <InvertedCornerMask
-      className="bg-accent-foreground mt-24 w-full"
+      className={cn(
+        "mt-24 w-full",
+        "animate-gradient-xy flex w-full bg-linear-45 ",
+        "from-[rgba(243,224,214,1)] from-20%  to-[#2A4A3A]/30 bg-[length:140%_100%] ",
+      )}
       cornerContent={
         <div className="flex items-center justify-center gap-2 p-3 sm:p-6">
           <Button
@@ -101,7 +107,7 @@ const Testimonial = () => {
               delay: 2000,
             }}
             className="mySwiper max-w-full p-4 md:max-w-4xl"
-            effect={"fade"}
+            // effect={"fade"}
             grabCursor
             loop
             modules={[EffectFade]}
@@ -109,7 +115,7 @@ const Testimonial = () => {
           >
             {testimonials.map((customer, idx) => (
               <SwiperSlide className="p-4" key={idx}>
-                <div className="bg-accent-foreground flex flex-col items-center text-center">
+                <div className="flex flex-col items-center text-center">
                   {/* Avatar + Person */}
                   <div className="flex flex-col items-center">
                     <div className="size-24 overflow-hidden rounded-full shadow ring-2 ring-white">

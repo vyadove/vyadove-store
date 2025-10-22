@@ -887,6 +887,76 @@ export const policies = pgTable(
     })
 );
 
+export const privacy_policy_page = pgTable(
+    "privacy_policy_page",
+    {
+        id: serial("id").primaryKey(),
+        title: varchar("title").notNull(),
+        description: varchar("description"),
+        handle: varchar("handle"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+    },
+    (columns) => ({
+        privacy_policy_page_handle_idx: index(
+            "privacy_policy_page_handle_idx"
+        ).on(columns.handle),
+        privacy_policy_page_updated_at_idx: index(
+            "privacy_policy_page_updated_at_idx"
+        ).on(columns.updatedAt),
+        privacy_policy_page_created_at_idx: index(
+            "privacy_policy_page_created_at_idx"
+        ).on(columns.createdAt),
+    })
+);
+
+export const terms_and_conditions_page = pgTable(
+    "terms_and_conditions_page",
+    {
+        id: serial("id").primaryKey(),
+        title: varchar("title").notNull(),
+        description: varchar("description"),
+        handle: varchar("handle"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+    },
+    (columns) => ({
+        terms_and_conditions_page_handle_idx: index(
+            "terms_and_conditions_page_handle_idx"
+        ).on(columns.handle),
+        terms_and_conditions_page_updated_at_idx: index(
+            "terms_and_conditions_page_updated_at_idx"
+        ).on(columns.updatedAt),
+        terms_and_conditions_page_created_at_idx: index(
+            "terms_and_conditions_page_created_at_idx"
+        ).on(columns.createdAt),
+    })
+);
+
 export const gift_cards = pgTable(
     "gift_cards",
     {
@@ -1921,6 +1991,8 @@ export const payload_locked_documents_rels = pgTable(
         campaignsID: integer("campaigns_id"),
         mediaID: integer("media_id"),
         policiesID: integer("policies_id"),
+        "privacy-policy-pageID": integer("privacy_policy_page_id"),
+        "terms-and-conditions-pageID": integer("terms_and_conditions_page_id"),
         "gift-cardsID": integer("gift_cards_id"),
         themesID: integer("themes_id"),
         cartsID: integer("carts_id"),
@@ -1967,6 +2039,12 @@ export const payload_locked_documents_rels = pgTable(
         payload_locked_documents_rels_policies_id_idx: index(
             "payload_locked_documents_rels_policies_id_idx"
         ).on(columns.policiesID),
+        payload_locked_documents_rels_privacy_policy_page_id_idx: index(
+            "payload_locked_documents_rels_privacy_policy_page_id_idx"
+        ).on(columns["privacy-policy-pageID"]),
+        payload_locked_documents_rels_terms_and_conditions_page_id_idx: index(
+            "payload_locked_documents_rels_terms_and_conditions_page_id_idx"
+        ).on(columns["terms-and-conditions-pageID"]),
         payload_locked_documents_rels_gift_cards_id_idx: index(
             "payload_locked_documents_rels_gift_cards_id_idx"
         ).on(columns["gift-cardsID"]),
@@ -2048,6 +2126,16 @@ export const payload_locked_documents_rels = pgTable(
             columns: [columns["policiesID"]],
             foreignColumns: [policies.id],
             name: "payload_locked_documents_rels_policies_fk",
+        }).onDelete("cascade"),
+        "privacy-policy-pageIdFk": foreignKey({
+            columns: [columns["privacy-policy-pageID"]],
+            foreignColumns: [privacy_policy_page.id],
+            name: "payload_locked_documents_rels_privacy_policy_page_fk",
+        }).onDelete("cascade"),
+        "terms-and-conditions-pageIdFk": foreignKey({
+            columns: [columns["terms-and-conditions-pageID"]],
+            foreignColumns: [terms_and_conditions_page.id],
+            name: "payload_locked_documents_rels_terms_and_conditions_page_fk",
         }).onDelete("cascade"),
         "gift-cardsIdFk": foreignKey({
             columns: [columns["gift-cardsID"]],
@@ -2427,6 +2515,14 @@ export const relations_campaigns = relations(campaigns, ({ one, many }) => ({
 }));
 export const relations_media = relations(media, () => ({}));
 export const relations_policies = relations(policies, () => ({}));
+export const relations_privacy_policy_page = relations(
+    privacy_policy_page,
+    () => ({})
+);
+export const relations_terms_and_conditions_page = relations(
+    terms_and_conditions_page,
+    () => ({})
+);
 export const relations_gift_cards = relations(gift_cards, ({ one }) => ({
     customer: one(users, {
         fields: [gift_cards.customer],
@@ -2753,6 +2849,18 @@ export const relations_payload_locked_documents_rels = relations(
             references: [policies.id],
             relationName: "policies",
         }),
+        "privacy-policy-pageID": one(privacy_policy_page, {
+            fields: [payload_locked_documents_rels["privacy-policy-pageID"]],
+            references: [privacy_policy_page.id],
+            relationName: "privacy-policy-page",
+        }),
+        "terms-and-conditions-pageID": one(terms_and_conditions_page, {
+            fields: [
+                payload_locked_documents_rels["terms-and-conditions-pageID"],
+            ],
+            references: [terms_and_conditions_page.id],
+            relationName: "terms-and-conditions-page",
+        }),
         "gift-cardsID": one(gift_cards, {
             fields: [payload_locked_documents_rels["gift-cardsID"]],
             references: [gift_cards.id],
@@ -2898,6 +3006,8 @@ type DatabaseSchema = {
     campaigns_rels: typeof campaigns_rels;
     media: typeof media;
     policies: typeof policies;
+    privacy_policy_page: typeof privacy_policy_page;
+    terms_and_conditions_page: typeof terms_and_conditions_page;
     gift_cards: typeof gift_cards;
     themes_blocks_builder_io: typeof themes_blocks_builder_io;
     themes_blocks_custom_storefront_block: typeof themes_blocks_custom_storefront_block;
@@ -2951,6 +3061,8 @@ type DatabaseSchema = {
     relations_campaigns: typeof relations_campaigns;
     relations_media: typeof relations_media;
     relations_policies: typeof relations_policies;
+    relations_privacy_policy_page: typeof relations_privacy_policy_page;
+    relations_terms_and_conditions_page: typeof relations_terms_and_conditions_page;
     relations_gift_cards: typeof relations_gift_cards;
     relations_themes_blocks_builder_io: typeof relations_themes_blocks_builder_io;
     relations_themes_blocks_custom_storefront_block: typeof relations_themes_blocks_custom_storefront_block;

@@ -112,6 +112,46 @@ const DrawerDescription = React.forwardRef<
 
 DrawerDescription.displayName = DrawerPrimitive.Description.displayName;
 
+export default function VaulDrawer(
+
+  props: React.ComponentProps<typeof DrawerPrimitive.Root> & {
+    shouldScaleBackground?: boolean;
+    title?: string;
+    description?: string;
+  }
+
+) {
+  return (
+    <DrawerPrimitive.Root direction="right">
+      <DrawerPrimitive.Trigger className="relative flex h-10 shrink-0 items-center justify-center gap-2 overflow-hidden rounded-full bg-white px-4 text-sm font-medium shadow-sm transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:text-white dark:hover:bg-[#1A1A19]">
+        Open Drawer
+      </DrawerPrimitive.Trigger>
+      <DrawerPrimitive.Portal>
+        <DrawerPrimitive.Overlay className="fixed inset-0 bg-black/40" />
+        <DrawerPrimitive.Content
+          className="fixed top-2 right-2 bottom-2 z-10 flex w-[310px] outline-none"
+          // The gap between the edge of the screen and the drawer is 8px in this case.
+          style={
+            { "--initial-transform": "calc(100% + 8px)" } as React.CSSProperties
+          }
+        >
+          <div className="flex h-full w-full grow flex-col rounded-[16px] bg-zinc-50 p-5">
+            <div className="mx-auto max-w-md">
+              <DrawerPrimitive.Title className="mb-2 font-medium text-zinc-900">
+                It supports all directions.
+              </DrawerPrimitive.Title>
+              <DrawerPrimitive.Description className="mb-2 text-zinc-600">
+                This one specifically is not touching the edge of the screen,
+                but that&apos;s not required for a side drawer.
+              </DrawerPrimitive.Description>
+            </div>
+          </div>
+        </DrawerPrimitive.Content>
+      </DrawerPrimitive.Portal>
+    </DrawerPrimitive.Root>
+  );
+}
+
 export {
   Drawer,
   DrawerPortal,
