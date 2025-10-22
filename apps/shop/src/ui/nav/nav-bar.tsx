@@ -3,24 +3,29 @@
 import type { PropsWithChildren } from "react";
 import React from "react";
 
+
+
 import Link from "next/link";
 
+
+
+import { Routes } from "@/store.routes";
 import { Button } from "@ui/shadcn/button";
 import { Item } from "@ui/shadcn/item";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@ui/shadcn/navigation-menu";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@ui/shadcn/navigation-menu";
 import { TypographyP } from "@ui/shadcn/typography";
 import { ChevronDownIcon } from "lucide-react";
 import type { Transition, Variants } from "motion";
 import { motion } from "motion/react";
 
+
+
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
+
+
+
+
 
 const transition: Transition = {
   duration: 0.6,
@@ -152,6 +157,9 @@ const NavMenuTrigger = ({
 };
 
 function NavBar() {
+
+  const pathName = usePathname();
+
   return (
     <NavigationMenu className="hidden md:block " viewport={false}>
       <NavigationMenuList className="flex items-center">
@@ -206,9 +214,14 @@ function NavBar() {
         </NavigationMenuItem>
 
         <NavigationMenuItem className="group/item">
-          <div className="hover:text-accent hover:bg-accent-foreground flex items-center overflow-hidden rounded-md border-none px-3 py-1 shadow-none">
+          <div className={
+            cn(
+              "hover:text-accent hover:bg-accent-foreground flex items-center overflow-hidden rounded-md border-none px-3 py-1 shadow-none",
+              pathName === Routes.support && "text-accent bg-accent-foreground"
+            )
+          }>
             <AnimateOnHoverText className="group-hover/item:-translate-y-full">
-              <Link href="/apps/shop/public">Contact</Link>
+              <Link href={Routes.support}>Support {}</Link>
             </AnimateOnHoverText>
           </div>
         </NavigationMenuItem>

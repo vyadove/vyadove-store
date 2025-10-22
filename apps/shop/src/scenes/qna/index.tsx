@@ -61,6 +61,62 @@ const qnas = [
   },
 ];
 
+export const QnaAccordion = () => {
+  return (
+    <Accordion
+      className="flex w-full flex-col gap-6"
+      collapsible
+      defaultValue={qnas[0]?.question}
+      type="single"
+    >
+      {qnas.map((qna, idx) => (
+        <AccordionItem
+          className="group w-full cursor-pointer border-none"
+          key={idx}
+          value={qna.question}
+        >
+          <InvertedCornerMask
+            className={cn(
+              "animate-gradient-xy flex w-full bg-linear-45 ",
+              // "from-[rgba(243,224,214,1)] from-20%  to-[#2A4A3A]/30 bg-[length:140%_100%] ",
+              "bg-accent-foreground/70",
+            )}
+            cornerContent={
+              <div
+                className={cn(
+                  "flex items-center justify-center gap-4 rounded-full p-2",
+                  " group-data-[state=open]:rotate-180 ease-in-out duration-250",
+                )}
+              >
+                <ChevronDown className="text-xl sm:text-2xl" />
+              </div>
+            }
+            cornersRadius={15}
+            invertedCorners={{
+              tr: { inverted: true, corners: [15, 15, 15] },
+            }}
+            key={idx}
+          >
+            <div className="w-full">
+              <AccordionTrigger
+                className="w-full cursor-pointer p-6"
+                hideIcon
+              >
+                <TypographyH4>{qna.question}</TypographyH4>
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col gap-4 px-6 pb-6">
+                <TypographyP className="text-muted-foreground leading-6 md:text-[.95rem]">
+                  {qna.answer}
+                </TypographyP>
+              </AccordionContent>
+            </div>
+          </InvertedCornerMask>
+        </AccordionItem>
+      ))}
+    </Accordion>
+  );
+}
+
 export function QnAs() {
   return (
     <div className="mx-auto mt-24 mb-36 flex max-w-2xl flex-col gap-8">
@@ -76,57 +132,7 @@ export function QnAs() {
         </TypographyP>
       </div>
 
-      <Accordion
-        className="flex w-full flex-col gap-6"
-        collapsible
-        defaultValue={qnas[0]?.question}
-        type="single"
-      >
-        {qnas.map((qna, idx) => (
-          <AccordionItem
-            className="group w-full cursor-pointer border-none"
-            key={idx}
-            value={qna.question}
-          >
-            <InvertedCornerMask
-              className={cn(
-                "animate-gradient-xy flex w-full bg-linear-45 ",
-                // "from-[rgba(243,224,214,1)] from-20%  to-[#2A4A3A]/30 bg-[length:140%_100%] ",
-                "bg-accent-foreground/70",
-              )}
-              cornerContent={
-                <div
-                  className={cn(
-                    "flex items-center justify-center gap-4 rounded-full p-2",
-                    " group-data-[state=open]:rotate-180 ease-in-out duration-250",
-                  )}
-                >
-                  <ChevronDown className="text-xl sm:text-2xl" />
-                </div>
-              }
-              cornersRadius={15}
-              invertedCorners={{
-                tr: { inverted: true, corners: [15, 15, 15] },
-              }}
-              key={idx}
-            >
-              <div className="w-full">
-                <AccordionTrigger
-                  className="w-full cursor-pointer p-6"
-                  hideIcon
-                >
-                  <TypographyH4>{qna.question}</TypographyH4>
-                </AccordionTrigger>
-                <AccordionContent className="flex flex-col gap-4 px-6 pb-6">
-                  <TypographyP className="text-muted-foreground leading-6 md:text-[.95rem]">
-                    {qna.answer}
-                  </TypographyP>
-                </AccordionContent>
-              </div>
-            </InvertedCornerMask>
-          </AccordionItem>
-        ))}
-      </Accordion>
+      <QnaAccordion/>
     </div>
   );
 }

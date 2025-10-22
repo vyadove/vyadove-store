@@ -26,8 +26,8 @@ const AppHero = ({ children, containerProps }: PropsWithChildren<Props>) => {
       }}
       {...containerProps}
       className={cn(
-        "animate-gradient-xy flex w-full bg-linear-45 ",
-        "from-[rgba(243,224,214,1)] from-20%  to-[#2A4A3A]/30 bg-[length:140%_100%] ",
+        "animate-gradient-xy flex w-full bg-linear-95 ",
+        "from-[rgba(243,224,214,1)] -from-10%  to-accent-foreground bg-[length:100%_100%] ",
         containerProps?.className,
       )}
     >

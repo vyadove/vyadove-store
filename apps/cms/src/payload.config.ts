@@ -41,6 +41,7 @@ import { syncPlugin } from "./collections/Plugins/utils/sync-plugin";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { seed } from "@/seed";
 import { admins, checkRole } from "@/access/roles";
+import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -118,6 +119,7 @@ export default buildConfig({
     db: postgresAdapter({
         // Postgres-specific arguments go here.
         // `pool` is required.
+        prodMigrations: migrations,
 
         pool: {
             // connectionString: process.env.DATABASE_URI,
