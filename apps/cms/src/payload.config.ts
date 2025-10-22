@@ -46,6 +46,8 @@ import { migrations } from './migrations'
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
+console.log('process.env.VYADOVE_NO_SSL_POSTGRES_URL ----------------------------- : ', process.env.VYADOVE_NO_SSL_POSTGRES_URL);
+
 export default buildConfig({
     routes: {
         admin: "/",
@@ -116,11 +118,13 @@ export default buildConfig({
     //     },
     // }),
 
+    debug: true,
+
     db: postgresAdapter({
         // Postgres-specific arguments go here.
         // `pool` is required.
         prodMigrations: migrations,
-
+        logger: true,
         pool: {
             // connectionString: process.env.DATABASE_URI,
             connectionString: process.env.VYADOVE_NO_SSL_POSTGRES_URL,
