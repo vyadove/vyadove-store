@@ -5,7 +5,8 @@ import React from "react";
 
 import Link from "next/link";
 
-import { Button } from "@/ui/shadcn/button";
+import { Button } from "@ui/shadcn/button";
+import { Item } from "@ui/shadcn/item";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -115,11 +116,11 @@ const AnimateOnHoverText = ({
       whileHover="hover"
       {...rest}
       className={cn(
-        "relative inline-block cursor-pointer transition-transform duration-300 ease-[cubic-bezier(0.6,0.01,0,0.9)] group-hover/trigger:-translate-y-full",
-        rest.className,
+        "h-full relative inline-block cursor-pointer transition-transform duration-300 ease-[cubic-bezier(0.6,0.01,0,0.9)] group-hover/trigger:-translate-y-full",
+        rest?.className,
       )}
     >
-      <TypographyP className="font-light">{children}</TypographyP>
+      <TypographyP className="">{children}</TypographyP>
 
       <TypographyP className="absolute hidden font-light md:block">
         {children}
@@ -128,20 +129,24 @@ const AnimateOnHoverText = ({
   );
 };
 
-const NavMenuTrigger = ({ children }: React.PropsWithChildren) => {
+const NavMenuTrigger = ({
+  children,
+  ...props
+}: React.PropsWithChildren & {
+  hideIcon?: boolean;
+}) => {
   return (
     <NavigationMenuTrigger className="group/trigger" hideIcon>
-      <Button
-        className="hover:text-accent hover:bg-accent-foreground overflow-hidden rounded-md border-none shadow-none"
-        variant="outline"
-      >
-        <AnimateOnHoverText>{children}</AnimateOnHoverText>
+      <div className="hover:text-accent hover:bg-accent-foreground flex items-center overflow-hidden rounded-md border-none px-3 py-1 shadow-none">
+        <AnimateOnHoverText className="">{children}</AnimateOnHoverText>
 
-        <ChevronDownIcon
-          aria-hidden="true"
-          className="relative top-[1px] ml-1 size-3 transition duration-300 group-data-[state=open]:rotate-180"
-        />
-      </Button>
+        {!props?.hideIcon && (
+          <ChevronDownIcon
+            aria-hidden="true"
+            className="relative top-[1px] ml-1 size-3 transition duration-300 group-data-[state=open]:rotate-180"
+          />
+        )}
+      </div>
     </NavigationMenuTrigger>
   );
 };
@@ -159,7 +164,7 @@ function NavBar() {
                 <NavigationMenuLink asChild>
                   <Link
                     className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md"
-                    href="/"
+                    href="/apps/shop/public"
                   >
                     <div className="mt-4 mb-2 text-lg font-medium">
                       shadcn/ui
@@ -193,25 +198,19 @@ function NavBar() {
         </NavigationMenuItem>
 
         <NavigationMenuItem className="group/item">
-          <Button
-            className="hover:text-accent hover:bg-accent-foreground overflow-hidden rounded-md border-none shadow-none"
-            variant="outline"
-          >
+          <div className="hover:text-accent hover:bg-accent-foreground flex items-center overflow-hidden rounded-md border-none px-3 py-1 shadow-none">
             <AnimateOnHoverText className="group-hover/item:-translate-y-full">
-              <Link href="/">About</Link>
+              <Link href="/apps/shop/public">About</Link>
             </AnimateOnHoverText>
-          </Button>
+          </div>
         </NavigationMenuItem>
 
         <NavigationMenuItem className="group/item">
-          <Button
-            className="hover:text-accent hover:bg-accent-foreground overflow-hidden rounded-md border-none shadow-none"
-            variant="outline"
-          >
+          <div className="hover:text-accent hover:bg-accent-foreground flex items-center overflow-hidden rounded-md border-none px-3 py-1 shadow-none">
             <AnimateOnHoverText className="group-hover/item:-translate-y-full">
-              <Link href="/">Contact</Link>
+              <Link href="/apps/shop/public">Contact</Link>
             </AnimateOnHoverText>
-          </Button>
+          </div>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>

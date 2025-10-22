@@ -8,6 +8,7 @@ import { accountToWebsiteJsonLd, JsonLd } from "@/ui/json-ld";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { CartProvider } from "@/context/cart-context";
+import { Nav } from "@ui/nav/nav";
 
 export const metadata: Metadata = {
   title: {
@@ -35,6 +36,8 @@ export default async function StoreLayout({
   return (
     <CartProvider>
       <TooltipProvider>
+        <Nav/>
+
         <main className="mx-auto flex w-full max-w-[var(--app-width)] flex-1 flex-col px-4 pt-4 pb-6 sm:px-6 lg:px-8">
           {children}
         </main>

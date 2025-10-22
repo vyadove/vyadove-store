@@ -20,12 +20,27 @@ import StoreSettings from "./globals/StoreSettings";
 import { plugins } from "./plugins";
 import { Themes } from "./collections/Themes/Themes";
 import { CheckoutSessions } from "./collections/CheckoutSessions/CheckoutSessions";
-import { HeroPage } from "./collections/pages/Hero";
-import { FooterPage } from "./collections/pages/Footer";
+import {
+    FooterPage,
+} from "./collections/pages/Footer";
+
+import {
+    HeroPage,
+} from "./collections/pages/Hero";
+
+import {
+    TermsAndCollectionsPage
+} from "./collections/pages/TermsAndConditions";
+
+import {
+    PrivacyPolicyPage
+} from "./collections/pages/privacy-policy";
 import { Campaigns } from "./collections/Campaigns/Campaigns";
 import { Plugins } from "./collections/Plugins/Plugins";
 import { syncPlugin } from "./collections/Plugins/utils/sync-plugin";
 import { postgresAdapter } from "@payloadcms/db-postgres";
+import { seed } from "@/seed";
+import { admins, checkRole } from "@/access/roles";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -45,6 +60,19 @@ export default buildConfig({
         },
         suppressHydrationWarning: true,
         user: Users.slug,
+
+        meta: {
+            title: "Vyadove CMS",
+            titleSuffix: " - Vyadove CMS",
+
+            icons: [
+                {
+                    rel: "icon",
+                    type: "image/png",
+                    url: "/favicon-16x16.png",
+                },
+            ],
+        },
     },
     collections: [
         Orders,
@@ -54,6 +82,8 @@ export default buildConfig({
         Campaigns,
         Media,
         Policies,
+        PrivacyPolicyPage,
+        TermsAndCollectionsPage,
         GiftCards,
         Themes,
         Carts,
@@ -106,6 +136,25 @@ export default buildConfig({
             },
             method: "get",
             path: "/healthz",
+        },
+        {
+            handler: async (req) => {
+                if (!checkRole(["admin"], req?.user)) {
+                    return Response.json(
+                        { status: "UNAUTHORIZED" },
+                        { status: 403 }
+                    );
+                }
+
+                try {
+                    await seed();
+                    return Response.json({ status: "SEED OK" });
+                } catch (error) {
+                    return Response.json({ status: "ERROR", error });
+                }
+            },
+            method: "get",
+            path: "/seed",
         },
     ],
     plugins,

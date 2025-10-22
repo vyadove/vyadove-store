@@ -2,16 +2,18 @@
 
 import React, {
   type PropsWithChildren,
-  useEffect,
   useLayoutEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
+import { useMeasure } from "react-use";
 
+import { motion } from "motion/react";
 import { twMerge } from "tailwind-merge";
 
 import { generatePath } from "@/components/inverted-corner-mask/utils";
+
+import { cn } from "@/lib/utils";
 
 export const DEFAULT_SETUP = {
   width: 200,
@@ -59,9 +61,8 @@ const InvertedCornerMask = (props: PropsWithChildren<Props>) => {
   const [borderWidth] = useState(0);
   const [pathCode, setPathCode] = useState("");
 
-  const pathRef = useRef(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const cornerContentRef = useRef<HTMLDivElement>(null);
+  const [ref, measure] = useMeasure<HTMLDivElement>();
+  const [cornerContentRef, cornerContentMeasure] = useMeasure<HTMLDivElement>();
 
   const roundedCorner = useMemo(() => {
     const invertedCornerKey = Object.keys(props.invertedCorners).find(
@@ -73,40 +74,8 @@ const InvertedCornerMask = (props: PropsWithChildren<Props>) => {
     return invertedCornerKey as CornerKey;
   }, [props.invertedCorners]);
 
-  useEffect(() => {
-    if (!location.search) return;
-
-    // setCornerRadius(getInitialCornerRadius());
-    // setInvertedCorners(getInitialInvertedCornersValues());
-  }, []);
-
+  // CORNER CONTENT RADIUS
   useLayoutEffect(() => {
-    setPathCode(
-      generatePath(setup, cornerRadius, invertedCorners, {
-        x: borderWidth,
-        y: borderWidth,
-      }),
-    );
-  }, [setup, cornerRadius, invertedCorners, borderWidth, props]);
-
-  // ADJUST SIZE BASED ON CONTAINER
-  useLayoutEffect(() => {
-    // set the setup based on the container size
-    if (!containerRef.current) return;
-
-    const { width, height } = containerRef.current.getBoundingClientRect();
-
-    setSetup({
-      width: width - DEFAULT_BORDER_WIDTH,
-      height: height - DEFAULT_BORDER_WIDTH,
-      lockAspectRatio: 2,
-    });
-  }, [props]);
-
-  useLayoutEffect(() => {
-    if (!cornerContentRef.current) return;
-
-    const contentRect = cornerContentRef.current.getBoundingClientRect();
     const invertedCornerKey = (
       Object.keys(props.invertedCorners) as CornerKey[]
     )
@@ -117,8 +86,8 @@ const InvertedCornerMask = (props: PropsWithChildren<Props>) => {
         return {
           [key]: {
             ...DEFAULT_INVERTED_CORNERS[key as keyof InvertedCorners],
-            width: contentRect.width,
-            height: contentRect.height,
+            width: cornerContentMeasure.width,
+            height: cornerContentMeasure.height,
             roundness: props.cornersRadius,
             roundedContent:
               props.invertedCorners[key as keyof InvertedCorners]
@@ -139,15 +108,34 @@ const InvertedCornerMask = (props: PropsWithChildren<Props>) => {
     };
 
     setInvertedCorners(newInvertedCorners);
-  }, [props]);
+  }, [props, cornerContentMeasure]);
+
+  useLayoutEffect(() => {
+    setPathCode(
+      generatePath(
+        {
+          width: measure?.width - DEFAULT_BORDER_WIDTH,
+          height: measure?.height - DEFAULT_BORDER_WIDTH,
+          lockAspectRatio: 2,
+        },
+        cornerRadius,
+        invertedCorners,
+        {
+          x: borderWidth,
+          y: borderWidth,
+        },
+      ),
+    );
+  }, [setup, cornerRadius, invertedCorners, borderWidth, props, measure]);
 
   return (
     <div
-      className={twMerge("relative", props.containerProps?.className)}
-      ref={containerRef}
+      ref={ref}
+      {...props.containerProps}
+      className={cn("relative", props.containerProps?.className)}
     >
       <div
-        className={twMerge(
+        className={cn(
           "absolute z-20",
           roundedCorner === "tr" &&
             `top-0 right-0 rounded-bl-[${props.cornersRadius}px]`,
@@ -163,36 +151,15 @@ const InvertedCornerMask = (props: PropsWithChildren<Props>) => {
         {props?.cornerContent || <div className="size-8" />}
       </div>
 
-      {/*<rect width="700" height="700" fill="url(#ffflux-gradient)" filter="url(#ffflux-filter)"></rect>*/}
-      <div
-        className={twMerge("bg-green-50", props.className)}
+      <motion.div
+        className={cn("bg-green-50", props.className)}
+        // ref={ref as any}
         style={{
           clipPath: 'path("' + pathCode + '")',
         }}
       >
         {props?.children}
-      </div>
-
-      {/*  --- SVG MASK --- */}
-      <svg
-        className="absolute -z-10 hidden h-full w-full overflow-visible"
-        height="100%"
-        id="preview"
-        viewBox={`0 0 ${setup.width + borderWidth * 2} ${setup.height + borderWidth * 2}`}
-        xmlns="http://www.w3.org/2000/svg"
-        width="100%"
-        // fill={backgroundColor}
-        {...props?.maskProps}
-      >
-        {/*<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 700 700" width="700" height="700"></svg>*/}
-
-        <path
-          d={pathCode}
-          ref={pathRef}
-          // fill="url(#ffflux-gradient)"
-          // filter="url(#ffflux-filter)"
-        />
-      </svg>
+      </motion.div>
     </div>
   );
 };

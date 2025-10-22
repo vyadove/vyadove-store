@@ -6,7 +6,7 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+        "build": "cross-env NODE_OPTIONS=--no-deprecation payload migrate && next build",
         "ci": "cross-env NODE_OPTIONS=--no-deprecation payload migrate && next build",
         "dev": "cross-env NODE_OPTIONS=\"${NODE_OPTIONS} --no-deprecation\" next dev",
         "db:seed": "cross-env PAYLOAD_SECRET=0c2661e8291dd55114c7e89f DATABASE_URI=file:./payload-tut-2.db  tsx ./src/seed",
@@ -14,7 +14,7 @@
         "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
         "generate:types": "payload generate:types",
         "generate:schema": "npx  payload generate:db-schema",
-        "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation npx  payload migrate:create",
+        "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation pnpm run generate:types && pnpm run generate:schema && npx payload migrate:create",
         "migrate": "cross-env NODE_OPTIONS=--no-deprecation npx  payload migrate",
         "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
         "lint:quiet": "cross-env NODE_OPTIONS=--no-deprecation next lint --quiet",
@@ -76,6 +76,7 @@
         "@types/js-cookie": "^3.0.6",
         "@types/pretty": "^2.0.3",
         "@types/stripe": "^8.0.417",
+        "dotenv": "^17.2.1",
         "tsx": "^4.20.5",
         "tw-animate-css": "^1.3.4"
     }

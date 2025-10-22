@@ -5,6 +5,7 @@ const nextConfig = {
     images: {
         domains: [
             "next.medusajs.com",
+            "images.unsplash.com",
             "plus.unsplash.com",
             "medusa-server-testing.s3.us-east-1.amazonaws.com",
             "cf.cjdropshipping.com",

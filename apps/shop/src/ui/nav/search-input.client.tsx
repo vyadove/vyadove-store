@@ -44,6 +44,9 @@ export const SearchInput = ({ placeholder }: { placeholder: string }) => {
   const [_isQueryPending, debouncedQuery] = useDebouncedValue(query, 100);
 
   useEffect(() => {
+
+    if (!query) return
+
     router.prefetch(`/search?q=${encodeURIComponent(query)}`);
   }, [query, router]);
 
