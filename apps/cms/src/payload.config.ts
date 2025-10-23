@@ -121,8 +121,6 @@ export default buildConfig({
     debug: true,
 
     db: postgresAdapter({
-        // Postgres-specific arguments go here.
-        // `pool` is required.
         // prodMigrations: migrations,
         // logger: true,
 
