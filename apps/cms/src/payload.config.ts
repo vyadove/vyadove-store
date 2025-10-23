@@ -121,7 +121,7 @@ export default buildConfig({
     debug: true,
 
     db: postgresAdapter({
-        // prodMigrations: migrations,
+        prodMigrations: migrations,
         // logger: true,
 
         pool: {
