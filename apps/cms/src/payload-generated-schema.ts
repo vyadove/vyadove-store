@@ -892,6 +892,7 @@ export const privacy_policy_page = pgTable(
     {
         id: serial("id").primaryKey(),
         title: varchar("title").notNull(),
+        temp_desc: varchar("temp_desc"),
         description: varchar("description"),
         handle: varchar("handle"),
         updatedAt: timestamp("updated_at", {

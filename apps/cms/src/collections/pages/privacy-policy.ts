@@ -25,6 +25,10 @@ export const PrivacyPolicyPage: CollectionConfig = {
             type: "text",
             required: true,
         },
+        {
+            name: "temp_desc",
+            type: "text",
+        },
         RichTextEditor({
             name: "description",
             label: "Description",

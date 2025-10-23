@@ -588,6 +588,7 @@ export interface Policy {
 export interface PrivacyPolicyPage {
   id: number;
   title: string;
+  temp_desc?: string | null;
   description?: string | null;
   handle?: string | null;
   updatedAt: string;
@@ -1255,6 +1256,7 @@ export interface PoliciesSelect<T extends boolean = true> {
  */
 export interface PrivacyPolicyPageSelect<T extends boolean = true> {
   title?: T;
+  temp_desc?: T;
   description?: T;
   handle?: T;
   updatedAt?: T;
