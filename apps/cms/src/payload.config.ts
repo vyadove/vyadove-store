@@ -123,8 +123,8 @@ export default buildConfig({
     db: postgresAdapter({
         // Postgres-specific arguments go here.
         // `pool` is required.
-        prodMigrations: migrations,
-        logger: true,
+        // prodMigrations: migrations,
+        // logger: true,
         pool: {
             // connectionString: process.env.DATABASE_URI,
             connectionString: process.env.VYADOVE_NO_SSL_POSTGRES_URL,
