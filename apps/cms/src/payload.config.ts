@@ -46,7 +46,7 @@ import { migrations } from './migrations'
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-console.log('process.env.VYADOVE_NO_SSL_POSTGRES_URL ----------------------------- : ', process.env.VYADOVE_NO_SSL_POSTGRES_URL);
+console.log('process.env.VYADOVE_NO_SSL_POSTGRES_URL ----------------------------- : ', process.env.DATABASE_URL);
 
 export default buildConfig({
     routes: {
@@ -125,9 +125,11 @@ export default buildConfig({
         // `pool` is required.
         // prodMigrations: migrations,
         // logger: true,
+
         pool: {
+
             // connectionString: process.env.DATABASE_URI,
-            connectionString: process.env.VYADOVE_NO_SSL_POSTGRES_URL,
+            connectionString: process.env.DATABASE_URL,
             ssl: {
                 rejectUnauthorized: false, // Disables SSL certificate verification
             },
