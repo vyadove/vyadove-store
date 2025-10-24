@@ -73,14 +73,70 @@ const sofiaPro = localFont({
   variable: "--sofia-pro",
 });
 
-export const generateMetadata = async (): Promise<Metadata> => {
-  const t = await getTranslations("Global.metadata");
+const generateMeta = ({
+  title,
+  description,
+}: {
+  title?: string;
+  description?: string;
+}) => {
+  const siteUrl = publicUrl;
 
   return {
-    title: t("title"),
-    description: t("description"),
-    metadataBase: new URL(publicUrl),
-  };
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: "Vyadove - ",
+      template: `%s | Vyadove`,
+    },
+    description: "Gift Joy, Share Peace,  Celebrate Life - Vyadove",
+    openGraph: {
+      title: "Vyadove - ",
+      description: "Gift Joy, Share Peace,  Celebrate Life - Vyadove",
+      url: siteUrl,
+      siteName: "Vyadove",
+      images: [
+        {
+          url: `${siteUrl}/opengraph-image.png`,
+          width: 1200,
+          height: 630,
+          alt: "Vyadove - Gift Joy, Share Peace,  Celebrate Life - Vyadove",
+        },
+      ],
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Vyadove - Gift Joy, Share Peace,  Celebrate Life - Vyadove",
+      description: "Gift Joy, Share Peace,  Celebrate Life - Vyadove",
+      images: [`${siteUrl}/opengraph-image.png`],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    icons: {
+      icon: "/favicon.ico",
+      shortcut: "/favicon-16x16.png",
+      apple: "/apple-touch-icon.png",
+    },
+    manifest: `${siteUrl}/site.webmanifest`,
+  } satisfies Metadata;
+};
+
+export const generateMetadata = async (): Promise<Metadata> => {
+
+  // todo use this for i8n
+  const t = await getTranslations("Global.metadata");
+
+  return generateMeta({});
 };
 
 export default async function RootLayout({
@@ -90,7 +146,7 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html className={`h-full antialiased ${sofiaPro.variable}  `} lang={locale}>
+    <html className={`h-full antialiased ${sofiaPro.className}  `} lang={locale}>
       <body className="flex min-h-full flex-col">
         <IntlClientProvider locale={locale} messages={messages}>
           <div

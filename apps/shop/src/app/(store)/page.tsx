@@ -8,9 +8,9 @@ import { PopularGifts } from "@/scenes/popular-gifts";
 import { QnAs } from "@/scenes/qna";
 import Testimonial from "@/scenes/testimonial";
 
-export const metadata: Metadata = {
-  alternates: { canonical: publicUrl },
-};
+// export const metadata: Metadata = {
+//   alternates: { canonical: publicUrl },
+// };
 
 export default async function Home() {
   return (

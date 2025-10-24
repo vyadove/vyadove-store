@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import {
   SearchInput,
   SearchInputPlaceholder,
-} from "@/ui/nav/search-input.client";
+} from "@ui/nav/mobile/search-input.client";
 import { SearchIcon } from "lucide-react";
 
 import { getTranslations } from "@/i18n/server";

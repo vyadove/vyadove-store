@@ -9,7 +9,10 @@ import { Button } from "@ui/shadcn/button";
 import {
   TypographyH1,
   TypographyH3,
+  TypographyH4,
   TypographyH6,
+  TypographyLead,
+  TypographyMuted,
   TypographyP,
 } from "@ui/shadcn/typography";
 import { VyaLink } from "@ui/vya-link";
@@ -127,16 +130,16 @@ const ProductPreview = ({
       </div>
 
       {/* -- PRODUCT META --- */}
-      <div className="flex flex-1 flex-col gap-2 rounded-xl p-4 shadow-sm">
+      <div className="shadow-sm_ flex flex-1 flex-col gap-1 rounded-xl p-2 px-1">
         <TypographyH3 className="line-clamp-1" title={product.title}>
           {product.title}
         </TypographyH3>
 
-        <div className="itmes-center mt-auto flex gap-2">
+        <div className="itmes-center flex gap-2">
           {/*<FaInfoCircle className="mt-1" />*/}
-          <TypographyP className="font-light">
+          <TypographyMuted className="font-light">
             {product.description}
-          </TypographyP>
+          </TypographyMuted>
 
           {/*<ItemDescription className="flex-1 text-wrap">
             {product.description}
@@ -148,18 +151,20 @@ const ProductPreview = ({
 					<ItemDescription className="flex-1 text-wrap">{model.location}</ItemDescription>
 				</div> */}
 
-        <div className="mt-auto flex items-center gap-4">
-          <TypographyH6 className="text-muted-foreground mt-auto">
+        <div className="flex items-center gap-4 ">
+          <TypographyMuted className="text-muted-foreground text-[1rem]">
             ETB {price?.toLocaleString("en-US")}
-          </TypographyH6>
+          </TypographyMuted>
           {originalPrice && (
-            <TypographyH6 className="text-muted-foreground/60 font-normal line-through">
+            <TypographyMuted className="text-muted-foreground/60 text-[1rem] font-normal line-through">
               ETB {originalPrice?.toLocaleString("en-US")}
-            </TypographyH6>
+            </TypographyMuted>
           )}
         </div>
 
-        <Button className="bg-accent/60 mt-2 self-start">Add to Cart</Button>
+        <Button className="bg-accent/60 mt-2 hidden self-start">
+          Add to Cart
+        </Button>
       </div>
     </Link>
   );

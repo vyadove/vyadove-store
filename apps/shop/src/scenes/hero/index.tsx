@@ -1,7 +1,7 @@
 import React from "react";
 import { FiArrowRight, FiGift } from "react-icons/fi";
 
-import AppHero from "@ui/nav/app-hero";
+import AppHeroScaffold from "@ui/nav/app-hero-scaffold";
 import { Button } from "@ui/shadcn/button";
 import {
   TypographyH1,
@@ -17,7 +17,7 @@ const Hero = () => {
   // bg-[linear-gradient(75.04deg,rgba(234,226,214,0.8)0%,rgba(234,226,214,0.5)52.07%,rgba(160,186,183,0.21)102.02%)]
 
   return (
-    <AppHero>
+    <AppHeroScaffold>
       <div className="flex h-full w-full flex-col gap-4 px-8 py-36 pb-20 lg:px-16 lg:py-44 ">
         <div>
           <video
@@ -64,7 +64,7 @@ const Hero = () => {
           </Button>
         </div>
       </div>
-    </AppHero>
+    </AppHeroScaffold>
   );
 };
 

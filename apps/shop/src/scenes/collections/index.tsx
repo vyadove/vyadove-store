@@ -47,7 +47,7 @@ export async function Collections() {
             key={collection.id}
           >
             <InvertedCornerMask
-              className="w-full"
+              className="w-full rounded-2xl"
               cornerContent={
                 <div className="bg-accent/20 group/hover:hidden m-3 flex items-center justify-center gap-2 rounded-full p-4">
                   <AiOutlineArrowRight size={20} />
@@ -58,7 +58,7 @@ export async function Collections() {
                 br: { inverted: true, corners: [20, 20, 20] },
               }}
             >
-              <div className="relative min-h-60 w-full border-2 sm:min-h-72">
+              <div className="relative min-h-60 w-full sm:min-h-72">
                 {collection.imageUrl && (
                   <Image
                     alt={"collection.name"}

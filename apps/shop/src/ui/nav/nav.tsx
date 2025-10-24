@@ -2,10 +2,10 @@ import type { ComponentPropsWithoutRef } from "react";
 import React from "react";
 import { FiSearch } from "react-icons/fi";
 
-import NavBar from "@ui/nav/nav-bar";
-import { NavMenu } from "@/ui/nav/nav-menu";
-import { SearchNav } from "@/ui/nav/search-nav";
+import { NavMenu } from "@ui/nav/mobile/nav-menu";
+import { SearchNav } from "@ui/nav/mobile/search-nav";
 import { SeoH1 } from "@/ui/seo-h1";
+import NavBarLinks from "@ui/nav/nav-bar-links";
 import TopNavSlider from "@ui/nav/top-nav-slider";
 import { Button } from "@ui/shadcn/button";
 import { Separator } from "@ui/shadcn/separator";
@@ -28,12 +28,11 @@ export const NavItems = (props: ComponentPropsWithoutRef<"div">) => {
         props?.className,
       )}
     >
-
-      <VyaLink href='/'>
+      <VyaLink href="/">
         <VyaDoveLogo className="w-36" />
       </VyaLink>
 
-      <NavBar />
+      <NavBarLinks />
 
       <div className="hidden lg:flex">
         <Separator className="h-full" orientation="vertical" />
@@ -53,8 +52,9 @@ export const NavItems = (props: ComponentPropsWithoutRef<"div">) => {
 export const Nav = async () => {
   return (
     <TopNavSlider className="">
-      <NavItems className="bg-accent-foreground/70 hidden rounded-xl backdrop-blur-xl md:mt-4 md:flex" />
+      <NavItems className="bg-accent-foreground/70 hidden rounded-xl backdrop-blur-lg md:mt-4 md:flex" />
 
+      {/* --- MOBILE --- */}
       <div
         className={cn(
           "z-50 mx-auto flex max-w-7xl flex-row md:hidden",

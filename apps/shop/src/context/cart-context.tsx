@@ -8,7 +8,6 @@ import {
   useOptimistic,
   useState,
 } from "react";
-import { useFavicon } from "react-use";
 
 import {
   addToCartAction,
@@ -16,7 +15,6 @@ import {
   removeFromCartAction,
   updateCartItemAction,
 } from "@/actions/cart-actions";
-import FavIcon from "@/public/favicon.ico";
 import type { Cart, ProductInfo } from "commerce-kit";
 
 type CartAction =
@@ -164,8 +162,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     cartReducer,
   );
   const [isCartOpen, setIsCartOpen] = useState(false);
-
-  useFavicon(FavIcon.src);
 
   // Calculate item count from optimistic cart
   const itemCount =

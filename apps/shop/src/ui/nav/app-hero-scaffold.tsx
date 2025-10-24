@@ -11,7 +11,7 @@ type Props = {
   containerProps?: ComponentProps<typeof InvertedCornerMask>;
 };
 
-const AppHero = ({ children, containerProps }: PropsWithChildren<Props>) => {
+const AppHeroScaffold = ({ children, containerProps }: PropsWithChildren<Props>) => {
   return (
     <InvertedCornerMask
       containerProps={
@@ -36,4 +36,4 @@ const AppHero = ({ children, containerProps }: PropsWithChildren<Props>) => {
   );
 };
 
-export default AppHero;
+export default AppHeroScaffold;

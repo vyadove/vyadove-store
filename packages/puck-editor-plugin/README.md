@@ -4,7 +4,7 @@
 
 - Header
 - Logo
-- NavBar
+- NavBarLinks
 - Footer Copyright
 - Hero
 - Product Grid

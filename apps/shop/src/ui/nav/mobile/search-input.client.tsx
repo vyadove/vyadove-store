@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { Input } from "@/components/ui/input";
+import { Input } from "@ui/shadcn/input";
 
 import { useDebouncedValue } from "@/lib/hooks";
 import { cn } from "@/lib/utils";

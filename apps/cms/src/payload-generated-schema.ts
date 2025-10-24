@@ -76,6 +76,14 @@ export const enum_campaigns_status = pgEnum("enum_campaigns_status", [
     "sent",
     "paused",
 ]);
+export const enum_pages_status = pgEnum("enum_pages_status", [
+    "draft",
+    "published",
+]);
+export const enum__pages_v_version_status = pgEnum(
+    "enum__pages_v_version_status",
+    ["draft", "published"]
+);
 export const enum_payments_blocks_manual_method_type = pgEnum(
     "enum_payments_blocks_manual_method_type",
     ["cod", "bankTransfer", "inStore", "other"]
@@ -83,6 +91,10 @@ export const enum_payments_blocks_manual_method_type = pgEnum(
 export const enum_payments_blocks_stripe_method_type = pgEnum(
     "enum_payments_blocks_stripe_method_type",
     ["card", "ach", "auto"]
+);
+export const enum_forms_confirmation_type = pgEnum(
+    "enum_forms_confirmation_type",
+    ["message", "redirect"]
 );
 export const enum_exports_format = pgEnum("enum_exports_format", [
     "csv",
@@ -284,6 +296,14 @@ export const enum_store_settings_currency = pgEnum(
         "ZMW",
         "ZWG",
     ]
+);
+export const enum_main_menu_nav_items_link_type = pgEnum(
+    "enum_main_menu_nav_items_link_type",
+    ["reference", "custom"]
+);
+export const enum_main_menu_nav_items_link_appearance = pgEnum(
+    "enum_main_menu_nav_items_link_appearance",
+    ["default", "primary", "secondary"]
 );
 
 export const orders_timeline = pgTable(
@@ -887,77 +907,6 @@ export const policies = pgTable(
     })
 );
 
-export const privacy_policy_page = pgTable(
-    "privacy_policy_page",
-    {
-        id: serial("id").primaryKey(),
-        title: varchar("title").notNull(),
-        temp_desc: varchar("temp_desc"),
-        description: varchar("description"),
-        handle: varchar("handle"),
-        updatedAt: timestamp("updated_at", {
-            mode: "string",
-            withTimezone: true,
-            precision: 3,
-        })
-            .defaultNow()
-            .notNull(),
-        createdAt: timestamp("created_at", {
-            mode: "string",
-            withTimezone: true,
-            precision: 3,
-        })
-            .defaultNow()
-            .notNull(),
-    },
-    (columns) => ({
-        privacy_policy_page_handle_idx: index(
-            "privacy_policy_page_handle_idx"
-        ).on(columns.handle),
-        privacy_policy_page_updated_at_idx: index(
-            "privacy_policy_page_updated_at_idx"
-        ).on(columns.updatedAt),
-        privacy_policy_page_created_at_idx: index(
-            "privacy_policy_page_created_at_idx"
-        ).on(columns.createdAt),
-    })
-);
-
-export const terms_and_conditions_page = pgTable(
-    "terms_and_conditions_page",
-    {
-        id: serial("id").primaryKey(),
-        title: varchar("title").notNull(),
-        description: varchar("description"),
-        handle: varchar("handle"),
-        updatedAt: timestamp("updated_at", {
-            mode: "string",
-            withTimezone: true,
-            precision: 3,
-        })
-            .defaultNow()
-            .notNull(),
-        createdAt: timestamp("created_at", {
-            mode: "string",
-            withTimezone: true,
-            precision: 3,
-        })
-            .defaultNow()
-            .notNull(),
-    },
-    (columns) => ({
-        terms_and_conditions_page_handle_idx: index(
-            "terms_and_conditions_page_handle_idx"
-        ).on(columns.handle),
-        terms_and_conditions_page_updated_at_idx: index(
-            "terms_and_conditions_page_updated_at_idx"
-        ).on(columns.updatedAt),
-        terms_and_conditions_page_created_at_idx: index(
-            "terms_and_conditions_page_created_at_idx"
-        ).on(columns.createdAt),
-    })
-);
-
 export const gift_cards = pgTable(
     "gift_cards",
     {
@@ -1358,6 +1307,288 @@ export const footer_page = pgTable(
     })
 );
 
+export const privacy_policy_page = pgTable(
+    "privacy_policy_page",
+    {
+        id: serial("id").primaryKey(),
+        title: varchar("title").notNull(),
+        description: varchar("description"),
+        handle: varchar("handle"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+    },
+    (columns) => ({
+        privacy_policy_page_handle_idx: index(
+            "privacy_policy_page_handle_idx"
+        ).on(columns.handle),
+        privacy_policy_page_updated_at_idx: index(
+            "privacy_policy_page_updated_at_idx"
+        ).on(columns.updatedAt),
+        privacy_policy_page_created_at_idx: index(
+            "privacy_policy_page_created_at_idx"
+        ).on(columns.createdAt),
+    })
+);
+
+export const terms_and_conditions_page = pgTable(
+    "terms_and_conditions_page",
+    {
+        id: serial("id").primaryKey(),
+        title: varchar("title").notNull(),
+        description: varchar("description"),
+        handle: varchar("handle"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+    },
+    (columns) => ({
+        terms_and_conditions_page_handle_idx: index(
+            "terms_and_conditions_page_handle_idx"
+        ).on(columns.handle),
+        terms_and_conditions_page_updated_at_idx: index(
+            "terms_and_conditions_page_updated_at_idx"
+        ).on(columns.updatedAt),
+        terms_and_conditions_page_created_at_idx: index(
+            "terms_and_conditions_page_created_at_idx"
+        ).on(columns.createdAt),
+    })
+);
+
+export const support_page = pgTable(
+    "support_page",
+    {
+        id: serial("id").primaryKey(),
+        title: varchar("title").notNull(),
+        description: varchar("description"),
+        handle: varchar("handle"),
+        name: varchar("name").notNull(),
+        email: varchar("email").notNull(),
+        message: varchar("message").notNull(),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+    },
+    (columns) => ({
+        support_page_handle_idx: index("support_page_handle_idx").on(
+            columns.handle
+        ),
+        support_page_updated_at_idx: index("support_page_updated_at_idx").on(
+            columns.updatedAt
+        ),
+        support_page_created_at_idx: index("support_page_created_at_idx").on(
+            columns.createdAt
+        ),
+    })
+);
+
+export const pages_blocks_form_block = pgTable(
+    "pages_blocks_form_block",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        _path: text("_path").notNull(),
+        id: varchar("id").primaryKey(),
+        form: integer("form_id").references(() => forms.id, {
+            onDelete: "set null",
+        }),
+        enableIntro: boolean("enable_intro"),
+        introContent: jsonb("intro_content"),
+        blockName: varchar("block_name"),
+    },
+    (columns) => ({
+        _orderIdx: index("pages_blocks_form_block_order_idx").on(
+            columns._order
+        ),
+        _parentIDIdx: index("pages_blocks_form_block_parent_id_idx").on(
+            columns._parentID
+        ),
+        _pathIdx: index("pages_blocks_form_block_path_idx").on(columns._path),
+        pages_blocks_form_block_form_idx: index(
+            "pages_blocks_form_block_form_idx"
+        ).on(columns.form),
+        _parentIdFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [pages.id],
+            name: "pages_blocks_form_block_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const pages = pgTable(
+    "pages",
+    {
+        id: serial("id").primaryKey(),
+        title: varchar("title"),
+        form: integer("form_id").references(() => forms.id, {
+            onDelete: "set null",
+        }),
+        slug: varchar("slug"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        _status: enum_pages_status("_status").default("draft"),
+    },
+    (columns) => ({
+        pages_form_idx: index("pages_form_idx").on(columns.form),
+        pages_slug_idx: index("pages_slug_idx").on(columns.slug),
+        pages_updated_at_idx: index("pages_updated_at_idx").on(
+            columns.updatedAt
+        ),
+        pages_created_at_idx: index("pages_created_at_idx").on(
+            columns.createdAt
+        ),
+        pages__status_idx: index("pages__status_idx").on(columns._status),
+    })
+);
+
+export const _pages_v_blocks_form_block = pgTable(
+    "_pages_v_blocks_form_block",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        _path: text("_path").notNull(),
+        id: serial("id").primaryKey(),
+        form: integer("form_id").references(() => forms.id, {
+            onDelete: "set null",
+        }),
+        enableIntro: boolean("enable_intro"),
+        introContent: jsonb("intro_content"),
+        _uuid: varchar("_uuid"),
+        blockName: varchar("block_name"),
+    },
+    (columns) => ({
+        _orderIdx: index("_pages_v_blocks_form_block_order_idx").on(
+            columns._order
+        ),
+        _parentIDIdx: index("_pages_v_blocks_form_block_parent_id_idx").on(
+            columns._parentID
+        ),
+        _pathIdx: index("_pages_v_blocks_form_block_path_idx").on(
+            columns._path
+        ),
+        _pages_v_blocks_form_block_form_idx: index(
+            "_pages_v_blocks_form_block_form_idx"
+        ).on(columns.form),
+        _parentIdFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [_pages_v.id],
+            name: "_pages_v_blocks_form_block_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const _pages_v = pgTable(
+    "_pages_v",
+    {
+        id: serial("id").primaryKey(),
+        parent: integer("parent_id").references(() => pages.id, {
+            onDelete: "set null",
+        }),
+        version_title: varchar("version_title"),
+        version_form: integer("version_form_id").references(() => forms.id, {
+            onDelete: "set null",
+        }),
+        version_slug: varchar("version_slug"),
+        version_updatedAt: timestamp("version_updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
+        version_createdAt: timestamp("version_created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
+        version__status:
+            enum__pages_v_version_status("version__status").default("draft"),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        latest: boolean("latest"),
+    },
+    (columns) => ({
+        _pages_v_parent_idx: index("_pages_v_parent_idx").on(columns.parent),
+        _pages_v_version_version_form_idx: index(
+            "_pages_v_version_version_form_idx"
+        ).on(columns.version_form),
+        _pages_v_version_version_slug_idx: index(
+            "_pages_v_version_version_slug_idx"
+        ).on(columns.version_slug),
+        _pages_v_version_version_updated_at_idx: index(
+            "_pages_v_version_version_updated_at_idx"
+        ).on(columns.version_updatedAt),
+        _pages_v_version_version_created_at_idx: index(
+            "_pages_v_version_version_created_at_idx"
+        ).on(columns.version_createdAt),
+        _pages_v_version_version__status_idx: index(
+            "_pages_v_version_version__status_idx"
+        ).on(columns.version__status),
+        _pages_v_created_at_idx: index("_pages_v_created_at_idx").on(
+            columns.createdAt
+        ),
+        _pages_v_updated_at_idx: index("_pages_v_updated_at_idx").on(
+            columns.updatedAt
+        ),
+        _pages_v_latest_idx: index("_pages_v_latest_idx").on(columns.latest),
+    })
+);
+
 export const plugins = pgTable(
     "plugins",
     {
@@ -1668,6 +1899,401 @@ export const checkout_sessions = pgTable(
         ).on(columns.updatedAt),
         checkout_sessions_created_at_idx: index(
             "checkout_sessions_created_at_idx"
+        ).on(columns.createdAt),
+    })
+);
+
+export const forms_blocks_checkbox = pgTable(
+    "forms_blocks_checkbox",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        _path: text("_path").notNull(),
+        id: varchar("id").primaryKey(),
+        name: varchar("name").notNull(),
+        label: varchar("label"),
+        width: numeric("width"),
+        required: boolean("required"),
+        defaultValue: boolean("default_value"),
+        blockName: varchar("block_name"),
+    },
+    (columns) => ({
+        _orderIdx: index("forms_blocks_checkbox_order_idx").on(columns._order),
+        _parentIDIdx: index("forms_blocks_checkbox_parent_id_idx").on(
+            columns._parentID
+        ),
+        _pathIdx: index("forms_blocks_checkbox_path_idx").on(columns._path),
+        _parentIdFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [forms.id],
+            name: "forms_blocks_checkbox_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const forms_blocks_country = pgTable(
+    "forms_blocks_country",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        _path: text("_path").notNull(),
+        id: varchar("id").primaryKey(),
+        name: varchar("name").notNull(),
+        label: varchar("label"),
+        width: numeric("width"),
+        required: boolean("required"),
+        blockName: varchar("block_name"),
+    },
+    (columns) => ({
+        _orderIdx: index("forms_blocks_country_order_idx").on(columns._order),
+        _parentIDIdx: index("forms_blocks_country_parent_id_idx").on(
+            columns._parentID
+        ),
+        _pathIdx: index("forms_blocks_country_path_idx").on(columns._path),
+        _parentIdFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [forms.id],
+            name: "forms_blocks_country_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const forms_blocks_email = pgTable(
+    "forms_blocks_email",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        _path: text("_path").notNull(),
+        id: varchar("id").primaryKey(),
+        name: varchar("name").notNull(),
+        label: varchar("label"),
+        width: numeric("width"),
+        required: boolean("required"),
+        blockName: varchar("block_name"),
+    },
+    (columns) => ({
+        _orderIdx: index("forms_blocks_email_order_idx").on(columns._order),
+        _parentIDIdx: index("forms_blocks_email_parent_id_idx").on(
+            columns._parentID
+        ),
+        _pathIdx: index("forms_blocks_email_path_idx").on(columns._path),
+        _parentIdFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [forms.id],
+            name: "forms_blocks_email_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const forms_blocks_message = pgTable(
+    "forms_blocks_message",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        _path: text("_path").notNull(),
+        id: varchar("id").primaryKey(),
+        message: jsonb("message"),
+        blockName: varchar("block_name"),
+    },
+    (columns) => ({
+        _orderIdx: index("forms_blocks_message_order_idx").on(columns._order),
+        _parentIDIdx: index("forms_blocks_message_parent_id_idx").on(
+            columns._parentID
+        ),
+        _pathIdx: index("forms_blocks_message_path_idx").on(columns._path),
+        _parentIdFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [forms.id],
+            name: "forms_blocks_message_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const forms_blocks_number = pgTable(
+    "forms_blocks_number",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        _path: text("_path").notNull(),
+        id: varchar("id").primaryKey(),
+        name: varchar("name").notNull(),
+        label: varchar("label"),
+        width: numeric("width"),
+        defaultValue: numeric("default_value"),
+        required: boolean("required"),
+        blockName: varchar("block_name"),
+    },
+    (columns) => ({
+        _orderIdx: index("forms_blocks_number_order_idx").on(columns._order),
+        _parentIDIdx: index("forms_blocks_number_parent_id_idx").on(
+            columns._parentID
+        ),
+        _pathIdx: index("forms_blocks_number_path_idx").on(columns._path),
+        _parentIdFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [forms.id],
+            name: "forms_blocks_number_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const forms_blocks_select_options = pgTable(
+    "forms_blocks_select_options",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: varchar("_parent_id").notNull(),
+        id: varchar("id").primaryKey(),
+        label: varchar("label").notNull(),
+        value: varchar("value").notNull(),
+    },
+    (columns) => ({
+        _orderIdx: index("forms_blocks_select_options_order_idx").on(
+            columns._order
+        ),
+        _parentIDIdx: index("forms_blocks_select_options_parent_id_idx").on(
+            columns._parentID
+        ),
+        _parentIDFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [forms_blocks_select.id],
+            name: "forms_blocks_select_options_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const forms_blocks_select = pgTable(
+    "forms_blocks_select",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        _path: text("_path").notNull(),
+        id: varchar("id").primaryKey(),
+        name: varchar("name").notNull(),
+        label: varchar("label"),
+        width: numeric("width"),
+        defaultValue: varchar("default_value"),
+        placeholder: varchar("placeholder"),
+        required: boolean("required"),
+        blockName: varchar("block_name"),
+    },
+    (columns) => ({
+        _orderIdx: index("forms_blocks_select_order_idx").on(columns._order),
+        _parentIDIdx: index("forms_blocks_select_parent_id_idx").on(
+            columns._parentID
+        ),
+        _pathIdx: index("forms_blocks_select_path_idx").on(columns._path),
+        _parentIdFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [forms.id],
+            name: "forms_blocks_select_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const forms_blocks_state = pgTable(
+    "forms_blocks_state",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        _path: text("_path").notNull(),
+        id: varchar("id").primaryKey(),
+        name: varchar("name").notNull(),
+        label: varchar("label"),
+        width: numeric("width"),
+        required: boolean("required"),
+        blockName: varchar("block_name"),
+    },
+    (columns) => ({
+        _orderIdx: index("forms_blocks_state_order_idx").on(columns._order),
+        _parentIDIdx: index("forms_blocks_state_parent_id_idx").on(
+            columns._parentID
+        ),
+        _pathIdx: index("forms_blocks_state_path_idx").on(columns._path),
+        _parentIdFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [forms.id],
+            name: "forms_blocks_state_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const forms_blocks_text = pgTable(
+    "forms_blocks_text",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        _path: text("_path").notNull(),
+        id: varchar("id").primaryKey(),
+        name: varchar("name").notNull(),
+        label: varchar("label"),
+        width: numeric("width"),
+        defaultValue: varchar("default_value"),
+        required: boolean("required"),
+        blockName: varchar("block_name"),
+    },
+    (columns) => ({
+        _orderIdx: index("forms_blocks_text_order_idx").on(columns._order),
+        _parentIDIdx: index("forms_blocks_text_parent_id_idx").on(
+            columns._parentID
+        ),
+        _pathIdx: index("forms_blocks_text_path_idx").on(columns._path),
+        _parentIdFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [forms.id],
+            name: "forms_blocks_text_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const forms_blocks_textarea = pgTable(
+    "forms_blocks_textarea",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        _path: text("_path").notNull(),
+        id: varchar("id").primaryKey(),
+        name: varchar("name").notNull(),
+        label: varchar("label"),
+        width: numeric("width"),
+        defaultValue: varchar("default_value"),
+        required: boolean("required"),
+        blockName: varchar("block_name"),
+    },
+    (columns) => ({
+        _orderIdx: index("forms_blocks_textarea_order_idx").on(columns._order),
+        _parentIDIdx: index("forms_blocks_textarea_parent_id_idx").on(
+            columns._parentID
+        ),
+        _pathIdx: index("forms_blocks_textarea_path_idx").on(columns._path),
+        _parentIdFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [forms.id],
+            name: "forms_blocks_textarea_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const forms_emails = pgTable(
+    "forms_emails",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        id: varchar("id").primaryKey(),
+        emailTo: varchar("email_to"),
+        cc: varchar("cc"),
+        bcc: varchar("bcc"),
+        replyTo: varchar("reply_to"),
+        emailFrom: varchar("email_from"),
+        subject: varchar("subject")
+            .notNull()
+            .default("You've received a new message."),
+        message: jsonb("message"),
+    },
+    (columns) => ({
+        _orderIdx: index("forms_emails_order_idx").on(columns._order),
+        _parentIDIdx: index("forms_emails_parent_id_idx").on(columns._parentID),
+        _parentIDFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [forms.id],
+            name: "forms_emails_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const forms = pgTable(
+    "forms",
+    {
+        id: serial("id").primaryKey(),
+        title: varchar("title").notNull(),
+        submitButtonLabel: varchar("submit_button_label"),
+        confirmationType:
+            enum_forms_confirmation_type("confirmation_type").default(
+                "message"
+            ),
+        confirmationMessage: jsonb("confirmation_message"),
+        redirect_url: varchar("redirect_url"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+    },
+    (columns) => ({
+        forms_updated_at_idx: index("forms_updated_at_idx").on(
+            columns.updatedAt
+        ),
+        forms_created_at_idx: index("forms_created_at_idx").on(
+            columns.createdAt
+        ),
+    })
+);
+
+export const form_submissions_submission_data = pgTable(
+    "form_submissions_submission_data",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        id: varchar("id").primaryKey(),
+        field: varchar("field").notNull(),
+        value: varchar("value").notNull(),
+    },
+    (columns) => ({
+        _orderIdx: index("form_submissions_submission_data_order_idx").on(
+            columns._order
+        ),
+        _parentIDIdx: index(
+            "form_submissions_submission_data_parent_id_idx"
+        ).on(columns._parentID),
+        _parentIDFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [form_submissions.id],
+            name: "form_submissions_submission_data_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const form_submissions = pgTable(
+    "form_submissions",
+    {
+        id: serial("id").primaryKey(),
+        form: integer("form_id")
+            .notNull()
+            .references(() => forms.id, {
+                onDelete: "set null",
+            }),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+    },
+    (columns) => ({
+        form_submissions_form_idx: index("form_submissions_form_idx").on(
+            columns.form
+        ),
+        form_submissions_updated_at_idx: index(
+            "form_submissions_updated_at_idx"
+        ).on(columns.updatedAt),
+        form_submissions_created_at_idx: index(
+            "form_submissions_created_at_idx"
         ).on(columns.createdAt),
     })
 );
@@ -1992,18 +2618,22 @@ export const payload_locked_documents_rels = pgTable(
         campaignsID: integer("campaigns_id"),
         mediaID: integer("media_id"),
         policiesID: integer("policies_id"),
-        "privacy-policy-pageID": integer("privacy_policy_page_id"),
-        "terms-and-conditions-pageID": integer("terms_and_conditions_page_id"),
         "gift-cardsID": integer("gift_cards_id"),
         themesID: integer("themes_id"),
         cartsID: integer("carts_id"),
         "hero-pageID": integer("hero_page_id"),
         "footer-pageID": integer("footer_page_id"),
+        "privacy-policy-pageID": integer("privacy_policy_page_id"),
+        "terms-and-conditions-pageID": integer("terms_and_conditions_page_id"),
+        "support-pageID": integer("support_page_id"),
+        pagesID: integer("pages_id"),
         pluginsID: integer("plugins_id"),
         paymentsID: integer("payments_id"),
         locationsID: integer("locations_id"),
         shippingID: integer("shipping_id"),
         "checkout-sessionsID": integer("checkout_sessions_id"),
+        formsID: integer("forms_id"),
+        "form-submissionsID": integer("form_submissions_id"),
         "cj-settingsID": integer("cj_settings_id"),
         exportsID: integer("exports_id"),
         "email-templatesID": integer("email_templates_id"),
@@ -2040,12 +2670,6 @@ export const payload_locked_documents_rels = pgTable(
         payload_locked_documents_rels_policies_id_idx: index(
             "payload_locked_documents_rels_policies_id_idx"
         ).on(columns.policiesID),
-        payload_locked_documents_rels_privacy_policy_page_id_idx: index(
-            "payload_locked_documents_rels_privacy_policy_page_id_idx"
-        ).on(columns["privacy-policy-pageID"]),
-        payload_locked_documents_rels_terms_and_conditions_page_id_idx: index(
-            "payload_locked_documents_rels_terms_and_conditions_page_id_idx"
-        ).on(columns["terms-and-conditions-pageID"]),
         payload_locked_documents_rels_gift_cards_id_idx: index(
             "payload_locked_documents_rels_gift_cards_id_idx"
         ).on(columns["gift-cardsID"]),
@@ -2061,6 +2685,18 @@ export const payload_locked_documents_rels = pgTable(
         payload_locked_documents_rels_footer_page_id_idx: index(
             "payload_locked_documents_rels_footer_page_id_idx"
         ).on(columns["footer-pageID"]),
+        payload_locked_documents_rels_privacy_policy_page_id_idx: index(
+            "payload_locked_documents_rels_privacy_policy_page_id_idx"
+        ).on(columns["privacy-policy-pageID"]),
+        payload_locked_documents_rels_terms_and_conditions_page_id_idx: index(
+            "payload_locked_documents_rels_terms_and_conditions_page_id_idx"
+        ).on(columns["terms-and-conditions-pageID"]),
+        payload_locked_documents_rels_support_page_id_idx: index(
+            "payload_locked_documents_rels_support_page_id_idx"
+        ).on(columns["support-pageID"]),
+        payload_locked_documents_rels_pages_id_idx: index(
+            "payload_locked_documents_rels_pages_id_idx"
+        ).on(columns.pagesID),
         payload_locked_documents_rels_plugins_id_idx: index(
             "payload_locked_documents_rels_plugins_id_idx"
         ).on(columns.pluginsID),
@@ -2076,6 +2712,12 @@ export const payload_locked_documents_rels = pgTable(
         payload_locked_documents_rels_checkout_sessions_id_idx: index(
             "payload_locked_documents_rels_checkout_sessions_id_idx"
         ).on(columns["checkout-sessionsID"]),
+        payload_locked_documents_rels_forms_id_idx: index(
+            "payload_locked_documents_rels_forms_id_idx"
+        ).on(columns.formsID),
+        payload_locked_documents_rels_form_submissions_id_idx: index(
+            "payload_locked_documents_rels_form_submissions_id_idx"
+        ).on(columns["form-submissionsID"]),
         payload_locked_documents_rels_cj_settings_id_idx: index(
             "payload_locked_documents_rels_cj_settings_id_idx"
         ).on(columns["cj-settingsID"]),
@@ -2128,16 +2770,6 @@ export const payload_locked_documents_rels = pgTable(
             foreignColumns: [policies.id],
             name: "payload_locked_documents_rels_policies_fk",
         }).onDelete("cascade"),
-        "privacy-policy-pageIdFk": foreignKey({
-            columns: [columns["privacy-policy-pageID"]],
-            foreignColumns: [privacy_policy_page.id],
-            name: "payload_locked_documents_rels_privacy_policy_page_fk",
-        }).onDelete("cascade"),
-        "terms-and-conditions-pageIdFk": foreignKey({
-            columns: [columns["terms-and-conditions-pageID"]],
-            foreignColumns: [terms_and_conditions_page.id],
-            name: "payload_locked_documents_rels_terms_and_conditions_page_fk",
-        }).onDelete("cascade"),
         "gift-cardsIdFk": foreignKey({
             columns: [columns["gift-cardsID"]],
             foreignColumns: [gift_cards.id],
@@ -2163,6 +2795,26 @@ export const payload_locked_documents_rels = pgTable(
             foreignColumns: [footer_page.id],
             name: "payload_locked_documents_rels_footer_page_fk",
         }).onDelete("cascade"),
+        "privacy-policy-pageIdFk": foreignKey({
+            columns: [columns["privacy-policy-pageID"]],
+            foreignColumns: [privacy_policy_page.id],
+            name: "payload_locked_documents_rels_privacy_policy_page_fk",
+        }).onDelete("cascade"),
+        "terms-and-conditions-pageIdFk": foreignKey({
+            columns: [columns["terms-and-conditions-pageID"]],
+            foreignColumns: [terms_and_conditions_page.id],
+            name: "payload_locked_documents_rels_terms_and_conditions_page_fk",
+        }).onDelete("cascade"),
+        "support-pageIdFk": foreignKey({
+            columns: [columns["support-pageID"]],
+            foreignColumns: [support_page.id],
+            name: "payload_locked_documents_rels_support_page_fk",
+        }).onDelete("cascade"),
+        pagesIdFk: foreignKey({
+            columns: [columns["pagesID"]],
+            foreignColumns: [pages.id],
+            name: "payload_locked_documents_rels_pages_fk",
+        }).onDelete("cascade"),
         pluginsIdFk: foreignKey({
             columns: [columns["pluginsID"]],
             foreignColumns: [plugins.id],
@@ -2187,6 +2839,16 @@ export const payload_locked_documents_rels = pgTable(
             columns: [columns["checkout-sessionsID"]],
             foreignColumns: [checkout_sessions.id],
             name: "payload_locked_documents_rels_checkout_sessions_fk",
+        }).onDelete("cascade"),
+        formsIdFk: foreignKey({
+            columns: [columns["formsID"]],
+            foreignColumns: [forms.id],
+            name: "payload_locked_documents_rels_forms_fk",
+        }).onDelete("cascade"),
+        "form-submissionsIdFk": foreignKey({
+            columns: [columns["form-submissionsID"]],
+            foreignColumns: [form_submissions.id],
+            name: "payload_locked_documents_rels_form_submissions_fk",
         }).onDelete("cascade"),
         "cj-settingsIdFk": foreignKey({
             columns: [columns["cj-settingsID"]],
@@ -2322,6 +2984,131 @@ export const store_settings = pgTable("store_settings", {
         precision: 3,
     }),
 });
+
+export const main_menu_blocks_form_block = pgTable(
+    "main_menu_blocks_form_block",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        _path: text("_path").notNull(),
+        id: varchar("id").primaryKey(),
+        form: integer("form_id")
+            .notNull()
+            .references(() => forms.id, {
+                onDelete: "set null",
+            }),
+        enableIntro: boolean("enable_intro"),
+        introContent: jsonb("intro_content"),
+        blockName: varchar("block_name"),
+    },
+    (columns) => ({
+        _orderIdx: index("main_menu_blocks_form_block_order_idx").on(
+            columns._order
+        ),
+        _parentIDIdx: index("main_menu_blocks_form_block_parent_id_idx").on(
+            columns._parentID
+        ),
+        _pathIdx: index("main_menu_blocks_form_block_path_idx").on(
+            columns._path
+        ),
+        main_menu_blocks_form_block_form_idx: index(
+            "main_menu_blocks_form_block_form_idx"
+        ).on(columns.form),
+        _parentIdFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [main_menu.id],
+            name: "main_menu_blocks_form_block_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const main_menu_nav_items = pgTable(
+    "main_menu_nav_items",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        id: varchar("id").primaryKey(),
+        link_type:
+            enum_main_menu_nav_items_link_type("link_type").default(
+                "reference"
+            ),
+        link_newTab: boolean("link_new_tab"),
+        link_url: varchar("link_url"),
+        link_label: varchar("link_label").notNull(),
+        link_appearance:
+            enum_main_menu_nav_items_link_appearance("link_appearance").default(
+                "default"
+            ),
+    },
+    (columns) => ({
+        _orderIdx: index("main_menu_nav_items_order_idx").on(columns._order),
+        _parentIDIdx: index("main_menu_nav_items_parent_id_idx").on(
+            columns._parentID
+        ),
+        _parentIDFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [main_menu.id],
+            name: "main_menu_nav_items_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const main_menu = pgTable(
+    "main_menu",
+    {
+        id: serial("id").primaryKey(),
+        "form-submissions": integer("form_submissions_id").references(
+            () => form_submissions.id,
+            {
+                onDelete: "set null",
+            }
+        ),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
+    },
+    (columns) => ({
+        main_menu_form_submissions_idx: index(
+            "main_menu_form_submissions_idx"
+        ).on(columns["form-submissions"]),
+    })
+);
+
+export const main_menu_rels = pgTable(
+    "main_menu_rels",
+    {
+        id: serial("id").primaryKey(),
+        order: integer("order"),
+        parent: integer("parent_id").notNull(),
+        path: varchar("path").notNull(),
+        pagesID: integer("pages_id"),
+    },
+    (columns) => ({
+        order: index("main_menu_rels_order_idx").on(columns.order),
+        parentIdx: index("main_menu_rels_parent_idx").on(columns.parent),
+        pathIdx: index("main_menu_rels_path_idx").on(columns.path),
+        main_menu_rels_pages_id_idx: index("main_menu_rels_pages_id_idx").on(
+            columns.pagesID
+        ),
+        parentFk: foreignKey({
+            columns: [columns["parent"]],
+            foreignColumns: [main_menu.id],
+            name: "main_menu_rels_parent_fk",
+        }).onDelete("cascade"),
+        pagesIdFk: foreignKey({
+            columns: [columns["pagesID"]],
+            foreignColumns: [pages.id],
+            name: "main_menu_rels_pages_fk",
+        }).onDelete("cascade"),
+    })
+);
 
 export const relations_orders_timeline = relations(
     orders_timeline,
@@ -2516,14 +3303,6 @@ export const relations_campaigns = relations(campaigns, ({ one, many }) => ({
 }));
 export const relations_media = relations(media, () => ({}));
 export const relations_policies = relations(policies, () => ({}));
-export const relations_privacy_policy_page = relations(
-    privacy_policy_page,
-    () => ({})
-);
-export const relations_terms_and_conditions_page = relations(
-    terms_and_conditions_page,
-    () => ({})
-);
 export const relations_gift_cards = relations(gift_cards, ({ one }) => ({
     customer: one(users, {
         fields: [gift_cards.customer],
@@ -2668,6 +3447,70 @@ export const relations_footer_page = relations(footer_page, ({ many }) => ({
         relationName: "_blocks_basic-footer",
     }),
 }));
+export const relations_privacy_policy_page = relations(
+    privacy_policy_page,
+    () => ({})
+);
+export const relations_terms_and_conditions_page = relations(
+    terms_and_conditions_page,
+    () => ({})
+);
+export const relations_support_page = relations(support_page, () => ({}));
+export const relations_pages_blocks_form_block = relations(
+    pages_blocks_form_block,
+    ({ one }) => ({
+        _parentID: one(pages, {
+            fields: [pages_blocks_form_block._parentID],
+            references: [pages.id],
+            relationName: "_blocks_formBlock",
+        }),
+        form: one(forms, {
+            fields: [pages_blocks_form_block.form],
+            references: [forms.id],
+            relationName: "form",
+        }),
+    })
+);
+export const relations_pages = relations(pages, ({ one, many }) => ({
+    form: one(forms, {
+        fields: [pages.form],
+        references: [forms.id],
+        relationName: "form",
+    }),
+    _blocks_formBlock: many(pages_blocks_form_block, {
+        relationName: "_blocks_formBlock",
+    }),
+}));
+export const relations__pages_v_blocks_form_block = relations(
+    _pages_v_blocks_form_block,
+    ({ one }) => ({
+        _parentID: one(_pages_v, {
+            fields: [_pages_v_blocks_form_block._parentID],
+            references: [_pages_v.id],
+            relationName: "_blocks_formBlock",
+        }),
+        form: one(forms, {
+            fields: [_pages_v_blocks_form_block.form],
+            references: [forms.id],
+            relationName: "form",
+        }),
+    })
+);
+export const relations__pages_v = relations(_pages_v, ({ one, many }) => ({
+    parent: one(pages, {
+        fields: [_pages_v.parent],
+        references: [pages.id],
+        relationName: "parent",
+    }),
+    version_form: one(forms, {
+        fields: [_pages_v.version_form],
+        references: [forms.id],
+        relationName: "version_form",
+    }),
+    _blocks_formBlock: many(_pages_v_blocks_form_block, {
+        relationName: "_blocks_formBlock",
+    }),
+}));
 export const relations_plugins = relations(plugins, () => ({}));
 export const relations_payments_blocks_manual_details = relations(
     payments_blocks_manual_details,
@@ -2753,6 +3596,171 @@ export const relations_checkout_sessions = relations(
             fields: [checkout_sessions.payment],
             references: [payments.id],
             relationName: "payment",
+        }),
+    })
+);
+export const relations_forms_blocks_checkbox = relations(
+    forms_blocks_checkbox,
+    ({ one }) => ({
+        _parentID: one(forms, {
+            fields: [forms_blocks_checkbox._parentID],
+            references: [forms.id],
+            relationName: "_blocks_checkbox",
+        }),
+    })
+);
+export const relations_forms_blocks_country = relations(
+    forms_blocks_country,
+    ({ one }) => ({
+        _parentID: one(forms, {
+            fields: [forms_blocks_country._parentID],
+            references: [forms.id],
+            relationName: "_blocks_country",
+        }),
+    })
+);
+export const relations_forms_blocks_email = relations(
+    forms_blocks_email,
+    ({ one }) => ({
+        _parentID: one(forms, {
+            fields: [forms_blocks_email._parentID],
+            references: [forms.id],
+            relationName: "_blocks_email",
+        }),
+    })
+);
+export const relations_forms_blocks_message = relations(
+    forms_blocks_message,
+    ({ one }) => ({
+        _parentID: one(forms, {
+            fields: [forms_blocks_message._parentID],
+            references: [forms.id],
+            relationName: "_blocks_message",
+        }),
+    })
+);
+export const relations_forms_blocks_number = relations(
+    forms_blocks_number,
+    ({ one }) => ({
+        _parentID: one(forms, {
+            fields: [forms_blocks_number._parentID],
+            references: [forms.id],
+            relationName: "_blocks_number",
+        }),
+    })
+);
+export const relations_forms_blocks_select_options = relations(
+    forms_blocks_select_options,
+    ({ one }) => ({
+        _parentID: one(forms_blocks_select, {
+            fields: [forms_blocks_select_options._parentID],
+            references: [forms_blocks_select.id],
+            relationName: "options",
+        }),
+    })
+);
+export const relations_forms_blocks_select = relations(
+    forms_blocks_select,
+    ({ one, many }) => ({
+        _parentID: one(forms, {
+            fields: [forms_blocks_select._parentID],
+            references: [forms.id],
+            relationName: "_blocks_select",
+        }),
+        options: many(forms_blocks_select_options, {
+            relationName: "options",
+        }),
+    })
+);
+export const relations_forms_blocks_state = relations(
+    forms_blocks_state,
+    ({ one }) => ({
+        _parentID: one(forms, {
+            fields: [forms_blocks_state._parentID],
+            references: [forms.id],
+            relationName: "_blocks_state",
+        }),
+    })
+);
+export const relations_forms_blocks_text = relations(
+    forms_blocks_text,
+    ({ one }) => ({
+        _parentID: one(forms, {
+            fields: [forms_blocks_text._parentID],
+            references: [forms.id],
+            relationName: "_blocks_text",
+        }),
+    })
+);
+export const relations_forms_blocks_textarea = relations(
+    forms_blocks_textarea,
+    ({ one }) => ({
+        _parentID: one(forms, {
+            fields: [forms_blocks_textarea._parentID],
+            references: [forms.id],
+            relationName: "_blocks_textarea",
+        }),
+    })
+);
+export const relations_forms_emails = relations(forms_emails, ({ one }) => ({
+    _parentID: one(forms, {
+        fields: [forms_emails._parentID],
+        references: [forms.id],
+        relationName: "emails",
+    }),
+}));
+export const relations_forms = relations(forms, ({ many }) => ({
+    _blocks_checkbox: many(forms_blocks_checkbox, {
+        relationName: "_blocks_checkbox",
+    }),
+    _blocks_country: many(forms_blocks_country, {
+        relationName: "_blocks_country",
+    }),
+    _blocks_email: many(forms_blocks_email, {
+        relationName: "_blocks_email",
+    }),
+    _blocks_message: many(forms_blocks_message, {
+        relationName: "_blocks_message",
+    }),
+    _blocks_number: many(forms_blocks_number, {
+        relationName: "_blocks_number",
+    }),
+    _blocks_select: many(forms_blocks_select, {
+        relationName: "_blocks_select",
+    }),
+    _blocks_state: many(forms_blocks_state, {
+        relationName: "_blocks_state",
+    }),
+    _blocks_text: many(forms_blocks_text, {
+        relationName: "_blocks_text",
+    }),
+    _blocks_textarea: many(forms_blocks_textarea, {
+        relationName: "_blocks_textarea",
+    }),
+    emails: many(forms_emails, {
+        relationName: "emails",
+    }),
+}));
+export const relations_form_submissions_submission_data = relations(
+    form_submissions_submission_data,
+    ({ one }) => ({
+        _parentID: one(form_submissions, {
+            fields: [form_submissions_submission_data._parentID],
+            references: [form_submissions.id],
+            relationName: "submissionData",
+        }),
+    })
+);
+export const relations_form_submissions = relations(
+    form_submissions,
+    ({ one, many }) => ({
+        form: one(forms, {
+            fields: [form_submissions.form],
+            references: [forms.id],
+            relationName: "form",
+        }),
+        submissionData: many(form_submissions_submission_data, {
+            relationName: "submissionData",
         }),
     })
 );
@@ -2850,18 +3858,6 @@ export const relations_payload_locked_documents_rels = relations(
             references: [policies.id],
             relationName: "policies",
         }),
-        "privacy-policy-pageID": one(privacy_policy_page, {
-            fields: [payload_locked_documents_rels["privacy-policy-pageID"]],
-            references: [privacy_policy_page.id],
-            relationName: "privacy-policy-page",
-        }),
-        "terms-and-conditions-pageID": one(terms_and_conditions_page, {
-            fields: [
-                payload_locked_documents_rels["terms-and-conditions-pageID"],
-            ],
-            references: [terms_and_conditions_page.id],
-            relationName: "terms-and-conditions-page",
-        }),
         "gift-cardsID": one(gift_cards, {
             fields: [payload_locked_documents_rels["gift-cardsID"]],
             references: [gift_cards.id],
@@ -2887,6 +3883,28 @@ export const relations_payload_locked_documents_rels = relations(
             references: [footer_page.id],
             relationName: "footer-page",
         }),
+        "privacy-policy-pageID": one(privacy_policy_page, {
+            fields: [payload_locked_documents_rels["privacy-policy-pageID"]],
+            references: [privacy_policy_page.id],
+            relationName: "privacy-policy-page",
+        }),
+        "terms-and-conditions-pageID": one(terms_and_conditions_page, {
+            fields: [
+                payload_locked_documents_rels["terms-and-conditions-pageID"],
+            ],
+            references: [terms_and_conditions_page.id],
+            relationName: "terms-and-conditions-page",
+        }),
+        "support-pageID": one(support_page, {
+            fields: [payload_locked_documents_rels["support-pageID"]],
+            references: [support_page.id],
+            relationName: "support-page",
+        }),
+        pagesID: one(pages, {
+            fields: [payload_locked_documents_rels.pagesID],
+            references: [pages.id],
+            relationName: "pages",
+        }),
         pluginsID: one(plugins, {
             fields: [payload_locked_documents_rels.pluginsID],
             references: [plugins.id],
@@ -2911,6 +3929,16 @@ export const relations_payload_locked_documents_rels = relations(
             fields: [payload_locked_documents_rels["checkout-sessionsID"]],
             references: [checkout_sessions.id],
             relationName: "checkout-sessions",
+        }),
+        formsID: one(forms, {
+            fields: [payload_locked_documents_rels.formsID],
+            references: [forms.id],
+            relationName: "forms",
+        }),
+        "form-submissionsID": one(form_submissions, {
+            fields: [payload_locked_documents_rels["form-submissionsID"]],
+            references: [form_submissions.id],
+            relationName: "form-submissions",
         }),
         "cj-settingsID": one(cj_settings, {
             fields: [payload_locked_documents_rels["cj-settingsID"]],
@@ -2970,6 +3998,62 @@ export const relations_payload_migrations = relations(
     () => ({})
 );
 export const relations_store_settings = relations(store_settings, () => ({}));
+export const relations_main_menu_blocks_form_block = relations(
+    main_menu_blocks_form_block,
+    ({ one }) => ({
+        _parentID: one(main_menu, {
+            fields: [main_menu_blocks_form_block._parentID],
+            references: [main_menu.id],
+            relationName: "_blocks_formBlock",
+        }),
+        form: one(forms, {
+            fields: [main_menu_blocks_form_block.form],
+            references: [forms.id],
+            relationName: "form",
+        }),
+    })
+);
+export const relations_main_menu_nav_items = relations(
+    main_menu_nav_items,
+    ({ one }) => ({
+        _parentID: one(main_menu, {
+            fields: [main_menu_nav_items._parentID],
+            references: [main_menu.id],
+            relationName: "navItems",
+        }),
+    })
+);
+export const relations_main_menu_rels = relations(
+    main_menu_rels,
+    ({ one }) => ({
+        parent: one(main_menu, {
+            fields: [main_menu_rels.parent],
+            references: [main_menu.id],
+            relationName: "_rels",
+        }),
+        pagesID: one(pages, {
+            fields: [main_menu_rels.pagesID],
+            references: [pages.id],
+            relationName: "pages",
+        }),
+    })
+);
+export const relations_main_menu = relations(main_menu, ({ one, many }) => ({
+    _blocks_formBlock: many(main_menu_blocks_form_block, {
+        relationName: "_blocks_formBlock",
+    }),
+    "form-submissions": one(form_submissions, {
+        fields: [main_menu["form-submissions"]],
+        references: [form_submissions.id],
+        relationName: "form-submissions",
+    }),
+    navItems: many(main_menu_nav_items, {
+        relationName: "navItems",
+    }),
+    _rels: many(main_menu_rels, {
+        relationName: "_rels",
+    }),
+}));
 
 type DatabaseSchema = {
     enum_orders_timeline_type: typeof enum_orders_timeline_type;
@@ -2981,14 +4065,19 @@ type DatabaseSchema = {
     enum_users_roles: typeof enum_users_roles;
     enum_campaigns_type: typeof enum_campaigns_type;
     enum_campaigns_status: typeof enum_campaigns_status;
+    enum_pages_status: typeof enum_pages_status;
+    enum__pages_v_version_status: typeof enum__pages_v_version_status;
     enum_payments_blocks_manual_method_type: typeof enum_payments_blocks_manual_method_type;
     enum_payments_blocks_stripe_method_type: typeof enum_payments_blocks_stripe_method_type;
+    enum_forms_confirmation_type: typeof enum_forms_confirmation_type;
     enum_exports_format: typeof enum_exports_format;
     enum_exports_drafts: typeof enum_exports_drafts;
     enum_payload_jobs_log_task_slug: typeof enum_payload_jobs_log_task_slug;
     enum_payload_jobs_log_state: typeof enum_payload_jobs_log_state;
     enum_payload_jobs_task_slug: typeof enum_payload_jobs_task_slug;
     enum_store_settings_currency: typeof enum_store_settings_currency;
+    enum_main_menu_nav_items_link_type: typeof enum_main_menu_nav_items_link_type;
+    enum_main_menu_nav_items_link_appearance: typeof enum_main_menu_nav_items_link_appearance;
     orders_timeline: typeof orders_timeline;
     orders: typeof orders;
     collections: typeof collections;
@@ -3007,8 +4096,6 @@ type DatabaseSchema = {
     campaigns_rels: typeof campaigns_rels;
     media: typeof media;
     policies: typeof policies;
-    privacy_policy_page: typeof privacy_policy_page;
-    terms_and_conditions_page: typeof terms_and_conditions_page;
     gift_cards: typeof gift_cards;
     themes_blocks_builder_io: typeof themes_blocks_builder_io;
     themes_blocks_custom_storefront_block: typeof themes_blocks_custom_storefront_block;
@@ -3022,6 +4109,13 @@ type DatabaseSchema = {
     hero_page_rels: typeof hero_page_rels;
     footer_page_blocks_basic_footer: typeof footer_page_blocks_basic_footer;
     footer_page: typeof footer_page;
+    privacy_policy_page: typeof privacy_policy_page;
+    terms_and_conditions_page: typeof terms_and_conditions_page;
+    support_page: typeof support_page;
+    pages_blocks_form_block: typeof pages_blocks_form_block;
+    pages: typeof pages;
+    _pages_v_blocks_form_block: typeof _pages_v_blocks_form_block;
+    _pages_v: typeof _pages_v;
     plugins: typeof plugins;
     payments_blocks_manual_details: typeof payments_blocks_manual_details;
     payments_blocks_manual: typeof payments_blocks_manual;
@@ -3031,6 +4125,20 @@ type DatabaseSchema = {
     shipping_blocks_custom_shipping: typeof shipping_blocks_custom_shipping;
     shipping: typeof shipping;
     checkout_sessions: typeof checkout_sessions;
+    forms_blocks_checkbox: typeof forms_blocks_checkbox;
+    forms_blocks_country: typeof forms_blocks_country;
+    forms_blocks_email: typeof forms_blocks_email;
+    forms_blocks_message: typeof forms_blocks_message;
+    forms_blocks_number: typeof forms_blocks_number;
+    forms_blocks_select_options: typeof forms_blocks_select_options;
+    forms_blocks_select: typeof forms_blocks_select;
+    forms_blocks_state: typeof forms_blocks_state;
+    forms_blocks_text: typeof forms_blocks_text;
+    forms_blocks_textarea: typeof forms_blocks_textarea;
+    forms_emails: typeof forms_emails;
+    forms: typeof forms;
+    form_submissions_submission_data: typeof form_submissions_submission_data;
+    form_submissions: typeof form_submissions;
     cj_settings_items: typeof cj_settings_items;
     cj_settings: typeof cj_settings;
     exports: typeof exports;
@@ -3044,6 +4152,10 @@ type DatabaseSchema = {
     payload_preferences_rels: typeof payload_preferences_rels;
     payload_migrations: typeof payload_migrations;
     store_settings: typeof store_settings;
+    main_menu_blocks_form_block: typeof main_menu_blocks_form_block;
+    main_menu_nav_items: typeof main_menu_nav_items;
+    main_menu: typeof main_menu;
+    main_menu_rels: typeof main_menu_rels;
     relations_orders_timeline: typeof relations_orders_timeline;
     relations_orders: typeof relations_orders;
     relations_collections: typeof relations_collections;
@@ -3062,8 +4174,6 @@ type DatabaseSchema = {
     relations_campaigns: typeof relations_campaigns;
     relations_media: typeof relations_media;
     relations_policies: typeof relations_policies;
-    relations_privacy_policy_page: typeof relations_privacy_policy_page;
-    relations_terms_and_conditions_page: typeof relations_terms_and_conditions_page;
     relations_gift_cards: typeof relations_gift_cards;
     relations_themes_blocks_builder_io: typeof relations_themes_blocks_builder_io;
     relations_themes_blocks_custom_storefront_block: typeof relations_themes_blocks_custom_storefront_block;
@@ -3077,6 +4187,13 @@ type DatabaseSchema = {
     relations_hero_page: typeof relations_hero_page;
     relations_footer_page_blocks_basic_footer: typeof relations_footer_page_blocks_basic_footer;
     relations_footer_page: typeof relations_footer_page;
+    relations_privacy_policy_page: typeof relations_privacy_policy_page;
+    relations_terms_and_conditions_page: typeof relations_terms_and_conditions_page;
+    relations_support_page: typeof relations_support_page;
+    relations_pages_blocks_form_block: typeof relations_pages_blocks_form_block;
+    relations_pages: typeof relations_pages;
+    relations__pages_v_blocks_form_block: typeof relations__pages_v_blocks_form_block;
+    relations__pages_v: typeof relations__pages_v;
     relations_plugins: typeof relations_plugins;
     relations_payments_blocks_manual_details: typeof relations_payments_blocks_manual_details;
     relations_payments_blocks_manual: typeof relations_payments_blocks_manual;
@@ -3086,6 +4203,20 @@ type DatabaseSchema = {
     relations_shipping_blocks_custom_shipping: typeof relations_shipping_blocks_custom_shipping;
     relations_shipping: typeof relations_shipping;
     relations_checkout_sessions: typeof relations_checkout_sessions;
+    relations_forms_blocks_checkbox: typeof relations_forms_blocks_checkbox;
+    relations_forms_blocks_country: typeof relations_forms_blocks_country;
+    relations_forms_blocks_email: typeof relations_forms_blocks_email;
+    relations_forms_blocks_message: typeof relations_forms_blocks_message;
+    relations_forms_blocks_number: typeof relations_forms_blocks_number;
+    relations_forms_blocks_select_options: typeof relations_forms_blocks_select_options;
+    relations_forms_blocks_select: typeof relations_forms_blocks_select;
+    relations_forms_blocks_state: typeof relations_forms_blocks_state;
+    relations_forms_blocks_text: typeof relations_forms_blocks_text;
+    relations_forms_blocks_textarea: typeof relations_forms_blocks_textarea;
+    relations_forms_emails: typeof relations_forms_emails;
+    relations_forms: typeof relations_forms;
+    relations_form_submissions_submission_data: typeof relations_form_submissions_submission_data;
+    relations_form_submissions: typeof relations_form_submissions;
     relations_cj_settings_items: typeof relations_cj_settings_items;
     relations_cj_settings: typeof relations_cj_settings;
     relations_exports_texts: typeof relations_exports_texts;
@@ -3099,6 +4230,10 @@ type DatabaseSchema = {
     relations_payload_preferences: typeof relations_payload_preferences;
     relations_payload_migrations: typeof relations_payload_migrations;
     relations_store_settings: typeof relations_store_settings;
+    relations_main_menu_blocks_form_block: typeof relations_main_menu_blocks_form_block;
+    relations_main_menu_nav_items: typeof relations_main_menu_nav_items;
+    relations_main_menu_rels: typeof relations_main_menu_rels;
+    relations_main_menu: typeof relations_main_menu;
 };
 
 declare module "@payloadcms/db-postgres" {

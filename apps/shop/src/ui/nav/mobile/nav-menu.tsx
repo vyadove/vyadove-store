@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import StoreConfig from "@/store.config";
-import { NavMobileMenu } from "@/ui/nav/nav-mobile-menu.client";
+import { NavMobileMenu } from "@ui/nav/mobile/nav-mobile-menu.client";
 
 const links = [
   {

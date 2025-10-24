@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "@payloadcms/db-postgres": "3.49.1",
+        "@payloadcms/plugin-form-builder": "3.49.1",
         "@shopnex/analytics-plugin": "0.0.4",
         "@shopnex/builder-io-plugin": "^1.0.12",
         "@shopnex/cj-plugin": "1.0.10",

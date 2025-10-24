@@ -4,6 +4,8 @@ import { cjPlugin } from "@shopnex/cj-plugin";
 import { importExportPlugin } from "@shopnex/import-export-plugin";
 import { stripePlugin } from "@shopnex/stripe-plugin";
 import { builderIoPlugin } from "@shopnex/builder-io-plugin";
+import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+
 
 import { adminPluginAccess, admins } from "./access/roles";
 import { paymentCanceled, paymentSucceeded } from "./webhooks";
@@ -14,6 +16,9 @@ import { analyticsPlugin } from "@shopnex/analytics-plugin";
 import { sidebarPlugin } from "@shopnex/sidebar-plugin";
 
 export const plugins: Plugin[] = [
+
+    formBuilderPlugin({}),
+
     cjPlugin({
         cjApiKey: process.env.CJ_PASSWORD || "",
         cjEmailAddress: process.env.CJ_EMAIL_ADDRESS || "",
@@ -90,4 +95,5 @@ export const plugins: Plugin[] = [
     }),
     analyticsPlugin({}),
     sidebarPlugin(),
+
 ];

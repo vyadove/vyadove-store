@@ -2,6 +2,7 @@ import type { GlobalConfig } from "payload";
 
 import { admins, anyone } from "@/access/roles";
 import currency from "currency-codes";
+import { groups } from "@/collections/groups";
 
 const StoreSettings: GlobalConfig = {
     slug: "store-settings",
@@ -10,7 +11,7 @@ const StoreSettings: GlobalConfig = {
         update: admins,
     },
     admin: {
-        group: "Settings",
+        group: groups.settings,
     },
     fields: [
         {

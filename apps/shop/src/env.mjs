@@ -44,20 +44,14 @@ export const env = createEnv({
   },
 });
 
-const vercelHost =
-  process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
-    ? process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL
-    : process.env.NEXT_PUBLIC_VERCEL_URL;
-const vercelUrl = vercelHost ? `https://${vercelHost}` : undefined;
-const publicUrl = process.env.NEXT_PUBLIC_SERVER_URL || vercelUrl;
 
-if (!publicUrl) {
+if (!process.env.NEXT_PUBLIC_SHOP_URL || !process.env.NEXT_PUBLIC_SERVER_URL) {
   throw new Error(
-    "Missing NEXT_PUBLIC_SERVER_URL or NEXT_PUBLIC_VERCEL_URL variables!",
+    "Missing NEXT_PUBLIC_SHOP_URL variable!",
   );
 }
 
 // force type inference to string
-const _publicUrl = publicUrl;
+const _publicUrl = process.env.NEXT_PUBLIC_SHOP_URL;
 
 export { _publicUrl as publicUrl };

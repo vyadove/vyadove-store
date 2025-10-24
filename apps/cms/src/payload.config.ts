@@ -20,33 +20,29 @@ import StoreSettings from "./globals/StoreSettings";
 import { plugins } from "./plugins";
 import { Themes } from "./collections/Themes/Themes";
 import { CheckoutSessions } from "./collections/CheckoutSessions/CheckoutSessions";
-import {
-    FooterPage,
-} from "./collections/pages/Footer";
+import { FooterPage } from "./collections/pages/Footer";
 
-import {
-    HeroPage,
-} from "./collections/pages/Hero";
+import { HeroPage } from "./collections/pages/Hero";
 
-import {
-    TermsAndCollectionsPage
-} from "./collections/pages/TermsAndConditions";
+import { TermsAndCollectionsPage } from "./collections/pages/TermsAndConditions";
 
-import {
-    PrivacyPolicyPage
-} from "./collections/pages/privacy-policy";
+import { PrivacyPolicyPage } from "./collections/pages/privacy-policy";
 import { Campaigns } from "./collections/Campaigns/Campaigns";
 import { Plugins } from "./collections/Plugins/Plugins";
 import { syncPlugin } from "./collections/Plugins/utils/sync-plugin";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { seed } from "@/seed";
 import { admins, checkRole } from "@/access/roles";
-import { migrations } from './migrations'
+import { migrations } from "./migrations";
+import { Support } from "@/collections/pages/support";
+import { Forms } from "@/collections/pages/Forms";
+import { MainMenu } from "@/globals/MainMenu";
+import { seedForms } from "@/seed/seed-forms";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-console.log('process.env.VYADOVE_NO_SSL_POSTGRES_URL ----------------------------- : ', process.env.DATABASE_URL);
+// console.log('process.env.VYADOVE_NO_SSL_POSTGRES_URL ----------------------------- : ', process.env.DATABASE_URL);
 
 export default buildConfig({
     routes: {
@@ -85,20 +81,26 @@ export default buildConfig({
         Campaigns,
         Media,
         Policies,
-        PrivacyPolicyPage,
-        TermsAndCollectionsPage,
+
         GiftCards,
         Themes,
         Carts,
+
+        // Pages
         HeroPage,
         FooterPage,
+        PrivacyPolicyPage,
+        TermsAndCollectionsPage,
+        Support,
+        Forms,
+
         Plugins,
         Payments,
         Locations,
         Shipping,
         CheckoutSessions,
     ],
-    globals: [StoreSettings],
+    globals: [StoreSettings, MainMenu],
     cors: {
         headers: ["x-payload-sdk-token"],
         origins: [
@@ -125,7 +127,6 @@ export default buildConfig({
         // logger: true,
 
         pool: {
-
             // connectionString: process.env.DATABASE_URI,
             connectionString: process.env.DATABASE_URL,
             ssl: {
@@ -153,7 +154,7 @@ export default buildConfig({
                 }
 
                 try {
-                    await seed();
+                    await seedForms();
                     return Response.json({ status: "SEED OK" });
                 } catch (error) {
                     return Response.json({ status: "ERROR", error });
