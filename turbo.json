@@ -45,7 +45,8 @@
                 "STRIPE_CURRENCY",
                 "ENABLE_STRIPE_TAX",
                 "NEXT_PUBLIC_LANGUAGE",
-                "NEXT_PUBLIC_SERVER_URL"
+                "NEXT_PUBLIC_SERVER_URL",
+                "NEXT_PUBLIC_SHOP_URL"
             ]
         },
         "dev": {
