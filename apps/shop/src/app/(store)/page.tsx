@@ -13,6 +13,9 @@ import Testimonial from "@/scenes/testimonial";
 // };
 
 export default async function Home() {
+
+  console.log('process.env.NEXT_PUBLIC_SERVER_URL ------------ ', process.env.NEXT_PUBLIC_SERVER_URL);
+
   return (
     <main>
       <Hero />
