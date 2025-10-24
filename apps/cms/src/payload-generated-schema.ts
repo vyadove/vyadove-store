@@ -37,10 +37,7 @@ export const enum_orders_timeline_type = pgEnum("enum_orders_timeline_type", [
     "return_completed",
     "other",
 ]);
-export const enum_orders_source = pgEnum("enum_orders_source", [
-    "manual",
-    "cj",
-]);
+export const enum_orders_source = pgEnum("enum_orders_source", ["manual"]);
 export const enum_orders_payment_status = pgEnum("enum_orders_payment_status", [
     "pending",
     "paid",
@@ -58,10 +55,7 @@ export const enum_products_sales_channels = pgEnum(
     "enum_products_sales_channels",
     ["all", "onlineStore", "pos", "mobileApp"]
 );
-export const enum_products_source = pgEnum("enum_products_source", [
-    "manual",
-    "cj",
-]);
+export const enum_products_source = pgEnum("enum_products_source", ["manual"]);
 export const enum_users_roles = pgEnum("enum_users_roles", [
     "admin",
     "customer",
@@ -412,6 +406,10 @@ export const collections = pgTable(
         id: serial("id").primaryKey(),
         title: varchar("title").notNull(),
         description: varchar("description").notNull().default(""),
+        visible: boolean("visible").default(true),
+        thumbnail: integer("thumbnail_id").references(() => media.id, {
+            onDelete: "set null",
+        }),
         imageUrl: varchar("image_url"),
         handle: varchar("handle"),
         meta_title: varchar("meta_title"),
@@ -432,6 +430,9 @@ export const collections = pgTable(
             .notNull(),
     },
     (columns) => ({
+        collections_thumbnail_idx: index("collections_thumbnail_idx").on(
+            columns.thumbnail
+        ),
         collections_handle_idx: index("collections_handle_idx").on(
             columns.handle
         ),
@@ -836,7 +837,7 @@ export const media = pgTable(
     "media",
     {
         id: serial("id").primaryKey(),
-        alt: varchar("alt").notNull(),
+        alt: varchar("alt"),
         updatedAt: timestamp("updated_at", {
             mode: "string",
             withTimezone: true,
@@ -946,33 +947,6 @@ export const gift_cards = pgTable(
         gift_cards_created_at_idx: index("gift_cards_created_at_idx").on(
             columns.createdAt
         ),
-    })
-);
-
-export const themes_blocks_builder_io = pgTable(
-    "themes_blocks_builder_io",
-    {
-        _order: integer("_order").notNull(),
-        _parentID: integer("_parent_id").notNull(),
-        _path: text("_path").notNull(),
-        id: varchar("id").primaryKey(),
-        builderIoPublicKey: varchar("builder_io_public_key").notNull(),
-        builderIoPrivateKey: varchar("builder_io_private_key").notNull(),
-        blockName: varchar("block_name"),
-    },
-    (columns) => ({
-        _orderIdx: index("themes_blocks_builder_io_order_idx").on(
-            columns._order
-        ),
-        _parentIDIdx: index("themes_blocks_builder_io_parent_id_idx").on(
-            columns._parentID
-        ),
-        _pathIdx: index("themes_blocks_builder_io_path_idx").on(columns._path),
-        _parentIdFk: foreignKey({
-            columns: [columns["_parentID"]],
-            foreignColumns: [themes.id],
-            name: "themes_blocks_builder_io_parent_id_fk",
-        }).onDelete("cascade"),
     })
 );
 
@@ -2298,74 +2272,6 @@ export const form_submissions = pgTable(
     })
 );
 
-export const cj_settings_items = pgTable(
-    "cj_settings_items",
-    {
-        _order: integer("_order").notNull(),
-        _parentID: integer("_parent_id").notNull(),
-        id: varchar("id").primaryKey(),
-        productUrl: varchar("product_url"),
-    },
-    (columns) => ({
-        _orderIdx: index("cj_settings_items_order_idx").on(columns._order),
-        _parentIDIdx: index("cj_settings_items_parent_id_idx").on(
-            columns._parentID
-        ),
-        _parentIDFk: foreignKey({
-            columns: [columns["_parentID"]],
-            foreignColumns: [cj_settings.id],
-            name: "cj_settings_items_parent_id_fk",
-        }).onDelete("cascade"),
-    })
-);
-
-export const cj_settings = pgTable(
-    "cj_settings",
-    {
-        id: serial("id").primaryKey(),
-        emailAddress: varchar("email_address"),
-        apiToken: varchar("api_token"),
-        refreshToken: varchar("refresh_token"),
-        refreshTokenExpiry: timestamp("refresh_token_expiry", {
-            mode: "string",
-            withTimezone: true,
-            precision: 3,
-        }),
-        accessToken: varchar("access_token"),
-        accessTokenExpiry: timestamp("access_token_expiry", {
-            mode: "string",
-            withTimezone: true,
-            precision: 3,
-        }),
-        pod: integer("pod_id").references(() => media.id, {
-            onDelete: "set null",
-        }),
-        updatedAt: timestamp("updated_at", {
-            mode: "string",
-            withTimezone: true,
-            precision: 3,
-        })
-            .defaultNow()
-            .notNull(),
-        createdAt: timestamp("created_at", {
-            mode: "string",
-            withTimezone: true,
-            precision: 3,
-        })
-            .defaultNow()
-            .notNull(),
-    },
-    (columns) => ({
-        cj_settings_pod_idx: index("cj_settings_pod_idx").on(columns.pod),
-        cj_settings_updated_at_idx: index("cj_settings_updated_at_idx").on(
-            columns.updatedAt
-        ),
-        cj_settings_created_at_idx: index("cj_settings_created_at_idx").on(
-            columns.createdAt
-        ),
-    })
-);
-
 export const exports = pgTable(
     "exports",
     {
@@ -2634,7 +2540,6 @@ export const payload_locked_documents_rels = pgTable(
         "checkout-sessionsID": integer("checkout_sessions_id"),
         formsID: integer("forms_id"),
         "form-submissionsID": integer("form_submissions_id"),
-        "cj-settingsID": integer("cj_settings_id"),
         exportsID: integer("exports_id"),
         "email-templatesID": integer("email_templates_id"),
         "payload-jobsID": integer("payload_jobs_id"),
@@ -2718,9 +2623,6 @@ export const payload_locked_documents_rels = pgTable(
         payload_locked_documents_rels_form_submissions_id_idx: index(
             "payload_locked_documents_rels_form_submissions_id_idx"
         ).on(columns["form-submissionsID"]),
-        payload_locked_documents_rels_cj_settings_id_idx: index(
-            "payload_locked_documents_rels_cj_settings_id_idx"
-        ).on(columns["cj-settingsID"]),
         payload_locked_documents_rels_exports_id_idx: index(
             "payload_locked_documents_rels_exports_id_idx"
         ).on(columns.exportsID),
@@ -2849,11 +2751,6 @@ export const payload_locked_documents_rels = pgTable(
             columns: [columns["form-submissionsID"]],
             foreignColumns: [form_submissions.id],
             name: "payload_locked_documents_rels_form_submissions_fk",
-        }).onDelete("cascade"),
-        "cj-settingsIdFk": foreignKey({
-            columns: [columns["cj-settingsID"]],
-            foreignColumns: [cj_settings.id],
-            name: "payload_locked_documents_rels_cj_settings_fk",
         }).onDelete("cascade"),
         exportsIdFk: foreignKey({
             columns: [columns["exportsID"]],
@@ -3150,7 +3047,13 @@ export const relations_orders = relations(orders, ({ one, many }) => ({
         relationName: "timeline",
     }),
 }));
-export const relations_collections = relations(collections, () => ({}));
+export const relations_collections = relations(collections, ({ one }) => ({
+    thumbnail: one(media, {
+        fields: [collections.thumbnail],
+        references: [media.id],
+        relationName: "thumbnail",
+    }),
+}));
 export const relations_products_sales_channels = relations(
     products_sales_channels,
     ({ one }) => ({
@@ -3310,16 +3213,6 @@ export const relations_gift_cards = relations(gift_cards, ({ one }) => ({
         relationName: "customer",
     }),
 }));
-export const relations_themes_blocks_builder_io = relations(
-    themes_blocks_builder_io,
-    ({ one }) => ({
-        _parentID: one(themes, {
-            fields: [themes_blocks_builder_io._parentID],
-            references: [themes.id],
-            relationName: "_blocks_builder-io",
-        }),
-    })
-);
 export const relations_themes_blocks_custom_storefront_block = relations(
     themes_blocks_custom_storefront_block,
     ({ one }) => ({
@@ -3338,9 +3231,6 @@ export const relations_themes_texts = relations(themes_texts, ({ one }) => ({
     }),
 }));
 export const relations_themes = relations(themes, ({ many }) => ({
-    "_blocks_builder-io": many(themes_blocks_builder_io, {
-        relationName: "_blocks_builder-io",
-    }),
     "_blocks_custom-storefront-block": many(
         themes_blocks_custom_storefront_block,
         {
@@ -3764,29 +3654,6 @@ export const relations_form_submissions = relations(
         }),
     })
 );
-export const relations_cj_settings_items = relations(
-    cj_settings_items,
-    ({ one }) => ({
-        _parentID: one(cj_settings, {
-            fields: [cj_settings_items._parentID],
-            references: [cj_settings.id],
-            relationName: "items",
-        }),
-    })
-);
-export const relations_cj_settings = relations(
-    cj_settings,
-    ({ one, many }) => ({
-        pod: one(media, {
-            fields: [cj_settings.pod],
-            references: [media.id],
-            relationName: "pod",
-        }),
-        items: many(cj_settings_items, {
-            relationName: "items",
-        }),
-    })
-);
 export const relations_exports_texts = relations(exports_texts, ({ one }) => ({
     parent: one(exports, {
         fields: [exports_texts.parent],
@@ -3940,11 +3807,6 @@ export const relations_payload_locked_documents_rels = relations(
             references: [form_submissions.id],
             relationName: "form-submissions",
         }),
-        "cj-settingsID": one(cj_settings, {
-            fields: [payload_locked_documents_rels["cj-settingsID"]],
-            references: [cj_settings.id],
-            relationName: "cj-settings",
-        }),
         exportsID: one(exports, {
             fields: [payload_locked_documents_rels.exportsID],
             references: [exports.id],
@@ -4097,7 +3959,6 @@ type DatabaseSchema = {
     media: typeof media;
     policies: typeof policies;
     gift_cards: typeof gift_cards;
-    themes_blocks_builder_io: typeof themes_blocks_builder_io;
     themes_blocks_custom_storefront_block: typeof themes_blocks_custom_storefront_block;
     themes: typeof themes;
     themes_texts: typeof themes_texts;
@@ -4139,8 +4000,6 @@ type DatabaseSchema = {
     forms: typeof forms;
     form_submissions_submission_data: typeof form_submissions_submission_data;
     form_submissions: typeof form_submissions;
-    cj_settings_items: typeof cj_settings_items;
-    cj_settings: typeof cj_settings;
     exports: typeof exports;
     exports_texts: typeof exports_texts;
     email_templates: typeof email_templates;
@@ -4175,7 +4034,6 @@ type DatabaseSchema = {
     relations_media: typeof relations_media;
     relations_policies: typeof relations_policies;
     relations_gift_cards: typeof relations_gift_cards;
-    relations_themes_blocks_builder_io: typeof relations_themes_blocks_builder_io;
     relations_themes_blocks_custom_storefront_block: typeof relations_themes_blocks_custom_storefront_block;
     relations_themes_texts: typeof relations_themes_texts;
     relations_themes: typeof relations_themes;
@@ -4217,8 +4075,6 @@ type DatabaseSchema = {
     relations_forms: typeof relations_forms;
     relations_form_submissions_submission_data: typeof relations_form_submissions_submission_data;
     relations_form_submissions: typeof relations_form_submissions;
-    relations_cj_settings_items: typeof relations_cj_settings_items;
-    relations_cj_settings: typeof relations_cj_settings;
     relations_exports_texts: typeof relations_exports_texts;
     relations_exports: typeof relations_exports;
     relations_email_templates: typeof relations_email_templates;
