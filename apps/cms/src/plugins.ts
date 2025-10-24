@@ -4,8 +4,7 @@ import { cjPlugin } from "@shopnex/cj-plugin";
 import { importExportPlugin } from "@shopnex/import-export-plugin";
 import { stripePlugin } from "@shopnex/stripe-plugin";
 import { builderIoPlugin } from "@shopnex/builder-io-plugin";
-import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
-
+import { formBuilderPlugin } from "@payloadcms/plugin-form-builder";
 
 import { adminPluginAccess, admins } from "./access/roles";
 import { paymentCanceled, paymentSucceeded } from "./webhooks";
@@ -15,15 +14,11 @@ import { seoPlugin } from "@payloadcms/plugin-seo";
 import { analyticsPlugin } from "@shopnex/analytics-plugin";
 import { sidebarPlugin } from "@shopnex/sidebar-plugin";
 
-export const plugins: Plugin[] = [
+import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 
+export const plugins: Plugin[] = [
     formBuilderPlugin({}),
 
-    cjPlugin({
-        cjApiKey: process.env.CJ_PASSWORD || "",
-        cjEmailAddress: process.env.CJ_EMAIL_ADDRESS || "",
-        cjRefreshToken: process.env.CJ_REFRESH_TOKEN,
-    }),
     stripePlugin({
         isTestKey: Boolean(process.env.NEXT_PUBLIC_STRIPE_IS_TEST_KEY),
         logs: true,
@@ -42,27 +37,19 @@ export const plugins: Plugin[] = [
         },
     }),
     importExportPlugin({
-        collections: ["products", "orders"],
+        collections: ["products", "orders", "collections"],
         disableJobsQueue: true,
         importCollections: [
             {
                 collectionSlug: "products",
             },
             {
+                collectionSlug: "collections",
+            },
+            {
                 collectionSlug: "orders",
             },
         ],
-    }),
-    builderIoPlugin({
-        collectionDesignSlug: "themes",
-        collectionOverrides: {
-            access: {
-                create: admins,
-                delete: admins,
-                read: admins,
-                update: admins,
-            },
-        },
     }),
     easyEmailPlugin({
         collectionOverrides: {
@@ -96,4 +83,12 @@ export const plugins: Plugin[] = [
     analyticsPlugin({}),
     sidebarPlugin(),
 
+    vercelBlobStorage({
+        enabled: true,
+        collections: {
+            // If you have another collection that supports uploads, you can add it below
+            media: true,
+        },
+        token: process.env.VYA_READ_WRITE_TOKEN,
+    }),
 ];

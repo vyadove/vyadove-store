@@ -3,6 +3,7 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 
 import Image from "next/image";
 
+import type { Media } from "@shopnex/types";
 import { TypographyH1, TypographyH3, TypographyP } from "@ui/shadcn/typography";
 
 import InvertedCornerMask from "@/components/inverted-corner-mask";
@@ -13,13 +14,6 @@ export async function Collections() {
   const collections = await payloadSdk.find({
     collection: "collections",
     limit: 6,
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      imageUrl: true,
-      handle: true,
-    }, // fetch only needed fields
 
     where: {
       handle: {
@@ -27,8 +21,6 @@ export async function Collections() {
       },
     },
   });
-
-  // console.log('collections ---- : ', collections);
 
   return (
     <div className="mt-24 flex flex-col gap-8">
@@ -59,12 +51,16 @@ export async function Collections() {
               }}
             >
               <div className="relative min-h-60 w-full sm:min-h-72">
-                {collection.imageUrl && (
+                {(collection.imageUrl ||
+                  (collection.thumbnail as any)?.url) && (
                   <Image
-                    alt={"collection.name"}
+                    alt={(collection?.thumbnail as Media)?.alt || "-"}
                     className="w-full object-cover"
                     fill
-                    src={collection?.imageUrl}
+                    src={
+                      (collection?.thumbnail as any)?.url ||
+                      collection?.imageUrl
+                    }
                   />
                 )}
               </div>

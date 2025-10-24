@@ -90,7 +90,6 @@ export interface Config {
     'checkout-sessions': CheckoutSession;
     forms: Form;
     'form-submissions': FormSubmission;
-    'cj-settings': CjSetting;
     exports: Export;
     'email-templates': EmailTemplate;
     'payload-jobs': PayloadJob;
@@ -127,7 +126,6 @@ export interface Config {
     'checkout-sessions': CheckoutSessionsSelect<false> | CheckoutSessionsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
-    'cj-settings': CjSettingsSelect<false> | CjSettingsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     'email-templates': EmailTemplatesSelect<false> | EmailTemplatesSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
@@ -189,7 +187,7 @@ export interface Order {
   totalAmount: number;
   user?: (number | null) | User;
   cart?: (number | null) | Cart;
-  source?: ('manual' | 'cj') | null;
+  source?: 'manual' | null;
   currency: string;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
   orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'canceled';
@@ -327,7 +325,7 @@ export interface Product {
    * Choose where this product should be available to customers.
    */
   salesChannels?: ('all' | 'onlineStore' | 'pos' | 'mobileApp')[] | null;
-  source?: ('manual' | 'cj') | null;
+  source?: 'manual' | null;
   description: string;
   collections?: (number | Collection)[] | null;
   handle?: string | null;
@@ -386,6 +384,8 @@ export interface Collection {
   id: number;
   title: string;
   description: string;
+  visible?: boolean | null;
+  thumbnail?: (number | null) | Media;
   imageUrl?: string | null;
   handle?: string | null;
   products?: {
@@ -406,7 +406,7 @@ export interface Collection {
  */
 export interface Media {
   id: number;
-  alt: string;
+  alt?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -614,24 +614,15 @@ export interface GiftCard {
 export interface Theme {
   id: number;
   title?: string | null;
-  editorMode: (
-    | {
-        builderIoPublicKey: string;
-        builderIoPrivateKey: string;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'builder-io';
-      }
-    | {
-        /**
-         * Optional: Link to your live storefront. Press enter to add multiple values
-         */
-        storefrontUrls?: string[] | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'custom-storefront-block';
-      }
-  )[];
+  editorMode: {
+    /**
+     * Optional: Link to your live storefront. Press enter to add multiple values
+     */
+    storefrontUrls?: string[] | null;
+    id?: string | null;
+    blockName?: string | null;
+    blockType: 'custom-storefront-block';
+  }[];
   /**
    * Explore top-rated free themes loved by store owners—designed to help you launch quickly and look great.
    */
@@ -1016,31 +1007,6 @@ export interface FormSubmission {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "cj-settings".
- */
-export interface CjSetting {
-  id: number;
-  emailAddress?: string | null;
-  apiToken?: string | null;
-  refreshToken?: string | null;
-  refreshTokenExpiry?: string | null;
-  accessToken?: string | null;
-  accessTokenExpiry?: string | null;
-  pod?: (number | null) | Media;
-  /**
-   * A list of product URLs to sync with CJ Dropshipping
-   */
-  items?:
-    | {
-        productUrl?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "exports".
  */
 export interface Export {
@@ -1266,10 +1232,6 @@ export interface PayloadLockedDocument {
         value: number | FormSubmission;
       } | null)
     | ({
-        relationTo: 'cj-settings';
-        value: number | CjSetting;
-      } | null)
-    | ({
         relationTo: 'exports';
         value: number | Export;
       } | null)
@@ -1366,6 +1328,8 @@ export interface OrdersSelect<T extends boolean = true> {
 export interface CollectionsSelect<T extends boolean = true> {
   title?: T;
   description?: T;
+  visible?: T;
+  thumbnail?: T;
   imageUrl?: T;
   handle?: T;
   products?: T;
@@ -1537,14 +1501,6 @@ export interface ThemesSelect<T extends boolean = true> {
   editorMode?:
     | T
     | {
-        'builder-io'?:
-          | T
-          | {
-              builderIoPublicKey?: T;
-              builderIoPrivateKey?: T;
-              id?: T;
-              blockName?: T;
-            };
         'custom-storefront-block'?:
           | T
           | {
@@ -1945,27 +1901,6 @@ export interface FormSubmissionsSelect<T extends boolean = true> {
     | {
         field?: T;
         value?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "cj-settings_select".
- */
-export interface CjSettingsSelect<T extends boolean = true> {
-  emailAddress?: T;
-  apiToken?: T;
-  refreshToken?: T;
-  refreshTokenExpiry?: T;
-  accessToken?: T;
-  accessTokenExpiry?: T;
-  pod?: T;
-  items?:
-    | T
-    | {
-        productUrl?: T;
         id?: T;
       };
   updatedAt?: T;

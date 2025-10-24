@@ -86,16 +86,13 @@ const ProductPreview = ({
     return getVariantImage(v);
   });
   const thumbnail = getVariantImage(variantWithImage as Product["variants"][0]);
-  // const thumbnailUrl = thumbnail ? thumbnail : variantWithImage?.imageUrl;
-
-  const thumbnailUrl = product.variants?.find((v) => {
-    return Boolean(v.imageUrl);
-  })?.imageUrl;
+  const thumbnailUrl = thumbnail ? thumbnail : variantWithImage?.imageUrl;
 
   return (
     <Link
       className="group/card flex flex-col rounded-xl p-0 "
-      href={`/products/${product.handle}`}
+      // href={`/products/${product.handle}`}
+      href={`/`}
     >
       <div className="">
         {/* --- THUMBNAIL --- */}

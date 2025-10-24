@@ -1,8 +1,9 @@
 "use client";
 
 // import Image from "next/image";
-
 // import { Minus, Plus, ShoppingBag, X } from "lucide-react";
+import { Badge } from "@ui/shadcn/badge";
+import { TypographyH3, TypographyLead } from "@ui/shadcn/typography";
 import { Drawer } from "vaul";
 
 import { useCart } from "@/context/cart-context";
@@ -77,21 +78,33 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
           onClick={closeCart}
         />
         <Drawer.Content
-          className="fixed top-2 right-2 bottom-2 z-95 flex w-[310px] outline-none"
+          className="fixed top-3 right-3 bottom-3 z-95 flex w-md outline-none "
           // The gap between the edge of the screen and the drawer is 8px in this case.
           style={
             { "--initial-transform": "calc(100% + 8px)" } as React.CSSProperties
           }
         >
-          <div className="flex h-full w-full grow flex-col rounded-[16px] bg-zinc-50 p-5">
-            <div className="mx-auto max-w-md">
-              <Drawer.Title className="mb-2 font-medium text-zinc-900">
-                It supports all directions.
-              </Drawer.Title>
-              <Drawer.Description className="mb-2 text-zinc-600">
-                This one specifically is not touching the edge of the screen,
-                but that&apos;s not required for a side drawer.
-              </Drawer.Description>
+          <div className="flex h-full w-full grow flex-col overflow-hidden rounded-[16px] bg-zinc-50">
+            <div className="mx-auto h-full w-full">
+              <div className="flex items-center gap-2 border-b p-5">
+                <TypographyH3 className="font-semibold">Your Cart</TypographyH3>
+
+                <Badge className="bg-accent-foreground text-accent rounded-full">
+                  0
+                </Badge>
+              </div>
+
+              <div className=" flex size-full flex-1  p-4">
+
+                <div className='grid  w-full place-items-center'>
+
+                  <TypographyLead className='capitalize'>
+                    your cart is empty
+                  </TypographyLead>
+
+                </div>
+
+              </div>
             </div>
           </div>
         </Drawer.Content>

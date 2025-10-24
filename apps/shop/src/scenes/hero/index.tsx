@@ -30,7 +30,7 @@ const Hero = () => {
             src="/hero-vid.mp4"
           />
 
-          <div className="absolute inset-0 bg-green-50/65 mix-blend-hue" />
+          <div className="pointer-events-none absolute inset-0 bg-green-50/65 mix-blend-hue" />
         </div>
 
         <div className="flex w-max items-center gap-3 rounded-full border border-neutral-300/70 bg-neutral-200/80 p-1 pl-2">
@@ -58,10 +58,14 @@ const Hero = () => {
         </TypographyLead>
 
         <div className=" flex items-center gap-4">
-          <Button size="lg">
-            Send a Gift
-            <FiGift />
-          </Button>
+
+          <VyaLink  href='/'>
+            <Button className='cursor-pointer'  size="lg">
+              Send a Gift
+              <FiGift />
+            </Button>
+
+          </VyaLink>
         </div>
       </div>
     </AppHeroScaffold>

@@ -1,11 +1,12 @@
 import type { ComponentProps, PropsWithChildren } from "react";
 import React from "react";
 
-import { NavItems } from "@ui/nav/nav";
-
 import InvertedCornerMask from "@/components/inverted-corner-mask";
 
 import { cn } from "@/lib/utils";
+
+
+import { NavItems } from "@ui/nav/nav-bar-links";
 
 type Props = {
   containerProps?: ComponentProps<typeof InvertedCornerMask>;
