@@ -29,18 +29,22 @@ export const Collections: CollectionConfig = {
             required: true,
             defaultValue: "",
         },
+        {
+            name: "visible",
+            type: "checkbox",
+            admin: {
+                position: "sidebar",
+            },
+            defaultValue: true,
+            label: "Visibility",
+        },
 
-        // RichTextEditor({
-        //     name: "description",
-        //     label: "Description",
-        // }),
-        // {
-        //     name: "thumbnail",
-        //     // label: "Image",
-        //     // hasMany: true,
-        //     type: "upload",
-        //     relationTo: "media",
-        // },
+        {
+            name: "thumbnail",
+            label: "Thumbnail Image",
+            type: "upload",
+            relationTo: "media",
+        },
         {
             name: "imageUrl",
             type: "text",

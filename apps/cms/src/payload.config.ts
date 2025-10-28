@@ -42,7 +42,7 @@ import { seedForms } from "@/seed/seed-forms";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-// console.log('process.env.VYADOVE_NO_SSL_POSTGRES_URL ----------------------------- : ', process.env.DATABASE_URL);
+console.log('process.env.DATABASE_URL ----------------------------- : ', process.env.DATABASE_URL);
 
 export default buildConfig({
     routes: {
@@ -154,7 +154,7 @@ export default buildConfig({
                 }
 
                 try {
-                    await seedForms();
+                    await seed();
                     return Response.json({ status: "SEED OK" });
                 } catch (error) {
                     return Response.json({ status: "ERROR", error });

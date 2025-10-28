@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "next dev --turbo --port 3020",
     "build": "next build",
+    "build:local": "cross-env NEXT_PUBLIC_SERVER_URL=https://admin.vyadove.com next build",
     "ci": "next build",
     "start": "next start",
     "lint": "next lint --max-warnings 0",

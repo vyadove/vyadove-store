@@ -1,14 +1,6 @@
-import type { ComponentPropsWithoutRef } from "react";
-import React from "react";
-import { FiSearch } from "react-icons/fi";
-
 import { NavMenu } from "@ui/nav/mobile/nav-menu";
 import { SearchNav } from "@ui/nav/mobile/search-nav";
-import { SeoH1 } from "@/ui/seo-h1";
-import NavBarLinks from "@ui/nav/nav-bar-links";
 import TopNavSlider from "@ui/nav/top-nav-slider";
-import { Button } from "@ui/shadcn/button";
-import { Separator } from "@ui/shadcn/separator";
 import { VyaLink } from "@ui/vya-link";
 import { UserIcon } from "lucide-react";
 
@@ -17,37 +9,9 @@ import VyaDoveLogo from "@/components/icons";
 
 import { cn } from "@/lib/utils";
 
+import { NavItems } from "@ui/nav/nav-bar-links";
+
 // className="nav-border-reveal sticky top-0 z-50  py-4 backdrop-blur-xs"
-
-export const NavItems = (props: ComponentPropsWithoutRef<"div">) => {
-  return (
-    <div
-      {...props}
-      className={cn(
-        "flex items-center justify-center gap-6 p-3",
-        props?.className,
-      )}
-    >
-      <VyaLink href="/">
-        <VyaDoveLogo className="w-36" />
-      </VyaLink>
-
-      <NavBarLinks />
-
-      <div className="hidden lg:flex">
-        <Separator className="h-full" orientation="vertical" />
-
-        <div className="flex items-center">
-          <Button size="icon" variant="link">
-            <FiSearch stroke="#000" strokeWidth={2} />
-          </Button>
-
-          <CartIconButton />
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export const Nav = async () => {
   return (

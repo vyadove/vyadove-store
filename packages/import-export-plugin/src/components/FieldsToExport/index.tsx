@@ -80,6 +80,7 @@ export const FieldsToExport: SelectFieldClientComponent = (props) => {
         id,
         collectionConfig?.admin?.defaultColumns,
     ]);
+
     const onChange = (
         options: { id: string; label: ReactNode; value: string }[]
     ) => {

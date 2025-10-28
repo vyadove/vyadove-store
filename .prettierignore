@@ -13,4 +13,4 @@ node_modules/
 # Ignore configuration files that should not be formatted
 package-lock.json
 yarn.lock
-/apps/cms/src/migrations/
+/apps/cms/src/migrations_2/
