@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
   // 2. Determine which path to revalidate (e.g., all products)
   try {
     revalidatePath("/");
+    revalidatePath("/shop");
     console.log("Revalidation successful for /store and /");
 
     return Response.json({ revalidated: true });

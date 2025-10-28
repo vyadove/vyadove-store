@@ -152,7 +152,7 @@ const Testimonial = () => {
           </TypographyLead>
 
           {/* Logos Row */}
-          <div className="flex w-full">
+          {/* <div className="flex w-full">
             <Marquee
               className="mx-auto mt-8 flex max-w-2xl gap-20"
               gradient
@@ -162,8 +162,8 @@ const Testimonial = () => {
             >
               {companyIcons.map((l, idx) => (
                 <li className="flex items-center gap-2 border pl-8" key={idx}>
-                  {/*<span className="flex h-8 w-8 items-center justify-center rounded-full">{l.icon}</span>*/}
-                  {/*<span>{l.name}</span>*/}
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full">{l.icon}</span>
+                  <span>{l.name}</span>
 
                   <div
                     className={`bg-[url( relative h-[20px] w-[80px]${l})]`}
@@ -171,7 +171,7 @@ const Testimonial = () => {
                 </li>
               ))}
             </Marquee>
-          </div>
+          </div> */}
         </section>
       </div>
     </InvertedCornerMask>
