@@ -1,5 +1,5 @@
 {
-  "id": "d3cf4d2c-0549-4a7e-98e4-8243ead0cbf5",
+  "id": "7c872a2c-3c37-41b9-b45d-893c7f09b122",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -2915,6 +2915,12 @@
         },
         "subtitle": {
           "name": "subtitle",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "subtitle2": {
+          "name": "subtitle2",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false

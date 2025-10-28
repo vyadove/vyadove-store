@@ -1103,6 +1103,7 @@ export const hero_page_blocks_hero = pgTable(
         id: varchar("id").primaryKey(),
         title: varchar("title").notNull(),
         subtitle: varchar("subtitle"),
+        subtitle2: varchar("subtitle2"),
         ctaButtonText: varchar("cta_button_text"),
         ctaButtonLink: varchar("cta_button_link"),
         backgroundImage: integer("background_image_id").references(

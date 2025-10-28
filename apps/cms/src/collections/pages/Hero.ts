@@ -15,6 +15,10 @@ const HeroBlock: BaseBlock = {
             type: "text",
         },
         {
+            name: "subtitle2",
+            type: "text",
+        },
+        {
             name: "ctaButtonText",
             type: "text",
             label: "CTA Button Text",

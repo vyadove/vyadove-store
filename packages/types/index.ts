@@ -640,6 +640,7 @@ export interface HeroPage {
     | {
         title: string;
         subtitle?: string | null;
+        subtitle2?: string | null;
         ctaButtonText?: string | null;
         ctaButtonLink?: string | null;
         backgroundImage?: (number | null) | Media;
@@ -1545,6 +1546,7 @@ export interface HeroPageSelect<T extends boolean = true> {
           | {
               title?: T;
               subtitle?: T;
+              subtitle2?: T;
               ctaButtonText?: T;
               ctaButtonLink?: T;
               backgroundImage?: T;
