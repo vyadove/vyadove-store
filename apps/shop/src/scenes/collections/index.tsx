@@ -16,6 +16,10 @@ export async function Collections() {
     limit: 6,
 
     where: {
+      visible: {
+        equals: true,
+      },
+
       handle: {
         not_equals: "popular",
       },

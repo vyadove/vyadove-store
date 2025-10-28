@@ -5,6 +5,7 @@ import type { NextRequest } from "next/server";
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const secret = searchParams.get("secret");
+  const path = searchParams.get("path");
 
   // 1. Check for secret key to secure the endpoint
   if (secret !== process.env.REVALIDATION_SECRET_TOKEN) {
@@ -16,7 +17,7 @@ export async function GET(request: NextRequest) {
 
   // 2. Determine which path to revalidate (e.g., all products)
   try {
-    revalidatePath("/");
+    revalidatePath(path || "/");
     revalidatePath("/shop");
     console.log("Revalidation successful for /store and /");
 
