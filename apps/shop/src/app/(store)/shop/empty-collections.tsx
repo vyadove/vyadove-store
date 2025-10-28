@@ -11,7 +11,7 @@ import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTi
 
 export function EmptyOutline() {
   return (
-    <Empty className="border border-dashed">
+    <Empty className="border border-dashed w-full mx-auto">
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <AiOutlineProduct />

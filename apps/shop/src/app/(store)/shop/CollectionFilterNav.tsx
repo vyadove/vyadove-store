@@ -56,7 +56,6 @@ export const CollectionFilterClient: React.FC<CollectionFilterClientProps> = ({
 
     // Use router.push to update the URL without triggering a full page reload
     router.push(`?${newSearchParams.toString()}`, { scroll: false });
-    router.refresh()
   };
 
   return (

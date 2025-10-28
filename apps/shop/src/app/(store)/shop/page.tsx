@@ -9,14 +9,10 @@ import { payloadSdk } from "@/utils/payload-sdk";
 // import { payloadSdk } from "@/utils/payload-sdk";
 // import { ProductPreview } from "@/components/products/product-card";
 
-interface PageProps {
-  searchParams: {
-    collectionId?: string; // This will hold the ID you set in the URL
-  };
-}
+export const dynamic = "force-dynamic"; // disables static gen
 
-async function ShopPage({ searchParams }: PageProps) {
-  const selectedCollectionId = searchParams?.collectionId || "all";
+async function ShopPage({ searchParams }: any) {
+  const collectionId = searchParams?.collectionId || "all";
 
   const products = await payloadSdk.find(
     {
@@ -24,18 +20,25 @@ async function ShopPage({ searchParams }: PageProps) {
       // limit: 3,
       sort: "createdAt",
       where: {
-        ...(selectedCollectionId === "all"
+        ...(collectionId === "all" || !collectionId
           ? {
               collections: {
-                equals: selectedCollectionId || undefined,
+                equals: undefined,
               },
             }
-          : {}),
+          : {
+              collections: {
+                equals: collectionId,
+              },
+            }),
       },
-    }
+    },
+    {
+      cache: "no-cache",
+    },
   );
 
-  console.log("products  --", products, selectedCollectionId);
+  console.log("products  --", products, searchParams.collectionId);
 
   if (products?.docs?.length === 0) {
     return (
