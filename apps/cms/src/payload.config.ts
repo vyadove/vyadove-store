@@ -38,11 +38,12 @@ import { Support } from "@/collections/pages/support";
 import { Forms } from "@/collections/pages/Forms";
 import { MainMenu } from "@/globals/MainMenu";
 import { seedForms } from "@/seed/seed-forms";
+import { Category } from "@/collections/category";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-console.log('process.env.DATABASE_URL ----------------------------- : ', process.env.DATABASE_URL);
+// console.log('process.env.DATABASE_URL ----------------------------- : ', process.env.DATABASE_URL);
 
 export default buildConfig({
     routes: {
@@ -76,6 +77,7 @@ export default buildConfig({
     collections: [
         Orders,
         Collections,
+        Category,
         Products,
         Users,
         Campaigns,
@@ -120,7 +122,6 @@ export default buildConfig({
     //     },
     // }),
 
-    debug: true,
 
     db: postgresAdapter({
         prodMigrations: migrations,

@@ -8,13 +8,13 @@ import { PopularGifts } from "@/scenes/popular-gifts";
 import { QnAs } from "@/scenes/qna";
 import Testimonial from "@/scenes/testimonial";
 
-// export const metadata: Metadata = {
-//   alternates: { canonical: publicUrl },
-// };
+export const metadata: Metadata = {
+  description: "Explore all of our gift experiences.",
+  title: "Store",
+};
+
 
 export default async function Home() {
-
-  console.log('process.env.NEXT_PUBLIC_SERVER_URL ------------ ', process.env.NEXT_PUBLIC_SERVER_URL);
 
   return (
     <main>

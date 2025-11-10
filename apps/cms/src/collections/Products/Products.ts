@@ -114,6 +114,16 @@ export const Products: CollectionConfig = {
             label: "Tags",
             relationTo: "collections",
         },
+        {
+            name: "category",
+            relationTo: "category",
+            type: "relationship",
+            admin: {
+                position: "sidebar",
+            },
+            hasMany: true,
+            label: "Category",
+        },
         HandleField(),
         {
             type: "collapsible",
@@ -215,7 +225,6 @@ export const Products: CollectionConfig = {
                     label: "Image",
                     relationTo: "media",
                 },
-
                 {
                     type: "row",
                     fields: [
@@ -229,14 +238,13 @@ export const Products: CollectionConfig = {
                             type: "number",
                         },
                         {
-                            name: "stockCount",
-                            type: "number",
-                            defaultValue: 0,
-                            min: 0,
+                            name: "available",
+                            label: "Available",
+                            type: "checkbox",
+                            defaultValue: true,
                         },
                     ],
                 },
-
                 {
                     name: "options",
                     type: "array",
@@ -290,8 +298,35 @@ export const Products: CollectionConfig = {
                     name: "value",
                     type: "text",
                 },
+                RichTextEditor({
+                    name: "richText",
+                    label: "Description",
+                }),
             ],
         },
+        {
+            name: 'locations',
+            type: 'array',
+            maxRows: 100,
+            fields: [
+                {
+                    name: 'coordinates',
+                    type: 'point',
+                    label: 'Coordinates',
+                },
+                {
+                    name: 'map_url',
+                    label: 'Map URL',
+                    type: 'text',
+                },
+                {
+                    name: 'address',
+                    label: 'Address',
+                    type: 'text',
+                }
+            ]
+        },
+
         SeoField(),
     ],
     hooks: {

@@ -1,6 +1,6 @@
 import type { BasePayload, CollectionAfterChangeHook, Document } from "payload";
 import { cjSdk } from "../sdk/cj-sdk";
-import { Order } from "@shopnex/types";
+import { Order } from "@vyadove/types";
 
 export const createOrderHook: CollectionAfterChangeHook<Order> = async ({
     doc,

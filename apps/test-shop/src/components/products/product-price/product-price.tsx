@@ -1,4 +1,4 @@
-import type { Product } from "@shopnex/types";
+import type { Product } from "@vyadove/types";
 
 import { convertToLocale } from "@/utils/money";
 import { clx } from "@medusajs/ui";

@@ -1,4 +1,4 @@
-import type { Order } from "@shopnex/types";
+import type { Order } from "@vyadove/types";
 import type { Access, Where } from "payload";
 
 import { checkRole } from "@/access/roles";

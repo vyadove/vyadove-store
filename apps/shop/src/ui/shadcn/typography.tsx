@@ -88,7 +88,7 @@ export function TypographyH6(props: React.ComponentProps<"h4">) {
 
 export function TypographyP(props: React.ComponentProps<"p">) {
   return (
-    <p className={cn("leading-7 text-black", props.className)}>
+    <p className={cn("leading-6 text-black", props.className)}>
       {props.children}
     </p>
   );
@@ -128,7 +128,7 @@ export function TypographyMuted(props: React.ComponentProps<"p">) {
   return (
     <p
       {...props}
-      className={cn("text-sm text-muted-foreground", props.className)}
+      className={cn(" text-muted-foreground", props.className)}
     >
       {props.children}
     </p>

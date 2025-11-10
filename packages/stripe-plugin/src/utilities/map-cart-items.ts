@@ -1,4 +1,4 @@
-import { Cart } from "@shopnex/types";
+import { Cart } from "@vyadove/types";
 
 export const mapCartItems = (cartItems: Cart["cartItems"]) => {
     return cartItems?.map((item) => {

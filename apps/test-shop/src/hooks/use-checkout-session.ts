@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { payloadSdk } from "@/utils/payload-sdk";
-import { CheckoutSession } from "@shopnex/types";
+import { CheckoutSession } from "@vyadove/types";
 import { usePathname, useRouter } from "next/navigation";
 
 export const useCheckoutSession = () => {
@@ -44,7 +44,8 @@ export const useCheckoutSession = () => {
                         return;
                     }
                 }
-                if (
+
+                /* if (
                     !sessionData?.shipping &&
                     sessionData?.shippingAddress &&
                     sessionData.billingAddress
@@ -53,9 +54,9 @@ export const useCheckoutSession = () => {
                         router.replace("/checkout/shipping");
                         return;
                     }
-                }
+                }*/
 
-                if (
+                /*  if (
                     !sessionData?.payment &&
                     sessionData?.shipping &&
                     sessionData.billingAddress &&
@@ -65,7 +66,7 @@ export const useCheckoutSession = () => {
                         router.replace("/checkout/payment");
                         return;
                     }
-                }
+                }*/
             } catch (err: any) {
                 setError(err);
             } finally {

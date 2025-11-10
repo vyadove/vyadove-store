@@ -35,7 +35,7 @@ export default async function StoreLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <CartProvider>
+    <>
       <TooltipProvider>
         <Nav />
 
@@ -50,6 +50,6 @@ export default async function StoreLayout({
           logoUrl: null,
         })}
       />
-    </CartProvider>
+    </>
   );
 }

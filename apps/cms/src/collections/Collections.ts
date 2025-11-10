@@ -4,6 +4,7 @@ import { admins, anyone } from "@/access/roles";
 import { HandleField } from "@/fields/handle";
 import { SeoField } from "@/fields/seo";
 import { revalidateShop } from "@/collections/Products/hooks/revalidate-shop";
+import { groups } from "./groups";
 
 export const Collections: CollectionConfig = {
     slug: "collections",
@@ -14,7 +15,7 @@ export const Collections: CollectionConfig = {
         update: admins,
     },
     admin: {
-        // group: groups.catalog,
+        group: groups.catalog,
         useAsTitle: "title",
     },
     fields: [

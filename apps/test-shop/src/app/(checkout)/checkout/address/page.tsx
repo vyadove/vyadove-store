@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Checkbox from "@/components/checkbox";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,9 @@ import {
     createCheckoutSession,
     updateCheckoutSession,
 } from "@/services/checkout-session";
+import { CheckoutSession } from "@vyadove/types";
+import Cookies from "js-cookie";
+import { payloadSdk } from "@/utils/payload-sdk";
 
 interface AddressFormData {
     firstName: string;
@@ -35,14 +38,15 @@ interface AddressFormData {
 
 export default function Address() {
     const router = useRouter();
+    const [session, setSession] = useState<CheckoutSession>();
     const [isLoading, setIsLoading] = useState(false);
     const {} = useCheckoutSession();
 
     const defaultValues =
         process.env.NODE_ENV === "development"
             ? {
-                  firstName: "John",
-                  lastName: "Doe",
+                  firstName: (session?.shippingAddress as any)?.firstname || "John",
+                  lastName: (session?.shippingAddress as any)?.lastName || "Doe",
                   address: "123 Testing Lane",
                   company: "Test Corp",
                   postalCode: "12345",
@@ -91,7 +95,14 @@ export default function Address() {
                     : undefined,
             };
 
-            await createCheckoutSession(updateData);
+            console.log("update data", updateData);
+
+            if(session){
+                await updateCheckoutSession(updateData);
+            }else {
+                await createCheckoutSession(updateData);
+            }
+
 
             router.push("/checkout/shipping");
         } catch (error) {
@@ -100,6 +111,24 @@ export default function Address() {
             setIsLoading(false);
         }
     };
+
+    useEffect(() => {
+        const sessionId = Cookies.get("checkout-session");
+        payloadSdk
+            .find({
+                collection: "checkout-sessions",
+                limit: 1,
+                where: {
+                    sessionId: {
+                        equals: sessionId,
+                    },
+                },
+            })
+            .then((existingSession) => {
+                const sessionData = existingSession.docs?.[0] || null;
+                setSession(sessionData);
+            });
+    }, []);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

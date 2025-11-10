@@ -1,5 +1,5 @@
 import { checkRole } from "@/access/roles";
-import { CheckoutSession } from "@shopnex/types";
+import { CheckoutSession } from "@vyadove/types";
 import { Access, Where } from "payload";
 
 export const readSessionAccess: Access<CheckoutSession> = ({ req }) => {

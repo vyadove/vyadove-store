@@ -1,4 +1,4 @@
-import type { Cart, Payment, Shipping } from "@shopnex/types";
+import type { Cart, Payment, Shipping } from "@vyadove/types";
 import { createCheckoutSession } from "../utilities/create-checkout-session";
 import { mapToStripeLineItems } from "../utilities/map-to-stripe";
 

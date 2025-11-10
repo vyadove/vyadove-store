@@ -1,8 +1,10 @@
+import { getStoreSettings } from "@/services/store-settings";
+
 import { isEmpty } from "./isEmpty";
 
 type ConvertToLocaleParams = {
   amount: number;
-  currency_code: string;
+  currency_code?: string;
   locale?: string;
   maximumFractionDigits?: number;
   minimumFractionDigits?: number;
@@ -10,17 +12,17 @@ type ConvertToLocaleParams = {
 
 export const convertToLocale = ({
   amount,
-  currency_code,
+  currency_code = "ETB",
   locale = "en-US",
   maximumFractionDigits,
-  minimumFractionDigits,
+  minimumFractionDigits=0,
 }: ConvertToLocaleParams) => {
-  return currency_code && !isEmpty(currency_code)
-    ? new Intl.NumberFormat(locale, {
-        currency: currency_code,
-        maximumFractionDigits,
-        minimumFractionDigits,
-        style: "currency",
-      }).format(amount)
-    : amount?.toString();
+  const storeConfig = getStoreSettings();
+
+  return new Intl.NumberFormat(locale, {
+    currency: currency_code || storeConfig?.currency,
+    maximumFractionDigits,
+    minimumFractionDigits,
+    style: "currency",
+  }).format(amount)
 };

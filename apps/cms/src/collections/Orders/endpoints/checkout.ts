@@ -1,4 +1,4 @@
-import type { Cart, Product } from "@shopnex/types";
+import type { Cart, Product } from "@vyadove/types";
 
 import { validateCartItems } from "@/utils/validate-cart-items";
 import Decimal from "decimal.js";

@@ -1,4 +1,4 @@
-import type { Shipping } from "@shopnex/types";
+import type { Shipping } from "@vyadove/types";
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { payloadSdk } from "@/utils/payload-sdk";

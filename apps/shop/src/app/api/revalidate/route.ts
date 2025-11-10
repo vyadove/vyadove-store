@@ -1,32 +1,32 @@
 // pages/api/revalidate-content.ts (or app/api/revalidate-content/route.ts in App Router)
-import { revalidatePath } from "next/cache";
-import type { NextRequest } from "next/server";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = request.nextUrl;
-  const secret = searchParams.get("secret");
-  const path = searchParams.get("path");
+export async function POST(req: Request) {
+  const { path, tag, secret }: any = await req.json();
 
   // 1. Check for secret key to secure the endpoint
   if (secret !== process.env.REVALIDATION_SECRET_TOKEN) {
-    // return res.status(401).json({ message: 'Invalid token' });
-
-    // return an error
-    return new Response("Invalid Token");
+    return NextResponse.json({ message: "Invalid secret" }, { status: 401 });
   }
 
-  // 2. Determine which path to revalidate (e.g., all products)
-  try {
-    revalidatePath(path || "/");
-    revalidatePath("/shop");
-    console.log("Revalidation successful for /store and /");
+  if (path && tag) {
+    await revalidatePath(path);
 
-    return Response.json({ revalidated: true });
-  } catch (err) {
-    console.error("Revalidation failed:", err);
-
-    return new Response("Error revalidating");
-
-    // return res.status(500).send('Error revalidating');
+    return NextResponse.json({ revalidated: true, type: "path", path });
   }
+
+  if (path) {
+    await revalidatePath(path);
+
+    return NextResponse.json({ revalidated: true, type: "path", path });
+  }
+
+  if (tag) {
+    await revalidateTag(tag);
+
+    return NextResponse.json({ revalidated: true, type: "tag", tag });
+  }
+
+  return NextResponse.json({ message: "Nothing to revalidate" });
 }

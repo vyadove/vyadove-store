@@ -4,7 +4,7 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import Image from "next/image";
 import Link from "next/link";
 
-import type { Product } from "@shopnex/types";
+import type { Product } from "@vyadove/types";
 import { Button } from "@ui/shadcn/button";
 import {
   TypographyH1,

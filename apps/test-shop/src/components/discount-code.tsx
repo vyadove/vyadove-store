@@ -1,6 +1,6 @@
 "use client";
 
-import type { GiftCard } from "@shopnex/types";
+import type { GiftCard } from "@vyadove/types";
 import type React from "react";
 
 import { Badge, Heading, Input, Label, Text } from "@medusajs/ui";
@@ -12,7 +12,7 @@ import { SubmitButton } from "./submit-button";
 
 type DiscountCodeProps = {
     applyPromotion: (code: string) => Promise<void>;
-    cart: any;
+    cart?: any;
     promotions: GiftCard[];
     setPromotions: (promotions: GiftCard[]) => void;
 };

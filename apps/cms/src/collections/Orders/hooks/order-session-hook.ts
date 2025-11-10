@@ -1,5 +1,5 @@
 import type { AfterChangeHook } from "@/admin/types";
-import type { Order } from "@shopnex/types";
+import type { Order } from "@vyadove/types";
 
 import { generateCookie, getCookieExpiration, mergeHeaders } from "payload";
 

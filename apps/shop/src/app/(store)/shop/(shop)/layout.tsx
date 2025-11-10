@@ -1,27 +1,13 @@
 import React from "react";
 
-
-
-import { RadioGroup, RadioGroupItem } from "@/ui/shadcn/radio-group";
+import FilterBar from "@/app/(store)/shop/components/filter-bar";
 import AppHeroScaffold from "@ui/nav/app-hero-scaffold";
 import { Badge } from "@ui/shadcn/badge";
 import {
-  TypographyH1,
-  TypographyH2,
-  TypographyH4,
-  TypographyLead,
-  TypographyP,
+  TypographyH1, TypographyH2, TypographyLead, TypographyMuted, TypographyP,
 } from "@ui/shadcn/typography";
 
-
-
 import { payloadSdk } from "@/utils/payload-sdk";
-import { Label } from "@ui/shadcn/label";
-import CollectionFilterClient from "@/app/(store)/shop/CollectionFilterNav";
-
-
-
-
 
 // import { payloadSdk } from "@/utils/payload-sdk";
 // import { ProductPreview } from "@/components/products/product-card";
@@ -64,17 +50,17 @@ const Layout = async ({ children }: React.PropsWithChildren) => {
         </div>
       </AppHeroScaffold>
 
-      <div className="my-20 flex gap-10">
-        <div className="flex max-w-[20rem] flex-col gap-2">
-          <div className="flex flex-col gap-1">
+      <div className="my-20 flex flex-col">
+        <div className="flex w-full flex-col gap-4">
+          <div className="flex flex-col">
             <TypographyH2>Shop</TypographyH2>
-            <TypographyLead className='text-muted-foreground font-normal'>
-              Find gifts by category: for him, for her, for friends, for the home.
-            </TypographyLead>
+            <TypographyMuted >
+              Explore our curated categories — something for every taste and
+              occasion.
+            </TypographyMuted>
           </div>
 
-          <CollectionFilterClient collections={collections.docs || []}/>
-
+          <FilterBar collections={collections.docs || []} />
         </div>
 
         {children}

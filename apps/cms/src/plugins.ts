@@ -69,7 +69,7 @@ export const plugins: Plugin[] = [
             return `${process.env.NEXT_PUBLIC_SERVER_URL}/products/${doc.handle}`;
         },
         uploadsCollection: "media",
-        generateTitle: ({ doc }) => `ShopNex — ${doc.title}`,
+        generateTitle: ({ doc }) => `Vyadove — ${doc.title}`,
         generateDescription: ({ doc }) => {
             return `some description`;
         },

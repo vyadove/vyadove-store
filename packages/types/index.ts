@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     orders: Order;
     collections: Collection;
+    category: Category;
     products: Product;
     users: User;
     campaigns: Campaign;
@@ -93,6 +94,7 @@ export interface Config {
     exports: Export;
     'email-templates': EmailTemplate;
     'payload-jobs': PayloadJob;
+    'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -101,10 +103,18 @@ export interface Config {
     collections: {
       products: 'products';
     };
+    category: {
+      products: 'products';
+      subcategories: 'category';
+    };
+    'payload-folders': {
+      documentsAndFolders: 'payload-folders' | 'media';
+    };
   };
   collectionsSelect: {
     orders: OrdersSelect<false> | OrdersSelect<true>;
     collections: CollectionsSelect<false> | CollectionsSelect<true>;
+    category: CategorySelect<false> | CategorySelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     campaigns: CampaignsSelect<false> | CampaignsSelect<true>;
@@ -129,6 +139,7 @@ export interface Config {
     exports: ExportsSelect<false> | ExportsSelect<true>;
     'email-templates': EmailTemplatesSelect<false> | EmailTemplatesSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
+    'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -328,6 +339,7 @@ export interface Product {
   source?: 'manual' | null;
   description: string;
   collections?: (number | Collection)[] | null;
+  category?: (number | Category)[] | null;
   handle?: string | null;
   /**
    * Choose the options for this product.
@@ -349,7 +361,7 @@ export interface Product {
     gallery?: (number | Media)[] | null;
     price: number;
     originalPrice?: number | null;
-    stockCount?: number | null;
+    available?: boolean | null;
     options?:
       | {
           option: string;
@@ -366,6 +378,19 @@ export interface Product {
     | {
         name: string;
         value?: string | null;
+        richText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  locations?:
+    | {
+        /**
+         * @minItems 2
+         * @maxItems 2
+         */
+        coordinates?: [number, number] | null;
+        map_url?: string | null;
+        address?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -407,6 +432,7 @@ export interface Collection {
 export interface Media {
   id: number;
   alt?: string | null;
+  folder?: (number | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -418,6 +444,75 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-folders".
+ */
+export interface FolderInterface {
+  id: number;
+  name: string;
+  folder?: (number | null) | FolderInterface;
+  documentsAndFolders?: {
+    docs?: (
+      | {
+          relationTo?: 'payload-folders';
+          value: number | FolderInterface;
+        }
+      | {
+          relationTo?: 'media';
+          value: number | Media;
+        }
+    )[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  folderType?: 'media'[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "category".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  description?: string | null;
+  visible?: boolean | null;
+  thumbnail?: (number | null) | Media;
+  /**
+   * Leave empty for top-level categories.
+   */
+  parent?: (number | null) | Category;
+  handle?: string | null;
+  /**
+   * Automatically calculated product count
+   */
+  numProducts?: number | null;
+  /**
+   * Automatically calculated subcategory count
+   */
+  numSubcategories?: number | null;
+  products?: {
+    docs?: (number | Product)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * These are the subcategories under this category.
+   */
+  subcategories?: {
+    docs?: (number | Category)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1149,6 +1244,10 @@ export interface PayloadLockedDocument {
         value: number | Collection;
       } | null)
     | ({
+        relationTo: 'category';
+        value: number | Category;
+      } | null)
+    | ({
         relationTo: 'products';
         value: number | Product;
       } | null)
@@ -1243,6 +1342,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'payload-jobs';
         value: number | PayloadJob;
+      } | null)
+    | ({
+        relationTo: 'payload-folders';
+        value: number | FolderInterface;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1345,6 +1448,30 @@ export interface CollectionsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "category_select".
+ */
+export interface CategorySelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  visible?: T;
+  thumbnail?: T;
+  parent?: T;
+  handle?: T;
+  numProducts?: T;
+  numSubcategories?: T;
+  products?: T;
+  subcategories?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products_select".
  */
 export interface ProductsSelect<T extends boolean = true> {
@@ -1356,6 +1483,7 @@ export interface ProductsSelect<T extends boolean = true> {
   source?: T;
   description?: T;
   collections?: T;
+  category?: T;
   handle?: T;
   variantOptions?:
     | T
@@ -1373,7 +1501,7 @@ export interface ProductsSelect<T extends boolean = true> {
         gallery?: T;
         price?: T;
         originalPrice?: T;
-        stockCount?: T;
+        available?: T;
         options?:
           | T
           | {
@@ -1388,6 +1516,15 @@ export interface ProductsSelect<T extends boolean = true> {
     | {
         name?: T;
         value?: T;
+        richText?: T;
+        id?: T;
+      };
+  locations?:
+    | T
+    | {
+        coordinates?: T;
+        map_url?: T;
+        address?: T;
         id?: T;
       };
   meta?:
@@ -1458,6 +1595,7 @@ export interface CampaignsSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  folder?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1973,6 +2111,18 @@ export interface PayloadJobsSelect<T extends boolean = true> {
   queue?: T;
   waitUntil?: T;
   processing?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-folders_select".
+ */
+export interface PayloadFoldersSelect<T extends boolean = true> {
+  name?: T;
+  folder?: T;
+  documentsAndFolders?: T;
+  folderType?: T;
   updatedAt?: T;
   createdAt?: T;
 }

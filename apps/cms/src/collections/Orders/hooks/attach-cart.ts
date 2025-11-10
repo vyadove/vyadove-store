@@ -1,5 +1,5 @@
 import type { BeforeChangeHook } from "@/admin/types";
-import type { Order } from "@shopnex/types";
+import type { Order } from "@vyadove/types";
 
 import { parseCookies } from "payload";
 

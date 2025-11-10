@@ -1,5 +1,5 @@
 import type { BeforeChangeHook } from "@/admin/types";
-import { CheckoutSession } from "@shopnex/types";
+import { CheckoutSession } from "@vyadove/types";
 
 import { generateCookie, getCookieExpiration, mergeHeaders } from "payload";
 

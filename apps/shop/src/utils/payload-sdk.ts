@@ -1,5 +1,5 @@
 import { PayloadSDK } from "@shopnex/payload-sdk";
-import type { Config } from "@shopnex/types";
+import type { Config } from "@vyadove/types";
 
 const isBrowser = typeof window !== "undefined";
 

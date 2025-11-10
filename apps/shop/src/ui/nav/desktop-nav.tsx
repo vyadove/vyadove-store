@@ -7,7 +7,6 @@ import Link from "next/link";
 
 // import { usePathname } from "next/navigation";
 import { Routes } from "@/store.routes";
-import type { Collection, Product } from "@shopnex/types";
 import { AnimateOnHoverText, NavMenuTrigger } from "@ui/nav/components";
 import { Badge } from "@ui/shadcn/badge";
 import { Button } from "@ui/shadcn/button";
@@ -20,6 +19,7 @@ import {
 import { Separator } from "@ui/shadcn/separator";
 import { TypographyMuted, TypographyP } from "@ui/shadcn/typography";
 import { VyaLink } from "@ui/vya-link";
+import type { Collection, Product } from "@vyadove/types";
 
 import { CartIconButton } from "@/components/cart-icon-button";
 import VyaDoveLogo from "@/components/icons";
@@ -28,36 +28,6 @@ import { cn } from "@/lib/utils";
 
 import { getVariantImage } from "@/utils/get-variant-image";
 import { payloadSdk } from "@/utils/payload-sdk";
-
-export const NavItems = (props: ComponentPropsWithoutRef<"div">) => {
-  return (
-    <div
-      {...props}
-      className={cn(
-        "flex items-center justify-center gap-6 p-3",
-        props?.className,
-      )}
-    >
-      <VyaLink href="/">
-        <VyaDoveLogo className="w-36" />
-      </VyaLink>
-
-      <NavBarLinks />
-
-      <div className="hidden lg:flex">
-        <Separator className="h-full" orientation="vertical" />
-
-        <div className="flex items-center">
-          <Button size="icon" variant="link">
-            <FiSearch stroke="#000" strokeWidth={2} />
-          </Button>
-
-          <CartIconButton />
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const shopLinks = [
   {
@@ -82,7 +52,9 @@ const ShopMenuContent = ({ products }: { products: Product[] }) => {
   return (
     <div className="hidden gap-22 p-2 md:flex">
       <div className="flex flex-col gap-4 p-8 pt-0">
-        <TypographyP className="font-italic">Links</TypographyP>
+        <TypographyP className="font-italic underline font-semibold">
+          Links
+        </TypographyP>
 
         <ul className="grid gap-4" role="list">
           {shopLinks.map((link) => (
@@ -233,7 +205,9 @@ async function NavBarLinks() {
     <NavigationMenu className="hidden md:block " viewport={false}>
       <NavigationMenuList className="flex items-center">
         <NavigationMenuItem>
-          <NavMenuTrigger>Shop</NavMenuTrigger>
+          <NavMenuTrigger>
+            <AnimateOnHoverText className="">Shop</AnimateOnHoverText>
+          </NavMenuTrigger>
 
           <NavigationMenuContent className="!rounded-xl">
             <ShopMenuContent products={products.docs || []} />
@@ -241,7 +215,9 @@ async function NavBarLinks() {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavMenuTrigger>Collections</NavMenuTrigger>
+          <NavMenuTrigger>
+            <AnimateOnHoverText className="">Collections</AnimateOnHoverText>
+          </NavMenuTrigger>
 
           <NavigationMenuContent className="!rounded-xl">
             <CollectionMenuContent cols={navCols || []} />
@@ -273,4 +249,34 @@ async function NavBarLinks() {
   );
 }
 
-export default NavBarLinks;
+export const DesktopNav = (props: ComponentPropsWithoutRef<"div">) => {
+  return (
+    <div
+      {...props}
+      className={cn(
+        "flex items-center justify-center gap-6 p-3",
+        props?.className,
+      )}
+    >
+      <VyaLink href="/">
+        <VyaDoveLogo className="w-36" />
+      </VyaLink>
+
+      <NavBarLinks />
+
+      <div className="hidden sm:flex">
+        <Separator className="h-full" orientation="vertical" />
+
+        <div className="flex items-center">
+          <Button size="icon" variant="link">
+            <FiSearch stroke="#000" strokeWidth={2} />
+          </Button>
+
+          <CartIconButton />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DesktopNav;

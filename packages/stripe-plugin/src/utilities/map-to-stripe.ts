@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import Decimal from "decimal.js";
-import { Cart } from "@shopnex/types";
+import { Cart } from "@vyadove/types";
 
 export const mapToStripeLineItems = (
     cartItems: NonNullable<Cart["cartItems"]>

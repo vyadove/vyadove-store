@@ -1,6 +1,6 @@
 import { BeforeChangeHook } from "@/admin/types";
 import { rateLimitGuard } from "@/utils/rate-limit-guard";
-import { CheckoutSession } from "@shopnex/types";
+import { CheckoutSession } from "@vyadove/types";
 
 export const beforeCreateHook: BeforeChangeHook<CheckoutSession> = async ({
     operation,

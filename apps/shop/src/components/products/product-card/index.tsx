@@ -1,15 +1,17 @@
 import { AiOutlineArrowRight } from "react-icons/ai";
 
+import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/ui/shadcn/button";
-import type { Product } from "@shopnex/types";
-import { TypographyH3, TypographyMuted } from "@ui/shadcn/typography";
+import {
+  TypographyH3, TypographyH5, TypographyMuted, TypographyP,
+} from "@ui/shadcn/typography";
+import type { Product } from "@vyadove/types";
 
 import InvertedCornerMask from "@/components/inverted-corner-mask";
 
 import { getVariantImage } from "@/utils/get-variant-image";
-import Image from "next/image";
 
 export const ProductPreview = ({
   isFeatured,
@@ -27,9 +29,8 @@ export const ProductPreview = ({
 
   return (
     <Link
-      className="group/card flex flex-col rounded-xl p-0 "
-      // href={`/products/${product.handle}`}
-      href={`/`}
+      className="group/card flex flex-col rounded-xl p-0"
+      href={`/shop/${product.handle}`}
     >
       <div className="">
         {/* --- THUMBNAIL --- */}
@@ -50,7 +51,7 @@ export const ProductPreview = ({
             br: { inverted: true, corners: [15, 15, 15] },
           }}
         >
-          <div className="relative flex size-[300px] w-full items-start">
+          <div className="relative flex size-[300px] h-[270px] w-full items-start">
             {thumbnailUrl && (
               <Image
                 alt={"product image"}
@@ -65,13 +66,16 @@ export const ProductPreview = ({
 
       {/* -- PRODUCT META --- */}
       <div className="shadow-sm_ flex flex-1 flex-col gap-1 rounded-xl p-2 px-1">
-        <TypographyH3 className="line-clamp-1" title={product.title}>
+        <TypographyH5
+          className="line-clamp-1 font-semibold"
+          title={product.title}
+        >
           {product.title}
-        </TypographyH3>
+        </TypographyH5>
 
         <div className="itmes-center flex gap-2">
           {/*<FaInfoCircle className="mt-1" />*/}
-          <TypographyMuted className="font-light">
+          <TypographyMuted className="line-clamp-2 font-light">
             {product.description}
           </TypographyMuted>
 
@@ -85,10 +89,10 @@ export const ProductPreview = ({
 					<ItemDescription className="flex-1 text-wrap">{model.location}</ItemDescription>
 				</div> */}
 
-        <div className="flex items-center gap-4 ">
-          <TypographyMuted className="text-muted-foreground text-[1rem]">
+        <div className="my-auto flex items-center gap-4">
+          <TypographyP className="text-[1rem]">
             ETB {price?.toLocaleString("en-US")}
-          </TypographyMuted>
+          </TypographyP>
           {originalPrice && (
             <TypographyMuted className="text-muted-foreground/60 text-[1rem] font-normal line-through">
               ETB {originalPrice?.toLocaleString("en-US")}

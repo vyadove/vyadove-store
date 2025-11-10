@@ -1,4 +1,4 @@
-import type { Order } from "@shopnex/types";
+import type { Order } from "@vyadove/types";
 
 import { payloadSdk } from "@/utils/payload-sdk";
 

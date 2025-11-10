@@ -1,0 +1,11 @@
+/*// Import Swiper styles*/
+@import "swiper/css";
+@import "swiper/css/pagination";
+
+.swiper-pagination{
+
+    /*--swiper-pagination-bottom: -1rem;*/
+    --swiper-pagination-color: var(--accent);
+
+    /*@apply border-2  ;*/
+}

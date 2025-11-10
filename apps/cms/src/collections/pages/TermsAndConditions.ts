@@ -5,13 +5,14 @@ import { HandleField } from "@/fields/handle";
 import { RichTextEditor } from "@/fields/RichTextEditor/RichTextEditor";
 import { groups } from "@/collections/groups";
 import { deleteMedia } from "@/collections/Products/hooks/delete-media";
+import { TermsAndConditionsPage } from "@vyadove/types";
 
 export const revalidateShop = async ({
     req,
     doc,
 }: {
     req: PayloadRequest;
-    doc: any;
+    doc: TermsAndConditionsPage;
 }): Promise<void> => {
     req.payload.logger.info(
         `Starting revalidation of shop page due to product update: ${doc.id}`
@@ -35,7 +36,7 @@ export const revalidateShop = async ({
 
         if (response.ok) {
             req.payload.logger.info(
-                `Successfully triggered revalidation for shop page due to product update: ${doc.id}`
+                `Successfully triggered revalidation for shop page due to cms update: ${doc?.id}`
             );
         } else {
             req.payload.logger.error(

@@ -5,6 +5,11 @@ import slugify from "slugify";
 export const formatSlug =
     (fallback: string): FieldHook =>
     ({ data, operation, originalDoc, value }) => {
+
+        console.log('hook after hcange formatSlug --- ');
+
+
+
         if (typeof value === "string") {
             return slugify(value, { lower: true, strict: true }); // Use slugify for the value
         }

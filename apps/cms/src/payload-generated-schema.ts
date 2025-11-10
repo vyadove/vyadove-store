@@ -19,6 +19,7 @@ import {
     numeric,
     jsonb,
     boolean,
+    type AnyPgColumn,
     text,
     pgEnum,
 } from "@payloadcms/db-postgres/drizzle/pg-core";
@@ -106,6 +107,10 @@ export const enum_payload_jobs_log_state = pgEnum(
 export const enum_payload_jobs_task_slug = pgEnum(
     "enum_payload_jobs_task_slug",
     ["inline", "createCollectionExport"]
+);
+export const enum_payload_folders_folder_type = pgEnum(
+    "enum_payload_folders_folder_type",
+    ["media"]
 );
 export const enum_store_settings_currency = pgEnum(
     "enum_store_settings_currency",
@@ -445,6 +450,57 @@ export const collections = pgTable(
     })
 );
 
+export const category = pgTable(
+    "category",
+    {
+        id: serial("id").primaryKey(),
+        title: varchar("title").notNull(),
+        description: varchar("description").default(""),
+        visible: boolean("visible").default(true),
+        thumbnail: integer("thumbnail_id").references(() => media.id, {
+            onDelete: "set null",
+        }),
+        parent: integer("parent_id").references(
+            (): AnyPgColumn => category.id,
+            {
+                onDelete: "set null",
+            }
+        ),
+        handle: varchar("handle"),
+        numProducts: numeric("num_products"),
+        numSubcategories: numeric("num_subcategories"),
+        meta_title: varchar("meta_title"),
+        meta_description: varchar("meta_description"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+    },
+    (columns) => ({
+        category_thumbnail_idx: index("category_thumbnail_idx").on(
+            columns.thumbnail
+        ),
+        category_parent_idx: index("category_parent_idx").on(columns.parent),
+        category_handle_idx: index("category_handle_idx").on(columns.handle),
+        category_updated_at_idx: index("category_updated_at_idx").on(
+            columns.updatedAt
+        ),
+        category_created_at_idx: index("category_created_at_idx").on(
+            columns.createdAt
+        ),
+    })
+);
+
 export const products_sales_channels = pgTable(
     "products_sales_channels",
     {
@@ -524,7 +580,7 @@ export const products_variants = pgTable(
         imageUrl: varchar("image_url"),
         price: numeric("price").notNull(),
         originalPrice: numeric("original_price"),
-        stockCount: numeric("stock_count").default("0"),
+        available: boolean("available").default(true),
     },
     (columns) => ({
         _orderIdx: index("products_variants_order_idx").on(columns._order),
@@ -547,6 +603,7 @@ export const products_custom_fields = pgTable(
         id: varchar("id").primaryKey(),
         name: varchar("name").notNull(),
         value: varchar("value"),
+        richText: varchar("rich_text"),
     },
     (columns) => ({
         _orderIdx: index("products_custom_fields_order_idx").on(columns._order),
@@ -557,6 +614,29 @@ export const products_custom_fields = pgTable(
             columns: [columns["_parentID"]],
             foreignColumns: [products.id],
             name: "products_custom_fields_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const products_locations = pgTable(
+    "products_locations",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        id: varchar("id").primaryKey(),
+        coordinates: geometryColumn("coordinates"),
+        map_url: varchar("map_url"),
+        address: varchar("address"),
+    },
+    (columns) => ({
+        _orderIdx: index("products_locations_order_idx").on(columns._order),
+        _parentIDIdx: index("products_locations_parent_id_idx").on(
+            columns._parentID
+        ),
+        _parentIDFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [products.id],
+            name: "products_locations_parent_id_fk",
         }).onDelete("cascade"),
     })
 );
@@ -630,6 +710,7 @@ export const products_rels = pgTable(
         parent: integer("parent_id").notNull(),
         path: varchar("path").notNull(),
         collectionsID: integer("collections_id"),
+        categoryID: integer("category_id"),
         mediaID: integer("media_id"),
     },
     (columns) => ({
@@ -639,6 +720,9 @@ export const products_rels = pgTable(
         products_rels_collections_id_idx: index(
             "products_rels_collections_id_idx"
         ).on(columns.collectionsID),
+        products_rels_category_id_idx: index(
+            "products_rels_category_id_idx"
+        ).on(columns.categoryID),
         products_rels_media_id_idx: index("products_rels_media_id_idx").on(
             columns.mediaID
         ),
@@ -651,6 +735,11 @@ export const products_rels = pgTable(
             columns: [columns["collectionsID"]],
             foreignColumns: [collections.id],
             name: "products_rels_collections_fk",
+        }).onDelete("cascade"),
+        categoryIdFk: foreignKey({
+            columns: [columns["categoryID"]],
+            foreignColumns: [category.id],
+            name: "products_rels_category_fk",
         }).onDelete("cascade"),
         mediaIdFk: foreignKey({
             columns: [columns["mediaID"]],
@@ -838,6 +927,9 @@ export const media = pgTable(
     {
         id: serial("id").primaryKey(),
         alt: varchar("alt"),
+        folder: integer("folder_id").references(() => payload_folders.id, {
+            onDelete: "set null",
+        }),
         updatedAt: timestamp("updated_at", {
             mode: "string",
             withTimezone: true,
@@ -863,6 +955,7 @@ export const media = pgTable(
         focalY: numeric("focal_y"),
     },
     (columns) => ({
+        media_folder_idx: index("media_folder_idx").on(columns.folder),
         media_updated_at_idx: index("media_updated_at_idx").on(
             columns.updatedAt
         ),
@@ -2478,6 +2571,71 @@ export const payload_jobs = pgTable(
     })
 );
 
+export const payload_folders_folder_type = pgTable(
+    "payload_folders_folder_type",
+    {
+        order: integer("order").notNull(),
+        parent: integer("parent_id").notNull(),
+        value: enum_payload_folders_folder_type("value"),
+        id: serial("id").primaryKey(),
+    },
+    (columns) => ({
+        orderIdx: index("payload_folders_folder_type_order_idx").on(
+            columns.order
+        ),
+        parentIdx: index("payload_folders_folder_type_parent_idx").on(
+            columns.parent
+        ),
+        parentFk: foreignKey({
+            columns: [columns["parent"]],
+            foreignColumns: [payload_folders.id],
+            name: "payload_folders_folder_type_parent_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const payload_folders = pgTable(
+    "payload_folders",
+    {
+        id: serial("id").primaryKey(),
+        name: varchar("name").notNull(),
+        folder: integer("folder_id").references(
+            (): AnyPgColumn => payload_folders.id,
+            {
+                onDelete: "set null",
+            }
+        ),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+    },
+    (columns) => ({
+        payload_folders_name_idx: index("payload_folders_name_idx").on(
+            columns.name
+        ),
+        payload_folders_folder_idx: index("payload_folders_folder_idx").on(
+            columns.folder
+        ),
+        payload_folders_updated_at_idx: index(
+            "payload_folders_updated_at_idx"
+        ).on(columns.updatedAt),
+        payload_folders_created_at_idx: index(
+            "payload_folders_created_at_idx"
+        ).on(columns.createdAt),
+    })
+);
+
 export const payload_locked_documents = pgTable(
     "payload_locked_documents",
     {
@@ -2520,6 +2678,7 @@ export const payload_locked_documents_rels = pgTable(
         path: varchar("path").notNull(),
         ordersID: integer("orders_id"),
         collectionsID: integer("collections_id"),
+        categoryID: integer("category_id"),
         productsID: integer("products_id"),
         usersID: integer("users_id"),
         campaignsID: integer("campaigns_id"),
@@ -2544,6 +2703,7 @@ export const payload_locked_documents_rels = pgTable(
         exportsID: integer("exports_id"),
         "email-templatesID": integer("email_templates_id"),
         "payload-jobsID": integer("payload_jobs_id"),
+        "payload-foldersID": integer("payload_folders_id"),
     },
     (columns) => ({
         order: index("payload_locked_documents_rels_order_idx").on(
@@ -2561,6 +2721,9 @@ export const payload_locked_documents_rels = pgTable(
         payload_locked_documents_rels_collections_id_idx: index(
             "payload_locked_documents_rels_collections_id_idx"
         ).on(columns.collectionsID),
+        payload_locked_documents_rels_category_id_idx: index(
+            "payload_locked_documents_rels_category_id_idx"
+        ).on(columns.categoryID),
         payload_locked_documents_rels_products_id_idx: index(
             "payload_locked_documents_rels_products_id_idx"
         ).on(columns.productsID),
@@ -2633,6 +2796,9 @@ export const payload_locked_documents_rels = pgTable(
         payload_locked_documents_rels_payload_jobs_id_idx: index(
             "payload_locked_documents_rels_payload_jobs_id_idx"
         ).on(columns["payload-jobsID"]),
+        payload_locked_documents_rels_payload_folders_id_idx: index(
+            "payload_locked_documents_rels_payload_folders_id_idx"
+        ).on(columns["payload-foldersID"]),
         parentFk: foreignKey({
             columns: [columns["parent"]],
             foreignColumns: [payload_locked_documents.id],
@@ -2647,6 +2813,11 @@ export const payload_locked_documents_rels = pgTable(
             columns: [columns["collectionsID"]],
             foreignColumns: [collections.id],
             name: "payload_locked_documents_rels_collections_fk",
+        }).onDelete("cascade"),
+        categoryIdFk: foreignKey({
+            columns: [columns["categoryID"]],
+            foreignColumns: [category.id],
+            name: "payload_locked_documents_rels_category_fk",
         }).onDelete("cascade"),
         productsIdFk: foreignKey({
             columns: [columns["productsID"]],
@@ -2767,6 +2938,11 @@ export const payload_locked_documents_rels = pgTable(
             columns: [columns["payload-jobsID"]],
             foreignColumns: [payload_jobs.id],
             name: "payload_locked_documents_rels_payload_jobs_fk",
+        }).onDelete("cascade"),
+        "payload-foldersIdFk": foreignKey({
+            columns: [columns["payload-foldersID"]],
+            foreignColumns: [payload_folders.id],
+            name: "payload_locked_documents_rels_payload_folders_fk",
         }).onDelete("cascade"),
     })
 );
@@ -3055,6 +3231,18 @@ export const relations_collections = relations(collections, ({ one }) => ({
         relationName: "thumbnail",
     }),
 }));
+export const relations_category = relations(category, ({ one }) => ({
+    thumbnail: one(media, {
+        fields: [category.thumbnail],
+        references: [media.id],
+        relationName: "thumbnail",
+    }),
+    parent: one(category, {
+        fields: [category.parent],
+        references: [category.id],
+        relationName: "parent",
+    }),
+}));
 export const relations_products_sales_channels = relations(
     products_sales_channels,
     ({ one }) => ({
@@ -3108,6 +3296,16 @@ export const relations_products_custom_fields = relations(
         }),
     })
 );
+export const relations_products_locations = relations(
+    products_locations,
+    ({ one }) => ({
+        _parentID: one(products, {
+            fields: [products_locations._parentID],
+            references: [products.id],
+            relationName: "locations",
+        }),
+    })
+);
 export const relations_products_texts = relations(
     products_texts,
     ({ one }) => ({
@@ -3129,6 +3327,11 @@ export const relations_products_rels = relations(products_rels, ({ one }) => ({
         references: [collections.id],
         relationName: "collections",
     }),
+    categoryID: one(category, {
+        fields: [products_rels.categoryID],
+        references: [category.id],
+        relationName: "category",
+    }),
     mediaID: one(media, {
         fields: [products_rels.mediaID],
         references: [media.id],
@@ -3147,6 +3350,9 @@ export const relations_products = relations(products, ({ many }) => ({
     }),
     customFields: many(products_custom_fields, {
         relationName: "customFields",
+    }),
+    locations: many(products_locations, {
+        relationName: "locations",
     }),
     _texts: many(products_texts, {
         relationName: "_texts",
@@ -3205,7 +3411,13 @@ export const relations_campaigns = relations(campaigns, ({ one, many }) => ({
         relationName: "_rels",
     }),
 }));
-export const relations_media = relations(media, () => ({}));
+export const relations_media = relations(media, ({ one }) => ({
+    folder: one(payload_folders, {
+        fields: [media.folder],
+        references: [payload_folders.id],
+        relationName: "folder",
+    }),
+}));
 export const relations_policies = relations(policies, () => ({}));
 export const relations_gift_cards = relations(gift_cards, ({ one }) => ({
     customer: one(users, {
@@ -3683,6 +3895,29 @@ export const relations_payload_jobs = relations(payload_jobs, ({ many }) => ({
         relationName: "log",
     }),
 }));
+export const relations_payload_folders_folder_type = relations(
+    payload_folders_folder_type,
+    ({ one }) => ({
+        parent: one(payload_folders, {
+            fields: [payload_folders_folder_type.parent],
+            references: [payload_folders.id],
+            relationName: "folderType",
+        }),
+    })
+);
+export const relations_payload_folders = relations(
+    payload_folders,
+    ({ one, many }) => ({
+        folder: one(payload_folders, {
+            fields: [payload_folders.folder],
+            references: [payload_folders.id],
+            relationName: "folder",
+        }),
+        folderType: many(payload_folders_folder_type, {
+            relationName: "folderType",
+        }),
+    })
+);
 export const relations_payload_locked_documents_rels = relations(
     payload_locked_documents_rels,
     ({ one }) => ({
@@ -3700,6 +3935,11 @@ export const relations_payload_locked_documents_rels = relations(
             fields: [payload_locked_documents_rels.collectionsID],
             references: [collections.id],
             relationName: "collections",
+        }),
+        categoryID: one(category, {
+            fields: [payload_locked_documents_rels.categoryID],
+            references: [category.id],
+            relationName: "category",
         }),
         productsID: one(products, {
             fields: [payload_locked_documents_rels.productsID],
@@ -3823,6 +4063,11 @@ export const relations_payload_locked_documents_rels = relations(
             references: [payload_jobs.id],
             relationName: "payload-jobs",
         }),
+        "payload-foldersID": one(payload_folders, {
+            fields: [payload_locked_documents_rels["payload-foldersID"]],
+            references: [payload_folders.id],
+            relationName: "payload-folders",
+        }),
     })
 );
 export const relations_payload_locked_documents = relations(
@@ -3938,17 +4183,20 @@ type DatabaseSchema = {
     enum_payload_jobs_log_task_slug: typeof enum_payload_jobs_log_task_slug;
     enum_payload_jobs_log_state: typeof enum_payload_jobs_log_state;
     enum_payload_jobs_task_slug: typeof enum_payload_jobs_task_slug;
+    enum_payload_folders_folder_type: typeof enum_payload_folders_folder_type;
     enum_store_settings_currency: typeof enum_store_settings_currency;
     enum_main_menu_nav_items_link_type: typeof enum_main_menu_nav_items_link_type;
     enum_main_menu_nav_items_link_appearance: typeof enum_main_menu_nav_items_link_appearance;
     orders_timeline: typeof orders_timeline;
     orders: typeof orders;
     collections: typeof collections;
+    category: typeof category;
     products_sales_channels: typeof products_sales_channels;
     products_variant_options: typeof products_variant_options;
     products_variants_options: typeof products_variants_options;
     products_variants: typeof products_variants;
     products_custom_fields: typeof products_custom_fields;
+    products_locations: typeof products_locations;
     products: typeof products;
     products_texts: typeof products_texts;
     products_rels: typeof products_rels;
@@ -4006,6 +4254,8 @@ type DatabaseSchema = {
     email_templates: typeof email_templates;
     payload_jobs_log: typeof payload_jobs_log;
     payload_jobs: typeof payload_jobs;
+    payload_folders_folder_type: typeof payload_folders_folder_type;
+    payload_folders: typeof payload_folders;
     payload_locked_documents: typeof payload_locked_documents;
     payload_locked_documents_rels: typeof payload_locked_documents_rels;
     payload_preferences: typeof payload_preferences;
@@ -4019,11 +4269,13 @@ type DatabaseSchema = {
     relations_orders_timeline: typeof relations_orders_timeline;
     relations_orders: typeof relations_orders;
     relations_collections: typeof relations_collections;
+    relations_category: typeof relations_category;
     relations_products_sales_channels: typeof relations_products_sales_channels;
     relations_products_variant_options: typeof relations_products_variant_options;
     relations_products_variants_options: typeof relations_products_variants_options;
     relations_products_variants: typeof relations_products_variants;
     relations_products_custom_fields: typeof relations_products_custom_fields;
+    relations_products_locations: typeof relations_products_locations;
     relations_products_texts: typeof relations_products_texts;
     relations_products_rels: typeof relations_products_rels;
     relations_products: typeof relations_products;
@@ -4081,6 +4333,8 @@ type DatabaseSchema = {
     relations_email_templates: typeof relations_email_templates;
     relations_payload_jobs_log: typeof relations_payload_jobs_log;
     relations_payload_jobs: typeof relations_payload_jobs;
+    relations_payload_folders_folder_type: typeof relations_payload_folders_folder_type;
+    relations_payload_folders: typeof relations_payload_folders;
     relations_payload_locked_documents_rels: typeof relations_payload_locked_documents_rels;
     relations_payload_locked_documents: typeof relations_payload_locked_documents;
     relations_payload_preferences_rels: typeof relations_payload_preferences_rels;

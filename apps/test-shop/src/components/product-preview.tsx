@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import PreviewPrice from "./price";
 import Thumbnail from "./thumbnail";
-import { Product } from "@shopnex/types";
+import { Product } from "@vyadove/types";
 import { getVariantImage } from "@/utils/get-variant-image";
 
 export default function ProductPreview({

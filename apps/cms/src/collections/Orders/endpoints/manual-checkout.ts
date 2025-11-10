@@ -1,4 +1,4 @@
-import type { Cart, Order, Payment, Shipping } from "@shopnex/types";
+import type { Cart, Order, Payment, Shipping } from "@vyadove/types";
 
 // /plugins/manual/checkout.ts
 import crypto from "crypto";

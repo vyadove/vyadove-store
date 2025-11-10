@@ -1,6 +1,6 @@
 "use client";
 
-import type { Order, User } from "@shopnex/types";
+import type { Order, User } from "@vyadove/types";
 
 import { useAuth } from "@/providers/auth";
 import { convertToLocale } from "@/utils/money";

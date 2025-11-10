@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 
 import "@/app/globals.css";
 import { publicUrl } from "@/env.mjs";
+import { Providers } from "@/providers/providers";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -132,7 +133,6 @@ const generateMeta = ({
 };
 
 export const generateMetadata = async (): Promise<Metadata> => {
-
   // todo use this for i8n
   const t = await getTranslations("Global.metadata");
 
@@ -146,19 +146,24 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html className={`h-full antialiased ${sofiaPro.className}  `} lang={locale}>
+    <html
+      className={`h-full antialiased ${sofiaPro.className}  `}
+      lang={locale}
+    >
       <body className="flex min-h-full flex-col">
-        <IntlClientProvider locale={locale} messages={messages}>
-          <div
-            className="flex min-h-full flex-1 flex-col bg-white"
-            vaul-drawer-wrapper=""
-          >
-            {children}
-          </div>
-          <Toaster offset={10} position="top-center" />
-        </IntlClientProvider>
-        <SpeedInsights />
-        <Analytics />
+        <Providers>
+          <IntlClientProvider locale={locale} messages={messages}>
+            <div
+              className="flex min-h-full flex-1 flex-col"
+              vaul-drawer-wrapper=""
+            >
+              {children}
+            </div>
+            <Toaster offset={10} position="top-center" />
+          </IntlClientProvider>
+          <SpeedInsights />
+          <Analytics />
+        </Providers>
       </body>
     </html>
   );

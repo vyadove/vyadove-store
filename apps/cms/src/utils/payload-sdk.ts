@@ -1,4 +1,4 @@
-import type { Config } from "@shopnex/types";
+import type { Config } from "@vyadove/types";
 
 import { PayloadSDK } from "@shopnex/payload-sdk";
 

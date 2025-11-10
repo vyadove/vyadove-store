@@ -2,8 +2,8 @@ import { AiOutlineProduct } from "react-icons/ai";
 
 
 
-import { Button } from "@/components/ui/button";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Button } from "@ui/shadcn/button";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@ui/shadcn/empty";
 
 
 

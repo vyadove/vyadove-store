@@ -23,7 +23,7 @@
         "@payloadcms/richtext-lexical": "3.49.1",
         "@payloadcms/translations": "3.49.1",
         "@payloadcms/ui": "3.49.1",
-        "@shopnex/types": "workspace:^",
+        "@vyadove/types": "workspace:^",
         "dotenv": "^17.2.1",
         "lucide-react": "^0.541.0",
         "next": "15.4.7",

@@ -11,14 +11,14 @@
 ### Patch Changes
 
 - Updated dependencies
-    - @shopnex/types@0.0.3
+    - @vyadove/types@0.0.3
 
 ## 1.0.8
 
 ### Patch Changes
 
 - Updated dependencies
-    - @shopnex/types@0.0.2
+    - @vyadove/types@0.0.2
 
 ## 1.0.7
 

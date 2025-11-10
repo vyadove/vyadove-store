@@ -1,6 +1,6 @@
 "use server";
 
-import type { PrivacyPolicyPage } from "@shopnex/types";
+import type { PrivacyPolicyPage } from "@vyadove/types";
 
 import { payloadSdk } from "@/utils/payload-sdk";
 

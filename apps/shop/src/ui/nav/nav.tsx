@@ -9,14 +9,16 @@ import VyaDoveLogo from "@/components/icons";
 
 import { cn } from "@/lib/utils";
 
-import { NavItems } from "@ui/nav/nav-bar-links";
+import DesktopNav from "@ui/nav/desktop-nav";
 
 // className="nav-border-reveal sticky top-0 z-50  py-4 backdrop-blur-xs"
 
 export const Nav = async () => {
   return (
     <TopNavSlider className="">
-      <NavItems className="bg-accent-foreground/70 hidden rounded-xl backdrop-blur-lg md:mt-4 md:flex" />
+
+      {/* --- DESKTOP --- */}
+      <DesktopNav className="bg-accent-foreground/70 hidden rounded-xl backdrop-blur-lg md:mt-4 md:flex" />
 
       {/* --- MOBILE --- */}
       <div
