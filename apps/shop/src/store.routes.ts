@@ -5,6 +5,7 @@ export const Routes = {
   register: '/register',
   login: '/login',
   checkout: '/checkout',
+  cart: '/cart',
   shop: '/shop',
   logout: '/logout',
   termsAndConditions: '/terms-and-conditions',

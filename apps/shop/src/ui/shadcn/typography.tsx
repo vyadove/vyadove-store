@@ -21,7 +21,7 @@ export function TypographyH2(props: React.ComponentProps<"h2">) {
     <h2
       {...props}
       className={cn(
-        "scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0",
+        "scroll-m-20 pb-2 text-3xl font-bold tracking-tight first:mt-0",
         props.className,
       )}
     >
@@ -117,7 +117,7 @@ export function TypographySmall(props: React.ComponentProps<"div">) {
   return (
     <small
       {...props}
-      className={cn("text-xs font-medium leading-none", props.className)}
+      className={cn("text-xs font-medium leading-4", props.className)}
     >
       {props.children}
     </small>
@@ -128,7 +128,7 @@ export function TypographyMuted(props: React.ComponentProps<"p">) {
   return (
     <p
       {...props}
-      className={cn(" text-muted-foreground", props.className)}
+      className={cn(" text-muted-foreground font-light", props.className)}
     >
       {props.children}
     </p>

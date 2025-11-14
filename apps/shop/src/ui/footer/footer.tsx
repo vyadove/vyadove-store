@@ -73,7 +73,7 @@ export async function Footer() {
   const t = await getTranslations("Global.footer");
 
   return (
-    <footer className="mx-auto flex w-full max-w-[var(--app-width)] flex-col px-4 pt-4 pb-6 sm:px-6 lg:px-8">
+    <footer className="mx-auto flex w-full max-w-[var(--app-width)]  flex-col px-4 pt-4 pb-6 sm:px-6 lg:px-8">
       <InvertedCornerMask
         // className="mx-auto w-full max-w-full"
         className="flex w-full bg-linear-45 from-[rgba(243,224,214,1)] from-20%  to-green-900/50 bg-[length:140%_100%] "

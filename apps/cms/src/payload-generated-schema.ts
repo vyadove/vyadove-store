@@ -56,6 +56,10 @@ export const enum_products_sales_channels = pgEnum(
     "enum_products_sales_channels",
     ["all", "onlineStore", "pos", "mobileApp"]
 );
+export const enum_products_variants_pricing_tier = pgEnum(
+    "enum_products_variants_pricing_tier",
+    ["basic", "premium", "luxury"]
+);
 export const enum_products_source = pgEnum("enum_products_source", ["manual"]);
 export const enum_users_roles = pgEnum("enum_users_roles", [
     "admin",
@@ -522,29 +526,6 @@ export const products_sales_channels = pgTable(
     })
 );
 
-export const products_variant_options = pgTable(
-    "products_variant_options",
-    {
-        _order: integer("_order").notNull(),
-        _parentID: integer("_parent_id").notNull(),
-        id: varchar("id").primaryKey(),
-        option: varchar("option").notNull(),
-    },
-    (columns) => ({
-        _orderIdx: index("products_variant_options_order_idx").on(
-            columns._order
-        ),
-        _parentIDIdx: index("products_variant_options_parent_id_idx").on(
-            columns._parentID
-        ),
-        _parentIDFk: foreignKey({
-            columns: [columns["_parentID"]],
-            foreignColumns: [products.id],
-            name: "products_variant_options_parent_id_fk",
-        }).onDelete("cascade"),
-    })
-);
-
 export const products_variants_options = pgTable(
     "products_variants_options",
     {
@@ -581,6 +562,9 @@ export const products_variants = pgTable(
         price: numeric("price").notNull(),
         originalPrice: numeric("original_price"),
         available: boolean("available").default(true),
+        pricingTier: enum_products_variants_pricing_tier("pricing_tier")
+            .notNull()
+            .default("basic"),
     },
     (columns) => ({
         _orderIdx: index("products_variants_order_idx").on(columns._order),
@@ -602,8 +586,7 @@ export const products_custom_fields = pgTable(
         _parentID: integer("_parent_id").notNull(),
         id: varchar("id").primaryKey(),
         name: varchar("name").notNull(),
-        value: varchar("value"),
-        richText: varchar("rich_text"),
+        value: varchar("value").notNull(),
     },
     (columns) => ({
         _orderIdx: index("products_custom_fields_order_idx").on(columns._order),
@@ -680,28 +663,6 @@ export const products = pgTable(
     })
 );
 
-export const products_texts = pgTable(
-    "products_texts",
-    {
-        id: serial("id").primaryKey(),
-        order: integer("order").notNull(),
-        parent: integer("parent_id").notNull(),
-        path: varchar("path").notNull(),
-        text: varchar("text"),
-    },
-    (columns) => ({
-        orderParentIdx: index("products_texts_order_parent_idx").on(
-            columns.order,
-            columns.parent
-        ),
-        parentFk: foreignKey({
-            columns: [columns["parent"]],
-            foreignColumns: [products.id],
-            name: "products_texts_parent_fk",
-        }).onDelete("cascade"),
-    })
-);
-
 export const products_rels = pgTable(
     "products_rels",
     {
@@ -709,27 +670,32 @@ export const products_rels = pgTable(
         order: integer("order"),
         parent: integer("parent_id").notNull(),
         path: varchar("path").notNull(),
+        mediaID: integer("media_id"),
         collectionsID: integer("collections_id"),
         categoryID: integer("category_id"),
-        mediaID: integer("media_id"),
     },
     (columns) => ({
         order: index("products_rels_order_idx").on(columns.order),
         parentIdx: index("products_rels_parent_idx").on(columns.parent),
         pathIdx: index("products_rels_path_idx").on(columns.path),
+        products_rels_media_id_idx: index("products_rels_media_id_idx").on(
+            columns.mediaID
+        ),
         products_rels_collections_id_idx: index(
             "products_rels_collections_id_idx"
         ).on(columns.collectionsID),
         products_rels_category_id_idx: index(
             "products_rels_category_id_idx"
         ).on(columns.categoryID),
-        products_rels_media_id_idx: index("products_rels_media_id_idx").on(
-            columns.mediaID
-        ),
         parentFk: foreignKey({
             columns: [columns["parent"]],
             foreignColumns: [products.id],
             name: "products_rels_parent_fk",
+        }).onDelete("cascade"),
+        mediaIdFk: foreignKey({
+            columns: [columns["mediaID"]],
+            foreignColumns: [media.id],
+            name: "products_rels_media_fk",
         }).onDelete("cascade"),
         collectionsIdFk: foreignKey({
             columns: [columns["collectionsID"]],
@@ -740,11 +706,6 @@ export const products_rels = pgTable(
             columns: [columns["categoryID"]],
             foreignColumns: [category.id],
             name: "products_rels_category_fk",
-        }).onDelete("cascade"),
-        mediaIdFk: foreignKey({
-            columns: [columns["mediaID"]],
-            foreignColumns: [media.id],
-            name: "products_rels_media_fk",
         }).onDelete("cascade"),
     })
 );
@@ -3253,16 +3214,6 @@ export const relations_products_sales_channels = relations(
         }),
     })
 );
-export const relations_products_variant_options = relations(
-    products_variant_options,
-    ({ one }) => ({
-        _parentID: one(products, {
-            fields: [products_variant_options._parentID],
-            references: [products.id],
-            relationName: "variantOptions",
-        }),
-    })
-);
 export const relations_products_variants_options = relations(
     products_variants_options,
     ({ one }) => ({
@@ -3306,21 +3257,16 @@ export const relations_products_locations = relations(
         }),
     })
 );
-export const relations_products_texts = relations(
-    products_texts,
-    ({ one }) => ({
-        parent: one(products, {
-            fields: [products_texts.parent],
-            references: [products.id],
-            relationName: "_texts",
-        }),
-    })
-);
 export const relations_products_rels = relations(products_rels, ({ one }) => ({
     parent: one(products, {
         fields: [products_rels.parent],
         references: [products.id],
         relationName: "_rels",
+    }),
+    mediaID: one(media, {
+        fields: [products_rels.mediaID],
+        references: [media.id],
+        relationName: "media",
     }),
     collectionsID: one(collections, {
         fields: [products_rels.collectionsID],
@@ -3332,18 +3278,10 @@ export const relations_products_rels = relations(products_rels, ({ one }) => ({
         references: [category.id],
         relationName: "category",
     }),
-    mediaID: one(media, {
-        fields: [products_rels.mediaID],
-        references: [media.id],
-        relationName: "media",
-    }),
 }));
 export const relations_products = relations(products, ({ many }) => ({
     salesChannels: many(products_sales_channels, {
         relationName: "salesChannels",
-    }),
-    variantOptions: many(products_variant_options, {
-        relationName: "variantOptions",
     }),
     variants: many(products_variants, {
         relationName: "variants",
@@ -3353,9 +3291,6 @@ export const relations_products = relations(products, ({ many }) => ({
     }),
     locations: many(products_locations, {
         relationName: "locations",
-    }),
-    _texts: many(products_texts, {
-        relationName: "_texts",
     }),
     _rels: many(products_rels, {
         relationName: "_rels",
@@ -4169,6 +4104,7 @@ type DatabaseSchema = {
     enum_orders_payment_status: typeof enum_orders_payment_status;
     enum_orders_order_status: typeof enum_orders_order_status;
     enum_products_sales_channels: typeof enum_products_sales_channels;
+    enum_products_variants_pricing_tier: typeof enum_products_variants_pricing_tier;
     enum_products_source: typeof enum_products_source;
     enum_users_roles: typeof enum_users_roles;
     enum_campaigns_type: typeof enum_campaigns_type;
@@ -4192,13 +4128,11 @@ type DatabaseSchema = {
     collections: typeof collections;
     category: typeof category;
     products_sales_channels: typeof products_sales_channels;
-    products_variant_options: typeof products_variant_options;
     products_variants_options: typeof products_variants_options;
     products_variants: typeof products_variants;
     products_custom_fields: typeof products_custom_fields;
     products_locations: typeof products_locations;
     products: typeof products;
-    products_texts: typeof products_texts;
     products_rels: typeof products_rels;
     users_roles: typeof users_roles;
     users_sessions: typeof users_sessions;
@@ -4271,12 +4205,10 @@ type DatabaseSchema = {
     relations_collections: typeof relations_collections;
     relations_category: typeof relations_category;
     relations_products_sales_channels: typeof relations_products_sales_channels;
-    relations_products_variant_options: typeof relations_products_variant_options;
     relations_products_variants_options: typeof relations_products_variants_options;
     relations_products_variants: typeof relations_products_variants;
     relations_products_custom_fields: typeof relations_products_custom_fields;
     relations_products_locations: typeof relations_products_locations;
-    relations_products_texts: typeof relations_products_texts;
     relations_products_rels: typeof relations_products_rels;
     relations_products: typeof relations_products;
     relations_users_roles: typeof relations_users_roles;

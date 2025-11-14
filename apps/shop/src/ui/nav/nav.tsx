@@ -18,7 +18,7 @@ export const Nav = async () => {
     <TopNavSlider className="">
 
       {/* --- DESKTOP --- */}
-      <DesktopNav className="bg-accent-foreground/70 hidden rounded-xl backdrop-blur-lg md:mt-4 md:flex" />
+      <DesktopNav className="bg-primary-background/70 hidden rounded-xl backdrop-blur-lg md:mt-4 md:flex shadow-sm" />
 
       {/* --- MOBILE --- */}
       <div

@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { useCart } from "react-use-cart";
 
+import Image from "next/image";
 import Link from "next/link";
 
 // import Thumbnail from "./thumbnail";
 import { Spinner } from "@ui/shadcn/spinner";
-import { TypographyP } from "@ui/shadcn/typography";
+import { TypographyMuted, TypographyP } from "@ui/shadcn/typography";
 import Cookies from "js-cookie";
 
 import Thumbnail from "@/components/products/product-card/thumbnail";
@@ -16,6 +17,8 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 
 import { syncCartWithBackend, updateCart } from "@/services/cart";
+
+import { convertToLocale } from "@/utils/money";
 
 import CartItemSelect from "./cart-item-select";
 import DeleteButton from "./delete-button";
@@ -69,39 +72,56 @@ const Item = ({ type = "full", currencyCode, item }: ItemProps) => {
 
   return (
     <TableRow className="w-full" data-testid="product-row">
-      <TableCell className="w-24 p-4 !pl-0">
-        <Link
-          className={cn("flex", {
-            "small:w-24 w-12": type === "full",
-            "w-16": type === "preview",
-          })}
-          href={`/products/${item.handle}`}
-        >
-          <Thumbnail size="square" thumbnail={item.gallery?.[0]?.url} />
+      <TableCell className="">
+        <DeleteButton
+          data-testid="product-delete-button"
+          id={item.id}
+          productId={item.productId}
+        />
+      </TableCell>
+
+      <TableCell className="max-w-[16rem] px-2 py-4" rowSpan={1}>
+        <Link className="" href={`/products/${item.handle}`}>
+          <div className="flex items-center gap-2">
+            <div className="relative h-16 w-16 overflow-hidden rounded-lg">
+              <Image
+                alt={"-"}
+                className="object-cover"
+                fill
+                src={item.gallery?.[0]?.url || ""}
+              />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <TypographyP className="text-md" data-testid="product-title">
+                {item.productName}
+              </TypographyP>
+
+              <TypographyMuted className="">
+                {item.quantity} X{" "}
+                {convertToLocale({
+                  hiddeCurrency: true,
+                  amount: item?.price,
+                })}{" "}
+              </TypographyMuted>
+            </div>
+          </div>
         </Link>
       </TableCell>
 
       <TableCell className="text-left">
-        <TypographyP
-          className="txt-medium-plus text-ui-fg-base"
-          data-testid="product-title"
-        >
-          {item.productName}
+        <TypographyP className="">
+          {convertToLocale({
+            amount: item?.price,
+          })}
         </TypographyP>
-        Options/variants here
-        {/*<LineItemOptions data-testid="product-variant" variant={item} />*/}
       </TableCell>
 
       {type === "full" && (
         <TableCell>
-          <div className="flex w-28 items-center gap-2">
-            <DeleteButton
-              data-testid="product-delete-button"
-              id={item.id}
-              productId={item.productId}
-            />
+          <div className="flex items-center gap-2">
             <CartItemSelect
-              className="h-10 w-14 p-4"
+              className="h-10 w-14 p-4 "
               data-testid="product-select-button"
               onChange={(value: any) =>
                 changeQuantity(Number.parseInt(value.target.value))
@@ -130,29 +150,12 @@ const Item = ({ type = "full", currencyCode, item }: ItemProps) => {
         </TableCell>
       )}
 
-      {type === "full" && (
-        <TableCell className="small:table-cell hidden">
-          <LineItemUnitPrice
-            currencyCode={currencyCode}
-            item={item}
-            style="tight"
-          />
-        </TableCell>
-      )}
-
-      <TableCell className="!pr-0">
-        <span
-          className={cn("!pr-0", {
-            "flex flex-col items-end h-full justify-center": type === "preview",
+      <TableCell align="right">
+        <TypographyP className="font-semibold">
+          {convertToLocale({
+            amount: item.price * item.quantity,
           })}
-        >
-          <LineItemPrice
-            cartTotal={item.price * item.quantity}
-            currencyCode={currencyCode}
-            originalPrice={item.originalPrice}
-            style="tight"
-          />
-        </span>
+        </TypographyP>
       </TableCell>
     </TableRow>
   );

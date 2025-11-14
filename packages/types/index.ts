@@ -338,22 +338,10 @@ export interface Product {
   salesChannels?: ('all' | 'onlineStore' | 'pos' | 'mobileApp')[] | null;
   source?: 'manual' | null;
   description: string;
+  gallery: (number | Media)[];
   collections?: (number | Collection)[] | null;
   category?: (number | Category)[] | null;
   handle?: string | null;
-  /**
-   * Choose the options for this product.
-   */
-  variantOptions?:
-    | {
-        option: string;
-        /**
-         * (press enter to add multiple values)
-         */
-        value: string[];
-        id?: string | null;
-      }[]
-    | null;
   variants: {
     vid?: string | null;
     sku?: string | null;
@@ -362,6 +350,10 @@ export interface Product {
     price: number;
     originalPrice?: number | null;
     available?: boolean | null;
+    /**
+     * Price tier for this variant.
+     */
+    pricingTier: 'basic' | 'premium' | 'luxury';
     options?:
       | {
           option: string;
@@ -374,14 +366,11 @@ export interface Product {
   /**
    * Add additional product info such as care instructions, materials, or sizing notes.
    */
-  customFields?:
-    | {
-        name: string;
-        value?: string | null;
-        richText?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  customFields: {
+    name: string;
+    value: string;
+    id?: string | null;
+  }[];
   locations?:
     | {
         /**
@@ -394,30 +383,6 @@ export interface Product {
         id?: string | null;
       }[]
     | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "collections".
- */
-export interface Collection {
-  id: number;
-  title: string;
-  description: string;
-  visible?: boolean | null;
-  thumbnail?: (number | null) | Media;
-  imageUrl?: string | null;
-  handle?: string | null;
-  products?: {
-    docs?: (number | Product)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -468,6 +433,30 @@ export interface FolderInterface {
     totalDocs?: number;
   };
   folderType?: 'media'[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "collections".
+ */
+export interface Collection {
+  id: number;
+  title: string;
+  description: string;
+  visible?: boolean | null;
+  thumbnail?: (number | null) | Media;
+  imageUrl?: string | null;
+  handle?: string | null;
+  products?: {
+    docs?: (number | Product)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -1482,16 +1471,10 @@ export interface ProductsSelect<T extends boolean = true> {
   salesChannels?: T;
   source?: T;
   description?: T;
+  gallery?: T;
   collections?: T;
   category?: T;
   handle?: T;
-  variantOptions?:
-    | T
-    | {
-        option?: T;
-        value?: T;
-        id?: T;
-      };
   variants?:
     | T
     | {
@@ -1502,6 +1485,7 @@ export interface ProductsSelect<T extends boolean = true> {
         price?: T;
         originalPrice?: T;
         available?: T;
+        pricingTier?: T;
         options?:
           | T
           | {
@@ -1516,7 +1500,6 @@ export interface ProductsSelect<T extends boolean = true> {
     | {
         name?: T;
         value?: T;
-        richText?: T;
         id?: T;
       };
   locations?:

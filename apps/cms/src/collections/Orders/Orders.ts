@@ -13,7 +13,8 @@ export const Orders: CollectionConfig = {
     access: {
         create: anyone,
         delete: admins,
-        read: readOrderAccess,
+        // read: readOrderAccess,
+        read: anyone,
         update: admins,
     },
     admin: {

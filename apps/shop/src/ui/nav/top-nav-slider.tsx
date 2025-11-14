@@ -24,13 +24,18 @@ const TopNavSlider = ({
 
     if (latest <= 60) {
       setVisible(defaultValue ?? false);
-    } else if (latest < prev) {
-      // scrolling up and scrolled at least 60
-      setVisible(true);
-    } else if (latest > prev) {
-      // scrolling down
-      setVisible(false);
+    }else{
+      setVisible(true)
     }
+
+
+    // else if (latest < prev) {
+    //   // scrolling up and scrolled at least 60
+    //   setVisible(true);
+    // } else if (latest > prev) {
+    //   // scrolling down
+    //   setVisible(false);
+    // }
 
     prevYRef.current = latest;
   });

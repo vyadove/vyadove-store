@@ -16,6 +16,8 @@ export const useCheckoutSession = () => {
             try {
                 const sessionId = Cookies.get("checkout-session");
 
+                console.log('session id : ', sessionId);
+
                 let sessionData: CheckoutSession | null = null;
 
                 if (!sessionId) {

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { BiCross } from "react-icons/bi";
 import { IoClose } from "react-icons/io5";
 import { useCart } from "react-use-cart";
 
@@ -16,52 +15,35 @@ import { getSessionId } from "@/utils";
 import { Badge } from "@ui/shadcn/badge";
 import { Button } from "@ui/shadcn/button";
 import { ButtonGroup } from "@ui/shadcn/button-group";
-import {
-  TypographyH3,
-  TypographyH5,
-  TypographyH6,
-  TypographyP,
-} from "@ui/shadcn/typography";
-import { Cross, MinusIcon, PlusIcon } from "lucide-react";
+import { TypographyH3, TypographyP } from "@ui/shadcn/typography";
+import type { Cart } from "@vyadove/types";
+import { MinusIcon, PlusIcon } from "lucide-react";
 import { toast } from "sonner";
 import { Drawer } from "vaul";
 
-import Thumbnail from "@/components/products/product-card/thumbnail";
 import useSidebarCartStore from "@/components/sidebar-cart/sidebar-cart.store";
 
 import { syncCartWithBackend } from "@/services/cart";
 
 import { convertToLocale } from "@/utils/money";
+import { payloadSdk } from "@/utils/payload-sdk";
 
 function SidebarCart() {
+  const { toggleCart, isCartOpen } = useSidebarCartStore();
   const [activeTimer, setActiveTimer] = useState<NodeJS.Timer | undefined>(
     undefined,
   );
-  const { toggleCart, isCartOpen } = useSidebarCartStore();
   const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
-  const {
-    cartTotal,
-    items,
-    totalItems,
-    totalUniqueItems,
-    addItem,
-    removeItem,
-    updateItemQuantity,
-  } = useCart();
+  const { cartTotal, items, totalItems, totalUniqueItems, updateItemQuantity } =
+    useCart();
   const itemRef = useRef<number>(totalItems || 0);
   const subtotal = cartTotal ?? 0;
 
+  const [cart, setCart] = useState<Cart>();
+
   const open = () => toggleCart(true);
   const close = () => toggleCart(false);
-
-  const timedOpen = () => {
-    open();
-
-    const timer = setTimeout(close, 5000);
-
-    setActiveTimer(timer);
-  };
 
   const modifyQuantity = async (itemId: string, delta: number) => {
     const newItem = items.find((item) => item.id === itemId);
@@ -92,6 +74,28 @@ function SidebarCart() {
   };
 
   useEffect(() => {
+    if (cart?.id) return;
+
+    payloadSdk
+      .find({
+        collection: "carts",
+        limit: 1,
+        where: {
+          sessionId: { equals: getSessionId() || "" },
+        },
+      })
+      .then((res) => {
+        if (res?.docs?.length) {
+          setCart(res.docs[0]);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching cart:", err);
+        toast.error("Failed to fetch cart");
+      });
+  }, []);
+
+  useEffect(() => {
     setIsMounted(true);
   }, []);
 
@@ -108,6 +112,14 @@ function SidebarCart() {
   useEffect(() => {
     if (isCartOpen) return;
 
+    const timedOpen = () => {
+      open();
+
+      const timer = setTimeout(close, 5000);
+
+      setActiveTimer(timer);
+    };
+
     const currentItems = itemRef.current;
 
     itemRef.current = totalItems;
@@ -121,7 +133,7 @@ function SidebarCart() {
     }
   }, [totalItems, pathname]);
 
-  // hide side bar when esc pressed
+  // hide sidebar when esc pressed
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -148,13 +160,20 @@ function SidebarCart() {
             { "--initial-transform": "calc(100% + 8px)" } as React.CSSProperties
           }
         >
-          <div className="flex h-full w-full grow flex-col overflow-hidden rounded-[16px] bg-zinc-50">
+          <div
+            className="flex h-full w-full grow flex-col overflow-hidden rounded-[16px] bg-zinc-50"
+            onClick={() => {
+              if (activeTimer) {
+                clearTimeout(activeTimer as any);
+              }
+            }}
+          >
             <div className="mx-auto flex h-full w-full flex-col">
               {/* --- HEADER --- */}
               <div className="flex items-center gap-2 border-b p-5 ">
-                <TypographyH3 className="font-semibold">Your Cart</TypographyH3>
+                <TypographyH3 className="font-semibold">Your Basket</TypographyH3>
 
-                <Badge className="bg-accent-foreground text-accent rounded-full">
+                <Badge className="">
                   {isMounted ? `${totalUniqueItems}` : "0"}
                 </Badge>
 
@@ -289,30 +308,46 @@ function SidebarCart() {
               </div>
 
               {/* SUBTOTAL CALCULATION --- */}
-              <div className="mt-auto flex flex-col gap-y-4 border-t p-4">
+              <div className="mt-auto flex flex-col gap-10 border-t p-4 py-6">
                 <div className="flex items-center justify-between">
-                  <span className="text-ui-fg-base font-semibold">
-                    Subtotal{" "}
-                  </span>
-                  <span
-                    className="text-large-semi"
+                  <TypographyP className="text-lg">
+                    Subtotal ({totalUniqueItems} Item
+                    {totalUniqueItems > 1 ? "s" : ""})
+                  </TypographyP>
+
+                  <TypographyP
+                    className="text-lg font-bold"
                     data-testid="cart-subtotal"
                     data-value={subtotal}
                   >
                     {convertToLocale({
                       amount: subtotal,
                     })}
-                  </span>
+                  </TypographyP>
                 </div>
-                <Link href="/cart" passHref>
-                  <Button
-                    className="w-full "
-                    data-testid="go-to-cart-button"
-                    size="lg"
-                  >
-                    Checkout
-                  </Button>
-                </Link>
+
+                <div className="flex w-full items-center gap-2">
+                  <Link className="flex-1" href={Routes.cart} passHref>
+                    <Button
+                      className="w-full "
+                      data-testid="go-to-cart-button"
+                      size="lg"
+                      variant="secondary"
+                    >
+                      View cart ({totalUniqueItems})
+                    </Button>
+                  </Link>
+
+                  <Link className="flex-1" href={Routes.checkout} passHref>
+                    <Button
+                      className="w-full "
+                      data-testid="go-to-cart-button"
+                      size="lg"
+                    >
+                      Checkout
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

@@ -6,6 +6,7 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import Image from "next/image";
 
 import { useProductDetailContext } from "@/scenes/product-detail/index";
+import { getProductGallery } from "@/utils";
 import { Button } from "@ui/shadcn/button";
 import { Card, CardContent } from "@ui/shadcn/card";
 import type { CarouselApi } from "@ui/shadcn/carousel";
@@ -16,7 +17,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@ui/shadcn/carousel";
-import type { Media } from "@vyadove/types";
+import type { Media, Product } from "@vyadove/types";
 import Fade from "embla-carousel-fade";
 import { type UseEmblaCarouselType } from "embla-carousel-react";
 import { motion } from "motion/react";
@@ -24,32 +25,6 @@ import { motion } from "motion/react";
 import InvertedCornerMask from "@/components/inverted-corner-mask";
 
 import { cn } from "@/lib/utils";
-
-type ThumbPropType = {
-  selected: boolean;
-  index: number;
-  onClick: () => void;
-};
-
-export const Thumb: React.FC<ThumbPropType> = (props) => {
-  const { selected, index, onClick } = props;
-
-  return (
-    <div
-      className={"embla-thumbs__slide".concat(
-        selected ? " embla-thumbs__slide--selected" : "",
-      )}
-    >
-      <button
-        className="embla-thumbs__slide__number"
-        onClick={onClick}
-        type="button"
-      >
-        {index + 1}
-      </button>
-    </div>
-  );
-};
 
 type PropType = {
   someProps?: any;
@@ -60,7 +35,8 @@ const ProductGallery: React.FC<PropType> = (props) => {
   const [emblaThumbsApi, setEmblaThumbsApi] = useState<CarouselApi>();
   const [emblaMainApi, setEmblaMainApi] = useState<CarouselApi>();
 
-  const { selectedVariant } = useProductDetailContext();
+  const { product, selectedVariant } = useProductDetailContext();
+  const gallery = getProductGallery(product, selectedVariant?.id);
 
   const onSelect = useCallback(() => {
     if (!emblaMainApi || !emblaThumbsApi) return;
@@ -76,7 +52,7 @@ const ProductGallery: React.FC<PropType> = (props) => {
   }, [emblaMainApi, onSelect]);
 
   return (
-    <div className="sticky top-10 flex flex-col self-start">
+    <div className="sticky top-10 flex w-full flex-1 flex-col self-start">
       <Carousel
         className="relative w-full"
         plugins={[Fade()]}
@@ -86,7 +62,7 @@ const ProductGallery: React.FC<PropType> = (props) => {
         }}
       >
         <CarouselContent>
-          {selectedVariant?.gallery?.map((media, index) => {
+          {gallery?.map((media, index) => {
             if (typeof media === "number" || !media) return null;
 
             return (
@@ -142,7 +118,7 @@ const ProductGallery: React.FC<PropType> = (props) => {
         }}
       >
         <CarouselContent className="flex cursor-grab pl-4">
-          {selectedVariant?.gallery?.map((media, index) => {
+          {gallery?.map((media, index) => {
             if (typeof media === "number" || !media) return null;
 
             return (

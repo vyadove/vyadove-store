@@ -1,3 +1,6 @@
+import React from "react";
+import { FaAngleDown, FaChevronDown } from "react-icons/fa";
+
 import { useProductDetailContext } from "@/scenes/product-detail/index";
 import {
   TypographyH3,
@@ -6,13 +9,17 @@ import {
   TypographyMuted,
   TypographyP,
 } from "@ui/shadcn/typography";
+import { ChevronDown } from "lucide-react";
 
+import InvertedCornerMask from "@/components/inverted-corner-mask";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+
+import { cn } from "@/lib/utils";
 
 const infoList = [
   {
@@ -56,42 +63,80 @@ const infoList = [
 
 function ProductInfo() {
   const { product } = useProductDetailContext();
+  const { customFields } = product;
 
   return (
-    <Accordion
-      className="w-full"
-      collapsible
-      defaultValue="item-1"
-      type="single"
-    >
-      {/*{product.customFields.length > 0 ? (*/}
-      {infoList.length > 0 ? (
-        <>
-          {/*{product.customFields.map(({name, id, value}, idx) => (*/}
-          {infoList.map(({ title: name, description: value }, idx) => (
-            <AccordionItem key={idx} value={`item-${idx + 1}`}>
-              <AccordionTrigger>
-                <TypographyH5>{name}</TypographyH5>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div
-                  className="prose text-balance"
-                  dangerouslySetInnerHTML={{
-                    __html: value,
+    <div className="mt-10 flex w-full flex-col gap-6">
+      <div className="flex items-center gap-2 ">
+        <span className="bg-accent h-full w-1" />
+        <TypographyH4>Additional information&#39;s :</TypographyH4>
+      </div>
+
+      <Accordion
+        className="flex w-full flex-col gap-2"
+        // collapsible
+        defaultValue={[customFields[0]?.id || ""]}
+        type="multiple"
+      >
+        {/*{product.customFields.length > 0 ? (*/}
+        {customFields.length > 0 ? (
+          <>
+            {/*{product.customFields.map(({name, id, value}, idx) => (*/}
+            {customFields.map(({ name, value, id }, idx) => (
+              <AccordionItem
+                className="group w-full cursor-pointer border-none"
+                key={idx}
+                value={id || ""}
+              >
+                <InvertedCornerMask
+                  className={cn("flex w-full bg-primary-50")}
+                  cornerContent={
+                    <div
+                      className={cn(
+                        "flex items-center justify-center gap-4 rounded-full p-3",
+                        " group-data-[state=open]:rotate-180 ease-in-out duration-250",
+                      )}
+                    >
+                      <FaChevronDown className="fill-primary" />
+                    </div>
+                  }
+                  cornersRadius={15}
+                  invertedCorners={{
+                    tr: { inverted: true, corners: [15, 15, 15] },
                   }}
-                />
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </>
-      ) : (
-        <div>
-          <TypographyMuted>
-            No additional product information available.
-          </TypographyMuted>
-        </div>
-      )}
-    </Accordion>
+                  key={idx}
+                >
+                  <div className="w-full">
+                    <AccordionTrigger
+                      className="w-full cursor-pointer p-6"
+                      hideIcon
+                    >
+                      <TypographyH4 className="text-muted-400 font-normal">
+                        {name}
+                      </TypographyH4>
+                    </AccordionTrigger>
+                    <AccordionContent className="flex flex-col gap-4 px-6 pb-6">
+                      <div
+                        className="prose !text-muted-foreground leading-6 font-light"
+                        dangerouslySetInnerHTML={{
+                          __html: value,
+                        }}
+                      />
+                    </AccordionContent>
+                  </div>
+                </InvertedCornerMask>
+              </AccordionItem>
+            ))}
+          </>
+        ) : (
+          <div>
+            <TypographyMuted>
+              No additional product information available.
+            </TypographyMuted>
+          </div>
+        )}
+      </Accordion>
+    </div>
   );
 }
 

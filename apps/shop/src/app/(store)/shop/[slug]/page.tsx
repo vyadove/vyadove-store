@@ -4,24 +4,7 @@ import type { Metadata } from "next";
 
 import { notFound } from "next/navigation";
 
-import VariantSelector from "@/app/(store)/shop/[slug]/variant-selector";
 import ProductDetail from "@/scenes/product-detail";
-import ProductGallery from "@/scenes/product-detail/product-gallery";
-import {
-  TypographyH1,
-  TypographyH3,
-  TypographyH4,
-  TypographyP,
-} from "@ui/shadcn/typography";
-
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 
 import { payloadSdk } from "@/utils/payload-sdk";
 
@@ -80,6 +63,7 @@ export default async function Product({
 }) {
   const { slug } = await params;
 
+
   const product = await payloadSdk.find({
     collection: "products",
     limit: 1,
@@ -89,6 +73,9 @@ export default async function Product({
       },
     },
   });
+
+  console.log('slug --- : ', slug, product);
+
 
   const featuredCollections = await payloadSdk.find({
     collection: "collections",

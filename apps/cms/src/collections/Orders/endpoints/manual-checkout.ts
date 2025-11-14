@@ -9,6 +9,8 @@ type ManualCheckoutProps = {
     cart: Cart;
     payment: Payment;
     shipping: Shipping;
+    shippingAddress: Order["shippingAddress"];
+    billingAddress: Order["billingAddress"];
     total: number;
     orderId: string;
 };
@@ -20,6 +22,8 @@ export async function manualCheckout({
     shipping,
     total,
     orderId,
+    shippingAddress,
+    billingAddress,
 }: ManualCheckoutProps) {
     const sessionId = `SID-${crypto.randomUUID()}`;
 
@@ -32,6 +36,8 @@ export async function manualCheckout({
             orderStatus: "shipped",
             paymentMethod: payment?.providers?.[0]?.id,
             payment: payment?.id,
+            shippingAddress: shippingAddress,
+            billingAddress: billingAddress,
             shipping: shipping?.id,
             paymentStatus: "paid",
             sessionId,

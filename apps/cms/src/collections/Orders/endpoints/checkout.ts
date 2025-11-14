@@ -5,7 +5,7 @@ import Decimal from "decimal.js";
 import { type Endpoint, parseCookies } from "payload";
 import { isExpandedDoc } from "@/utils/is-expanded-doc";
 
-import { stripeCheckout } from "@shopnex/stripe-plugin";
+import { stripeCheckout } from "@vyadove/stripe-plugin";
 import { manualCheckout } from "./manual-checkout";
 
 const calculateOrderTotals = (
@@ -50,8 +50,15 @@ export const checkoutEndpoint: Endpoint = {
                 where: { sessionId: { equals: checkoutId } },
             });
 
-            const { customer, payment, shipping, cart } =
-                checkoutSession.docs[0] || {};
+            const {
+                customer,
+                payment,
+                shipping,
+                cart,
+                shippingAddress,
+                billingAddress,
+            } = checkoutSession.docs[0] || {};
+
             if (!cart || typeof cart !== "object") {
                 return Response.json(
                     { error: "Invalid cart." },
@@ -108,6 +115,8 @@ export const checkoutEndpoint: Endpoint = {
                 shipping,
                 total,
                 subtotal,
+                shippingAddress,
+                billingAddress,
             });
 
             return Response.json({ redirectUrl: result.redirectUrl });

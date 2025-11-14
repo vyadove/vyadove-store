@@ -1,7 +1,7 @@
 import React from "react";
 
 import { BugReportForm } from "@/app/(store)/(info-and-support)/support/contact";
-import { QnaAccordion } from "@/scenes/qna";
+import { QnaAccordion } from "@/scenes/home/qna";
 import AppHeroScaffold from "@ui/nav/app-hero-scaffold";
 import {
   TypographyH1,

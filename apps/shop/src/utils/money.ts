@@ -8,6 +8,8 @@ type ConvertToLocaleParams = {
   locale?: string;
   maximumFractionDigits?: number;
   minimumFractionDigits?: number;
+  minimumIntegerDigits?: number;
+  hiddeCurrency?: boolean;
 };
 
 export const convertToLocale = ({
@@ -15,14 +17,25 @@ export const convertToLocale = ({
   currency_code = "ETB",
   locale = "en-US",
   maximumFractionDigits,
-  minimumFractionDigits=0,
+  minimumFractionDigits = 0,
+  minimumIntegerDigits = 1,
+  hiddeCurrency,
 }: ConvertToLocaleParams) => {
   const storeConfig = getStoreSettings();
 
-  return new Intl.NumberFormat(locale, {
+  const value = new Intl.NumberFormat(locale, {
     currency: currency_code || storeConfig?.currency,
     maximumFractionDigits,
+    minimumIntegerDigits,
     minimumFractionDigits,
     style: "currency",
-  }).format(amount)
+  }).format(amount);
+
+  if (hiddeCurrency) {
+    const parts = value.split(/[\s\d.,]+/);
+
+    return value.replace(parts[0] || '', "").trim();
+  }
+
+  return value;
 };

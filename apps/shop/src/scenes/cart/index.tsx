@@ -31,10 +31,10 @@ const CartTemplate = () => {
   }
 
   return (
-    <div className="py-12">
+    <div className="min-h-screen py-12">
       <div className="content-container" data-testid="cart-container">
         {items?.length ? (
-          <div className="small:grid-cols-[1fr_360px] grid grid-cols-1 gap-x-40">
+          <div className="grid grid-cols-1 gap-x-40 sm:grid-cols-[1fr_360px]">
             <div className="flex flex-col gap-y-6 bg-white py-6">
               {!user && (
                 <>
@@ -45,11 +45,10 @@ const CartTemplate = () => {
 
               <ItemsTemplate />
             </div>
+
             <div className="relative">
               <div className="sticky top-12 flex flex-col gap-y-8">
-                <div className="bg-white py-6">
-                  <Summary />
-                </div>
+                <Summary />
               </div>
             </div>
           </div>

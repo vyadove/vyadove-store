@@ -80,7 +80,7 @@ export async function updateCart(item: {
     throw new Error("No cart found");
   }
 
-  console.log('cart --- : ', cart);
+  console.log("cart --- : ", cart);
 
   const existingItems = cart?.cartItems || [];
   const existingItemIndex = existingItems.findIndex(
@@ -120,6 +120,22 @@ export async function updateCart(item: {
     collection: "carts",
     data: {
       cartItems: updatedCartItems,
+    },
+  });
+}
+
+export async function clearCart(item: { id: string }) {
+  const cart = await getCart();
+
+  if (!cart) {
+    throw new Error("No cart found");
+  }
+
+  return await payloadSdk.update({
+    id: cart.id,
+    collection: "carts",
+    data: {
+      cartItems: [],
     },
   });
 }

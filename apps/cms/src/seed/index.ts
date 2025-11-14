@@ -79,26 +79,8 @@ export const seed = async () => {
     ];
 
     await Promise.all(
-        products.map(async (product: any, index: number) => {
-            for (const variant of product.variants || []) {
-                const filename = variant?.imageUrl?.split("/").pop();
-                if (!filename || !variant.imageUrl) {
-                    continue;
-                }
-                const alt = filename.split(".")[0];
-                const imageUrl = variant.imageUrl;
+        products.map(async (product : any, index: number) => {
 
-                const imageResult = await payload.create({
-                    collection: "media",
-                    data: {
-                        alt,
-                        filename,
-                        thumbnailURL: imageUrl,
-                        url: imageUrl,
-                    },
-                });
-                variant.gallery = [imageResult.id];
-            }
 
             const productResult = await payload.create({
                 collection: "products",

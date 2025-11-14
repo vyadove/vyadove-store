@@ -87,7 +87,17 @@ export const updateCartSession: Endpoint = {
             req,
         });
 
+        console.log("existing carts ---- : ", existingCarts);
+
         const existingCart = existingCarts.docs[0];
+        if (!existingCart) {
+            return Response.json({
+                error: "Cart not found.",
+                errorCode: "CART_NOT_FOUND",
+                success: false,
+            });
+        }
+
         const existingItems = existingCart?.cartItems || [];
 
         // Check if item already exists

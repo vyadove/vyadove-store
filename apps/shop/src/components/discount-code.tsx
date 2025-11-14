@@ -2,15 +2,24 @@
 
 import type React from "react";
 import { useState } from "react";
+import { FaPlus } from "react-icons/fa";
+
+
 
 import { Badge } from "@ui/shadcn/badge";
 import { Button } from "@ui/shadcn/button";
 import { Input } from "@ui/shadcn/input";
 import { TypographyH3, TypographyH5 } from "@ui/shadcn/typography";
 import type { GiftCard } from "@vyadove/types";
-import { Trash } from "lucide-react";
+import { Loader2Icon, Trash } from "lucide-react";
+
+
 
 import ErrorMessage from "./error-message";
+
+
+
+
 
 type DiscountCodeProps = {
   applyPromotion: (code: string) => Promise<void>;
@@ -60,26 +69,30 @@ export const DiscountCode: React.FC<DiscountCodeProps> = ({
 
   return (
     <div className="flex w-full flex-col bg-white">
-      <div className="txt-medium">
-        <form className="mb-5 w-full" onSubmit={addPromotionCode}>
-          <button
-            className="txt-medium text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
+      <div className="">
+        <form className="mb-6 w-full" onSubmit={addPromotionCode}>
+
+
+          <Button
             data-testid="add-discount-button"
             onClick={() => setIsOpen((prev) => !prev)}
             type="button"
+            variant='link'
           >
+            <FaPlus />
             Add Promotion Code(s)
-          </button>
+          </Button>
 
           {isOpen && (
             <div className="flex w-full gap-x-2">
               <Input
-                className="size-full"
-                data-testid="discount-input"
-                id="promotion-input"
+                className="max-w-2xl flex-1 bg-white"
                 name="code"
+                placeholder='code'
+                required
                 type="text"
               />
+
               <Button data-testid="discount-apply-button" variant="secondary">
                 Apply
               </Button>
@@ -96,7 +109,7 @@ export const DiscountCode: React.FC<DiscountCodeProps> = ({
 
         {promotions?.length > 0 && (
           <div className="flex w-full flex-col">
-            <TypographyH3 className="txt-medium mb-2">
+            <TypographyH3 className="mb-2">
               Promotion(s) applied:
             </TypographyH3>
 

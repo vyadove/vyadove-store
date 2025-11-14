@@ -167,9 +167,6 @@ importers:
       '@shopnex/store-plugin':
         specifier: ^1.0.15
         version: 1.0.15(@types/react@19.1.0)(react@19.1.0)
-      '@shopnex/stripe-plugin':
-        specifier: ^3.31.10
-        version: 3.31.10
       '@shopnex/utils':
         specifier: ^1.0.6
         version: 1.0.6
@@ -197,6 +194,9 @@ importers:
       '@tiptap/starter-kit':
         specifier: ^3.0.9
         version: 3.4.4
+      '@vyadove/stripe-plugin':
+        specifier: workspace:^
+        version: link:../../packages/stripe-plugin
       axios:
         specifier: ^1.12.0
         version: 1.12.2
@@ -4968,9 +4968,6 @@ packages:
   '@shopnex/store-plugin@1.0.15':
     resolution: {integrity: sha512-RoLAr5Skaq3j/1znmhuDWfIDdd2K6l8vMz9pjxdtsxIik+2sdDg8YdMwZj4/KlQ7fDN4gqoNBqIwKyllWYfbLA==}
 
-  '@shopnex/stripe-plugin@3.31.10':
-    resolution: {integrity: sha512-aS9hSxOTN3DHkYwlAxQnDS2KJJBnQa2WlHO2u+Nxr5a6FWiqFD0yn3uy9IG1c2UQULCvHzcvCGAXFnApgiuNxA==}
-
   '@shopnex/types@0.0.3':
     resolution: {integrity: sha512-a/JNFJCiXlBAdLM//5s0kV75etkCpD0fSaeEa2nr05EhND8Pk2y5TWWt/tAwrpu4ZwOwPf0jR7FSvRvRfimhqg==}
 
@@ -9604,12 +9601,10 @@ packages:
 
   libsql@0.4.7:
     resolution: {integrity: sha512-T9eIRCs6b0J1SHKYIvD8+KCJMcWZ900iZyxdnSCdqxN12Z1ijzT+jY5nrk72Jw4B0HGzms2NgpryArlJqvc3Lw==}
-    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   libsql@0.5.22:
     resolution: {integrity: sha512-NscWthMQt7fpU8lqd7LXMvT9pi+KhhmTHAJWUB/Lj6MWa0MKFv0F2V4C6WKKpjCVZl0VwcDz4nOI3CyaT1DDiA==}
-    cpu: [x64, arm64, wasm32, arm]
     os: [darwin, linux, win32]
 
   lightningcss-darwin-arm64@1.30.1:
@@ -18664,15 +18659,6 @@ snapshots:
       - react
       - supports-color
 
-  '@shopnex/stripe-plugin@3.31.10':
-    dependencies:
-      '@shopnex/types': 0.0.3
-      '@shopnex/utils': 1.0.6
-      decimal.js: 10.6.0
-      lodash.get: 4.4.2
-      stripe: 10.17.0
-      uuid: 10.0.0
-
   '@shopnex/types@0.0.3': {}
 
   '@shopnex/utils@1.0.6': {}
@@ -21600,7 +21586,7 @@ snapshots:
       eslint: 9.36.0(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import-x@4.6.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3))(eslint@9.36.0(jiti@2.6.1)))(eslint@9.36.0(jiti@2.6.1))
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.36.0(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3))(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import-x@4.6.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3))(eslint@9.36.0(jiti@2.6.1)))(eslint@9.36.0(jiti@2.6.1)))(eslint@9.36.0(jiti@2.6.1))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.36.0(jiti@2.6.1))
       eslint-plugin-react: 7.37.5(eslint@9.36.0(jiti@2.6.1))
       eslint-plugin-react-hooks: 5.2.0(eslint@9.36.0(jiti@2.6.1))
@@ -21658,7 +21644,7 @@ snapshots:
       tinyglobby: 0.2.15
       unrs-resolver: 1.11.1
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.36.0(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3))(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import-x@4.6.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3))(eslint@9.36.0(jiti@2.6.1)))(eslint@9.36.0(jiti@2.6.1)))(eslint@9.36.0(jiti@2.6.1))
       eslint-plugin-import-x: 4.6.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3)
     transitivePeerDependencies:
       - supports-color
@@ -21763,7 +21749,7 @@ snapshots:
       - typescript
     optional: true
 
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.36.0(jiti@2.6.1)):
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3))(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import-x@4.6.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.1(eslint@9.36.0(jiti@2.6.1))(typescript@5.7.3))(eslint@9.36.0(jiti@2.6.1)))(eslint@9.36.0(jiti@2.6.1)))(eslint@9.36.0(jiti@2.6.1)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9

@@ -1,4 +1,4 @@
-# @shopnex/stripe-plugin
+# @vyadove/stripe-plugin
 
 ## 3.31.10
 

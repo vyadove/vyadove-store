@@ -23,7 +23,7 @@ const AppHeroScaffold = ({ children, containerProps }: PropsWithChildren<Props>)
       {...containerProps}
       className={cn(
         "animate-gradient-xy flex w-full bg-linear-95 ",
-        "from-[rgba(243,224,214,1)] -from-10%  to-accent-foreground bg-[length:100%_100%] h-full",
+        "bg-linear-45 from-[rgba(243,224,214,1)] from-20%  to-green-900/50 bg-[length:140%_100%]  h-full",
         containerProps?.className,
       )}
       containerProps={containerProps?.containerProps}

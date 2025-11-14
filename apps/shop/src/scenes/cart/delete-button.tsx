@@ -62,18 +62,20 @@ const DeleteButton = ({
         className,
       )}
     >
-      <button
-        className="flex cursor-pointer items-center gap-x-1"
+      <Button
+        className="cursor-pointer items-center"
         onClick={() => handleDelete(id)}
-        type="button"
+        size="icon"
+        variant='secondary'
       >
         {isDeleting ? (
           <Spinner className="animate-spin" />
         ) : (
           <Trash size={15} />
         )}
-        <span>{children}</span>
-      </button>
+
+        {children && <span>{children}</span>}
+      </Button>
     </div>
   );
 };

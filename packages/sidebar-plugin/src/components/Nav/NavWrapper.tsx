@@ -21,6 +21,9 @@ export const NavWrapper: React.FC<{
                 .filter(Boolean)
                 .join(" ")}
             inert={!navOpen ? true : undefined}
+            style={{
+                display: "none",
+            }}
         >
             <div className={`${baseClass}__scroll`} ref={navRef}>
                 {children}

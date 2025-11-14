@@ -19,7 +19,7 @@ import {
 import { Separator } from "@ui/shadcn/separator";
 import { TypographyMuted, TypographyP } from "@ui/shadcn/typography";
 import { VyaLink } from "@ui/vya-link";
-import type { Collection, Product } from "@vyadove/types";
+import type { Collection, Media, Product } from "@vyadove/types";
 
 import { CartIconButton } from "@/components/cart-icon-button";
 import VyaDoveLogo from "@/components/icons";
@@ -52,7 +52,7 @@ const ShopMenuContent = ({ products }: { products: Product[] }) => {
   return (
     <div className="hidden gap-22 p-2 md:flex">
       <div className="flex flex-col gap-4 p-8 pt-0">
-        <TypographyP className="font-italic underline font-semibold">
+        <TypographyP className="font-italic font-semibold underline">
           Links
         </TypographyP>
 
@@ -72,16 +72,8 @@ const ShopMenuContent = ({ products }: { products: Product[] }) => {
 
       <div className="flex gap-4">
         {products?.map((product, idx) => {
-          const { originalPrice, price } = product.variants?.[0] || {};
-          const variantWithImage = product.variants?.find((v) => {
-            return getVariantImage(v);
-          });
-          const thumbnail = getVariantImage(
-            variantWithImage as Product["variants"][0],
-          );
-          const thumbnailUrl = thumbnail
-            ? thumbnail
-            : variantWithImage?.imageUrl;
+          const { price } = product.variants[0] || {};
+          const thumbnailUrl = (product.gallery as Media[])[0]?.url;
 
           return (
             <div
@@ -89,8 +81,7 @@ const ShopMenuContent = ({ products }: { products: Product[] }) => {
               key={idx}
             >
               <Badge
-                className="bg-accent-foreground border-accent/30 absolute top-2 right-2 z-10 border "
-                variant="secondary"
+                className=" absolute top-2 right-2 z-10 border "
               >
                 50% OFF
               </Badge>
@@ -108,7 +99,7 @@ const ShopMenuContent = ({ products }: { products: Product[] }) => {
                 className={cn(
                   "absolute bottom-0 right-0  left-0  z-10  p-4 pt-16 leading-snug",
                   "flex flex-col items-center justify-center text -center",
-                  "bg-gradient-to-t from-accent-foreground via-accent-foreground/80 to-transparent",
+                  "bg-gradient-to-t from-primary-background via-primary-background/80 to-transparent",
                 )}
               >
                 <TypographyP className="line-clamp-1" title={product.title}>
@@ -152,7 +143,7 @@ const CollectionMenuContent = ({ cols }: { cols: Collection[] }) => {
             <TypographyP
               className={cn(
                 "absolute_ bottom-0 right-0  left-0  z-10  p-3 leading-snug",
-                "flex flex-col items-center justify-center text -center bg-accent-foreground",
+                "flex flex-col items-center justify-center text -center bg-primary-background",
               )}
             >
               {col.title}
@@ -225,7 +216,7 @@ async function NavBarLinks() {
         </NavigationMenuItem>
 
         <NavigationMenuItem className="group/item">
-          <div className="hover:text-accent hover:bg-accent-foreground flex items-center overflow-hidden rounded-md border-none px-3 py-1 shadow-none">
+          <div className="hover:text-accent hover:bg-primary-background flex items-center overflow-hidden rounded-md border-none px-3 py-1 shadow-none">
             <AnimateOnHoverText className="group-hover/item:-translate-y-full">
               <Link href="/apps/shop/public">About</Link>
             </AnimateOnHoverText>
@@ -235,7 +226,7 @@ async function NavBarLinks() {
         <NavigationMenuItem className="group/item">
           <div
             className={cn(
-              "hover:text-accent hover:bg-accent-foreground flex items-center overflow-hidden rounded-md border-none px-3 py-1 shadow-none",
+              "hover:text-accent hover:bg-primary-background flex items-center overflow-hidden rounded-md border-none px-3 py-1 shadow-none",
               // pathName === Routes.support && "text-accent bg-accent-foreground",
             )}
           >

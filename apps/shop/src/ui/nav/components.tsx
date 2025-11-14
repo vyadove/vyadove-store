@@ -41,7 +41,7 @@ export const NavMenuTrigger = ({
 }) => {
   return (
     <NavigationMenuTrigger className="group/trigger" hideIcon>
-      <div className="hover:text-accent hover:bg-accent-foreground flex items-center overflow-hidden rounded-md border-none px-3 py-1 shadow-none">
+      <div className="hover:text-accent hover:bg-primary-background flex items-center overflow-hidden rounded-md border-none px-3 py-1 shadow-none">
           {children}
 
         {!props?.hideIcon && (

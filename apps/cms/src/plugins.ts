@@ -2,7 +2,7 @@ import type { Plugin } from "payload";
 
 import { cjPlugin } from "@shopnex/cj-plugin";
 import { importExportPlugin } from "@shopnex/import-export-plugin";
-import { stripePlugin } from "@shopnex/stripe-plugin";
+import { stripePlugin } from "@vyadove/stripe-plugin";
 import { builderIoPlugin } from "@shopnex/builder-io-plugin";
 import { formBuilderPlugin } from "@payloadcms/plugin-form-builder";
 
@@ -17,7 +17,9 @@ import { sidebarPlugin } from "@shopnex/sidebar-plugin";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 
 export const plugins: Plugin[] = [
-    formBuilderPlugin({}),
+    formBuilderPlugin({
+
+    }),
 
     stripePlugin({
         isTestKey: Boolean(process.env.NEXT_PUBLIC_STRIPE_IS_TEST_KEY),
@@ -81,7 +83,7 @@ export const plugins: Plugin[] = [
         },
     }),
     analyticsPlugin({}),
-    sidebarPlugin(),
+    sidebarPlugin( ),
 
     vercelBlobStorage({
         enabled: true,

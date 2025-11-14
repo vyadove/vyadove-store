@@ -5,27 +5,19 @@ import Link from "next/link";
 
 import { Button } from "@/ui/shadcn/button";
 import {
-  TypographyH3, TypographyH5, TypographyMuted, TypographyP,
+  TypographyH5,
+  TypographyMuted,
+  TypographyP,
 } from "@ui/shadcn/typography";
-import type { Product } from "@vyadove/types";
+import type { Media, Product } from "@vyadove/types";
 
 import InvertedCornerMask from "@/components/inverted-corner-mask";
+import { getProductGallery } from "@/utils";
 
-import { getVariantImage } from "@/utils/get-variant-image";
-
-export const ProductPreview = ({
-  isFeatured,
-  product,
-}: {
-  isFeatured?: boolean;
-  product: Product;
-}) => {
+export const ProductPreview = ({ product }: { product: Product }) => {
   const { originalPrice, price } = product.variants?.[0] || {};
-  const variantWithImage = product.variants?.find((v) => {
-    return getVariantImage(v);
-  });
-  const thumbnail = getVariantImage(variantWithImage as Product["variants"][0]);
-  const thumbnailUrl = thumbnail ? thumbnail : variantWithImage?.imageUrl;
+
+  const thumbnailUrl = getProductGallery(product)[0]?.url;
 
   return (
     <Link

@@ -24,7 +24,7 @@ const LineItemPrice = ({
   const hasReducedPrice = cartTotal < (originalPrice || cartTotal);
 
   return (
-    <div className="text-ui-fg-subtle flex flex-col items-end gap-x-2">
+    <div className="text-ui-fg-subtle flex flex-col gap-x-2">
       <div className="text-left">
         {hasReducedPrice && (
           <>
