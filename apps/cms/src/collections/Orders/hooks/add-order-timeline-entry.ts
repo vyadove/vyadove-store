@@ -6,7 +6,18 @@ export const addOrderTimelineEntry: BeforeChangeHook<Order> = ({
     originalDoc,
     req,
 }) => {
-    const newTimeline = [...(data.timeline || [])];
+    const newTimeline : Order['timeline'] = [...(data.timeline || [])];
+
+    // if order is new, add initial timeline entry as "Order Created"
+    if (!originalDoc) {
+        newTimeline.push({
+            type: "order_created",
+            createdBy: req.user?.id || null,
+            date: new Date().toISOString(),
+            details: `Order created by ${data.billingAddress?.email || "system"}`,
+            title: "Order Created",
+        });
+    }
 
     if (data.orderStatus !== originalDoc?.orderStatus) {
         let eventType = "other";

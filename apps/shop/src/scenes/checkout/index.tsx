@@ -2,41 +2,38 @@
 
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { BiSend } from "react-icons/bi";
+import { BiArrowBack, BiSend } from "react-icons/bi";
 import { BsCreditCard, BsHouse, BsPerson } from "react-icons/bs";
-import { MdMarkEmailRead } from "react-icons/md";
+import { MdMarkEmailRead, MdOutlineShoppingCartCheckout } from "react-icons/md";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-import { useSession } from "@/scenes/checkout/hooks";
+import { useCheckoutSession } from "@/scenes/checkout/hooks";
 import { OrderSummery } from "@/scenes/checkout/order-summary";
+import { Stepper } from "@/scenes/checkout/stepper";
+import { usePayloadFindQuery } from "@/scenes/shop/use-payload-find-query";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@ui/shadcn/tooltip";
 import {
   TypographyH2,
-  TypographyH3,
+  TypographyH4,
   TypographyLarge,
   TypographyMuted,
   TypographyP,
 } from "@ui/shadcn/typography";
-import type { CheckoutSession, Shipping } from "@vyadove/types";
-import Cookies from "js-cookie";
-import { Truck } from "lucide-react";
-import { toast } from "sonner";
+import type { Shipping } from "@vyadove/types";
 import { z } from "zod";
 
-import Divider from "@/components/divider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { toast } from "@/components/ui/hot-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -47,8 +44,6 @@ import {
   updateCheckoutSession,
 } from "@/services/checkout-session";
 
-import { payloadSdk } from "@/utils/payload-sdk";
-
 interface PaymentMethod {
   details?: string;
   paymentId: number;
@@ -58,17 +53,44 @@ interface PaymentMethod {
   type: string;
 }
 
+const minCharErrorString = "Too short, min 2 characters";
+const maxCharErrorString = "Too long, min 20 characters";
+
+const steps = [
+  {
+    name: "step-1",
+    title: <TypographyH4>Checkout Info</TypographyH4>,
+    // icon: <MdOutlineShoppingCartCheckout className="" size={40} />,
+    // children: <div className="py-4">Content step 1</div>,
+  },
+  {
+    name: "step-2",
+    title: <TypographyH4>Check and Pay</TypographyH4>,
+    // icon: <Info className="h-4 w-4" />,
+    // children: <div className="py-4">Content step 2</div>,
+  },
+];
+
 const formSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
-  email: z.string(),
+  firstName: z.string().min(2, minCharErrorString).max(20, maxCharErrorString),
+  lastName: z.string().min(2, minCharErrorString).max(20, maxCharErrorString),
+  email: z.email(),
   phone: z.string().optional(),
 
   // deleviery
-  recipientFirstName: z.string(),
-  recipientLastName: z.string(),
-  recipientEmail: z.string(),
-  recipientPhone: z.string(),
+  recipientFirstName: z
+    .string()
+    .min(2, minCharErrorString)
+    .max(20, maxCharErrorString),
+  recipientLastName: z
+    .string()
+    .min(2, minCharErrorString)
+    .max(20, maxCharErrorString),
+  recipientEmail: z.email(),
+  recipientPhone: z
+    .string("required")
+    .min(8, "Too short, min 8 characters")
+    .max(15, "Too long, max 15 characters"),
 
   // payment
   paymentMethod: z.string(),
@@ -78,138 +100,130 @@ const formSchema = z.object({
 });
 
 const Checkout = () => {
-  const { session, loading, setIsLoading, error } = useSession();
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
-  const [deliveryMethods, setDeliveryMethods] = useState<Shipping[]>([]);
-
-  console.log("session  :", session);
-
   const router = useRouter();
 
-  const defaultBillingAddress = session?.billingAddress || ({} as any);
-  const defaultShippingAddress = session?.shippingAddress || ({} as any);
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
+  const [deliveryMethods, setDeliveryMethods] = useState<Shipping[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [step, setStep] = useState(0);
+  const isLastStep = step === steps.length - 1;
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      firstName: defaultBillingAddress?.firstname || "Henok",
-      lastName: defaultBillingAddress?.lastName || "Getachew",
-      email: defaultBillingAddress?.email || "henokgetachew500@gmail.com",
-      phone: defaultBillingAddress?.phone || "0923365539",
-
-      recipientPhone: defaultShippingAddress.recipientPhone,
-      recipientFirstName: defaultShippingAddress.recipientFirstName || "",
-      recipientLastName: defaultShippingAddress.recipientLastName || "",
-      recipientEmail: defaultShippingAddress.recipientEmail || "",
-      billingAddressSame: false,
+  const { session, loading, error } = useCheckoutSession();
+  const shippingQuery = usePayloadFindQuery("shipping", {
+    findArgs: {
+      where: {
+        enabled: {
+          equals: true,
+        },
+      },
+    },
+  });
+  const paymentMethodsQuery = usePayloadFindQuery("payments", {
+    findArgs: {
+      where: {
+        enabled: {
+          equals: true,
+        },
+      },
     },
   });
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
   const selectedMethod = form.watch("shippingMethod");
   const selectedPaymentMethod = form.watch("paymentMethod");
 
+  // fill out shipping address if available
   useEffect(() => {
-    if (!session?.billingAddress || !session?.shippingAddress || loading)
-      return;
+    if (!session?.shippingAddress || loading) return;
 
-    const defaultBillingAddress = session?.billingAddress || ({} as any);
-    const defaultShippingAddress = session?.shippingAddress || ({} as any);
+    const shippingAddress = session?.shippingAddress || ({} as any);
 
     form.reset({
-
       ...form.getValues(),
-
-      firstName: defaultBillingAddress?.firstname || "Henok",
-      lastName: defaultBillingAddress?.lastName || "Getachew",
-      email: defaultBillingAddress?.email || "henokgetachew500@gmail.com",
-      phone: defaultBillingAddress?.phone || "0923365539",
-
-      recipientPhone: defaultShippingAddress.recipientPhone,
-      recipientFirstName: defaultShippingAddress.recipientFirstName || "",
-      recipientLastName: defaultShippingAddress.recipientLastName || "",
-      recipientEmail: defaultShippingAddress.recipientEmail || "",
+      recipientPhone: shippingAddress.recipientPhone,
+      recipientFirstName: shippingAddress.recipientFirstName,
+      recipientLastName: shippingAddress.recipientLastName,
+      recipientEmail: shippingAddress.recipientEmail,
       billingAddressSame: false,
-
-      // selectedMethod: (session?.payment?.id as any),
-      // shipping: (session.shipping?.id as any),
     });
-  }, [session?.billingAddress, session?.shippingAddress]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.shippingAddress]);
+
+  // fill out billing address if available
+  useEffect(() => {
+    if (!session?.billingAddress || loading) return;
+
+    const billingAddress = session?.billingAddress || ({} as any);
+
+    form.reset({
+      ...form.getValues(),
+      firstName: billingAddress?.firstName,
+      lastName: billingAddress?.lastName,
+      email: billingAddress?.email,
+      phone: billingAddress?.phone,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.billingAddress]);
+
+  // shipping methods
+  useEffect(() => {
+    if (!shippingQuery.data || shippingQuery.isLoading) {
+      return;
+    }
+
+    const sortedMethods = (shippingQuery.data?.docs || []).sort((a, b) => {
+      return (
+        (a?.shippingProvider?.[0]?.baseRate || 0) -
+        (b?.shippingProvider?.[0]?.baseRate || 0)
+      );
+    });
+
+    setDeliveryMethods(sortedMethods);
+
+    const defaultMethodId = shippingQuery.data?.docs[0]?.id;
+
+    if (defaultMethodId) {
+      form.setValue("shippingMethod", `${defaultMethodId}:0`);
+    }
+  }, [form.setValue, shippingQuery.data]);
+
+  // payment methods
+  useEffect(() => {
+    if (!paymentMethodsQuery.data || paymentMethodsQuery.isLoading) {
+      return;
+    }
+
+    const methods = paymentMethodsQuery.data?.docs.flatMap(
+      (doc) =>
+        doc?.providers?.map((provider) => ({
+          label: doc.name,
+          id: provider.id as string,
+          paymentId: doc.id,
+          type: provider.blockType,
+          details: (provider as any)?.details,
+          instructions: (provider as any)?.instructions,
+        })) || [],
+    );
+
+    setPaymentMethods(methods);
+
+    if (methods.length > 0) {
+      form.setValue("paymentMethod", methods[0]?.id || "");
+    }
+  }, [form.setValue, paymentMethodsQuery.data]);
 
   useEffect(() => {
-    const fetchDeliveryMethods = async () => {
-      try {
-        const data = await payloadSdk.find({
-          collection: "shipping",
-          where: {
-            enabled: {
-              equals: true,
-            },
-          },
-        });
-
-        console.log("shipping data -- : ", data);
-
-        const sortedMethods = (data.docs || []).sort((a: any, b: any) => {
-          return (
-            a.shippingProvider[0].baseRate - b.shippingProvider[0].baseRate
-          );
-        });
-
-        setDeliveryMethods(sortedMethods);
-
-        if (
-          data.docs?.length > 0 &&
-          (data.docs[0] as any)?.shippingProvider?.length > 0
-        ) {
-          const defaultMethod = `${data.docs[0]?.id}:0`;
-
-          form.setValue("shippingMethod", defaultMethod);
-        }
-      } catch (error) {
-        console.error("Error fetching delivery methods:", error);
-      }
-    };
-
-    fetchDeliveryMethods();
-  }, [form.setValue]);
-
-  useEffect(() => {
-    const fetchPaymentMethods = async () => {
-      try {
-        const data = await payloadSdk.find({
-          collection: "payments",
-          where: { enabled: { equals: true } },
-        });
-
-        const methods: PaymentMethod[] = data.docs.flatMap(
-          (doc) =>
-            doc.providers?.map((provider: any) => ({
-              id: provider.id,
-              paymentId: doc.id,
-              type: provider.blockType,
-              details: provider.details,
-              instructions: provider.instructions,
-              label: doc.name,
-            })) || [],
-        );
-
-        setPaymentMethods(methods);
-
-        if (methods.length > 0) {
-          form.setValue("paymentMethod", methods[0]?.id || "");
-        }
-      } catch (error) {
-        console.error("Error fetching payment methods:", error);
-      }
-    };
-
-    fetchPaymentMethods();
-  }, [form.setValue]);
+    // smooth scroll to top on step change
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [step]);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    setIsLoading(true);
-
-    console.log("form data -- : ", data);
+    setIsSubmitting(true);
 
     const selectedMethod = paymentMethods.find(
       (m) => m.id === data.paymentMethod,
@@ -219,13 +233,41 @@ const Checkout = () => {
     const shipping = deliveryMethods.find((m) => m.id === Number(shippingId));
 
     try {
+      if (isLastStep) {
+        const loadingId = toast.loading("creating an order .... ");
+        const fetchResult = await fetch(`/api/orders/checkout`, {
+          body: JSON.stringify({}),
+          credentials: "include",
+          method: "POST",
+        });
+
+
+        if (!fetchResult.ok) {
+          setIsSubmitting(false);
+          throw new Error("Failed to create order");
+        }
+
+        toast.dismiss(loadingId);
+        toast.success("Order successful!");
+        toast.loading("Redirecting...");
+        const result = (await fetchResult.json()) as { redirectUrl: string };
+
+        console.log('result : ', result);
+
+        const redirectUrl = result.redirectUrl.startsWith("http")
+          ? result.redirectUrl
+          : new URL(result.redirectUrl, window.location.origin).href;
+
+        window.location.href = redirectUrl;
+
+        return;
+      }
+
       const shippingAddress = {
         recipientFirstName: data.recipientFirstName,
         recipientLastName: data.recipientLastName,
         recipientPhone: data.recipientPhone,
         recipientEmail: data.recipientEmail,
-        country: "us",
-        state: "Test State",
       };
 
       const billingAddress = {
@@ -233,32 +275,40 @@ const Checkout = () => {
         lastName: data.lastName,
         phone: data.phone,
         email: data.email,
-        country: "us",
-        state: "Test State",
       };
 
-      const updateData = {
+      const updateSessionData = {
         shippingAddress,
         billingAddress,
         payment: selectedMethod?.paymentId,
         shipping: shipping?.id,
       };
 
-      console.log("update data", updateData);
+      if (form.formState.isDirty) {
+        if (session) {
+          const res = await updateCheckoutSession(updateSessionData);
 
-      if (session) {
-        await updateCheckoutSession(updateData);
-      } else {
-        await createCheckoutSession(updateData);
+          form.reset(form.getValues());
+          toast.success("Checkout details updated successfully.");
+
+          console.log("update chekcout session res", res);
+        } else {
+          const res = await createCheckoutSession(updateSessionData);
+
+          form.reset(form.getValues());
+          toast.success("Checkout created successfully.");
+
+          console.log("create chekcout session res", res);
+        }
       }
 
-      router.push("/checkout/review");
-      toast.success("Checkout details updated successfully.");
+      // router.push("/checkout/review");
+      setStep(step + 1);
     } catch (error) {
       console.error("Error updating address:", error);
       toast.error("There was an error processing your checkout.");
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -289,7 +339,7 @@ const Checkout = () => {
       }
 
       return method.shippingProvider.map((providerBlock, idx: number) => {
-        const { baseRate, estimatedDeliveryDays, notes, id } = providerBlock;
+        const { baseRate, estimatedDeliveryDays, notes } = providerBlock;
 
         const value = `${method.id}:${idx}`;
 
@@ -320,9 +370,9 @@ const Checkout = () => {
                     )}
                   </div>
                 </div>
-                <TypographyLarge className="">
+                <TypographyP className="">
                   {baseRate === 0 ? "Free" : `$${baseRate.toFixed(2)}`}
-                </TypographyLarge>
+                </TypographyP>
               </Label>
             </div>
           </div>
@@ -334,277 +384,339 @@ const Checkout = () => {
   return (
     <div className="mt-10 mb-36 h-full min-h-[80vh] flex-1 ">
       <div className="grid grid-cols-1 gap-8 p-4 lg:grid-cols-3">
-        <div className="lg:col-span-2 xl:max-w-2xl">
+        <div className="lg:col-span-2 xl:max-w-3xl">
+          <div className="bg-white/30 backdrop-blur-sm">
+            <Stepper
+              className="max-w-lg"
+              onStepChange={setStep}
+              orientation="horizontal"
+              step={step}
+              steps={steps}
+            />
+          </div>
+
           <Form {...form}>
             <form
-              className="flex flex-col gap-16"
+              className="flex flex-col gap-16 p-6"
               onSubmit={form.handleSubmit(onSubmit)}
             >
-              <div className="flex flex-col gap-4">
-                <div className="flex w-full items-center justify-between">
-                  <TypographyH2 className="text-accent">
-                    Your Details
+              {isLastStep ? (
+                <div>
+                  <TypographyH2 className="text-accent mb-4">
+                    Review Your Order
                   </TypographyH2>
-                  <span className="border-accent-background rounded-full border p-2">
-                    <BsPerson className="fill-accent" size={30} />
-                  </span>
+                  <TypographyP className="text-accent">
+                    Please review your order details before proceeding to
+                    payment.
+                  </TypographyP>
                 </div>
+              ) : (
+                <>
+                  <div className="flex flex-col gap-4">
+                    <div className="flex w-full items-center justify-between">
+                      <TypographyH2 className="text-accent">
+                        Your Details
+                      </TypographyH2>
+                      <span className="border-accent-background rounded-full border p-2">
+                        <BsPerson className="fill-accent" size={30} />
+                      </span>
+                    </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem className="col-span-2">
-                        <FormLabel>Email Address</FormLabel>
-                        <FormControl>
-                          <Input placeholder="email" type="email" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    <div className="grid grid-cols-2 gap-6">
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem className="col-span-2">
+                            <FormLabel>Email Address</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="email"
+                                type="email"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                  <FormField
-                    control={form.control}
-                    name="firstName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>First Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="first name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                      <FormField
+                        control={form.control}
+                        name="firstName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>First Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="first name" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                  <FormField
-                    control={form.control}
-                    name="lastName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Surname</FormLabel>
-                        <FormControl>
-                          <Input placeholder="surname" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
+                      <FormField
+                        control={form.control}
+                        name="lastName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Surname</FormLabel>
+                            <FormControl>
+                              <Input placeholder="surname" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
 
-              <Divider className="md:w-[calc(108%)] md:-translate-x-[4%]" />
+                  {/*-------------------------------- RECIPIENT ----------- */}
+                  <div className="flex flex-col gap-6">
+                    <div className="flex w-full items-center justify-between">
+                      <TypographyH2 className="text-accent">
+                        Delivery
+                      </TypographyH2>
+                      <span className="border-accent-background rounded-full border p-2">
+                        <BsHouse className="fill-accent" size={28} />
+                      </span>
+                    </div>
 
-              {/*-------------------------------- RECIPIENT ----------- */}
-              <div className="flex flex-col gap-4">
-                <div className="flex w-full items-center justify-between">
-                  <TypographyH2 className="text-accent">Delivery</TypographyH2>
-                  <span className="border-accent-background rounded-full border p-2">
-                    <BsHouse className="fill-accent" size={28} />
-                  </span>
-                </div>
+                    <TypographyLarge>
+                      How do you want your experience delivered?
+                    </TypographyLarge>
 
-                <TypographyLarge>
-                  How do you want your experience delivered?
-                </TypographyLarge>
-
-                <Tabs defaultValue="digital">
-                  <TabsList className="bg-secondary h-max w-full border-2">
-                    <TabsTrigger
-                      className="!bg-accent flex-1 cursor-pointer "
-                      value="digital"
-                    >
-                      <div className=" flex flex-col p-1 text-center">
-                        <TypographyP className="text-accent-foreground font-semibold">
-                          Digital
-                        </TypographyP>
-                        <TypographyMuted className="text-accent-foreground">
-                          Free
-                        </TypographyMuted>
-                      </div>
-                    </TabsTrigger>
-                    <TabsTrigger
-                      className="flex-1 cursor-no-drop"
-                      disabled
-                      value="password"
-                    >
-                      Gift Pack
-                    </TabsTrigger>
-                    <TabsTrigger
-                      className="flex-1 cursor-no-drop"
-                      disabled
-                      value="pickup"
-                    >
-                      Gift Box/Pickup
-                    </TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="digital">
-                    <Card>
-                      <CardContent className="mt-7 grid gap-6">
-                        {/* --- DELEVERY METHOD ---*/}
-                        <div>
-                          <RadioGroup
-                            onValueChange={(value) => {
-                              form.setValue("shippingMethod", value);
-                            }}
-                            value={selectedMethod}
-                          >
-                            <div className="space-y-4">
-                              {renderShippingOptions()}
-                            </div>
-                          </RadioGroup>
-
-                          {form.formState.errors.shippingMethod && (
-                            <p className="mt-2 text-sm text-red-500">
-                              Please select a shipping method
-                            </p>
-                          )}
-                        </div>
-
-                        <div className="flex flex-col gap-6">
-                          <div>
-                            <TypographyLarge>Delivery Address</TypographyLarge>
-                            <TypographyMuted className="">
-                              We&#39;ll send you experience to this address
+                    <Tabs defaultValue="digital">
+                      <TabsList className="bg-secondary h-max w-full border-2">
+                        <TabsTrigger
+                          className="!bg-primary flex-1 cursor-pointer "
+                          value="digital"
+                        >
+                          <div className=" flex flex-col p-1 text-center">
+                            <TypographyP className="text-primary-foreground font-semibold">
+                              Digital
+                            </TypographyP>
+                            <TypographyMuted className="text-primary-foreground">
+                              Free
                             </TypographyMuted>
                           </div>
+                        </TabsTrigger>
+                        <TabsTrigger
+                          className="flex-1 cursor-no-drop"
+                          disabled
+                          value="password"
+                        >
+                          Gift Pack
+                        </TabsTrigger>
+                        <TabsTrigger
+                          className="flex-1 cursor-no-drop"
+                          disabled
+                          value="pickup"
+                        >
+                          Gift Box/Pickup
+                        </TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="digital">
+                        <Card>
+                          <CardContent className="mt-7 grid gap-6">
+                            {/* --- DELEVERY METHOD ---*/}
+                            <div>
+                              <RadioGroup
+                                onValueChange={(value) => {
+                                  form.setValue("shippingMethod", value);
+                                }}
+                                value={selectedMethod}
+                              >
+                                <div className="space-y-4">
+                                  {renderShippingOptions()}
+                                </div>
+                              </RadioGroup>
 
-                          <div className="grid grid-cols-2 gap-4">
-                            <FormField
-                              control={form.control}
-                              name="recipientFirstName"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Recipient First Name</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      placeholder="first name"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
+                              {form.formState.errors.shippingMethod && (
+                                <p className="mt-2 text-sm text-red-500">
+                                  Please select a shipping method
+                                </p>
                               )}
-                            />
+                            </div>
 
-                            <FormField
-                              control={form.control}
-                              name="recipientLastName"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Recipient Last name</FormLabel>
-                                  <FormControl>
-                                    <Input placeholder="surname" {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
+                            <div className="flex flex-col gap-6">
+                              <div>
+                                <TypographyLarge>
+                                  Delivery Address
+                                </TypographyLarge>
+                                <TypographyMuted className="">
+                                  We&#39;ll send you experience to this address
+                                </TypographyMuted>
+                              </div>
 
-                            <FormField
-                              control={form.control}
-                              name="recipientEmail"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Recipient Email Address</FormLabel>
-                                  <FormControl>
-                                    <Input placeholder="email" {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
+                              <div className="grid grid-cols-2 gap-4">
+                                <FormField
+                                  control={form.control}
+                                  name="recipientFirstName"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>
+                                        Recipient First Name
+                                      </FormLabel>
+                                      <FormControl>
+                                        <Input
+                                          placeholder="first name"
+                                          {...field}
+                                        />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
 
-                            <FormField
-                              control={form.control}
-                              name="recipientPhone"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Recipient Phone</FormLabel>
-                                  <FormControl>
-                                    <Input placeholder="phone" {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
-                </Tabs>
-              </div>
+                                <FormField
+                                  control={form.control}
+                                  name="recipientLastName"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Recipient Last name</FormLabel>
+                                      <FormControl>
+                                        <Input
+                                          placeholder="surname"
+                                          {...field}
+                                        />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
 
-              <Divider className="md:w-[calc(108%)] md:-translate-x-[4%]" />
+                                <FormField
+                                  control={form.control}
+                                  name="recipientEmail"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>
+                                        Recipient Email Address
+                                      </FormLabel>
+                                      <FormControl>
+                                        <Input placeholder="email" {...field} />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
 
-              {/* ----------------------------- PAYMENT ---------------- */}
-              <div className="flex flex-col gap-4">
-                <div className="flex w-full items-center justify-between">
-                  <TypographyH2 className="text-accent">
-                    Payment Information
-                  </TypographyH2>
-                  <span className="border-accent-background rounded-full border p-2">
-                    <BsCreditCard className="fill-accent" size={28} />
-                  </span>
-                </div>
+                                <FormField
+                                  control={form.control}
+                                  name="recipientPhone"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Recipient Phone</FormLabel>
+                                      <FormControl>
+                                        <Input placeholder="phone" {...field} />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </TabsContent>
+                    </Tabs>
+                  </div>
 
-                <div className="space-y-6">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Select Payment Method</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <RadioGroup
-                        onValueChange={(value) =>
-                          form.setValue("paymentMethod", value)
-                        }
-                        value={selectedPaymentMethod}
-                      >
-                        <div className="space-y-4">
-                          {renderPaymentOptions()}
-                        </div>
-                      </RadioGroup>
-                      {form.formState.errors.paymentMethod && (
-                        <p className="mt-2 text-sm text-red-500">
-                          Please select a payment method
-                        </p>
+                  {/* ----------------------------- PAYMENT ---------------- */}
+                  <div className="flex flex-col gap-4">
+                    <div className="flex w-full items-center justify-between">
+                      <TypographyH2 className="text-accent">
+                        Payment Information
+                      </TypographyH2>
+                      <span className="border-accent-background rounded-full border p-2">
+                        <BsCreditCard className="fill-accent" size={28} />
+                      </span>
+                    </div>
+
+                    <div className="space-y-6">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Select Payment Method</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <RadioGroup
+                            onValueChange={(value) => {
+                              console.log('selected payment method', value);
+
+                              form.setValue("paymentMethod", value, {
+                                shouldDirty: true,
+                              })
+                            }
+
+                            }
+                            value={selectedPaymentMethod}
+                          >
+                            <div className="space-y-4">
+                              {renderPaymentOptions()}
+                            </div>
+                          </RadioGroup>
+                          {form.formState.errors.paymentMethod && (
+                            <p className="mt-2 text-sm text-red-500">
+                              Please select a payment method
+                            </p>
+                          )}
+                        </CardContent>
+                      </Card>
+
+                      {selectedMethodDetails?.instructions && (
+                        <Card>
+                          <CardHeader>
+                            <CardTitle>Payment Instructions</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="prose prose-sm max-w-none">
+                              <div className="text-sm whitespace-pre-line text-gray-700">
+                                {selectedMethodDetails.instructions}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
                       )}
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
+                </>
+              )}
 
-                  {selectedMethodDetails?.instructions && (
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Payment Instructions</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="prose prose-sm max-w-none">
-                          <div className="text-sm whitespace-pre-line text-gray-700">
-                            {selectedMethodDetails.instructions}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
-                </div>
-              </div>
+              <div className="flex w-full items-center justify-between px-8">
+                {step !== 0 && (
+                  <Button
+                    disabled={step === 0}
+                    onClick={() => {
+                      if (step === 0) {
+                        return;
+                      }
 
-              <div className="w-full px-8">
-                <Button className="w-full xl:invisible" size="lg" type="submit">
-                  <BiSend />
-                  FINISH AND PAY
-                </Button>
+                      setStep(step - 1);
+                    }}
+                    outlined
+                    size="lg"
+                    variant="secondary"
+                  >
+                    <BiArrowBack />
+                    Back
+                  </Button>
+                )}
 
                 <Button
-                  className="w-full invisible xl:visible"
-                  size="xl"
+                  className="ml-auto_ w-full max-w-[20rem]"
+                  loading={isSubmitting}
+                  size="lg"
                   type="submit"
                 >
-                  <BiSend />
-                  Proceed to Confirmation
+                  {isLastStep ? (
+                    <>
+                      <BiSend />
+                      Checkout and Pay
+                    </>
+                  ) : (
+                    "Next Step"
+                  )}
                 </Button>
               </div>
             </form>

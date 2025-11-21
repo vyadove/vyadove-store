@@ -4,21 +4,14 @@ import React from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-import {
-  filterKeys,
-  useUpdateMultiFilterParam,
-} from "@/app/(store)/shop/components/util";
-import { NavMenuTrigger } from "@ui/nav/components";
+import { usePayloadFindQuery } from "@/scenes/shop/use-payload-find-query";
 import { Badge } from "@ui/shadcn/badge";
 import { Button } from "@ui/shadcn/button";
 import { Checkbox } from "@ui/shadcn/checkbox";
 import { Field, FieldLabel } from "@ui/shadcn/field";
-import {
-  NavigationMenuContent,
-  NavigationMenuItem,
-} from "@ui/shadcn/navigation-menu";
 import { ScrollArea } from "@ui/shadcn/scroll-area";
-import type { Collection } from "@vyadove/types";
+import { Spinner } from "@ui/shadcn/spinner";
+import type { Category } from "@vyadove/types";
 import { ChevronDownIcon } from "lucide-react";
 
 import {
@@ -29,18 +22,17 @@ import {
 
 import { cn } from "@/lib/utils";
 
-const CollectionFilterMenu = ({
-  collections,
-}: {
-  collections: Collection[];
-}) => {
+import { filterKeys, useUpdateMultiFilterParam } from "../util";
+
+const CollectionFilterMenu = ({ categories }: { categories: Category[] }) => {
   const router = useRouter();
+
+  const filterName = filterKeys.category;
   const searchParams = useSearchParams();
-  const filterName = "category";
-
   const { updateSearchParam, reset } = useUpdateMultiFilterParam(filterName);
+  const selectedItems = searchParams.get(filterName)?.split(",") || [];
 
-  const isSelected = (value: string) => selectedCategories.includes(value);
+  const isSelected = (value: string) => selectedItems.includes(value);
 
   const handleValueChange = (value: string) => {
     const updatedQuery = updateSearchParam(value);
@@ -48,13 +40,11 @@ const CollectionFilterMenu = ({
     router.push(`?${updatedQuery}`, { scroll: false });
   };
 
-  const selectedCategories = searchParams.get(filterName)?.split(",") || [];
-
   return (
     <div className="grid w-full gap-4 ">
       <ScrollArea className="max-h-80 w-full pr-3" type="always">
         <ul className="flex flex-col gap-1">
-          {collections.map((col) => {
+          {categories.map((col) => {
             if (!col.handle) return null;
 
             return (
@@ -92,10 +82,14 @@ const CollectionFilterMenu = ({
 
       <div className="w-full ">
         <Button
-          disabled={!selectedCategories?.length}
+          className=""
+          disabled={!selectedItems?.length}
           onClick={() => {
             reset();
           }}
+          outlined={true}
+          size="sm"
+          variant="secondary"
         >
           Reset
         </Button>
@@ -104,37 +98,45 @@ const CollectionFilterMenu = ({
   );
 };
 
-interface Props {
-  collections: Collection[];
-}
-
-const PriceFilterButton = ({ collections }: Props) => {
+const CategoryFilterButton = () => {
   const searchParams = useSearchParams();
   const selectedItems = searchParams.get(filterKeys.category)?.split(",") || [];
+
+  const categoryQuery = usePayloadFindQuery("category", {
+    findArgs: {
+      limit: 100,
+    },
+  });
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           className={cn(
-            "border-accent/50  rounded-md border hover:text-accent hover:bg-accent-foreground ",
-            "data-[state=open]:bg-accent-foreground data-[state=open]:text-accent data-[state=open]:[&_svg]:rotate-180",
-            selectedItems?.length > 0 && "bg-accent-foreground text-accent",
+            "",
+            selectedItems?.length > 0 && "bg-primary-background",
           )}
-          variant="outline"
+          disabled={categoryQuery.isLoading}
+          outlined
+          size="md"
+          variant={selectedItems?.length > 0 ? "default" : "secondary"}
         >
-          Collections
+          Experiences
           {selectedItems?.length > 0 && (
-            <Badge className="rounded-xl">{selectedItems?.length}</Badge>
+            <Badge className="rounded-full">{selectedItems?.length}</Badge>
           )}
-          <ChevronDownIcon
-            aria-hidden="true"
-            className="relative top-[1px] ml-1 size-3 transition duration-300 group-data-[state=open]:rotate-180"
-          />
+          {categoryQuery.isLoading ? (
+            <Spinner />
+          ) : (
+            <ChevronDownIcon
+              aria-hidden="true"
+              className="relative top-[1px] ml-1 size-3 transition duration-300 group-data-[state=open]:rotate-180"
+            />
+          )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="start" className="border border-red-500">
-        <CollectionFilterMenu collections={collections || []} />
+      <PopoverContent align="start" className="border">
+        <CollectionFilterMenu categories={categoryQuery.data?.docs || []} />
       </PopoverContent>
     </Popover>
   );
@@ -159,4 +161,4 @@ const PriceFilterButton = ({ collections }: Props) => {
   ); */
 };
 
-export default PriceFilterButton;
+export default CategoryFilterButton;

@@ -1,35 +1,30 @@
 import React from "react";
 
-import AppHeroScaffold from "@ui/nav/app-hero-scaffold";
-import { Badge } from "@ui/shadcn/badge";
-import {
-  TypographyH1,
-  TypographyLead,
-  TypographyP,
-} from "@ui/shadcn/typography";
-
-import { cn } from "@/lib/utils";
-
 import { payloadSdk } from "@/utils/payload-sdk";
 
-const Layout = async ({ children, params }: React.PropsWithChildren<{
+const Layout = async ({
+  children,
+  params,
+}: React.PropsWithChildren<{
   params: Promise<{ slug: string }>;
 }>) => {
   const { slug } = await params;
 
-  const product = await payloadSdk.find({
-    collection: "products",
-    limit: 1,
-    select: {
-      title: true,
-      description: true,
-    },
-    where: {
-      handle: {
-        equals: slug,
+  const product = await payloadSdk
+    .find({
+      collection: "products",
+      limit: 1,
+      select: {
+        title: true,
+        description: true,
       },
-    },
-  }).then(res => res.docs[0]);
+      where: {
+        handle: {
+          equals: slug,
+        },
+      },
+    })
+    .then((res) => res.docs[0]);
 
   return (
     <div>

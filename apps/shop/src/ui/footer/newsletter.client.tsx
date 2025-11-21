@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { signForNewsletter } from "@/ui/footer/actions";
 import { Loader2Icon } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/hot-toast";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

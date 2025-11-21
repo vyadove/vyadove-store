@@ -1,14 +1,16 @@
 import React from "react";
+import { FaCheckCircle } from "react-icons/fa";
 
 import AppHeroScaffold from "@ui/nav/app-hero-scaffold";
 import { TypographyH1, TypographyLead } from "@ui/shadcn/typography";
 
 const Layout = async ({ children }: React.PropsWithChildren) => {
   return (
-    <div className="flex flex-col flex-1">
+    <div className="flex flex-1 flex-col">
       <AppHeroScaffold>
-        <div className="mx-auto flex h-full w-full flex-col justify-items-start gap-4 px-8 py-32 pb-20 lg:px-16 lg:pt-32 lg:pb-20">
-          <TypographyH1 className="font-medium text-balance capitalize">
+        <div className="mx-auto flex h-full w-full flex-col justify-center gap-4 px-8 py-32 pb-20 text-center lg:px-16 lg:pt-32 lg:pb-20">
+          <TypographyH1 className="mx-auto inline-flex items-center gap-2 font-medium text-balance capitalize">
+            <FaCheckCircle className="text-accent size-16" />
             Thank you!
           </TypographyH1>
 

@@ -1,9 +1,15 @@
+import Link from "next/link";
+
+import { Badge } from "@ui/shadcn/badge";
 import { TypographyH2, TypographyP } from "@ui/shadcn/typography";
 import type { Order } from "@vyadove/types";
 import { CreditCard } from "lucide-react";
 
-import { convertToLocale } from "@/utils/money";
 import Divider from "@/components/divider";
+
+import { cn } from "@/lib/utils";
+
+import { convertToLocale } from "@/utils/money";
 
 type PaymentDetailsProps = {
   order: Order;
@@ -11,40 +17,44 @@ type PaymentDetailsProps = {
 
 const PaymentDetails = ({ order }: PaymentDetailsProps) => {
   return (
-    <div>
-      <TypographyH2 className="my-6 flex  flex-row">Payment</TypographyH2>
-      <div>
-        <div className="flex w-full items-start gap-x-1">
-          <div className="flex w-1/3 flex-col">
-            <TypographyP className="txt-medium-plus text-ui-fg-base mb-1">
-              Payment method
-            </TypographyP>
-            <TypographyP
-              className="txt-medium text-ui-fg-subtle"
-              data-testid="payment-method"
-            >
-              {order.paymentMethod === "card"
-                ? "Credit Card"
-                : order.paymentMethod}
-            </TypographyP>
-          </div>
-          <div className="flex w-2/3 flex-col">
-            <TypographyP className="txt-medium-plus text-ui-fg-base mb-1">
-              Payment details
-            </TypographyP>
-            <div className="txt-medium text-ui-fg-subtle mt-2 flex items-center gap-2">
-              <div className="bg-ui-button-neutral-hover flex h-7 w-fit items-center p-2">
-                <CreditCard />
-              </div>
-              <TypographyP data-testid="payment-amount">
-                {convertToLocale({
-                  amount: order.totalAmount,
-                  currency_code: order.currency,
-                })}{" "}
-                paid at {new Date(order.createdAt ?? "").toLocaleString()}
-              </TypographyP>
-            </div>
-          </div>
+    <div className="flex flex-col gap-4">
+      <TypographyH2 className="">Payment</TypographyH2>
+
+      <div className="flex gap-x-8 [&>*]:flex-1">
+        <div className="flex flex-col">
+          <TypographyP className="text-muted-foreground font-light">
+            Payment method
+          </TypographyP>
+          <TypographyP className="font-semibold capitalize">
+            {((order.payment as any)?.name as string) || "-"}
+          </TypographyP>
+        </div>
+
+        <div className="flex flex-col items-start">
+          <TypographyP className="text-muted-foreground font-light">
+            Payment Status
+          </TypographyP>
+          <Badge className="bg-primary-background text-primary border-primary/30 mt-2 p-2 px-3 text-sm capitalize">
+            {order.paymentStatus}
+          </Badge>
+        </div>
+
+        <div className="flex flex-col items-start">
+          <TypographyP className="text-muted-foreground font-light">
+            Receipt URL
+          </TypographyP>
+          <Link
+            className={cn(
+              "line-clamp-2",
+              order.receiptUrl
+                ? "text-blue-600 underline"
+                : "text-muted-foreground pointer-events-none",
+            )}
+            href={order.receiptUrl || "#"}
+            target="_blank"
+          >
+            {order.receiptUrl || "-"}
+          </Link>
         </div>
       </div>
 

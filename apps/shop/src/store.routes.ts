@@ -7,6 +7,7 @@ export const Routes = {
   checkout: '/checkout',
   cart: '/cart',
   shop: '/shop',
+  productLink: (handle: string) => `/product/${handle}`,
   logout: '/logout',
   termsAndConditions: '/terms-and-conditions',
 }

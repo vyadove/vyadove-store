@@ -62,11 +62,11 @@ const Summary = () => {
       </CardHeader>
 
       <CardContent>
-        <DiscountCode
+        {/*<DiscountCode
           applyPromotion={applyPromotion}
           promotions={promotions}
           setPromotions={setPromotions}
-        />
+        />*/}
         <Divider />
         <CartTotals
           currencyCode={items[0]?.currency}

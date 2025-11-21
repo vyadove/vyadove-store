@@ -3,16 +3,18 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import Image from "next/image";
 import Link from "next/link";
 
+import { Routes } from "@/store.routes";
 import { Button } from "@/ui/shadcn/button";
+import { getProductGallery } from "@/utils";
 import {
   TypographyH5,
   TypographyMuted,
   TypographyP,
 } from "@ui/shadcn/typography";
+import { VyaLink } from "@ui/vya-link";
 import type { Media, Product } from "@vyadove/types";
 
 import InvertedCornerMask from "@/components/inverted-corner-mask";
-import { getProductGallery } from "@/utils";
 
 export const ProductPreview = ({ product }: { product: Product }) => {
   const { originalPrice, price } = product.variants?.[0] || {};
@@ -20,9 +22,9 @@ export const ProductPreview = ({ product }: { product: Product }) => {
   const thumbnailUrl = getProductGallery(product)[0]?.url;
 
   return (
-    <Link
+    <VyaLink
       className="group/card flex flex-col rounded-xl p-0"
-      href={`/shop/${product.handle}`}
+      href={`${Routes.productLink(product.handle as string)}`}
     >
       <div className="">
         {/* --- THUMBNAIL --- */}
@@ -96,6 +98,6 @@ export const ProductPreview = ({ product }: { product: Product }) => {
           Add to Cart
         </Button>
       </div>
-    </Link>
+    </VyaLink>
   );
 };

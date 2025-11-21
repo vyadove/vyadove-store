@@ -148,6 +148,7 @@ export default [
       "@typescript-eslint/ban-ts-comment": "off",
       "@typescript-eslint/ban-types": "off",
       "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/no-unsafe-function-type": "off",
 
       // React
       "react/boolean-prop-naming": ["warn"],

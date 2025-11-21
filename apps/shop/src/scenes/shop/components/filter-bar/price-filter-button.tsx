@@ -4,25 +4,29 @@ import React from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { filterKeys, useUpdateMultiFilterParam } from "@/app/(store)/shop/components/util";
 import { Badge } from "@ui/shadcn/badge";
 import { Button } from "@ui/shadcn/button";
 import { Checkbox } from "@ui/shadcn/checkbox";
 import { Field, FieldLabel } from "@ui/shadcn/field";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/shadcn/popover";
+import { TypographyP } from "@ui/shadcn/typography";
 import { ChevronDownIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+
+import { filterKeys, useUpdateMultiFilterParam } from "../util";
 
 const PricingFilterMenu = () => {
   // const [sliderValue, setSliderValue] = useState([2000, 5000]);
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const selectedPrices = searchParams.get(filterKeys.price)?.split(",") || [];
-  const { updateSearchParam, reset } = useUpdateMultiFilterParam(filterKeys.price);
+  const selectedItems = searchParams.get(filterKeys.price)?.split(",") || [];
+  const { updateSearchParam, reset } = useUpdateMultiFilterParam(
+    filterKeys.price,
+  );
 
-  const isSelected = (value: string) => selectedPrices.includes(value);
+  const isSelected = (value: string) => selectedItems.includes(value);
 
   const handlePriceChange = (value: string) => {
     const updatedQuery = updateSearchParam(value);
@@ -31,26 +35,27 @@ const PricingFilterMenu = () => {
   };
 
   const ranges = [
-    [0, 500],
+    [100, 1000],
     [1000, 2000],
     [2000, 5000],
     [5000, 10000],
     [10000, 20000],
+    [20000],
   ];
 
   return (
-    <div className="relative flex w-56 flex-col gap-6 p-1">
-      <ul className="flex flex-col gap-1">
+    <div className="relative flex flex-col gap-6 p-1">
+      <ul className="flex list-inside list-disc flex-col gap-[0.2rem] ">
         {ranges.map(([start, end], idx) => {
-          const value = `${start}-${end}`;
+          const value = `${start}-${end || "plus"}`;
           const selected = isSelected(value);
 
           return (
             <li
               // asChild
               className={cn(
-                "hover:bg-accent/10 flex items-center gap-3 p-1 rounded-md w-full cursor-pointer",
-                selected && "bg-accent/10",
+                "hover:bg-primary/10 flex items-center gap-3 p-1 rounded-md w-full cursor-pointer",
+                selected && "text-primary bg-primary-background text-bold font-sofia-soft",
               )}
               key={idx}
               onClick={(e) => {
@@ -64,7 +69,18 @@ const PricingFilterMenu = () => {
                   className="cursor-pointer font-normal"
                   htmlFor={`checkbox-${value}`}
                 >
-                  Br{start} to Br{end}
+                  <TypographyP>
+                    <span className="text-xs text-gray-500">Br</span>
+                    {start}{" "}
+                    {end ? (
+                      <>
+                        to <span className="text-xs text-gray-500">Br</span>
+                        {end}
+                      </>
+                    ) : (
+                      "+"
+                    )}
+                  </TypographyP>
                 </FieldLabel>
               </Field>
             </li>
@@ -76,11 +92,14 @@ const PricingFilterMenu = () => {
 
       <div className="w-full ">
         <Button
-          className="rounded-xl"
-          disabled={!selectedPrices?.length}
+          className=""
+          disabled={!selectedItems?.length}
           onClick={() => {
             reset();
           }}
+          outlined={true}
+          size="sm"
+          variant="secondary"
         >
           Reset
         </Button>
@@ -98,17 +117,16 @@ const PriceFilterButton = () => {
       <PopoverTrigger asChild>
         <Button
           className={cn(
-            "border-accent/50  rounded-md border hover:text-accent hover:bg-accent-foreground ",
-            "data-[state=open]:bg-accent-foreground data-[state=open]:text-accent data-[state=open]:[&_svg]:rotate-180",
-            selectedItems?.length > 0 && "bg-accent-foreground text-accent",
+            "",
+            selectedItems?.length > 0 && "bg-primary-background",
           )}
-          variant="outline"
+          outlined
+          size="md"
+          variant={selectedItems?.length > 0 ? "default" : "secondary"}
         >
           Pricing
           {selectedItems?.length > 0 && (
-            <Badge className="rounded-full">
-              {selectedItems?.length}
-            </Badge>
+            <Badge className="rounded-full">{selectedItems?.length}</Badge>
           )}
           <ChevronDownIcon
             aria-hidden="true"

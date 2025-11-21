@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 import {
   filterKeys,
   useUpdateMultiFilterParam,
-} from "@/app/(store)/shop/components/util";
+} from "../util";
 import { Button } from "@ui/shadcn/button";
 
 const ResetFilterButton = () => {
@@ -17,7 +17,8 @@ const ResetFilterButton = () => {
 
   return (
     <Button
-      className="cursor-pointer bg-transparent disabled:hidden"
+      className="cursor-pointer bg-transparent disabled:hidden text-black underline-offset-4 hover:underline"
+      // size="sm"
       disabled={
         !(
           searchParams.has(filterKeys.sortBy) ||
@@ -26,7 +27,7 @@ const ResetFilterButton = () => {
         )
       }
       onClick={() => resetMultiple(Object.values(filterKeys))}
-      variant="secondary"
+      variant="link"
     >
       <AiFillDelete />
       Clear All Filters

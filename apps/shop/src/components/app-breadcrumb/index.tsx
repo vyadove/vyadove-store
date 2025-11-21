@@ -1,28 +1,22 @@
-'use client';
+"use client";
 
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
 
-
-
-import { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import useAppBreadcrumbStore from "@/components/app-breadcrumb/breadcrumb.store";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-
-
-
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 export function AppBreadcrumb() {
-  const pathname = usePathname();
-  const params = useParams();
+  const { routeStack } = useAppBreadcrumbStore();
 
   return (
-    <Breadcrumb >
+    <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
@@ -30,17 +24,23 @@ export function AppBreadcrumb() {
           </BreadcrumbLink>
         </BreadcrumbItem>
 
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link href="/docs/components">Components</Link>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
-        </BreadcrumbItem>
+        {routeStack.map((route) => (
+          <>
+            <BreadcrumbSeparator className="hidden md:block" />
+            <BreadcrumbItem>
+              <BreadcrumbPage>
+                <Link
+                  className="flex items-center gap-1"
+                  href={route?.path || ""}
+                >
+                  {route?.icon && <route.icon />}
+                  {route.name}
+                </Link>
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </>
+        ))}
       </BreadcrumbList>
     </Breadcrumb>
-  )
+  );
 }

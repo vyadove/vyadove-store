@@ -2,7 +2,7 @@ import type { Field } from "payload";
 
 import { formatSlug } from "@/utils/format-slug";
 
-export const HandleField = (fieldToUse = "title"): Field => ({
+export const HandleField = (fieldToUse = "title", fields?: Field): Field => ({
     name: "handle",
     type: "text",
     admin: {

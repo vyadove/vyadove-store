@@ -5,7 +5,7 @@ import { useCart } from "react-use-cart";
 import { Button } from "@ui/shadcn/button";
 import { TypographyH2, TypographyP } from "@ui/shadcn/typography";
 import { Trash } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/hot-toast";
 
 import {
   Table,
@@ -32,19 +32,19 @@ const ItemsTemplate = () => {
         </TypographyP>
       </div>
       <Table>
-        <TableHeader className="bg-accent  ">
+        <TableHeader className="bg-accent">
           <TableRow>
-            <TableCell className="rounded-l-lg "></TableCell>
-            <TableCell className="p-6">Product</TableCell>
-            <TableCell className="">Price</TableCell>
-            <TableCell>Quantity</TableCell>
-            <TableCell align="right" className="rounded-r-lg  p-6">
+            <TableCell className="rounded-l-lg font-semibold "></TableCell>
+            <TableCell className="p-6 font-bold">Product</TableCell>
+            <TableCell className="font-semibold ">Price</TableCell>
+            <TableCell className="font-semibold">Quantity</TableCell>
+            <TableCell align="right" className="rounded-r-lg p-6 font-semibold">
               Total
             </TableCell>
           </TableRow>
         </TableHeader>
         <TableBody className="">
-          {items.map((item: any) => {
+          {items.map((item) => {
             return (
               <Item currencyCode={item.currency} item={item} key={item.id} />
             );
@@ -67,12 +67,9 @@ const ItemsTemplate = () => {
                   return;
                 }
                 toast.error("Failed to clear basket");
-                toast.error("Failed to clear basket", res);
               })
               .catch((err) => {
                 toast.error("Failed to clear basket");
-                toast.error("Failed to clear basket");
-                console.error("Failed to clear basket:", err);
               });
           }}
           size="lg"

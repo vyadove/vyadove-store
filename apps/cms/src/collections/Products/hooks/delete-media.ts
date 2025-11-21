@@ -55,6 +55,19 @@ export const deleteMedia: CollectionAfterDeleteHook<Product> = async ({
                     );
                 })
                 .catch((error) => {
+
+                    payload.find({
+                        collection: 'products',
+                        where: {
+
+                            category: {
+                                in: [],
+                            },
+
+
+                        }
+                    })
+
                     payload.logger.error(
                         `Failed to delete: ${image.filename}`,
                         error

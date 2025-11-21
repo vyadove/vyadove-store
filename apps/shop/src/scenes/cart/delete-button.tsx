@@ -4,7 +4,7 @@ import { useCart } from "react-use-cart";
 import { Button } from "@ui/shadcn/button";
 import { Spinner } from "@ui/shadcn/spinner";
 import { Trash } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/hot-toast";
 
 import { cn } from "@/lib/utils";
 
@@ -63,10 +63,10 @@ const DeleteButton = ({
       )}
     >
       <Button
-        className="cursor-pointer items-center"
+        className="hover:text-destructive hover:bg-destructive/10 cursor-pointer items-center"
         onClick={() => handleDelete(id)}
         size="icon"
-        variant='secondary'
+        variant="secondary"
       >
         {isDeleting ? (
           <Spinner className="animate-spin" />

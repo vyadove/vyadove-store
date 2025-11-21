@@ -10,6 +10,6 @@ export const metadata: Metadata = {
   title: "Order Confirmed",
 };
 
-export default async function OrderConfirmedPage(props: Props) {
+export default async function OrderConfirmedPage() {
   return <OrderTrackingInputs />;
 }

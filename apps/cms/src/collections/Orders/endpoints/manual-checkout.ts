@@ -33,13 +33,13 @@ export async function manualCheckout({
             cart: cart.id,
             currency: "usd",
             orderId,
-            orderStatus: "shipped",
+            orderStatus: "pending",
             paymentMethod: payment?.providers?.[0]?.id,
             payment: payment?.id,
             shippingAddress: shippingAddress,
             billingAddress: billingAddress,
             shipping: shipping?.id,
-            paymentStatus: "paid",
+            paymentStatus: "pending",
             sessionId,
             totalAmount: total,
         },
@@ -47,6 +47,6 @@ export async function manualCheckout({
     });
 
     return {
-        redirectUrl: `/order/confirmed/${sessionId}`,
+        redirectUrl: `/order/confirmed/${orderId}`,
     };
 }

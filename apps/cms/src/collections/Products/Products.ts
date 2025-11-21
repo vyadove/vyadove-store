@@ -223,6 +223,55 @@ export const Products: CollectionConfig = {
                         { label: "Luxury", value: "luxury" },
                     ],
                 },
+
+                {
+                    name: "additionalInfo",
+                    type: "array",
+                    // minRows: 1,
+                    maxRows: 10,
+                    // required: true,
+                    admin: {
+                        description:
+                            "Add additional product variant info such as care instructions, materials, or sizing notes.",
+                        // position: "sidebar",
+                    },
+                    fields: [
+                        {
+                            name: "name",
+                            type: "text",
+                            required: true,
+                        },
+                        RichTextEditor({
+                            name: "value",
+                            label: "Rich Text",
+                            required: true,
+                        }),
+                    ],
+                },
+
+                {
+                    name: "locations",
+                    type: "array",
+                    maxRows: 100,
+                    fields: [
+                        {
+                            name: "coordinates",
+                            type: "point",
+                            label: "Coordinates",
+                        },
+                        {
+                            name: "map_url",
+                            label: "Map URL",
+                            type: "text",
+                        },
+                        {
+                            name: "address",
+                            label: "Address",
+                            type: "text",
+                        },
+                    ],
+                },
+
                 {
                     name: "options",
                     type: "array",
@@ -280,29 +329,6 @@ export const Products: CollectionConfig = {
                     label: "Rich Text",
                     required: true,
                 }),
-            ],
-        },
-
-        {
-            name: "locations",
-            type: "array",
-            maxRows: 100,
-            fields: [
-                {
-                    name: "coordinates",
-                    type: "point",
-                    label: "Coordinates",
-                },
-                {
-                    name: "map_url",
-                    label: "Map URL",
-                    type: "text",
-                },
-                {
-                    name: "address",
-                    label: "Address",
-                    type: "text",
-                },
             ],
         },
 

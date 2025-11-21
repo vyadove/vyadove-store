@@ -1627,7 +1627,7 @@ export const plugins = pgTable(
         enabled: boolean("enabled"),
         pluginId: varchar("plugin_id"),
         svgIcon: varchar("svg_icon"),
-        category: varchar("category"),
+        categories: varchar("category"),
         author: varchar("author"),
         license: varchar("license"),
         updatedAt: timestamp("updated_at", {

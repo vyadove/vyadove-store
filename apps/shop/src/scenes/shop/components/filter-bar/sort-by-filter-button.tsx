@@ -4,18 +4,42 @@ import React from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-import {
-  filterKeys,
-  useUpdateMultiFilterParam,
-} from "@/app/(store)/shop/components/util";
-import { Badge } from "@ui/shadcn/badge";
 import { Button } from "@ui/shadcn/button";
-import { Checkbox } from "@ui/shadcn/checkbox";
 import { Field, FieldLabel } from "@ui/shadcn/field";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/shadcn/popover";
-import { ChevronDownIcon, SortAsc, SortDesc } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@ui/shadcn/radio-group";
+import { ChevronDownIcon, SortDesc } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+
+import { filterKeys, useUpdateMultiFilterParam } from "../util";
+
+const sortingOptions = [
+  {
+    label: "Most Popular (default)",
+    value: "default",
+  },
+  {
+    label: "Price (low to high)",
+    value: "low-high",
+  },
+  {
+    label: "Price (high to low)",
+    value: "high-low",
+  },
+  {
+    label: "Newest",
+    value: "newest",
+  },
+  {
+    label: "Rating",
+    value: "rating",
+  },
+  {
+    label: "Most Reviewed",
+    value: "reviewed",
+  },
+];
 
 const FilterMenuContent = () => {
   // const [sliderValue, setSliderValue] = useState([2000, 5000]);
@@ -24,65 +48,46 @@ const FilterMenuContent = () => {
   const searchParams = useSearchParams();
   const filterName = filterKeys.sortBy;
 
-  const selectedPrices = searchParams.get(filterName)?.split(",") || [];
+  const selectedPrices = searchParams.get(filterName);
   const { updateSearchParam, reset } = useUpdateMultiFilterParam(filterName);
 
-  const isSelected = (value: string) => selectedPrices.includes(value);
+  const isSelected = (value: string) => selectedPrices?.includes(value);
 
   const handleValueChange = (value: string) => {
-    const updatedQuery = updateSearchParam(value);
+    if (value === "default") {
+      reset();
+
+      return;
+    }
+
+    const updatedQuery = updateSearchParam(value, filterName, true);
 
     router.push(`?${updatedQuery}`, { scroll: false });
   };
 
-  const sortingOptions = [
-    {
-      label: "Most Popular",
-      value: "popular",
-    },
-    {
-      label: "Price (low to high)",
-      value: "low",
-    },
-    {
-      label: "Price (high to high)",
-      value: "high",
-    },
-    {
-      label: "Newest",
-      value: "newest",
-    },
-    {
-      label: "Rating",
-      value: "rating",
-    },
-    {
-      label: "Most Reviewed",
-      value: "reviewed",
-    },
-  ];
-
   return (
-    <div className="relative flex w-56 flex-col gap-6 p-1">
+    <RadioGroup
+      className="relative flex w-56 flex-col gap-6 p-1"
+      defaultValue={sortingOptions[0]?.value}
+      onValueChange={handleValueChange}
+      value={selectedPrices || sortingOptions[0]?.value}
+    >
       <ul className="flex flex-col gap-1">
         {sortingOptions.map((option, idx) => {
           const selected = isSelected(option.value);
 
           return (
             <li
-              // a<option value=""></option>
               className={cn(
                 "hover:bg-accent/10 flex items-center gap-3 p-1 rounded-md w-full cursor-pointer",
-                selected && "bg-accent/10",
               )}
               key={idx}
-              onClick={(e) => {
-                e.preventDefault();
-                handleValueChange(option.value);
-              }}
             >
               <Field className="cursor-pointer" orientation="horizontal">
-                <Checkbox checked={selected} id={`checkbox-${option.value}`} />
+                <RadioGroupItem
+                  id={`checkbox-${option.value}`}
+                  value={option.value}
+                />
                 <FieldLabel
                   className="cursor-pointer font-normal"
                   htmlFor={`checkbox-${option.value}`}
@@ -94,21 +99,7 @@ const FilterMenuContent = () => {
           );
         })}
       </ul>
-
-      <hr />
-
-      <div className="w-full ">
-        <Button
-          className="rounded-xl"
-          disabled={!selectedPrices?.length}
-          onClick={() => {
-            reset();
-          }}
-        >
-          Reset
-        </Button>
-      </div>
-    </div>
+    </RadioGroup>
   );
 };
 
@@ -121,17 +112,15 @@ const SortByFilterButton = () => {
       <PopoverTrigger asChild>
         <Button
           className={cn(
-            "border-accent/50  rounded-md border hover:text-accent hover:bg-accent-foreground ",
-            "data-[state=open]:bg-accent-foreground data-[state=open]:text-accent",
-            selectedItems?.length > 0 && "bg-accent-foreground text-accent",
+            "",
+            // selectedItems?.length > 0 && "bg-primary-background",
           )}
-          variant="outline"
+          outlined
+          size="md"
+          variant={selectedItems?.length > 0 ? "default" : "secondary"}
         >
           <SortDesc />
           Sort By
-          {selectedItems?.length > 0 && (
-            <Badge className="rounded-xl">{selectedItems?.length}</Badge>
-          )}
           <ChevronDownIcon
             aria-hidden="true"
             className="relative top-[1px] ml-1 size-3 transition duration-300 group-data-[state=open]:rotate-180"

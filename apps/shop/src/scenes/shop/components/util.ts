@@ -14,17 +14,23 @@ export function useUpdateMultiFilterParam(
   const router = useRouter();
 
   return {
-    updateSearchParam: (value: string, localKey = key) => {
+    updateSearchParam: (value: string, localKey = key, replace = false) => {
       const newParams = new URLSearchParams(searchParams.toString());
       const currentValues = newParams.get(localKey)?.split(",") || [];
 
-      // Toggle the value
+      // Determine updated values
       let updatedValues: string[];
 
-      if (currentValues.includes(value)) {
-        updatedValues = currentValues.filter((v) => v !== value);
+      if (replace) {
+        // Replace existing values with the single provided value
+        updatedValues = [value];
       } else {
-        updatedValues = [...currentValues, value];
+        // Toggle the value
+        if (currentValues.includes(value)) {
+          updatedValues = currentValues.filter((v) => v !== value);
+        } else {
+          updatedValues = [...currentValues, value];
+        }
       }
 
       // Update query

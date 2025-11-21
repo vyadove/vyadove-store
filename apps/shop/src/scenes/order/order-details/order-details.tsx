@@ -33,11 +33,11 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
 
         <div className="border-primary-600 flex flex-1 flex-col gap-2 border-r px-6 py-4">
           <TypographyP className="flelx-col text-muted-200 flex flex-1 gap-2">
-            Payment Method
+            Order Status
           </TypographyP>
 
-          <TypographyLead className="flelx-col text-primary-foreground flex flex-1 gap-2">
-            TeleBirr
+          <TypographyLead className="flelx-col text-primary-foreground flex flex-1 gap-2 capitalize">
+            {order.orderStatus}
           </TypographyLead>
         </div>
 

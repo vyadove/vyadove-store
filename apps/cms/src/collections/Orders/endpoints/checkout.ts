@@ -7,6 +7,7 @@ import { isExpandedDoc } from "@/utils/is-expanded-doc";
 
 import { stripeCheckout } from "@vyadove/stripe-plugin";
 import { manualCheckout } from "./manual-checkout";
+import crypto from "crypto";
 
 const calculateOrderTotals = (
     cartItems: Cart["cartItems"],
@@ -29,6 +30,16 @@ const calculateOrderTotals = (
 
     return { subtotal: +subtotal, total: +total };
 };
+
+
+const generateOrderId = (len = 6) => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let orderId = 'ORD-';
+    for (let i = 0; i < len; i++) {
+        orderId += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return orderId;
+}
 
 const providers: Record<string, (data: any) => Promise<any>> = {
     stripe: stripeCheckout,

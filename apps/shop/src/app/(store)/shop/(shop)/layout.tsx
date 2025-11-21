@@ -1,34 +1,15 @@
 import React from "react";
 
-import FilterBar from "@/app/(store)/shop/components/filter-bar";
+import FilterBar from "@/scenes/shop/components/filter-bar";
 import AppHeroScaffold from "@ui/nav/app-hero-scaffold";
 import { Badge } from "@ui/shadcn/badge";
 import {
-  TypographyH1, TypographyH2, TypographyLead, TypographyMuted, TypographyP,
+  TypographyH1,
+  TypographyLead,
+  TypographyP,
 } from "@ui/shadcn/typography";
 
-import { payloadSdk } from "@/utils/payload-sdk";
-
-// import { payloadSdk } from "@/utils/payload-sdk";
-// import { ProductPreview } from "@/components/products/product-card";
-
-/*Explore our curated categories — something for every taste and occasion.
-Find gifts by category: for him, for her, for friends, for the home.
-Browse by occasion, personality, or price to find the perfect match.
-Handpicked collections to inspire thoughtful gifting.
-Shop by theme: cozy, luxury, novelty, sustainable.*/
-
 const Layout = async ({ children }: React.PropsWithChildren) => {
-  const collections = await payloadSdk.find({
-    collection: "collections",
-    // limit: 1,
-    where: {
-      visible: {
-        equals: true,
-      },
-    },
-  });
-
   return (
     <div>
       <AppHeroScaffold>
@@ -51,17 +32,7 @@ const Layout = async ({ children }: React.PropsWithChildren) => {
       </AppHeroScaffold>
 
       <div className="my-20 flex flex-col">
-        <div className="flex w-full flex-col gap-4">
-          <div className="flex flex-col">
-            <TypographyH2>Shop</TypographyH2>
-            <TypographyMuted >
-              Explore our curated categories — something for every taste and
-              occasion.
-            </TypographyMuted>
-          </div>
-
-          <FilterBar collections={collections.docs || []} />
-        </div>
+        <FilterBar />
 
         {children}
       </div>

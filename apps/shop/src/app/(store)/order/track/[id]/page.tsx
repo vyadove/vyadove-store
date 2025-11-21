@@ -10,11 +10,11 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 export const metadata: Metadata = {
-  description: "You purchase was successful",
-  title: "Order Confirmed",
+  description: "Track your order status and details",
+  title: "Track Your Order",
 };
 
-export default async function OrderConfirmedPage(props: Props) {
+export default async function TrackOrder(props: Props) {
   const params = await props.params;
 
   const orderQuery = await payloadSdk.find({
@@ -27,9 +27,11 @@ export default async function OrderConfirmedPage(props: Props) {
     },
   });
 
-  console.log("order uery : ", orderQuery);
+  await new Promise((resolve) => {
+    setTimeout(resolve, 3000);
+  });
 
-  const [order] = orderQuery?.docs || [];
+  const order = orderQuery.docs[0] || null;
 
   if (!order) {
     return notFound();

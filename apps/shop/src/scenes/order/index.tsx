@@ -4,14 +4,19 @@ import React, { useLayoutEffect } from "react";
 import { useCart } from "react-use-cart";
 
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 import { OrderSuccess } from "@/scenes/order/order-sucess";
 import PaymentDetails from "@/scenes/order/payment-details";
-import { TypographyH2, TypographyH4 } from "@ui/shadcn/typography";
+import { usePayloadFindQuery } from "@/scenes/shop/use-payload-find-query";
+import { Spinner } from "@ui/shadcn/spinner";
+import { TypographyH2, TypographyH4, TypographyP } from "@ui/shadcn/typography";
 import type { Order } from "@vyadove/types";
 import Cookies from "js-cookie";
 
 import CartTotals from "@/components/cart-totals";
+
+import { convertToLocale } from "@/utils/money";
 
 import Items from "./items/items";
 import OrderDetails from "./order-details/order-details";
@@ -19,21 +24,26 @@ import ShippingDetails from "./shipping-details";
 
 type OrderCompletedTemplateProps = {
   order: Order;
+  // orderId: string;
 };
 
-const Help = () => {
+const Total = ({ order }: { order: Order }) => {
   return (
-    <div className="mt-6">
-      <TypographyH4 className="text-base-semi">Need help?</TypographyH4>
-      <div className="text-base-regular my-2">
-        <ul className="flex flex-col gap-y-2">
-          <li>
-            <Link href="/support">Contact</Link>
-          </li>
-          <li>
-            <Link href="/support">Returns & Exchanges</Link>
-          </li>
-        </ul>
+    <div className="flex flex-col gap-4">
+      <TypographyH2 className="text-base-semi">Total</TypographyH2>
+      <div className="flex gap-x-8 [&>*]:flex-1">
+        <div className="flex flex-col">
+          <TypographyP className="text-muted-foreground font-light">
+            Total Amount
+          </TypographyP>
+          <TypographyP className="font-semibold capitalize">
+            {convertToLocale({
+              amount: order?.totalAmount ?? 0,
+              minimumFractionDigits: 2,
+              minimumIntegerDigits: 1,
+            })}
+          </TypographyP>
+        </div>
       </div>
     </div>
   );
@@ -48,19 +58,15 @@ const OrderTemplate = ({ order }: OrderCompletedTemplateProps) => {
     Cookies.remove("checkout-session");
   }, [emptyCart]);
 
-  console.log('order : ', order);
-
   return (
-    <div className=" min-h-[calc(100vh-64px)] w-full  p-6">
-      <OrderSuccess />
-
+    <div className="mt-6 mb-20 flex min-h-[calc(100vh-64px)] w-full flex-col gap-8 p-6">
       <OrderDetails order={order} />
 
-      <Items order={order} />
-      <CartTotals currencyCode="usd" order={order} />
-      <ShippingDetails order={order} />
-      <PaymentDetails order={order} />
-      <Help />
+      <div className="flex flex-col gap-8 px-3 sm:px-6">
+        <ShippingDetails order={order} />
+        <PaymentDetails order={order} />
+        <Total order={order} />
+      </div>
     </div>
   );
 };

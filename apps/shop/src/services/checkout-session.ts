@@ -33,6 +33,6 @@ export const createCheckoutSession = async (data: Partial<CheckoutSession>) => {
   if (result.ok) {
     const session: any = await result.json();
 
-    return session.checkoutSession;
+    return session?.checkoutSession;
   }
 };

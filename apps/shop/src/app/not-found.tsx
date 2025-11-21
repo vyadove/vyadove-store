@@ -1,4 +1,5 @@
 import React from "react";
+import { BiHome } from "react-icons/bi";
 
 import { Routes } from "@/store.routes";
 import AppHeroScaffold from "@ui/nav/app-hero-scaffold";
@@ -31,10 +32,11 @@ export default async function NotFound() {
         }
       >
         <div className="mx-auto flex h-full w-full flex-col items-center justify-center gap-4 px-8 py-36 pb-20 text-center lg:px-16 lg:pt-36 lg:pb-24">
-          <Badge className="bg-accent-foreground text-accent rounded-full p-4 py-1">
-            <TypographyP className="text-[1rem] font-light">
-              Page Not Found
-            </TypographyP>
+          <Badge
+            className="rounded-full p-4 py-1 text-[1rem] font-light"
+            variant="accent"
+          >
+            Page Not Found
           </Badge>
 
           <TypographyH1 className="!text-6xl font-medium text-balance capitalize">
@@ -44,9 +46,12 @@ export default async function NotFound() {
             Don&#39;t worry, let&#39;s go home.
           </TypographyLead>
 
-          <Button>
-            <VyaLink href={Routes.home}>Go Home</VyaLink>
-          </Button>
+          <VyaLink href={Routes.home}>
+            <Button>
+              <BiHome />
+              Go Home
+            </Button>
+          </VyaLink>
         </div>
       </AppHeroScaffold>
     </main>

@@ -18,7 +18,7 @@ import { ButtonGroup } from "@ui/shadcn/button-group";
 import { TypographyH3, TypographyP } from "@ui/shadcn/typography";
 import type { Cart } from "@vyadove/types";
 import { MinusIcon, PlusIcon } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/hot-toast";
 import { Drawer } from "vaul";
 
 import useSidebarCartStore from "@/components/sidebar-cart/sidebar-cart.store";
@@ -74,7 +74,7 @@ function SidebarCart() {
   };
 
   useEffect(() => {
-    if (cart?.id) return;
+    if (cart?.id || !getSessionId()) return;
 
     payloadSdk
       .find({

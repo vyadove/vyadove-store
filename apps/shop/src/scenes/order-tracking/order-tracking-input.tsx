@@ -19,7 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@ui/shadcn/button";
 import { Input } from "@ui/shadcn/input";
 import { TypographyLead } from "@ui/shadcn/typography";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/hot-toast";
 import { z } from "zod";
 
 const formSchema = z.object({

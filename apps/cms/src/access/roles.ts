@@ -1,6 +1,6 @@
 import type { FieldAccessArgs } from "@/admin/types";
 import type { User } from "@vyadove/types";
-import type { Access, AccessArgs } from "payload";
+import { Access, AccessArgs, parseCookies } from "payload";
 
 export const checkRole = (roles: User["roles"] = [], user?: null | User) =>
     !!user?.roles?.some((role) => roles?.includes(role));
@@ -21,6 +21,18 @@ export const admins: isAdmin = ({ req: { user } }) => {
 
 export const anyone: Access = () => {
     return true;
+};
+
+export const adminOrHaveSessionCookie: Access = ( {req} ) => {
+    if( req.user && checkRole(["admin"], req.user)){
+        return true;
+    }
+
+    const cookies = parseCookies(req.headers);
+    const checkoutId = cookies.get("checkout-session");
+
+    return !!checkoutId;
+
 };
 
 export const adminsOrSelf: Access = ({ req: { user } }) => {

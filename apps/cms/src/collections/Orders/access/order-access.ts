@@ -7,13 +7,13 @@ export const readOrderAccess: Access<Order> = ({ req }) => {
     if (checkRole(["admin"], req.user)) {
         return true;
     }
-    const session = (req.query?.where as Where)?.sessionId || null;
+    const orderId = (req.query?.where as Where)?.orderId || null;
 
-    if (!session) {
+    if (!orderId) {
         return false;
     }
 
     return {
-        sessionId: session,
+        orderId,
     };
 };

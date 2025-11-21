@@ -38,7 +38,7 @@ export const sidebarPlugin = (pluginConfig: SidebarPluginConfig = {}) => {
                 license: pkg.license,
                 author: pkg.author,
                 icon: pkg.icon,
-                category: pkg.category,
+                categories: pkg.category,
             });
         };
 

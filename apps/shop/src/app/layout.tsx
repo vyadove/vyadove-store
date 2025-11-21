@@ -8,7 +8,7 @@ import { Providers } from "@/providers/providers";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/hot-toast";
 
 import { IntlClientProvider } from "@/i18n/client";
 import { getLocale, getMessages, getTranslations } from "@/i18n/server";
@@ -181,7 +181,7 @@ export default async function RootLayout({
             >
               {children}
             </div>
-            <Toaster offset={10} position="top-center" />
+            <Toaster gutter={8} position="top-right" />
           </IntlClientProvider>
           <SpeedInsights />
           <Analytics />

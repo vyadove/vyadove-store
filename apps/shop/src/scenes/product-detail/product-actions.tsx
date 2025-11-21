@@ -15,7 +15,7 @@ import { Button } from "@ui/shadcn/button";
 import { Spinner } from "@ui/shadcn/spinner";
 import type { Media, Product } from "@vyadove/types";
 import Cookies from "js-cookie";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/hot-toast";
 
 import CartIcon from "@/components/icons/cart-icon";
 
@@ -122,7 +122,8 @@ export default function ProductActions({ product }: ProductActionsProps) {
             router.push(Routes.cart);
           }}
           size="lg"
-          variant="accent"
+          variant="secondary"
+          outlined
         >
           {isAdding ? <Spinner /> : <TbCreditCardPay />}
           Buy Now

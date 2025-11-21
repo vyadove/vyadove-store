@@ -4,7 +4,6 @@ import Item from "@/scenes/cart/item";
 import { Table, TableBody } from "@ui/shadcn/table";
 import type { Order, Product } from "@vyadove/types";
 import type { Cart } from "@vyadove/types";
-import { toast } from "sonner";
 
 import Divider from "@/components/divider";
 
@@ -34,37 +33,9 @@ const Items = ({ order }: ItemsProps) => {
     };
   });
 
-  useEffect(() => {
-    if(cart?.cartItems)
-      return;
-
-    payloadSdk
-      .find({
-        collection: "carts",
-        limit: 1,
-        where: {
-          id: {
-            equals: order.cart as any,
-          },
-        },
-      })
-      .then((res) => {
-
-
-        if (res.totalDocs > 0) {
-          setCartItems(res.docs[0]);
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching cart:", err);
-        toast.error("There was an error fetching the cart details.");
-      });
-  }, []);
-
-  console.log('cart --- : ', cart);
 
   if (!cart) {
-    return null;
+    return 'no cart';
   }
 
   return (

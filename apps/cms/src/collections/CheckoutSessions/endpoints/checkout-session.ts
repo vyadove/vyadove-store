@@ -91,11 +91,11 @@ export const updateCheckoutSession: Endpoint = {
         if (!guard.ok) {
             return guard.response;
         }
-        const { shipping, payment, shippingAddress } = await req.json?.();
+        const { shipping, payment, shippingAddress, billingAddress } = await req.json?.();
         const sessionId = req.routeParams?.sessionId;
         const cart = await getCartBySessionId(req);
 
-        await req.payload.update({
+        const updatedSession = await req.payload.update({
             collection: "checkout-sessions",
             where: {
                 sessionId: {
@@ -106,12 +106,15 @@ export const updateCheckoutSession: Endpoint = {
                 cart: cart.id,
                 shipping,
                 payment,
-                shippingAddress: shippingAddress,
+                shippingAddress,
+                billingAddress,
             },
             req,
         });
 
         return Response.json({
+            updatedSession: updatedSession.docs[0],
+            error: updatedSession.errors,
             success: true,
         });
     },

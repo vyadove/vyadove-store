@@ -165,7 +165,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Calculate item count from optimistic cart
   const itemCount =
-    optimisticCart?.items.reduce((sum, item) => sum + item.quantity, 0) || 0;
+    optimisticCart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
   // Load initial cart
   useEffect(() => {
@@ -176,7 +176,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Sync optimistic cart with actual cart when it changes
   useEffect(() => {
-    setOptimisticCart({ type: "SYNC_CART", cart: actualCart });
+    if (optimisticCart !== actualCart) {
+      setOptimisticCart({ type: "SYNC_CART", cart: actualCart });
+    }
   }, [actualCart, setOptimisticCart]);
 
   const openCart = () => setIsCartOpen(true);

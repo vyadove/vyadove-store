@@ -20,7 +20,7 @@ import {
   TypographyP,
 } from "@ui/shadcn/typography";
 import type { Product } from "@vyadove/types";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/hot-toast";
 
 import { AppBreadcrumb } from "@/components/app-breadcrumb";
 
@@ -77,7 +77,7 @@ const ProductDetail: React.FC<Props> = ({ product, relatedGifts }) => {
     setSelectedVariant(product.variants[0]);
   }, [selectedVariant]);*/
 
-  useEffect(() => {
+/*  useEffect(() => {
     const variantId = searchParams.get("variantId");
 
     if (!variantId) return;
@@ -87,9 +87,9 @@ const ProductDetail: React.FC<Props> = ({ product, relatedGifts }) => {
     if (variant && variant.id !== selectedVariant?.id) {
       setSelectedVariant(variant);
     }
-  }, [searchParams, product.variants]);
+  }, [searchParams, product.variants]);*/
 
-  // ✅ Sync State → URL (only if user changes variant)
+  // Sync State → URL (only if user changes variant)
   useEffect(() => {
     const currentId = searchParams.get("variantId");
 

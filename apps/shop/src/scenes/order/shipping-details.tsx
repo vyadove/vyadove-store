@@ -8,53 +8,40 @@ type ShippingDetailsProps = {
 };
 
 const ShippingDetails = ({ order }: ShippingDetailsProps) => {
+  const items: Record<string, any>[] = [];
+
   return (
-    <div>
-      <TypographyH2 className="text-3xl-regular my-6 flex flex-row">
-        Delivery
-      </TypographyH2>
-      <div className="flex items-start gap-x-8">
-        <div
-          className="flex w-1/3 flex-col"
-          data-testid="shipping-address-summary"
-        >
-          <TypographyP className="txt-medium-plus text-ui-fg-base mb-1">
-            Shipping Address
+    <div className="flex flex-col gap-4">
+      <TypographyH2 className="">Delivery</TypographyH2>
+      <div className="flex [&>*]:flex-1 gap-x-8">
+        <div className="flex flex-col">
+          <TypographyP className="text-muted-foreground font-light">
+            Recipient Contact
           </TypographyP>
-          <TypographyP className="txt-medium text-ui-fg-subtle">
-            {order.shippingAddress?.name} {order.shippingAddress?.phone}
-            {(order.shippingAddress as any)?.email}
+          <TypographyP className="font-semibold capitalize">
+            {order.shippingAddress?.recipientEmail as string} <br />
+            {order.shippingAddress?.recipientPhone as string}
           </TypographyP>
+        </div>
 
-          <TypographyP className="txt-medium text-ui-fg-subtle">
-            {order.shippingAddress?.address?.country?.toUpperCase()}
+        <div className="flex flex-col">
+          <TypographyP className="text-muted-foreground font-light">
+            Recipient
+          </TypographyP>
+          <TypographyP className="font-semibold capitalize">
+            {order.shippingAddress?.recipientFirstName as string}{" "}
+            {order.shippingAddress?.recipientLastName as string}
           </TypographyP>
         </div>
 
         <div
-          className="flex w-1/3 flex-col "
-          data-testid="shipping-contact-summary"
+          className="flex flex-col"
         >
-          <TypographyP className="txt-medium-plus text-ui-fg-base mb-1">
-            Contact
-          </TypographyP>
-          <TypographyP className="txt-medium text-ui-fg-subtle">
-            {order.shippingAddress?.phone}
-          </TypographyP>
-          <TypographyP className="txt-medium text-ui-fg-subtle">
-            {typeof order?.user === "object" && order.user?.email}
-          </TypographyP>
-        </div>
-
-        <div
-          className="flex w-1/3 flex-col"
-          data-testid="shipping-method-summary"
-        >
-          <TypographyP className="txt-medium-plus text-ui-fg-base mb-1">
+          <TypographyP className="text-muted-foreground font-light">
             Method
           </TypographyP>
-          <TypographyP className="txt-medium text-ui-fg-subtle">
-            Link ( digital )
+          <TypographyP className="font-semibold capitalize">
+            {typeof order.shipping === "number" ? "-" : order.shipping?.name}
           </TypographyP>
         </div>
       </div>

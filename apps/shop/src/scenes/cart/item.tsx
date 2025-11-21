@@ -6,25 +6,27 @@ import { useCart } from "react-use-cart";
 import Image from "next/image";
 import Link from "next/link";
 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@ui/shadcn/select";
 // import Thumbnail from "./thumbnail";
 import { Spinner } from "@ui/shadcn/spinner";
 import { TypographyMuted, TypographyP } from "@ui/shadcn/typography";
 import Cookies from "js-cookie";
 
-import Thumbnail from "@/components/products/product-card/thumbnail";
 import { TableCell, TableRow } from "@/components/ui/table";
 
-import { cn } from "@/lib/utils";
-
-import { syncCartWithBackend, updateCart } from "@/services/cart";
+import { syncCartWithBackend } from "@/services/cart";
 
 import { convertToLocale } from "@/utils/money";
 
-import CartItemSelect from "./cart-item-select";
 import DeleteButton from "./delete-button";
 import ErrorMessage from "./error-message";
-import LineItemPrice from "./line-item-price";
-import LineItemUnitPrice from "./line-item-unit-price";
 
 type ItemProps = {
   currencyCode: string;
@@ -83,7 +85,7 @@ const Item = ({ type = "full", currencyCode, item }: ItemProps) => {
       <TableCell className="max-w-[16rem] px-2 py-4" rowSpan={1}>
         <Link className="" href={`/products/${item.handle}`}>
           <div className="flex items-center gap-2">
-            <div className="relative h-16 w-16 overflow-hidden rounded-lg">
+            <div className="relative size-16 overflow-hidden rounded-lg">
               <Image
                 alt={"-"}
                 className="object-cover"
@@ -120,30 +122,35 @@ const Item = ({ type = "full", currencyCode, item }: ItemProps) => {
       {type === "full" && (
         <TableCell>
           <div className="flex items-center gap-2">
-            <CartItemSelect
-              className="h-10 w-14 p-4 "
-              data-testid="product-select-button"
-              onChange={(value: any) =>
-                changeQuantity(Number.parseInt(value.target.value))
-              }
-              value={item.quantity}
+            <Select
+              disabled={updating}
+              onValueChange={(value) => {
+                changeQuantity(Number.parseInt(value));
+              }}
+              value={item.quantity?.toString()}
             >
-              {/* TODO: Update this with the v2 way of managing inventory */}
-              {Array.from(
-                {
-                  length: Math.min(maxQuantity, 10),
-                },
-                (_, i) => (
-                  <option key={i} value={i + 1}>
-                    {i + 1}
-                  </option>
-                ),
-              )}
-
-              <option key={1} value={1}>
-                1
-              </option>
-            </CartItemSelect>
+              <SelectTrigger className="w-14 cursor-pointer">
+                <SelectValue placeholder="Update quantity" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {Array.from(
+                    {
+                      length: 10,
+                    },
+                    (_, i) => (
+                      <SelectItem
+                        className="cursor-pointer"
+                        key={i}
+                        value={`${i + 1}`}
+                      >
+                        {i}
+                      </SelectItem>
+                    ),
+                  )}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
             {updating && <Spinner />}
           </div>
           <ErrorMessage data-testid="product-error-message" error={error} />

@@ -1,19 +1,37 @@
 import { useEffect, useState } from "react";
 
+import { usePayloadFindQuery } from "@/scenes/shop/use-payload-find-query";
 import type { CheckoutSession } from "@vyadove/types";
 import Cookies from "js-cookie";
 
 import { payloadSdk } from "@/utils/payload-sdk";
 
-const useSession = () => {
+const useCheckoutSession = () => {
   const [session, setSession] = useState<CheckoutSession | null>(null);
   const [loading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
+  const [sessionId, setSessionId] = useState(
+    Cookies.get("checkout-session") || null,
+  );
+
+  const checkoutSessionQuery = usePayloadFindQuery("checkout-sessions", {
+    findArgs: {
+      where: {
+        sessionId: {
+          equals: sessionId,
+        },
+      },
+    },
+    useQueryArgs: {
+      // enabled: !!sessionId,
+    },
+  });
+
+  /*useEffect(() => {
     const fetchSession = async () => {
       try {
-        setIsLoading(true)
+        setIsLoading(true);
         const sessionId = Cookies.get("checkout-session");
 
         let sessionData: CheckoutSession | null = null;
@@ -44,15 +62,21 @@ const useSession = () => {
     };
 
     fetchSession();
-  }, []);
+  }, []);*/
 
   return {
-    session,
-    loading,
-    setIsLoading,
-    error,
-    setError,
+    checkoutSessionQuery,
+    session: checkoutSessionQuery.data?.docs?.[0] || null,
+    loading: checkoutSessionQuery.isLoading,
+    error:
+      checkoutSessionQuery.data?.errors || checkoutSessionQuery.error
+        ? {
+            message:
+              checkoutSessionQuery.error?.message ||
+              "Error fetching checkout session",
+          }
+        : null,
   };
 };
 
-export { useSession };
+export { useCheckoutSession };

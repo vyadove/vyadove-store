@@ -354,6 +354,28 @@ export interface Product {
      * Price tier for this variant.
      */
     pricingTier: 'basic' | 'premium' | 'luxury';
+    /**
+     * Add additional product variant info such as care instructions, materials, or sizing notes.
+     */
+    additionalInfo?:
+      | {
+          name: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    locations?:
+      | {
+          /**
+           * @minItems 2
+           * @maxItems 2
+           */
+          coordinates?: [number, number] | null;
+          map_url?: string | null;
+          address?: string | null;
+          id?: string | null;
+        }[]
+      | null;
     options?:
       | {
           option: string;
@@ -371,18 +393,6 @@ export interface Product {
     value: string;
     id?: string | null;
   }[];
-  locations?:
-    | {
-        /**
-         * @minItems 2
-         * @maxItems 2
-         */
-        coordinates?: [number, number] | null;
-        map_url?: string | null;
-        address?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1486,6 +1496,21 @@ export interface ProductsSelect<T extends boolean = true> {
         originalPrice?: T;
         available?: T;
         pricingTier?: T;
+        additionalInfo?:
+          | T
+          | {
+              name?: T;
+              value?: T;
+              id?: T;
+            };
+        locations?:
+          | T
+          | {
+              coordinates?: T;
+              map_url?: T;
+              address?: T;
+              id?: T;
+            };
         options?:
           | T
           | {
@@ -1500,14 +1525,6 @@ export interface ProductsSelect<T extends boolean = true> {
     | {
         name?: T;
         value?: T;
-        id?: T;
-      };
-  locations?:
-    | T
-    | {
-        coordinates?: T;
-        map_url?: T;
-        address?: T;
         id?: T;
       };
   meta?:

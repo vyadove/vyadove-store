@@ -5,16 +5,16 @@ import { BiArrowBack, BiListUl } from "react-icons/bi";
 
 import { useRouter } from "next/navigation";
 
-import { useSession } from "@/scenes/checkout/hooks";
+import { useCheckoutSession } from "@/scenes/checkout/hooks";
 import { Button } from "@ui/shadcn/button";
 import { TypographyH2 } from "@ui/shadcn/typography";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/hot-toast";
 
 export default function ReviewPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { session } = useSession();
+  const { session } = useCheckoutSession();
 
   const checkoutSession = session as any;
 

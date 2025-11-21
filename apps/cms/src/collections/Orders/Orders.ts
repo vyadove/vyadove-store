@@ -1,6 +1,6 @@
 import type { CollectionConfig } from "payload";
 
-import { admins, anyone } from "@/access/roles";
+import { adminOrHaveSessionCookie, admins, anyone } from "@/access/roles";
 
 import { groups } from "../groups";
 import { readOrderAccess } from "./access/order-access";
@@ -11,10 +11,10 @@ import { addOrderTimelineEntry } from "./hooks/add-order-timeline-entry";
 export const Orders: CollectionConfig = {
     slug: "orders",
     access: {
-        create: anyone,
+        // create: anyone,
+        create: adminOrHaveSessionCookie,
         delete: admins,
-        // read: readOrderAccess,
-        read: anyone,
+        read: readOrderAccess,
         update: admins,
     },
     admin: {

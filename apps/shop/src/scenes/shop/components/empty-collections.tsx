@@ -1,17 +1,18 @@
 import { AiOutlineProduct } from "react-icons/ai";
 
-
-
 import { Button } from "@ui/shadcn/button";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@ui/shadcn/empty";
-
-
-
-
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@ui/shadcn/empty";
 
 export function EmptyOutline() {
   return (
-    <Empty className="border border-dashed w-full mx-auto">
+    <Empty className="mx-auto w-full border border-dashed">
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <AiOutlineProduct />
