@@ -1,8 +1,11 @@
+'use client';
+
 import React from "react";
 
+import { ActiveFilterChips } from "@/scenes/shop/components/filter-bar/active-filter-chips";
 import AllFilterDialogBtn from "@/scenes/shop/components/filter-bar/all-filter-dialog-btn";
-import CategoryFilterButton from "@/scenes/shop/components/filter-bar/category-filter-button";
-import PriceFilterButton from "@/scenes/shop/components/filter-bar/price-filter-button";
+import CategoryFilterButton from "@/scenes/shop/components/filter-bar/category-filter";
+import PriceFilterButton from "@/scenes/shop/components/filter-bar/price-filter";
 import ResetFilterButton from "@/scenes/shop/components/filter-bar/reset-filter-button";
 import SortByFilterButton from "@/scenes/shop/components/filter-bar/sort-by-filter-button";
 import { TypographyH2, TypographyMuted } from "@ui/shadcn/typography";
@@ -19,7 +22,17 @@ export const FilterBar: React.FC<any> = () => {
       </div>
 
       <div className="flex w-full max-w-full items-center justify-stretch gap-2">
-        <CategoryFilterButton />
+        <CategoryFilterButton
+          buttonLabel="Experiences"
+          filterName='experiences'
+          handlePath="experiences"
+        />
+
+        <CategoryFilterButton
+          buttonLabel="Occasions"
+          filterName='occasions'
+          handlePath="occasions"
+        />
 
         <PriceFilterButton />
 
@@ -32,7 +45,7 @@ export const FilterBar: React.FC<any> = () => {
         </div>
       </div>
 
-      <div></div>
+      <ActiveFilterChips />
     </div>
   );
 };

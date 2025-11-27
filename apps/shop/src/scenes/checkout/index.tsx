@@ -235,14 +235,15 @@ const Checkout = () => {
     try {
       if (isLastStep) {
         const loadingId = toast.loading("creating an order .... ");
-        const fetchResult = await fetch(`/api/orders/checkout`, {
+        const checkoutResult = await fetch(`/api/orders/checkout`, {
           body: JSON.stringify({}),
           credentials: "include",
           method: "POST",
         });
 
+        console.log("checkoutResult : ", checkoutResult);
 
-        if (!fetchResult.ok) {
+        if (!checkoutResult.ok) {
           setIsSubmitting(false);
           throw new Error("Failed to create order");
         }
@@ -250,9 +251,9 @@ const Checkout = () => {
         toast.dismiss(loadingId);
         toast.success("Order successful!");
         toast.loading("Redirecting...");
-        const result = (await fetchResult.json()) as { redirectUrl: string };
+        const result = (await checkoutResult.json()) as { redirectUrl: string };
 
-        console.log('result : ', result);
+        console.log("result : ", result);
 
         const redirectUrl = result.redirectUrl.startsWith("http")
           ? result.redirectUrl
@@ -285,27 +286,35 @@ const Checkout = () => {
       };
 
       if (form.formState.isDirty) {
-        if (session) {
-          const res = await updateCheckoutSession(updateSessionData);
+        try {
+          if (session) {
+            const res = await updateCheckoutSession(updateSessionData);
 
-          form.reset(form.getValues());
-          toast.success("Checkout details updated successfully.");
+            form.reset(form.getValues());
+            toast.success("Checkout details updated successfully.");
 
-          console.log("update chekcout session res", res);
-        } else {
-          const res = await createCheckoutSession(updateSessionData);
+            console.log("update chekcout session res", res);
+          } else {
+            const res = await createCheckoutSession(updateSessionData);
 
-          form.reset(form.getValues());
-          toast.success("Checkout created successfully.");
+            form.reset(form.getValues());
+            toast.success("Checkout created successfully.");
 
-          console.log("create chekcout session res", res);
+            console.log("create chekcout session res", res);
+          }
+
+          // router.push("/checkout/review");
+          setStep(step + 1);
+        } catch (err) {
+          console.log("Error updating/creating checkout session:", err);
+          toast.error("Failed to update checkout session.");
         }
+      }else{
+        setStep(step + 1);
       }
-
-      // router.push("/checkout/review");
-      setStep(step + 1);
     } catch (error) {
-      console.error("Error updating address:", error);
+      toast.dismiss();
+      console.error("Error creating orders:", error);
       toast.error("There was an error processing your checkout.");
     } finally {
       setIsSubmitting(false);
@@ -401,14 +410,173 @@ const Checkout = () => {
               onSubmit={form.handleSubmit(onSubmit)}
             >
               {isLastStep ? (
-                <div>
-                  <TypographyH2 className="text-accent mb-4">
-                    Review Your Order
-                  </TypographyH2>
-                  <TypographyP className="text-accent">
-                    Please review your order details before proceeding to
-                    payment.
-                  </TypographyP>
+                <div className="flex flex-col gap-6">
+                  <div>
+                    <TypographyH2 className="text-accent">
+                      Review Your Order
+                    </TypographyH2>
+                    <TypographyP className="">
+                      Please review your order details before proceeding to
+                      payment.
+                    </TypographyP>
+                  </div>
+
+                  {/* Billing Information */}
+                  <Card>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <span className="border-accent-background rounded-full border p-2">
+                            <BsPerson className="fill-accent" size={24} />
+                          </span>
+                          <CardTitle>Billing Information</CardTitle>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <TypographyMuted className="text-sm">
+                            Name
+                          </TypographyMuted>
+                          <TypographyP>
+                            {form.getValues("firstName")}{" "}
+                            {form.getValues("lastName")}
+                          </TypographyP>
+                        </div>
+                        <div>
+                          <TypographyMuted className="text-sm">
+                            Email
+                          </TypographyMuted>
+                          <TypographyP>{form.getValues("email")}</TypographyP>
+                        </div>
+                        {form.getValues("phone") && (
+                          <div>
+                            <TypographyMuted className="text-sm">
+                              Phone
+                            </TypographyMuted>
+                            <TypographyP>{form.getValues("phone")}</TypographyP>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Delivery Information */}
+                  <Card>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <span className="border-accent-background rounded-full border p-2">
+                            <BsHouse className="fill-accent" size={24} />
+                          </span>
+                          <CardTitle>Delivery Information</CardTitle>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <TypographyMuted className="text-sm">
+                            Recipient Name
+                          </TypographyMuted>
+                          <TypographyP>
+                            {form.getValues("recipientFirstName")}{" "}
+                            {form.getValues("recipientLastName")}
+                          </TypographyP>
+                        </div>
+                        <div>
+                          <TypographyMuted className="text-sm">
+                            Email
+                          </TypographyMuted>
+                          <TypographyP>
+                            {form.getValues("recipientEmail")}
+                          </TypographyP>
+                        </div>
+                        <div>
+                          <TypographyMuted className="text-sm">
+                            Phone
+                          </TypographyMuted>
+                          <TypographyP>
+                            {form.getValues("recipientPhone")}
+                          </TypographyP>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Shipping Method */}
+                  <Card>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <span className="border-accent-background rounded-full border p-2">
+                            <MdMarkEmailRead
+                              className="fill-accent"
+                              size={24}
+                            />
+                          </span>
+                          <CardTitle>Shipping Method</CardTitle>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      {(() => {
+                        const [shippingId, blockIndex] = (
+                          form.getValues("shippingMethod") || ":"
+                        ).split(":");
+                        const shipping = deliveryMethods.find(
+                          (m) => m.id === Number(shippingId),
+                        );
+                        const shippingProvider =
+                          shipping?.shippingProvider?.[Number(blockIndex)];
+
+                        return (
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <TypographyP className="font-medium capitalize">
+                                {shipping?.name || "Not selected"}
+                              </TypographyP>
+                              {shippingProvider?.estimatedDeliveryDays && (
+                                <TypographyMuted className="text-sm">
+                                  {shippingProvider.estimatedDeliveryDays}
+                                </TypographyMuted>
+                              )}
+                            </div>
+                            <TypographyP className="font-medium">
+                              {shippingProvider?.baseRate === 0
+                                ? "Free"
+                                : `$${shippingProvider?.baseRate?.toFixed(2) || "0.00"}`}
+                            </TypographyP>
+                          </div>
+                        );
+                      })()}
+                    </CardContent>
+                  </Card>
+
+                  {/* Payment Method */}
+                  <Card>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <span className="border-accent-background rounded-full border p-2">
+                            <BsCreditCard className="fill-accent" size={24} />
+                          </span>
+                          <CardTitle>Payment Method</CardTitle>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <TypographyP className="font-medium capitalize">
+                        {selectedMethodDetails?.label || "Not selected"}
+                      </TypographyP>
+                      {selectedMethodDetails?.details && (
+                        <TypographyMuted className="mt-2 text-sm">
+                          {selectedMethodDetails.details}
+                        </TypographyMuted>
+                      )}
+                    </CardContent>
+                  </Card>
                 </div>
               ) : (
                 <>
@@ -642,14 +810,12 @@ const Checkout = () => {
                         <CardContent>
                           <RadioGroup
                             onValueChange={(value) => {
-                              console.log('selected payment method', value);
+                              console.log("selected payment method", value);
 
                               form.setValue("paymentMethod", value, {
                                 shouldDirty: true,
-                              })
-                            }
-
-                            }
+                              });
+                            }}
                             value={selectedPaymentMethod}
                           >
                             <div className="space-y-4">

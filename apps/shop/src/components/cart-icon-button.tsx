@@ -1,21 +1,17 @@
 "use client";
 
 import React from "react";
-import { useCart } from "react-use-cart";
 
 import { Button } from "@ui/shadcn/button";
 
 import SidebarCart from "@/components/sidebar-cart";
-import useSidebarCartStore from "@/components/sidebar-cart/sidebar-cart.store";
+
+import { useCart } from "@/providers/cart";
 
 import CartIcon from "./icons/cart-icon";
 
 export function CartIconButton() {
-  const { toggleCart } = useSidebarCartStore();
-  const {
-    totalItems: itemCount,
-    totalUniqueItems,
-  } = useCart();
+  const { totalItems: itemCount, totalUniqueItems, toggleCart } = useCart();
 
   return (
     <>

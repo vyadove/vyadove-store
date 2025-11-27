@@ -1,9 +1,7 @@
 import { AiOutlineProduct } from "react-icons/ai";
 
-import { Button } from "@ui/shadcn/button";
 import {
   Empty,
-  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -17,16 +15,12 @@ export function EmptyOutline() {
         <EmptyMedia variant="icon">
           <AiOutlineProduct />
         </EmptyMedia>
-        <EmptyTitle>Cloud Storage Empty</EmptyTitle>
+        <EmptyTitle>No Gifts Found</EmptyTitle>
         <EmptyDescription>
-          Upload files to your cloud storage to access them anywhere.
+          No gift found matching the current filter selection. Please try
+          adjusting your filters.
         </EmptyDescription>
       </EmptyHeader>
-      <EmptyContent>
-        <Button size="sm" variant="outline">
-          Upload Files
-        </Button>
-      </EmptyContent>
     </Empty>
   );
 }

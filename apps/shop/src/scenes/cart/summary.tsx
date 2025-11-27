@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useCart } from "react-use-cart";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -22,6 +21,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
+import { useCart } from "@/providers/cart";
+
 
 const Summary = () => {
   const [isPending, startTransition] = useTransition();
@@ -69,10 +71,11 @@ const Summary = () => {
         />*/}
         <Divider />
         <CartTotals
-          currencyCode={items[0]?.currency}
+          currencyCode={items[0]?.product?.currency || "USD"}
           order={{
             totalAmount: items.reduce(
-              (acc, item: any) => acc + item.price * item.quantity,
+              (acc, item: any) =>
+                acc + (item.variant?.price || 0) * item.quantity,
               0,
             ),
           }}

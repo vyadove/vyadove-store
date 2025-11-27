@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import type { Item } from "react-use-cart";
-import { useCart } from "react-use-cart";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -31,11 +29,13 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
+import { useCart } from "@/providers/cart";
+
 import { convertToLocale } from "@/utils/money";
 import { payloadSdk } from "@/utils/payload-sdk";
 
 export const OrderSummery = () => {
-  const { cartTotal, items, metadata } = useCart();
+  const { cartTotal, items, cart } = useCart();
   const [shippingFee, setShippingFee] = useState(0);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export const OrderSummery = () => {
 
       const shippingMethod =
         shippingMethods.docs.find(
-          (method) => method.id === metadata?.shippingMethodId,
+          (method) => method.id === (cart as any)?.shippingMethodId,
         ) || shippingMethods.docs[0];
 
       if (!shippingMethod) {
@@ -64,11 +64,11 @@ export const OrderSummery = () => {
     };
 
     calculateShippingCost();
-  }, [metadata]);
+  }, [cart]);
 
   return (
     <Card className="sticky top-12 self-start rounded-4xl shadow-xl lg:col-span-1">
-      <CardHeader className=''>
+      <CardHeader className="">
         <TypographyH2 className="text-accent">Summary</TypographyH2>
       </CardHeader>
 
@@ -90,20 +90,20 @@ export const OrderSummery = () => {
                 {items.length} Items
               </TypographyP>
               <div className="flex flex-col gap-2">
-                {items.map((item: Item) => (
+                {items.map((item: any) => (
                   <div className="flex items-center space-x-4" key={item.id}>
                     <div className="relative flex size-[60px] items-start">
                       <Image
                         alt={"product image"}
                         className="w-full rounded-xl object-cover"
                         fill
-                        src={item.gallery?.[0]?.url}
+                        src={item.product?.gallery?.[0]?.url}
                       />
                     </div>
 
                     <div className="flex-1">
                       <TypographyLarge className="line-clamp-2">
-                        {item.productName}
+                        {item.product?.title}
                       </TypographyLarge>
 
                       <TypographyMuted className="text-sm">
@@ -115,7 +115,7 @@ export const OrderSummery = () => {
                         })}{" "}
                         ={" "}
                         {convertToLocale({
-                          amount: item.itemTotal || 0,
+                          amount: item.price * item.quantity || 0,
                           minimumFractionDigits: 2,
                         })}
                       </TypographyMuted>
@@ -186,72 +186,5 @@ export const OrderSummery = () => {
 
       <CardFooter className="flex flex-col gap-2"></CardFooter>
     </Card>
-  );
-
-  return (
-    <div className="lg:col-span-1">
-      <Card className="sticky top-8">
-        <CardHeader>
-          <CardTitle>In your Cart</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {items.map((item: Item) => (
-            <div className="flex items-center space-x-4" key={item.id}>
-              <div className="relative flex size-[70px] items-start">
-                <Image
-                  alt={"product image"}
-                  className="w-full rounded-xl object-cover"
-                  fill
-                  src={item.gallery?.[0]?.url}
-                />
-              </div>
-
-              <div className="flex-1">
-                <h3 className="line-clamp-2 font-medium">{item.productName}</h3>
-
-                <TypographyP className="text-blue-600">
-                  {item.quantity}x ${item.price.toFixed(2)}
-                </TypographyP>
-
-                <TypographyP className="font-medium">
-                  ${item.itemTotal?.toFixed(2)}
-                </TypographyP>
-              </div>
-            </div>
-          ))}
-
-          <Separator />
-
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="flex items-center space-x-1">
-                <span className="flex items-center gap-x-1">Subtotal</span>
-                <Info className="h-4 w-4 text-gray-400" />
-              </span>
-              <span>${cartTotal.toFixed(2)}</span>
-            </div>
-
-            <div className="flex justify-between">
-              <span>Taxes</span>
-              <span>$0.00</span>
-            </div>
-          </div>
-
-          <Separator />
-
-          <div className="flex justify-between text-lg font-semibold">
-            <span>Total</span>
-            <span>${(cartTotal + shippingFee).toFixed(2)}</span>
-          </div>
-
-          <Button className="h-auto p-0 text-blue-600" variant="link">
-            <span className="flex items-center space-x-1">
-              <span>Add gift card or discount code</span>
-              <Info className="h-4 w-4" />
-            </span>
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
   );
 };

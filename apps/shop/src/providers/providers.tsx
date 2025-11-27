@@ -1,8 +1,8 @@
 "use client";
 
-import { CartProvider } from "react-use-cart";
-
 import { AuthProvider } from "@/providers/auth";
+
+import { CartProvider } from "./cart";
 
 import TanStackQueryProvider from "@/lib/tanstack-query-provider";
 

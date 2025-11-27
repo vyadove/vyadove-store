@@ -23,7 +23,7 @@ import { ProductPreview } from "@/components/products/product-card";
 
 import { EmptyOutline } from "./components/empty-collections";
 
-const itemLimit = 14;
+const itemLimit = 20;
 
 const generatePageNumbers = (
   currentPage: number,
@@ -56,11 +56,12 @@ const ShopScene = () => {
     totalItems: 0,
     totalPages: 0,
     page: 1,
-    limit: itemLimit,
   });
 
-  const selectedCategories =
-    searchParams.get(filterKeys.category)?.split(",") || [];
+  const selectedCategories = [
+    ...(searchParams.get(filterKeys.experiences)?.split(",") || []),
+    ...(searchParams.get(filterKeys.occasions)?.split(",") || []),
+  ];
 
   const selectedPricesRange =
     searchParams.get(filterKeys.price)?.split(",") || [];
@@ -107,6 +108,29 @@ const ShopScene = () => {
     return priceFilter;
   }, [selectedSorting]);
 
+  const q = searchParams.get("q");
+
+  const searchQuery = usePayloadFindQuery("search" as any, {
+    findArgs: {
+      where: {
+        title: { like: q || "" },
+      },
+      limit: 100,
+    },
+    useQueryArgs: {
+      enabled: !!q,
+    },
+  });
+
+  const searchIds = useMemo(() => {
+    if (!q) return undefined;
+    if (!searchQuery.data?.docs) return [];
+
+    return searchQuery.data.docs
+      .map((d) => d.doc?.value?.id || d.doc?.value)
+      .filter(Boolean);
+  }, [q, searchQuery.data]);
+
   const productsQuery = usePayloadFindQuery("products", {
     findArgs: {
       depth: 2,
@@ -114,12 +138,23 @@ const ShopScene = () => {
       limit: itemLimit,
       sort: sortingFilter,
       where: {
-        ["category.handle"]: {
-          in: selectedCategories,
-        },
+        ...(q
+          ? {
+              id: {
+                in: searchIds || [],
+              },
+            }
+          : {
+              ["category.handle"]: {
+                in: selectedCategories,
+              },
+            }),
 
         or: [...priceFilters],
       },
+    },
+    useQueryArgs: {
+      enabled: !q || (!!q && searchQuery.isSuccess),
     },
   });
 
@@ -157,12 +192,6 @@ const ShopScene = () => {
 
   return (
     <div className="flex flex-col gap-20">
-      {productsQuery.isLoading && (
-        <div className="mx-auto grid w-full w-max place-items-center py-20">
-          <Spinner />
-        </div>
-      )}
-
       <div className="mt-12 grid w-full gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
         {productsResponse?.product?.map((product) => (
           <ProductPreview key={product.id} product={product} />
@@ -177,6 +206,12 @@ const ShopScene = () => {
 
       {errors && (
         <ErrorAlert className="mx-auto w-max" errorMessages={errors} />
+      )}
+
+      {productsQuery.isLoading && (
+        <div className="mx-auto grid w-full w-max place-items-center py-20">
+          <Spinner />
+        </div>
       )}
 
       {/*--- PAGINATION ------*/}

@@ -1,3 +1,4 @@
+/*
 "use client";
 
 import * as React from "react";
@@ -7,7 +8,7 @@ import {
   getCartAction,
   removeFromCartAction,
   updateCartItemAction,
-} from "@/actions/cart-actions";
+} from "@/providers/cart/cart-actions";
 import type { Cart, ProductInfo } from "commerce-kit";
 import { toast } from "@/components/ui/hot-toast";
 
@@ -338,12 +339,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         console.error("Failed to load cart:", error);
 
         // todo do a toast
-        /*toast({
+        /!*toast({
 
           title: "Could not load your cart",
           description: "Please refresh the page and try again.",
           variant: "destructive",
-        });*/
+        });*!/
       } finally {
         if (isMounted) {
           setIsLoading(false);
@@ -416,11 +417,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       });
 
       // todo - toast
-      /*toast({
+      /!*toast({
         title: "Could not add item",
         description: "Something went wrong while updating your cart.",
         variant: "destructive",
-      });*/
+      });*!/
 
       throw error;
     }
@@ -448,11 +449,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       });
 
       // todo - toast
-      /*toast({
+      /!*toast({
         title: "Could not update item",
         description: "Please try again.",
         variant: "destructive",
-      });*/
+      });*!/
 
       throw error;
     }
@@ -480,11 +481,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       });
 
       // todo - toast
-      /*toast({
+      /!*toast({
         title: "Could not remove item",
         description: "Please try again.",
         variant: "destructive",
-      });*/
+      });*!/
 
       throw error;
     }
@@ -527,3 +528,4 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
+*/

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useCart } from "react-use-cart";
 
 import { useAuth } from "@/providers/auth";
 import { Spinner } from "@ui/shadcn/spinner";
@@ -9,6 +8,9 @@ import { Spinner } from "@ui/shadcn/spinner";
 import Divider from "@/components/divider";
 import EmptyCartMessage from "@/components/empty-cart-message";
 import SignInPrompt from "@/components/sign-in-prompt";
+
+import { useCart } from "@/providers/cart";
+
 
 import ItemsTemplate from "./items";
 import Summary from "./summary";

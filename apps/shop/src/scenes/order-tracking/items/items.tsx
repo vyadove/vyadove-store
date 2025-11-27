@@ -38,7 +38,7 @@ const Items = ({ order }: ItemsProps) => {
         <TableBody data-testid="products-table">
           {items.map((item) => {
             return (
-              <Item currencyCode={"usd"} item={item as any} key={item.id} />
+              <Item item={item as any} key={item.id} />
             );
           })}
         </TableBody>

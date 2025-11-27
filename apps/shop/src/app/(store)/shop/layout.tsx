@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 import FilterBar from "@/scenes/shop/components/filter-bar";
 import AppHeroScaffold from "@ui/nav/app-hero-scaffold";
@@ -32,7 +32,9 @@ const Layout = async ({ children }: React.PropsWithChildren) => {
       </AppHeroScaffold>
 
       <div className="my-20 flex flex-col">
-        <FilterBar />
+        <Suspense fallback={null}>
+          <FilterBar />
+        </Suspense>
 
         {children}
       </div>

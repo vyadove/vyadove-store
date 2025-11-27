@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useLayoutEffect } from "react";
-import { useCart } from "react-use-cart";
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -15,6 +14,8 @@ import type { Order } from "@vyadove/types";
 import Cookies from "js-cookie";
 
 import CartTotals from "@/components/cart-totals";
+
+import { useCart } from "@/providers/cart";
 
 import { convertToLocale } from "@/utils/money";
 
@@ -56,7 +57,7 @@ const OrderTemplate = ({ order }: OrderCompletedTemplateProps) => {
     emptyCart();
     Cookies.remove("cart-session");
     Cookies.remove("checkout-session");
-  }, [emptyCart]);
+  }, []);
 
   return (
     <div className="mt-6 mb-20 flex min-h-[calc(100vh-64px)] w-full flex-col gap-8 p-6">

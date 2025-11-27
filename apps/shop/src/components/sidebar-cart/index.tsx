@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { useCart } from "react-use-cart";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -11,89 +10,46 @@ import { usePathname } from "next/navigation";
 import DeleteButton from "@/scenes/cart/delete-button";
 import LineItemPrice from "@/scenes/cart/line-item-price";
 import { Routes } from "@/store.routes";
-import { getSessionId } from "@/utils";
 import { Badge } from "@ui/shadcn/badge";
 import { Button } from "@ui/shadcn/button";
 import { ButtonGroup } from "@ui/shadcn/button-group";
 import { TypographyH3, TypographyP } from "@ui/shadcn/typography";
-import type { Cart } from "@vyadove/types";
 import { MinusIcon, PlusIcon } from "lucide-react";
-import { toast } from "@/components/ui/hot-toast";
 import { Drawer } from "vaul";
 
-import useSidebarCartStore from "@/components/sidebar-cart/sidebar-cart.store";
+import { useCart } from "@/providers/cart";
 
-import { syncCartWithBackend } from "@/services/cart";
 
 import { convertToLocale } from "@/utils/money";
-import { payloadSdk } from "@/utils/payload-sdk";
 
 function SidebarCart() {
-  const { toggleCart, isCartOpen } = useSidebarCartStore();
-  const [activeTimer, setActiveTimer] = useState<NodeJS.Timer | undefined>(
+  const {
+    toggleCart,
+    isCartOpen,
+    cartTotal,
+    items,
+    totalItems,
+    totalUniqueItems,
+    updateItemQuantity,
+    openCart,
+    closeCart,
+  } = useCart();
+
+  const [activeTimer, setActiveTimer] = useState<NodeJS.Timeout | undefined>(
     undefined,
   );
   const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
-  const { cartTotal, items, totalItems, totalUniqueItems, updateItemQuantity } =
-    useCart();
   const itemRef = useRef<number>(totalItems || 0);
   const subtotal = cartTotal ?? 0;
 
-  const [cart, setCart] = useState<Cart>();
-
-  const open = () => toggleCart(true);
-  const close = () => toggleCart(false);
-
-  const modifyQuantity = async (itemId: string, delta: number) => {
-    const newItem = items.find((item) => item.id === itemId);
-
-    if (!newItem) return;
-
-    try {
-      updateItemQuantity(newItem.id, delta + (newItem.quantity as number));
-      const sessionId = getSessionId();
-
-      await syncCartWithBackend(
-        {
-          id: newItem.id,
-          product: newItem.productId,
-          variantId: newItem.id,
-          quantity: delta,
-        },
-        sessionId,
-      );
-      toast.success("Added to cart");
-    } catch (error) {
-      updateItemQuantity(newItem.id, newItem.quantity as number);
-      toast.error("Failed to sync cart");
-      console.error("Failed to sync cart:", error);
-    } finally {
-      // setIsAdding(false);
-    }
+  const modifyQuantity = async (
+    variantId: string,
+    currentQuantity: number,
+    delta: number,
+  ) => {
+    await updateItemQuantity(variantId, currentQuantity + delta);
   };
-
-  useEffect(() => {
-    if (cart?.id || !getSessionId()) return;
-
-    payloadSdk
-      .find({
-        collection: "carts",
-        limit: 1,
-        where: {
-          sessionId: { equals: getSessionId() || "" },
-        },
-      })
-      .then((res) => {
-        if (res?.docs?.length) {
-          setCart(res.docs[0]);
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching cart:", err);
-        toast.error("Failed to fetch cart");
-      });
-  }, []);
 
   useEffect(() => {
     setIsMounted(true);
@@ -103,19 +59,26 @@ function SidebarCart() {
   useEffect(() => {
     return () => {
       if (activeTimer) {
-        clearTimeout(activeTimer as any);
+        clearTimeout(activeTimer);
       }
     };
   }, [activeTimer]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // Auto-open cart when items change
   useEffect(() => {
-    if (isCartOpen) return;
+    // Don't auto-open if already open or on cart/checkout pages
+    if (
+      isCartOpen ||
+      pathname.includes("/cart") ||
+      pathname.includes("/checkout")
+    ) {
+      return;
+    }
 
     const timedOpen = () => {
-      open();
+      openCart();
 
-      const timer = setTimeout(close, 5000);
+      const timer = setTimeout(closeCart, 5000);
 
       setActiveTimer(timer);
     };
@@ -124,30 +87,27 @@ function SidebarCart() {
 
     itemRef.current = totalItems;
 
-    if (
-      totalItems > 0 &&
-      currentItems !== totalItems &&
-      !pathname.includes("/cart")
-    ) {
+    // Only open if items increased (not decreased or stayed same)
+    if (totalItems > 0 && currentItems < totalItems) {
       timedOpen();
     }
-  }, [totalItems, pathname]);
+  }, [totalItems, pathname, isCartOpen, openCart, closeCart]);
 
   // hide sidebar when esc pressed
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        close();
+        closeCart();
       }
     };
 
     window.addEventListener("keydown", onKeyDown);
 
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
+  }, [closeCart]);
 
   return (
-    <Drawer.Root direction="right" open={isCartOpen}>
+    <Drawer.Root direction="right" onOpenChange={toggleCart} open={isCartOpen}>
       <Drawer.Portal>
         <Drawer.Overlay
           className="fixed inset-0 z-90 bg-black/40"
@@ -155,7 +115,6 @@ function SidebarCart() {
         />
         <Drawer.Content
           className="fixed top-3 right-3 bottom-3 z-95 flex w-lg outline-none "
-          // The gap between the edge of the screen and the drawer is 8px in this case.
           style={
             { "--initial-transform": "calc(100% + 8px)" } as React.CSSProperties
           }
@@ -164,14 +123,16 @@ function SidebarCart() {
             className="flex h-full w-full grow flex-col overflow-hidden rounded-[16px] bg-zinc-50"
             onClick={() => {
               if (activeTimer) {
-                clearTimeout(activeTimer as any);
+                clearTimeout(activeTimer);
               }
             }}
           >
             <div className="mx-auto flex h-full w-full flex-col">
               {/* --- HEADER --- */}
               <div className="flex items-center gap-2 border-b p-5 ">
-                <TypographyH3 className="font-semibold">Your Basket</TypographyH3>
+                <TypographyH3 className="font-semibold">
+                  Your Basket
+                </TypographyH3>
 
                 <Badge className="">
                   {isMounted ? `${totalUniqueItems}` : "0"}
@@ -179,7 +140,7 @@ function SidebarCart() {
 
                 <Button
                   className="ml-auto aspect-square"
-                  onClick={close}
+                  onClick={closeCart}
                   size="icon-lg"
                   variant="outline"
                 >
@@ -188,102 +149,117 @@ function SidebarCart() {
               </div>
 
               <div className="grid w-full place-items-center p-4 pt-6">
-                {items.length ? (
+                {items?.length ? (
                   <div className="flex w-full flex-col gap-4">
-                    {items.map((item) => (
-                      <div
-                        className="flex gap-x-4 "
-                        data-testid="cart-item"
-                        key={item.id}
-                      >
-                        <Link className="" href={`/products/${item.handle}`}>
-                          <div className="relative flex size-[70px] items-start">
-                            <Image
-                              alt={"product image"}
-                              className="w-full rounded-xl object-cover"
-                              fill
-                              src={item.gallery?.[0]?.url}
-                            />
-                          </div>
-                        </Link>
+                    {items?.map((item) => {
+                      const { product } = item;
 
-                        <div className="flex flex-1 flex-col justify-between">
-                          <div className="flex flex-1 flex-col">
-                            <div className="flex items-start justify-between">
-                              <div className="mr-4 flex w-[180px] flex-col text-ellipsis whitespace-nowrap">
-                                <TypographyP className="overflow-hidden  text-ellipsis">
-                                  <Link
-                                    data-testid="product-link"
-                                    href={`/products/${item.handle}`}
-                                  >
-                                    {item.productName}
-                                  </Link>
-                                </TypographyP>
+                      if (!product) return null;
 
-                                {/*       <span
-                                  data-testid="cart-item-quantity"
-                                  data-value={item.quantity}
-                                >
-                                  Quantity: {item.quantity}
-                                </span>*/}
-                              </div>
-                              <div className="flex justify-end">
-                                <LineItemPrice
-                                  cartTotal={item.price}
-                                  currencyCode={item.currency}
-                                  originalPrice={item.originalPrice}
-                                  style="tight"
-                                />
+                      return (
+                        <div
+                          className="flex gap-x-4 "
+                          data-testid="cart-item"
+                          key={item.id || item.variantId}
+                        >
+                          <Link
+                            className=""
+                            href={`/products/${product.handle}`}
+                          >
+                            <div className="relative flex size-[70px] items-start">
+                              <Image
+                                alt={product.title || "Product image"}
+                                className="w-full rounded-xl object-cover"
+                                fill
+                                src={product.gallery?.[0]?.url || ""}
+                              />
+                            </div>
+                          </Link>
+
+                          <div className="flex flex-1 flex-col justify-between">
+                            <div className="flex flex-1 flex-col">
+                              <div className="flex items-start justify-between">
+                                <div className="mr-4 flex w-[180px] flex-col text-ellipsis whitespace-nowrap">
+                                  <TypographyP className="overflow-hidden  text-ellipsis">
+                                    <Link
+                                      data-testid="product-link"
+                                      href={`/products/${product.handle}`}
+                                    >
+                                      {product.title}
+                                    </Link>
+                                  </TypographyP>
+                                </div>
+                                <div className="flex justify-end">
+                                  <LineItemPrice
+                                    cartTotal={
+                                      (item.variant?.price || 0) * item.quantity
+                                    }
+                                    currencyCode={product.currency || "USD"}
+                                    originalPrice={item.variant?.price || 0}
+                                    style="tight"
+                                  />
+                                </div>
                               </div>
                             </div>
-                          </div>
 
-                          <div className="flex w-full items-center justify-between">
-                            <ButtonGroup
-                              aria-label="Media controls"
-                              className="h-fit"
-                            >
-                              <Button
-                                className="cursor-pointer"
-                                disabled={(item.quantity as number) >= 10}
-                                onClick={() => {
-                                  modifyQuantity(item.id, 1);
-                                }}
-                                size="icon-sm"
-                                variant="outline"
+                            <div className="flex w-full items-center justify-between">
+                              <ButtonGroup
+                                aria-label="Media controls"
+                                className="h-fit"
                               >
-                                <PlusIcon />
-                              </Button>
-                              <Button
-                                className="pointer-events-none"
-                                size="icon-sm"
-                                variant="outline"
-                              >
-                                {item.quantity}
-                              </Button>
-                              <Button
-                                className="cursor-pointer"
-                                disabled={(item.quantity as number) <= 1}
-                                onClick={() => {
-                                  modifyQuantity(item.id, -1);
-                                }}
-                                size="icon-sm"
-                                variant="outline"
-                              >
-                                <MinusIcon />
-                              </Button>
-                            </ButtonGroup>
+                                <Button
+                                  className="cursor-pointer"
+                                  disabled={(item.quantity as number) >= 10}
+                                  onClick={() => {
+                                    if (item.variantId) {
+                                      modifyQuantity(
+                                        item.variantId,
+                                        item.quantity,
+                                        1,
+                                      );
+                                    }
+                                  }}
+                                  size="icon-sm"
+                                  variant="outline"
+                                >
+                                  <PlusIcon />
+                                </Button>
+                                <Button
+                                  className="pointer-events-none"
+                                  size="icon-sm"
+                                  variant="outline"
+                                >
+                                  {item.quantity}
+                                </Button>
+                                <Button
+                                  className="cursor-pointer"
+                                  disabled={(item.quantity as number) <= 1}
+                                  onClick={() => {
+                                    if (item.variantId) {
+                                      modifyQuantity(
+                                        item.variantId,
+                                        item.quantity,
+                                        -1,
+                                      );
+                                    }
+                                  }}
+                                  size="icon-sm"
+                                  variant="outline"
+                                >
+                                  <MinusIcon />
+                                </Button>
+                              </ButtonGroup>
 
-                            <DeleteButton
-                              className="mt-1"
-                              data-testid="cart-item-remove-button"
-                              id={item.id}
-                              productId={item.productId}
-                            ></DeleteButton>
+                              <DeleteButton
+                                className="mt-1"
+                                data-testid="cart-item-remove-button"
+                                variantId={item.variantId}
+                              ></DeleteButton>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 ) : (
                   <div>
@@ -298,7 +274,9 @@ function SidebarCart() {
                             <span className="sr-only">
                               Go to all products page
                             </span>
-                            <Button onClick={close}>Explore products</Button>
+                            <Button onClick={closeCart}>
+                              Explore products
+                            </Button>
                           </>
                         </Link>
                       </div>
@@ -331,6 +309,7 @@ function SidebarCart() {
                     <Button
                       className="w-full "
                       data-testid="go-to-cart-button"
+                      onClick={closeCart}
                       size="lg"
                       variant="secondary"
                     >
@@ -342,6 +321,7 @@ function SidebarCart() {
                     <Button
                       className="w-full "
                       data-testid="go-to-cart-button"
+                      onClick={closeCart}
                       size="lg"
                     >
                       Checkout

@@ -28,6 +28,7 @@ import { cn } from "@/lib/utils";
 
 import { getVariantImage } from "@/utils/get-variant-image";
 import { payloadSdk } from "@/utils/payload-sdk";
+import { SearchSheet } from "@ui/nav/search-input";
 
 const shopLinks = [
   {
@@ -259,9 +260,11 @@ export const DesktopNav = (props: ComponentPropsWithoutRef<"div">) => {
         <Separator className="h-full" orientation="vertical" />
 
         <div className="flex items-center">
-          <Button size="icon" variant="link">
+        {/*  <Button size="icon" variant="link">
             <FiSearch stroke="#000" strokeWidth={2} />
-          </Button>
+          </Button>*/}
+
+          <SearchSheet/>
 
           <CartIconButton />
         </div>

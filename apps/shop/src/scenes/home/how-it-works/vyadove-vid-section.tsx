@@ -27,7 +27,7 @@ const VyadoveVidSection = () => {
   return (
     <InvertedCornerMask
       className={cn(
-        "mt-10",
+        "",
         // "animate-gradient-xy flex w-full bg-linear-95 ",
         // "bg-linear-45 from-[rgba(243,224,214,1)] from-20%  to-green-900/50 bg-[length:140%_100%]  h-full",
       )}

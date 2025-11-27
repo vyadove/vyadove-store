@@ -1,25 +1,19 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
-import { BiMoney } from "react-icons/bi";
-import { MdMoney } from "react-icons/md";
+import React, { useState } from "react";
 import { TbCreditCardPay } from "react-icons/tb";
-import { useCart } from "react-use-cart";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { useCart } from "@/providers/cart";
 import { useProductDetailContext } from "@/scenes/product-detail/index";
 import { Routes } from "@/store.routes";
 import { Button } from "@ui/shadcn/button";
 import { Spinner } from "@ui/shadcn/spinner";
-import type { Media, Product } from "@vyadove/types";
-import Cookies from "js-cookie";
-import { toast } from "@/components/ui/hot-toast";
+import type { Product } from "@vyadove/types";
 
 import CartIcon from "@/components/icons/cart-icon";
-
-import { syncCartWithBackend } from "@/services/cart";
+import { toast } from "@/components/ui/hot-toast";
 
 type ProductActionsProps = {
   product: Product;
@@ -27,24 +21,12 @@ type ProductActionsProps = {
 
 export default function ProductActions({ product }: ProductActionsProps) {
   const [isAdding, setIsAdding] = useState(false);
-  const { addItem, removeItem, items, updateItemQuantity } = useCart();
+  const { addItem } = useCart();
   const router = useRouter();
   const { selectedVariant } = useProductDetailContext();
 
-  const buildCartItem = (variant: Product["variants"][0]) => {
-    return {
-      ...variant,
-      id: `${variant.id}`,
-      currency: product.currency,
-      image: (product.gallery as Media[])[0]?.url,
-      productId: product.id,
-      productName: product.title,
-      product: product,
-    };
-  };
-
   const handleAddToCart = async () => {
-    if (!selectedVariant) {
+    if (!selectedVariant?.id) {
       toast.error("Please select a variant");
 
       return;
@@ -52,47 +34,15 @@ export default function ProductActions({ product }: ProductActionsProps) {
 
     setIsAdding(true);
 
-    const newItem = buildCartItem(selectedVariant);
-
-    // Optimistic UI update
-
     try {
-      addItem(newItem, 1);
-      const sessionId = getSessionId();
-
-      await syncCartWithBackend(
-        {
-          id: newItem.id,
-          product: newItem.productId,
-          variantId: newItem.id,
-          quantity: 1,
-        },
-        sessionId,
-      ).then((res: any) => {
-        if (res?.error) {
-
-          if(res.errorCode === 'CART_NOT_FOUND'){
-            Cookies.remove("cart-session");
-          }
-
-          throw new Error(res.error);
-        }
-      });
+      await addItem(selectedVariant.id, 1, product);
       toast.success("Added to cart");
     } catch (error) {
-
-      console.log('error ---- : ', error);
-
-      updateItemQuantity(newItem.id, -1);
-      toast.error("Failed to sync cart");
-      console.error("Failed to sync cart:", error);
+      console.error("Failed to add to cart:", error);
+      toast.error("Failed to add to cart");
     } finally {
       setIsAdding(false);
     }
-  };
-
-  const getSessionId = () => {
-    return Cookies.get("cart-session") || "";
   };
 
   return (
@@ -121,9 +71,9 @@ export default function ProductActions({ product }: ProductActionsProps) {
             await handleAddToCart();
             router.push(Routes.cart);
           }}
+          outlined
           size="lg"
           variant="secondary"
-          outlined
         >
           {isAdding ? <Spinner /> : <TbCreditCardPay />}
           Buy Now

@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { useCart } from "react-use-cart";
 
 import { TypographyP } from "@ui/shadcn/typography";
 import type { Order } from "@vyadove/types";
+
+import { useCart } from "@/providers/cart";
 
 import { convertToLocale } from "@/utils/money";
 

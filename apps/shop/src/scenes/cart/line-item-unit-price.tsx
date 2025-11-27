@@ -16,7 +16,7 @@ const LineItemUnitPrice = ({ currencyCode, item }: LineItemUnitPriceProps) => {
         data-testid="product-unit-price"
       >
         {convertToLocale({
-          amount: item.price,
+          amount: item.variant?.price || 0,
           currency_code: currencyCode,
         })}
       </span>

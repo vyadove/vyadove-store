@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"C:\\Users\\phili\\WebstormProjects\\vyadove-org\\apps\\shop\")",
+      "Bash(pnpm list:*)",
+      "Bash(xargs:*)",
+      "Bash(pnpm lint:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

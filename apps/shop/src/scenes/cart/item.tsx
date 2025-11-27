@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useCart } from "react-use-cart";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -17,11 +16,13 @@ import {
 // import Thumbnail from "./thumbnail";
 import { Spinner } from "@ui/shadcn/spinner";
 import { TypographyMuted, TypographyP } from "@ui/shadcn/typography";
-import Cookies from "js-cookie";
 
 import { TableCell, TableRow } from "@/components/ui/table";
 
-import { syncCartWithBackend } from "@/services/cart";
+import { useCart } from "@/providers/cart";
+
+
+import type { StoreCartItem } from "@/providers/cart/store-cart";
 
 import { convertToLocale } from "@/utils/money";
 
@@ -29,81 +30,59 @@ import DeleteButton from "./delete-button";
 import ErrorMessage from "./error-message";
 
 type ItemProps = {
-  currencyCode: string;
-  item: any;
+  item: StoreCartItem;
   type?: "full" | "preview";
 };
 
-const getSessionId = () => {
-  return Cookies.get("cart-session") || "";
-};
-
-const Item = ({ type = "full", currencyCode, item }: ItemProps) => {
+const Item = ({ type = "full", item }: ItemProps) => {
   const [updating, setUpdating] = useState(false);
   const { updateItemQuantity } = useCart();
   const [error, setError] = useState<null | string>(null);
 
-  const changeQuantity = (quantity: number) => {
+  const changeQuantity = async (quantity: number) => {
     setError(null);
     setUpdating(true);
 
-    setTimeout(async () => {
-      updateItemQuantity(item.id, quantity);
-
-      try {
-        const sessionId = getSessionId();
-
-        await syncCartWithBackend(
-          {
-            id: item.id,
-            product: item.productId,
-            variantId: item.id,
-            quantity,
-            action: "update",
-          },
-          sessionId,
-        );
-      } catch (error: any) {
-        setError(error.message);
-      }
+    try {
+      await updateItemQuantity(item.variantId, quantity);
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
       setUpdating(false);
-    }, 200);
+    }
   };
-
-  const maxQuantity = item?.manage_inventory ? 10 : 10;
 
   return (
     <TableRow className="w-full" data-testid="product-row">
       <TableCell className="">
         <DeleteButton
           data-testid="product-delete-button"
-          id={item.id}
-          productId={item.productId}
+          variantId={item.variantId}
         />
       </TableCell>
 
       <TableCell className="max-w-[16rem] px-2 py-4" rowSpan={1}>
-        <Link className="" href={`/products/${item.handle}`}>
+        <Link className="" href={`/products/${item.product?.handle}`}>
           <div className="flex items-center gap-2">
             <div className="relative size-16 overflow-hidden rounded-lg">
               <Image
-                alt={"-"}
+                alt={item.product?.title || "Product image"}
                 className="object-cover"
                 fill
-                src={item.gallery?.[0]?.url || ""}
+                src={item.product?.gallery?.[0]?.url || ""}
               />
             </div>
 
             <div className="flex flex-col gap-1">
               <TypographyP className="text-md" data-testid="product-title">
-                {item.productName}
+                {item.product?.title}
               </TypographyP>
 
               <TypographyMuted className="">
                 {item.quantity} X{" "}
                 {convertToLocale({
                   hiddeCurrency: true,
-                  amount: item?.price,
+                  amount: item.variant?.price || 0,
                 })}{" "}
               </TypographyMuted>
             </div>
@@ -114,7 +93,7 @@ const Item = ({ type = "full", currencyCode, item }: ItemProps) => {
       <TableCell className="text-left">
         <TypographyP className="">
           {convertToLocale({
-            amount: item?.price,
+            amount: item.variant?.price || 0,
           })}
         </TypographyP>
       </TableCell>
@@ -144,7 +123,7 @@ const Item = ({ type = "full", currencyCode, item }: ItemProps) => {
                         key={i}
                         value={`${i + 1}`}
                       >
-                        {i}
+                        {i + 1}
                       </SelectItem>
                     ),
                   )}
@@ -160,7 +139,7 @@ const Item = ({ type = "full", currencyCode, item }: ItemProps) => {
       <TableCell align="right">
         <TypographyP className="font-semibold">
           {convertToLocale({
-            amount: item.price * item.quantity,
+            amount: (item.variant?.price || 0) * item.quantity,
           })}
         </TypographyP>
       </TableCell>

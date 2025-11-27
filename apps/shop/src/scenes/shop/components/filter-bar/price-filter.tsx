@@ -16,22 +16,52 @@ import { cn } from "@/lib/utils";
 
 import { filterKeys, useUpdateMultiFilterParam } from "../util";
 
-const PricingFilterMenu = () => {
-  // const [sliderValue, setSliderValue] = useState([2000, 5000]);
+// Menu Component
+interface PriceFilterMenuProps {
+  selectedValues?: string[];
+  onChange?: (values: string[]) => void;
+}
 
+export const PriceFilterMenu = ({
+  selectedValues: controlledSelectedValues,
+  onChange,
+}: PriceFilterMenuProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const selectedItems = searchParams.get(filterKeys.price)?.split(",") || [];
   const { updateSearchParam, reset } = useUpdateMultiFilterParam(
     filterKeys.price,
   );
 
+  const isControlled = controlledSelectedValues !== undefined;
+  const selectedItems = isControlled
+    ? controlledSelectedValues
+    : searchParams.get(filterKeys.price)?.split(",") || [];
+
   const isSelected = (value: string) => selectedItems.includes(value);
 
   const handlePriceChange = (value: string) => {
-    const updatedQuery = updateSearchParam(value);
+    if (isControlled && onChange) {
+      let newValues: string[];
 
-    router.push(`?${updatedQuery}`, { scroll: false });
+      if (selectedItems.includes(value)) {
+        newValues = selectedItems.filter((v) => v !== value);
+      } else {
+        newValues = [...selectedItems, value];
+      }
+      onChange(newValues);
+    } else {
+      const updatedQuery = updateSearchParam(value);
+
+      router.push(`?${updatedQuery}`, { scroll: false });
+    }
+  };
+
+  const handleReset = () => {
+    if (isControlled && onChange) {
+      onChange([]);
+    } else {
+      reset();
+    }
   };
 
   const ranges = [
@@ -55,7 +85,8 @@ const PricingFilterMenu = () => {
               // asChild
               className={cn(
                 "hover:bg-primary/10 flex items-center gap-3 p-1 rounded-md w-full cursor-pointer",
-                selected && "text-primary bg-primary-background text-bold font-sofia-soft",
+                selected &&
+                  "text-primary bg-primary-background text-bold font-sofia-soft",
               )}
               key={idx}
               onClick={(e) => {
@@ -87,27 +118,11 @@ const PricingFilterMenu = () => {
           );
         })}
       </ul>
-
-      <hr />
-
-      <div className="w-full ">
-        <Button
-          className=""
-          disabled={!selectedItems?.length}
-          onClick={() => {
-            reset();
-          }}
-          outlined={true}
-          size="sm"
-          variant="secondary"
-        >
-          Reset
-        </Button>
-      </div>
     </div>
   );
 };
 
+// Button Component
 const PriceFilterButton = () => {
   const searchParams = useSearchParams();
   const selectedItems = searchParams.get("price")?.split(",") || [];
@@ -135,7 +150,7 @@ const PriceFilterButton = () => {
         </Button>
       </PopoverTrigger>
       <PopoverContent align="start" className="">
-        <PricingFilterMenu />
+        <PriceFilterMenu />
       </PopoverContent>
     </Popover>
   );

@@ -1,57 +1,44 @@
-import { useEffect, useState } from "react";
-import { useCart } from "react-use-cart";
+import { useState } from "react";
 
 import { Button } from "@ui/shadcn/button";
 import { Spinner } from "@ui/shadcn/spinner";
 import { Trash } from "lucide-react";
+
 import { toast } from "@/components/ui/hot-toast";
+
+import { useCart } from "@/providers/cart";
+
 
 import { cn } from "@/lib/utils";
 
-import { updateCart } from "@/services/cart";
-import { getProduct } from "@/services/products";
-
 const DeleteButton = ({
-  id,
-  productId,
+  variantId,
   children,
   className,
 }: {
   children?: React.ReactNode;
   className?: string;
-  id: string;
-  productId: number;
+  variantId: string;
 }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const { removeItem } = useCart();
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (variantId: string) => {
     setIsDeleting(true);
 
     try {
-      const removedCart = await updateCart({
-        id,
-        productId,
-        quantity: 0,
-      });
+      const result = await removeItem(variantId);
 
-      console.log("removed cart", removedCart);
-
-      if (!removedCart?.id) {
-        toast.error("Failed to remove item from cart");
-        setIsDeleting(false);
-
-        return;
-      }
-
-      if (!(removedCart as any).errors) {
-        removeItem(id);
+      if (result.success) {
         toast.success("Item removed from cart");
+      } else {
+        toast.error("Failed to remove item from cart");
       }
     } catch (error: any) {
-      setIsDeleting(false);
-      console.log("error : ", error);
+      console.error("Failed to remove item:", error);
       toast.error("Failed to remove item from cart");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -64,7 +51,7 @@ const DeleteButton = ({
     >
       <Button
         className="hover:text-destructive hover:bg-destructive/10 cursor-pointer items-center"
-        onClick={() => handleDelete(id)}
+        onClick={() => handleDelete(variantId)}
         size="icon"
         variant="secondary"
       >

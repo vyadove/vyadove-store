@@ -22,7 +22,7 @@ export const Newsletter = () => {
           const result = await signForNewsletter(formData);
 
           if (result?.status && result.status < 400) {
-            toast.info(t("success"), {
+            toast(t("success"), {
               position: "bottom-left",
             });
           } else {

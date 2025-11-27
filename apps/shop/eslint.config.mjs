@@ -2,7 +2,9 @@ import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import pluginJest from "eslint-plugin-jest";
-import tailwind from "eslint-plugin-tailwindcss";
+// Tailwind ESLint plugin disabled due to Tailwind v4 compatibility issues
+// eslint-plugin-tailwindcss@4.0.0-beta.0 cannot resolve tailwindcss v4 package
+// import tailwind from "eslint-plugin-tailwindcss";
 import path from "node:path";
 // import prettier from "prettier";
 import { fileURLToPath } from "node:url";
@@ -30,7 +32,6 @@ export default [
   ),
   eslintConfigPrettier,
   ...ts.configs.recommended,
-  ...tailwind.configs["flat/recommended"],
 
   {
     plugins: { jest: pluginJest },
@@ -116,18 +117,23 @@ export default [
       "sort-imports": ["off"],
 
       //tailwind
-      // "tailwindcss/classnames-order": "warn",
-      "tailwindcss/enforces-negative-arbitrary-values": "warn",
-      "tailwindcss/migration-from-tailwind-2": "warn",
-      "tailwindcss/no-custom-classname": "off",
-      "tailwindcss/no-contradicting-classname": "error",
-      "tailwindcss/no-arbitrary-value": "off",
+      // All Tailwind rules disabled due to Tailwind v4 compatibility issues
+      // with eslint-plugin-tailwindcss@4.0.0-beta.0
+      // The beta plugin cannot resolve tailwindcss v4 package correctly
+      // Re-enable when the plugin exits beta with proper v4 support
+      // "tailwindcss/classnames-order": "off",
+      // "tailwindcss/enforces-negative-arbitrary-values": "off",
+      // "tailwindcss/migration-from-tailwind-2": "off",
+      // "tailwindcss/no-custom-classname": "off",
+      // "tailwindcss/no-contradicting-classname": "off",
+      // "tailwindcss/no-arbitrary-value": "off",
 
       // TypeScript:
       //   "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
 
       // 1. Turn OFF the base ESLint rule
       "no-unused-vars": "off",
+      "prefer-destructuring": "off",
 
       // 2. Configure the TypeScript-aware rule
       "@typescript-eslint/no-unused-vars": [

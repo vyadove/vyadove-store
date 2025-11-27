@@ -28,6 +28,10 @@ const useCheckoutSession = () => {
     },
   });
 
+  useEffect(() => {
+    setSessionId(Cookies.get("checkout-session") || null);
+  }, []);
+
   /*useEffect(() => {
     const fetchSession = async () => {
       try {

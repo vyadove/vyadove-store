@@ -15,11 +15,10 @@ import { analyticsPlugin } from "@shopnex/analytics-plugin";
 import { sidebarPlugin } from "@shopnex/sidebar-plugin";
 
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
+import { searchPlugin } from "@payloadcms/plugin-search";
 
 export const plugins: Plugin[] = [
-    formBuilderPlugin({
-
-    }),
+    formBuilderPlugin({}),
 
     stripePlugin({
         isTestKey: Boolean(process.env.NEXT_PUBLIC_STRIPE_IS_TEST_KEY),
@@ -83,7 +82,7 @@ export const plugins: Plugin[] = [
         },
     }),
     analyticsPlugin({}),
-    sidebarPlugin( ),
+    sidebarPlugin(),
 
     vercelBlobStorage({
         enabled: true,
@@ -92,5 +91,93 @@ export const plugins: Plugin[] = [
             media: true,
         },
         token: process.env.VYA_READ_WRITE_TOKEN,
+    }),
+    searchPlugin({
+        collections: ["products"],
+        beforeSync: async ({ originalDoc, searchDoc, payload }) => {
+            const { title = "", description = "", category } = originalDoc;
+
+            // Fetch category titles - categories might be IDs or objects
+            let categoryText = "";
+
+            if (category) {
+                if (Array.isArray(category) && category.length > 0) {
+                    // Handle array of categories
+                    const categoryTitles = await Promise.all(
+                        category.map(async (cat: any) => {
+                            // If already an object with title, use it
+                            if (typeof cat === "object" && cat?.title) {
+                                return cat.title;
+                            }
+                            // If it's an ID, fetch the category
+                            if (
+                                typeof cat === "number" ||
+                                typeof cat === "string"
+                            ) {
+                                try {
+                                    const categoryDoc = await payload.findByID({
+                                        collection: "category",
+                                        id: cat,
+                                    });
+
+                                    return categoryDoc?.title || "";
+                                } catch (error) {
+                                    console.error(
+                                        "Error fetching category:",
+                                        cat,
+                                        error
+                                    );
+
+                                    return "";
+                                }
+                            }
+
+                            return "";
+                        })
+                    );
+                    categoryText = categoryTitles.filter(Boolean).join(" ");
+                } else if (typeof category === "object" && category?.title) {
+                    // Single category object
+                    categoryText = category.title;
+                } else if (
+                    typeof category === "number" ||
+                    typeof category === "string"
+                ) {
+                    // Single category ID
+                    try {
+                        const categoryDoc = await payload.findByID({
+                            collection: "category",
+                            id: category,
+                        });
+                        categoryText = categoryDoc?.title || "";
+                    } catch (error) {
+                        console.error(
+                            "Error fetching category:",
+                            category,
+                            error
+                        );
+                    }
+                }
+            }
+
+            // Combine all searchable text into the title field
+            const searchableText = [title, description, categoryText]
+                .filter(Boolean)
+                .join(" ");
+
+            console.log("Indexing product:", {
+                productId: originalDoc.id,
+                title,
+                description: description?.substring?.(0, 50) || "",
+                categoryText,
+                categoryRaw: category,
+                searchableText: searchableText.substring(0, 150),
+            });
+
+            return {
+                ...searchDoc,
+                title: searchableText,
+            };
+        },
     }),
 ];

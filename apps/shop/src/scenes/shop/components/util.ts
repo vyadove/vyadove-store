@@ -2,9 +2,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 export const filterKeys = {
   category: "category",
+  occasions: "occasions",
+  experiences: "experiences",
   price: "price",
   sortBy: "sort_by",
-};
+} as const;
 
 export function useUpdateMultiFilterParam(
   key: string,

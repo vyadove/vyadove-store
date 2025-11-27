@@ -1,12 +1,10 @@
 "use client";
 
-import { useCart } from "react-use-cart";
-
 import { Button } from "@ui/shadcn/button";
 import { TypographyH2, TypographyP } from "@ui/shadcn/typography";
 import { Trash } from "lucide-react";
-import { toast } from "@/components/ui/hot-toast";
 
+import { toast } from "@/components/ui/hot-toast";
 import {
   Table,
   TableBody,
@@ -15,12 +13,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { clearCart, updateCart } from "@/services/cart";
+import { useCart } from "@/providers/cart";
+
 
 import Item from "./item";
 
 const ItemsTemplate = () => {
-  const { items, totalUniqueItems, emptyCart, id } = useCart();
+  const { items, totalUniqueItems, emptyCart } = useCart();
 
   return (
     <div className="flex flex-col gap-6">
@@ -45,9 +44,7 @@ const ItemsTemplate = () => {
         </TableHeader>
         <TableBody className="">
           {items.map((item) => {
-            return (
-              <Item currencyCode={item.currency} item={item} key={item.id} />
-            );
+            return <Item item={item} key={item.id} />;
           })}
         </TableBody>
       </Table>
@@ -55,22 +52,18 @@ const ItemsTemplate = () => {
       <div className="mt-10">
         <Button
           className="hover:text-destructive underline"
-          onClick={() => {
-            clearCart({
-              id: id,
-            })
-              .then((res) => {
-                if (res.id) {
-                  toast.success("Cleared basket");
-                  emptyCart();
+          onClick={async () => {
+            try {
+              const result = await emptyCart();
 
-                  return;
-                }
+              if (result.success) {
+                toast.success("Cleared basket");
+              } else {
                 toast.error("Failed to clear basket");
-              })
-              .catch((err) => {
-                toast.error("Failed to clear basket");
-              });
+              }
+            } catch (_) {
+              toast.error("Failed to clear basket");
+            }
           }}
           size="lg"
           variant="link"

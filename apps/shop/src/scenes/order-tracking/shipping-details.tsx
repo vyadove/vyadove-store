@@ -13,7 +13,7 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
       <TypographyH2 className="text-3xl-regular my-6 flex flex-row">
         Delivery
       </TypographyH2>
-      <div className="flex items-start gap-x-8">
+      <div className="flex flex-col items-center gap-8 border md:flex-row md:items-start md:gap-x-8">
         <div
           className="flex w-1/3 flex-col"
           data-testid="shipping-address-summary"
@@ -22,12 +22,12 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
             Shipping Address
           </TypographyP>
           <TypographyP className="txt-medium text-ui-fg-subtle">
-            {order.shippingAddress?.name} {order.shippingAddress?.phone}
-            {(order.shippingAddress as any)?.email}
-          </TypographyP>
-
-          <TypographyP className="txt-medium text-ui-fg-subtle">
-            {order.shippingAddress?.address?.country?.toUpperCase()}
+            {order.shippingAddress?.recipientFirstName}{" "}
+            {(order.shippingAddress as any)?.recipientLastName}
+            <br />
+            {(order.shippingAddress as any)?.recipientPhone}
+            <br />
+            {(order.shippingAddress as any)?.recipientEmail}
           </TypographyP>
         </div>
 
@@ -39,7 +39,7 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
             Contact
           </TypographyP>
           <TypographyP className="txt-medium text-ui-fg-subtle">
-            {order.shippingAddress?.phone}
+            {(order.shippingAddress as any)?.recipientPhone}
           </TypographyP>
           <TypographyP className="txt-medium text-ui-fg-subtle">
             {typeof order?.user === "object" && order.user?.email}

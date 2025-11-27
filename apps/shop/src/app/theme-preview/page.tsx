@@ -18,9 +18,9 @@ export default function ThemePreviewPage() {
         {/* Toggle */}
         <div className="flex justify-end">
           <Button
-            variant="outline"
-            onClick={() => setDark(!dark)}
             className="flex items-center gap-2"
+            onClick={() => setDark(!dark)}
+            variant="outline"
           >
             {dark ? <Sun size={16} /> : <Moon size={16} />}
             {dark ? "Light Mode" : "Dark Mode"}
@@ -42,8 +42,8 @@ export default function ThemePreviewPage() {
               { name: "Border", class: "bg-border" },
             ].map((c) => (
               <div
-                key={c.name}
                 className={`p-6 rounded-lg border shadow-sm flex items-center justify-center text-center text-sm font-medium ${c.class}`}
+                key={c.name}
               >
                 {c.name}
               </div>
@@ -98,7 +98,7 @@ export default function ThemePreviewPage() {
                 <CardTitle>Accent Card</CardTitle>
               </CardHeader>
               <CardContent>
-                <Badge variant="default" className="bg-accent text-accent-foreground">
+                <Badge className="bg-accent text-accent-foreground" variant="default">
                   NEW
                 </Badge>
               </CardContent>
@@ -112,7 +112,7 @@ export default function ThemePreviewPage() {
 
           <div className="space-y-4 max-w-sm">
             <Input placeholder="Input field" />
-            <Input placeholder="Search…" className="border-primary" />
+            <Input className="border-primary" placeholder="Search…" />
           </div>
         </section>
 

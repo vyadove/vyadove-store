@@ -526,6 +526,55 @@ export const products_sales_channels = pgTable(
     })
 );
 
+export const products_variants_additional_info = pgTable(
+    "products_variants_additional_info",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: varchar("_parent_id").notNull(),
+        id: varchar("id").primaryKey(),
+        name: varchar("name").notNull(),
+        value: varchar("value").notNull(),
+    },
+    (columns) => ({
+        _orderIdx: index("products_variants_additional_info_order_idx").on(
+            columns._order
+        ),
+        _parentIDIdx: index(
+            "products_variants_additional_info_parent_id_idx"
+        ).on(columns._parentID),
+        _parentIDFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [products_variants.id],
+            name: "products_variants_additional_info_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const products_variants_locations = pgTable(
+    "products_variants_locations",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: varchar("_parent_id").notNull(),
+        id: varchar("id").primaryKey(),
+        coordinates: geometryColumn("coordinates"),
+        map_url: varchar("map_url"),
+        address: varchar("address"),
+    },
+    (columns) => ({
+        _orderIdx: index("products_variants_locations_order_idx").on(
+            columns._order
+        ),
+        _parentIDIdx: index("products_variants_locations_parent_id_idx").on(
+            columns._parentID
+        ),
+        _parentIDFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [products_variants.id],
+            name: "products_variants_locations_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
 export const products_variants_options = pgTable(
     "products_variants_options",
     {
@@ -597,29 +646,6 @@ export const products_custom_fields = pgTable(
             columns: [columns["_parentID"]],
             foreignColumns: [products.id],
             name: "products_custom_fields_parent_id_fk",
-        }).onDelete("cascade"),
-    })
-);
-
-export const products_locations = pgTable(
-    "products_locations",
-    {
-        _order: integer("_order").notNull(),
-        _parentID: integer("_parent_id").notNull(),
-        id: varchar("id").primaryKey(),
-        coordinates: geometryColumn("coordinates"),
-        map_url: varchar("map_url"),
-        address: varchar("address"),
-    },
-    (columns) => ({
-        _orderIdx: index("products_locations_order_idx").on(columns._order),
-        _parentIDIdx: index("products_locations_parent_id_idx").on(
-            columns._parentID
-        ),
-        _parentIDFk: foreignKey({
-            columns: [columns["_parentID"]],
-            foreignColumns: [products.id],
-            name: "products_locations_parent_id_fk",
         }).onDelete("cascade"),
     })
 );
@@ -1627,7 +1653,7 @@ export const plugins = pgTable(
         enabled: boolean("enabled"),
         pluginId: varchar("plugin_id"),
         svgIcon: varchar("svg_icon"),
-        categories: varchar("category"),
+        category: varchar("category"),
         author: varchar("author"),
         license: varchar("license"),
         updatedAt: timestamp("updated_at", {
@@ -2429,6 +2455,66 @@ export const email_templates = pgTable(
     })
 );
 
+export const search = pgTable(
+    "search",
+    {
+        id: serial("id").primaryKey(),
+        title: varchar("title"),
+        priority: numeric("priority"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+    },
+    (columns) => ({
+        search_updated_at_idx: index("search_updated_at_idx").on(
+            columns.updatedAt
+        ),
+        search_created_at_idx: index("search_created_at_idx").on(
+            columns.createdAt
+        ),
+    })
+);
+
+export const search_rels = pgTable(
+    "search_rels",
+    {
+        id: serial("id").primaryKey(),
+        order: integer("order"),
+        parent: integer("parent_id").notNull(),
+        path: varchar("path").notNull(),
+        productsID: integer("products_id"),
+    },
+    (columns) => ({
+        order: index("search_rels_order_idx").on(columns.order),
+        parentIdx: index("search_rels_parent_idx").on(columns.parent),
+        pathIdx: index("search_rels_path_idx").on(columns.path),
+        search_rels_products_id_idx: index("search_rels_products_id_idx").on(
+            columns.productsID
+        ),
+        parentFk: foreignKey({
+            columns: [columns["parent"]],
+            foreignColumns: [search.id],
+            name: "search_rels_parent_fk",
+        }).onDelete("cascade"),
+        productsIdFk: foreignKey({
+            columns: [columns["productsID"]],
+            foreignColumns: [products.id],
+            name: "search_rels_products_fk",
+        }).onDelete("cascade"),
+    })
+);
+
 export const payload_jobs_log = pgTable(
     "payload_jobs_log",
     {
@@ -2663,6 +2749,7 @@ export const payload_locked_documents_rels = pgTable(
         "form-submissionsID": integer("form_submissions_id"),
         exportsID: integer("exports_id"),
         "email-templatesID": integer("email_templates_id"),
+        searchID: integer("search_id"),
         "payload-jobsID": integer("payload_jobs_id"),
         "payload-foldersID": integer("payload_folders_id"),
     },
@@ -2754,6 +2841,9 @@ export const payload_locked_documents_rels = pgTable(
         payload_locked_documents_rels_email_templates_id_idx: index(
             "payload_locked_documents_rels_email_templates_id_idx"
         ).on(columns["email-templatesID"]),
+        payload_locked_documents_rels_search_id_idx: index(
+            "payload_locked_documents_rels_search_id_idx"
+        ).on(columns.searchID),
         payload_locked_documents_rels_payload_jobs_id_idx: index(
             "payload_locked_documents_rels_payload_jobs_id_idx"
         ).on(columns["payload-jobsID"]),
@@ -2894,6 +2984,11 @@ export const payload_locked_documents_rels = pgTable(
             columns: [columns["email-templatesID"]],
             foreignColumns: [email_templates.id],
             name: "payload_locked_documents_rels_email_templates_fk",
+        }).onDelete("cascade"),
+        searchIdFk: foreignKey({
+            columns: [columns["searchID"]],
+            foreignColumns: [search.id],
+            name: "payload_locked_documents_rels_search_fk",
         }).onDelete("cascade"),
         "payload-jobsIdFk": foreignKey({
             columns: [columns["payload-jobsID"]],
@@ -3214,6 +3309,26 @@ export const relations_products_sales_channels = relations(
         }),
     })
 );
+export const relations_products_variants_additional_info = relations(
+    products_variants_additional_info,
+    ({ one }) => ({
+        _parentID: one(products_variants, {
+            fields: [products_variants_additional_info._parentID],
+            references: [products_variants.id],
+            relationName: "additionalInfo",
+        }),
+    })
+);
+export const relations_products_variants_locations = relations(
+    products_variants_locations,
+    ({ one }) => ({
+        _parentID: one(products_variants, {
+            fields: [products_variants_locations._parentID],
+            references: [products_variants.id],
+            relationName: "locations",
+        }),
+    })
+);
 export const relations_products_variants_options = relations(
     products_variants_options,
     ({ one }) => ({
@@ -3232,6 +3347,12 @@ export const relations_products_variants = relations(
             references: [products.id],
             relationName: "variants",
         }),
+        additionalInfo: many(products_variants_additional_info, {
+            relationName: "additionalInfo",
+        }),
+        locations: many(products_variants_locations, {
+            relationName: "locations",
+        }),
         options: many(products_variants_options, {
             relationName: "options",
         }),
@@ -3244,16 +3365,6 @@ export const relations_products_custom_fields = relations(
             fields: [products_custom_fields._parentID],
             references: [products.id],
             relationName: "customFields",
-        }),
-    })
-);
-export const relations_products_locations = relations(
-    products_locations,
-    ({ one }) => ({
-        _parentID: one(products, {
-            fields: [products_locations._parentID],
-            references: [products.id],
-            relationName: "locations",
         }),
     })
 );
@@ -3288,9 +3399,6 @@ export const relations_products = relations(products, ({ many }) => ({
     }),
     customFields: many(products_custom_fields, {
         relationName: "customFields",
-    }),
-    locations: many(products_locations, {
-        relationName: "locations",
     }),
     _rels: many(products_rels, {
         relationName: "_rels",
@@ -3815,6 +3923,23 @@ export const relations_exports = relations(exports, ({ many }) => ({
     }),
 }));
 export const relations_email_templates = relations(email_templates, () => ({}));
+export const relations_search_rels = relations(search_rels, ({ one }) => ({
+    parent: one(search, {
+        fields: [search_rels.parent],
+        references: [search.id],
+        relationName: "_rels",
+    }),
+    productsID: one(products, {
+        fields: [search_rels.productsID],
+        references: [products.id],
+        relationName: "products",
+    }),
+}));
+export const relations_search = relations(search, ({ many }) => ({
+    _rels: many(search_rels, {
+        relationName: "_rels",
+    }),
+}));
 export const relations_payload_jobs_log = relations(
     payload_jobs_log,
     ({ one }) => ({
@@ -3993,6 +4118,11 @@ export const relations_payload_locked_documents_rels = relations(
             references: [email_templates.id],
             relationName: "email-templates",
         }),
+        searchID: one(search, {
+            fields: [payload_locked_documents_rels.searchID],
+            references: [search.id],
+            relationName: "search",
+        }),
         "payload-jobsID": one(payload_jobs, {
             fields: [payload_locked_documents_rels["payload-jobsID"]],
             references: [payload_jobs.id],
@@ -4128,10 +4258,11 @@ type DatabaseSchema = {
     collections: typeof collections;
     category: typeof category;
     products_sales_channels: typeof products_sales_channels;
+    products_variants_additional_info: typeof products_variants_additional_info;
+    products_variants_locations: typeof products_variants_locations;
     products_variants_options: typeof products_variants_options;
     products_variants: typeof products_variants;
     products_custom_fields: typeof products_custom_fields;
-    products_locations: typeof products_locations;
     products: typeof products;
     products_rels: typeof products_rels;
     users_roles: typeof users_roles;
@@ -4186,6 +4317,8 @@ type DatabaseSchema = {
     exports: typeof exports;
     exports_texts: typeof exports_texts;
     email_templates: typeof email_templates;
+    search: typeof search;
+    search_rels: typeof search_rels;
     payload_jobs_log: typeof payload_jobs_log;
     payload_jobs: typeof payload_jobs;
     payload_folders_folder_type: typeof payload_folders_folder_type;
@@ -4205,10 +4338,11 @@ type DatabaseSchema = {
     relations_collections: typeof relations_collections;
     relations_category: typeof relations_category;
     relations_products_sales_channels: typeof relations_products_sales_channels;
+    relations_products_variants_additional_info: typeof relations_products_variants_additional_info;
+    relations_products_variants_locations: typeof relations_products_variants_locations;
     relations_products_variants_options: typeof relations_products_variants_options;
     relations_products_variants: typeof relations_products_variants;
     relations_products_custom_fields: typeof relations_products_custom_fields;
-    relations_products_locations: typeof relations_products_locations;
     relations_products_rels: typeof relations_products_rels;
     relations_products: typeof relations_products;
     relations_users_roles: typeof relations_users_roles;
@@ -4263,6 +4397,8 @@ type DatabaseSchema = {
     relations_exports_texts: typeof relations_exports_texts;
     relations_exports: typeof relations_exports;
     relations_email_templates: typeof relations_email_templates;
+    relations_search_rels: typeof relations_search_rels;
+    relations_search: typeof relations_search;
     relations_payload_jobs_log: typeof relations_payload_jobs_log;
     relations_payload_jobs: typeof relations_payload_jobs;
     relations_payload_folders_folder_type: typeof relations_payload_folders_folder_type;
