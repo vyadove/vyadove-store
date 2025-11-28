@@ -7,18 +7,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { useCart } from "@/providers/cart";
 import DeleteButton from "@/scenes/cart/delete-button";
 import LineItemPrice from "@/scenes/cart/line-item-price";
 import { Routes } from "@/store.routes";
 import { Badge } from "@ui/shadcn/badge";
 import { Button } from "@ui/shadcn/button";
 import { ButtonGroup } from "@ui/shadcn/button-group";
+import { Spinner } from "@ui/shadcn/spinner";
 import { TypographyH3, TypographyP } from "@ui/shadcn/typography";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { Drawer } from "vaul";
-
-import { useCart } from "@/providers/cart";
-
 
 import { convertToLocale } from "@/utils/money";
 
@@ -65,7 +64,7 @@ function SidebarCart() {
   }, [activeTimer]);
 
   // Auto-open cart when items change
-  useEffect(() => {
+  /*useEffect(() => {
     // Don't auto-open if already open or on cart/checkout pages
     if (
       isCartOpen ||
@@ -91,7 +90,7 @@ function SidebarCart() {
     if (totalItems > 0 && currentItems < totalItems) {
       timedOpen();
     }
-  }, [totalItems, pathname, isCartOpen, openCart, closeCart]);
+  }, [totalItems, pathname, isCartOpen, openCart, closeCart]);*/
 
   // hide sidebar when esc pressed
   useEffect(() => {
@@ -179,8 +178,8 @@ function SidebarCart() {
                           <div className="flex flex-1 flex-col justify-between">
                             <div className="flex flex-1 flex-col">
                               <div className="flex items-start justify-between">
-                                <div className="mr-4 flex w-[180px] flex-col text-ellipsis whitespace-nowrap">
-                                  <TypographyP className="overflow-hidden  text-ellipsis">
+                                <div className="mr-4 flex w-[180px]_ flex-col">
+                                  <TypographyP className="overflow-hidden text-ellipsis line-clamp-2">
                                     <Link
                                       data-testid="product-link"
                                       href={`/products/${product.handle}`}
@@ -250,11 +249,15 @@ function SidebarCart() {
                                 </Button>
                               </ButtonGroup>
 
-                              <DeleteButton
-                                className="mt-1"
-                                data-testid="cart-item-remove-button"
-                                variantId={item.variantId}
-                              ></DeleteButton>
+                              {item?.isLoading ? (
+                                <Spinner className="" />
+                              ) : (
+                                <DeleteButton
+                                  className="mt-1"
+                                  data-testid="cart-item-remove-button"
+                                  variantId={item.variantId}
+                                />
+                              )}
                             </div>
                           </div>
                         </div>

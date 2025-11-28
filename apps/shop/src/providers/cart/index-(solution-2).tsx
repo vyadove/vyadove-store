@@ -6,11 +6,8 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useOptimistic,
   useState,
-  useTransition,
 } from "react";
-import { useLocalStorage } from "react-use";
 
 import {
   addToCartAction,
@@ -22,15 +19,13 @@ import {
 import type { StoreCart, StoreCartItem } from "@/providers/cart/store-cart";
 import type { Cart, Product } from "@vyadove/types";
 
-import { toast } from "@/components/ui/hot-toast";
-
 type CartAction =
   | {
-      type: "ADD_ITEM";
-      variantId: string;
-      quantity: number;
-      product?: Product;
-    }
+  type: "ADD_ITEM";
+  variantId: string;
+  quantity: number;
+  product?: Product;
+}
   | { type: "UPDATE_ITEM"; variantId: string; quantity: number }
   | { type: "REMOVE_ITEM"; variantId: string }
   | { type: "CLEAR_CART" }
@@ -226,23 +221,27 @@ const CartContext = createContext<CartContextType | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [actualCart, setActualCart] = useState<Cart>(initialCartState);
-  const [optimisticCart, setOptimisticCart] = useOptimistic(
-    actualCart,
-    cartReducer,
-  );
+  const [displayCart, setDisplayCart] = useState<Cart>(initialCartState);
+  const [pendingActions, setPendingActions] = useState<Set<string>>(new Set());
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isPending, startCartTransition] = useTransition();
-  const isUpdatingCart = isPending;
+  const isUpdatingCart = pendingActions.size > 0;
 
   // Track which items are currently syncing with backend
   const [loadingItems, setLoadingItems] = useState<Set<string>>(new Set());
 
+  // Sync displayCart with actualCart only when no pending actions
+  useEffect(() => {
+    if (pendingActions.size === 0) {
+      setDisplayCart(actualCart);
+    }
+  }, [actualCart, pendingActions]);
+
   // Derived state - single enrichment with all calculations
   const cart = useMemo(
-    () => enrichCartWithVariants(optimisticCart, loadingItems),
-    [optimisticCart, loadingItems],
+    () => enrichCartWithVariants(displayCart, loadingItems),
+    [displayCart, loadingItems],
   );
 
   const items = cart.cartItems || [];
@@ -260,8 +259,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         if (!isMounted) return;
 
         setActualCart(cart);
-        // Keep optimistic state in sync on initial load
-        setOptimisticCart({ type: "SYNC_CART", cart });
+        setDisplayCart(cart);
       } catch (error) {
         console.error("Failed to load cart:", error);
       } finally {
@@ -274,7 +272,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return () => {
       isMounted = false;
     };
-  }, [setOptimisticCart]);
+  }, []);
 
   const openCart = () => setIsCartOpen(true);
   const closeCart = () => setIsCartOpen(false);
@@ -286,49 +284,55 @@ export function CartProvider({ children }: { children: ReactNode }) {
     quantity = 1,
     product?: Product,
   ) => {
+    const actionId = `add-${variantId}-${Date.now()}`;
+
+    // Track pending action
+    setPendingActions((prev) => new Set(prev).add(actionId));
     setLoadingItems((prev) => new Set(prev).add(variantId));
-    const rollbackCart = actualCart;
+
+    // Immediate optimistic update
+    setDisplayCart((prev) =>
+      cartReducer(prev, {
+        type: "ADD_ITEM",
+        variantId,
+        quantity,
+        product,
+      }),
+    );
 
     try {
-      await new Promise<void>((resolve, reject) => {
-        startCartTransition(async () => {
-          try {
-            setOptimisticCart({
-              type: "ADD_ITEM",
-              variantId,
-              quantity,
-              product,
-            });
-
-            const productId = product?.id;
-            const updatedCart = await addToCartAction({
-              variantId,
-              quantity,
-              productId,
-            });
-
-            setActualCart(updatedCart);
-            resolve();
-          } catch (err) {
-            reject(err);
-          }
-        });
+      const productId = product?.id;
+      const updatedCart = await addToCartAction({
+        variantId,
+        quantity,
+        productId,
       });
+
+      // Update actual cart with backend result
+      setActualCart(updatedCart);
+
+      // Immediately update display cart with real data
+      setDisplayCart(updatedCart);
 
       return { success: true };
     } catch (error) {
       console.error("Failed to add to cart:", error);
 
-      startCartTransition(() => {
-        setActualCart(rollbackCart);
-      });
-
-      toast.error(
-        error instanceof Error ? error.message : "Failed to add item to cart",
-      );
+      // Revert display cart to actual cart on error
+      setDisplayCart(actualCart);
 
       return { success: false, error };
     } finally {
+      // Clear pending action tracking
+      setPendingActions((prev) => {
+        const next = new Set(prev);
+
+        next.delete(actionId);
+
+        return next;
+      });
+
+      // Clear loading state
       setLoadingItems((prev) => {
         const next = new Set(prev);
 
@@ -340,56 +344,69 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const updateItemQuantity = async (variantId: string, quantity: number) => {
+    const actionId = `update-${variantId}-${Date.now()}`;
+
+    // Track pending action
+    setPendingActions((prev) => new Set(prev).add(actionId));
     setLoadingItems((prev) => new Set(prev).add(variantId));
-    const rollbackCart = actualCart;
+
+    // Immediate optimistic update
+    setDisplayCart((prev) =>
+      cartReducer(prev, {
+        type: "UPDATE_ITEM",
+        variantId,
+        quantity,
+      }),
+    );
 
     try {
-      await new Promise<void>((resolve, reject) => {
-        setOptimisticCart({ type: "UPDATE_ITEM", variantId, quantity });
+      const item = displayCart?.cartItems?.find(
+        (item) => item.variantId === variantId,
+      );
 
-        startCartTransition(async () => {
-          try {
-            const item = actualCart?.cartItems?.find(
-              (item) => item.variantId === variantId,
-            );
+      if (!item) {
+        return { success: false, error: "Item not found" };
+      }
 
-            if (!item) {
-              reject(new Error("Item not found"));
+      const productId =
+        typeof item.product === "object" ? item.product.id : item.product;
 
-              return;
-            }
+      // fake wait
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+      throw new Error('Simulated error for testing rollback');
 
-            const productId =
-              typeof item.product === "object" ? item.product.id : item.product;
 
-            const updatedCart = await updateCartItemAction({
-              variantId,
-              quantity,
-              productId,
-            });
-
-            setActualCart(updatedCart);
-            resolve();
-          } catch (err) {
-            reject(err);
-          }
-        });
+      const updatedCart = await updateCartItemAction({
+        variantId,
+        quantity,
+        productId,
       });
+
+      // Update actual cart with backend result
+      setActualCart(updatedCart);
+
+      // Immediately update display cart with real data
+      setDisplayCart(updatedCart);
 
       return { success: true };
     } catch (error) {
       console.error("Failed to update cart item:", error);
 
-      startCartTransition(() => {
-        setActualCart(rollbackCart);
-      });
-
-      toast.error(
-        error instanceof Error ? error.message : "Failed to update quantity",
-      );
+      // Revert display cart to actual cart on error
+      setDisplayCart(actualCart);
 
       return { success: false, error };
     } finally {
+      // Clear pending action tracking
+      setPendingActions((prev) => {
+        const next = new Set(prev);
+
+        next.delete(actionId);
+
+        return next;
+      });
+
+      // Clear loading state
       setLoadingItems((prev) => {
         const next = new Set(prev);
 
@@ -401,41 +418,48 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const removeItem = async (variantId: string) => {
+    const actionId = `remove-${variantId}-${Date.now()}`;
+
+    // Track pending action
+    setPendingActions((prev) => new Set(prev).add(actionId));
     setLoadingItems((prev) => new Set(prev).add(variantId));
-    const rollbackCart = actualCart;
+
+    // Immediate optimistic update
+    setDisplayCart((prev) =>
+      cartReducer(prev, {
+        type: "REMOVE_ITEM",
+        variantId,
+      }),
+    );
 
     try {
-      await new Promise<void>((resolve, reject) => {
-        startCartTransition(async () => {
-          try {
-            setOptimisticCart({ type: "REMOVE_ITEM", variantId });
+      const updatedCart = await removeFromCartAction({ variantId });
 
-            const updatedCart = await removeFromCartAction({ variantId });
+      // Update actual cart with backend result
+      setActualCart(updatedCart);
 
-            setActualCart(updatedCart);
-            resolve();
-          } catch (err) {
-            reject(err);
-          }
-        });
-      });
+      // Immediately update display cart with real data
+      setDisplayCart(updatedCart);
 
       return { success: true };
     } catch (error) {
       console.error("Failed to remove from cart:", error);
 
-      startCartTransition(() => {
-        setActualCart(rollbackCart);
-      });
-
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to remove item from cart",
-      );
+      // Revert display cart to actual cart on error
+      setDisplayCart(actualCart);
 
       return { success: false, error };
     } finally {
+      // Clear pending action tracking
+      setPendingActions((prev) => {
+        const next = new Set(prev);
+
+        next.delete(actionId);
+
+        return next;
+      });
+
+      // Clear loading state
       setLoadingItems((prev) => {
         const next = new Set(prev);
 
@@ -447,41 +471,49 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const emptyCart = async () => {
-    const rollbackCart = actualCart;
+    const actionId = `clear-${Date.now()}`;
+
+    // Track pending action
+    setPendingActions((prev) => new Set(prev).add(actionId));
+
+    // Immediate optimistic update
+    setDisplayCart((prev) =>
+      cartReducer(prev, {
+        type: "CLEAR_CART",
+      }),
+    );
 
     try {
-      await new Promise<void>((resolve, reject) => {
-        startCartTransition(async () => {
-          try {
-            setOptimisticCart({ type: "CLEAR_CART" });
+      await clearCartAction();
 
-            await clearCartAction();
+      // Update actual cart
+      const clearedCart = {
+        ...actualCart,
+        cartItems: [],
+      };
 
-            setActualCart((prev) => ({
-              ...prev,
-              cartItems: [],
-            }));
+      setActualCart(clearedCart);
 
-            resolve();
-          } catch (err) {
-            reject(err);
-          }
-        });
-      });
+      // Immediately update display cart with real data
+      setDisplayCart(clearedCart);
 
       return { success: true };
     } catch (error) {
       console.error("Failed to clear cart:", error);
 
-      startCartTransition(() => {
-        setActualCart(rollbackCart);
-      });
-
-      toast.error(
-        error instanceof Error ? error.message : "Failed to clear cart",
-      );
+      // Revert display cart to actual cart on error
+      setDisplayCart(actualCart);
 
       return { success: false, error };
+    } finally {
+      // Clear pending action tracking
+      setPendingActions((prev) => {
+        const next = new Set(prev);
+
+        next.delete(actionId);
+
+        return next;
+      });
     }
   };
 

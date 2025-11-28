@@ -11,6 +11,8 @@ export type StoreCartItem = Omit<
   product: StoreProduct;
   price: number; // The price of the specific variant
   variant?: StoreProduct["variants"][number]; // The specific variant for this cart item
+  itemTotal: number; // Total price for this line item (price * quantity)
+  isLoading?: boolean; // Indicates if this item is currently syncing with backend
 };
 
 export interface Metadata {

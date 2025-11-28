@@ -74,8 +74,6 @@ export default async function Product({
     },
   });
 
-  console.log('slug --- : ', slug, product);
-
 
   const featuredCollections = await payloadSdk.find({
     collection: "collections",

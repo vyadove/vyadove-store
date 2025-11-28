@@ -1,33 +1,7 @@
-import type { StoreCart, StoreCartItem } from "@/providers/cart/store-cart";
 import type { Cart } from "@vyadove/types";
 import Cookies from "js-cookie";
 
 import { payloadSdk } from "@/utils/payload-sdk";
-
-/**
- * Enriches cart items with the variant object by finding the matching variant
- * from product.variants based on variantId
- */
-function enrichCartWithVariants(cart: StoreCart | null): StoreCart | null {
-  if (!cart || !cart.cartItems) return cart;
-
-  const enrichedItems = cart.cartItems.map((item) => {
-    // Find the matching variant from product.variants using variantId
-    const variant = item.product?.variants?.find(
-      (v) => v.id === item.variantId,
-    );
-
-    return {
-      ...item,
-      variant, // Attach the variant object for easier UI access
-    };
-  });
-
-  return {
-    ...cart,
-    cartItems: enrichedItems as StoreCartItem[],
-  };
-}
 
 interface CartItemInput {
   variantId: string;
@@ -37,7 +11,6 @@ interface CartItemInput {
 
 interface RemoveCartItemInput {
   variantId: string;
-  // productId?: number;
 }
 
 export async function getCartAction() {
@@ -49,12 +22,7 @@ export async function getCartAction() {
 
     if (!docs[0]) return null;
 
-    // const cart = docs[0] as StoreCart;
-    const cart = docs[0];
-
-    return cart;
-
-    // return enrichCartWithVariants(cart);
+    return docs[0];
   } catch (error) {
     console.error("Error fetching cart:", error);
     // Remove invalid session cookie to prevent 403 loops
@@ -103,14 +71,10 @@ export async function addToCartAction(input: CartItemInput) {
         data: {
           cartItems: sanitizeCartItems(updatedItems),
         },
-        depth: 2, // Ensure product.variants is populated
+        depth: 2,
       });
 
-      // fake delay for optimistic update
-      await new Promise((resolve) => setTimeout(resolve, 3100));
-
       return updatedCart;
-      // return enrichCartWithVariants(updatedCart as unknown as StoreCart);
     } else {
       // Create new cart using custom endpoint to set session cookie
       const item = {
@@ -138,9 +102,6 @@ export async function addToCartAction(input: CartItemInput) {
         throw new Error(`Cart creation failed: ${response.statusText}`);
       }
 
-      // const data = await response.json();
-
-      // If we fetch fresh immediately:
       const freshCart = await getCartAction();
 
       if (freshCart) return freshCart;
@@ -177,12 +138,10 @@ export async function updateCartItemAction(input: CartItemInput) {
       data: {
         cartItems: sanitizeCartItems(updatedItems),
       },
-      depth: 2, // Ensure product.variants is populated
+      depth: 2,
     });
 
     return updatedCart;
-
-    // return enrichCartWithVariants(updatedCart as unknown as StoreCart);
   } catch (error) {
     console.error("Error updating cart item:", error);
     throw error;
@@ -210,7 +169,6 @@ export async function removeFromCartAction(input: RemoveCartItemInput) {
     });
 
     return updatedCart;
-    // return enrichCartWithVariants(updatedCart as unknown as StoreCart);
   } catch (error) {
     console.error("Error removing from cart:", error);
     throw error;
