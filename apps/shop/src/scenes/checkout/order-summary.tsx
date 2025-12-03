@@ -1,70 +1,28 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import Image from "next/image";
-import Link from "next/link";
 
-import { Routes } from "@/store.routes";
+import { useCheckout } from "@/providers/checkout";
 import {
   TypographyH2,
-  TypographyH3,
   TypographyLarge,
   TypographyMuted,
   TypographyP,
 } from "@ui/shadcn/typography";
-import { Info } from "lucide-react";
 
-import CartTotals from "@/components/cart-totals";
-import { DiscountCode } from "@/components/discount-code";
-import Divider from "@/components/divider";
-import Thumbnail from "@/components/products/product-card/thumbnail";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-
-import { useCart } from "@/providers/cart";
 
 import { convertToLocale } from "@/utils/money";
-import { payloadSdk } from "@/utils/payload-sdk";
 
 export const OrderSummery = () => {
-  const { cartTotal, items, cart } = useCart();
-  const [shippingFee, setShippingFee] = useState(0);
-
-  useEffect(() => {
-    const calculateShippingCost = async () => {
-      const shippingMethods = await payloadSdk.find({
-        collection: "shipping",
-        where: {
-          enabled: {
-            equals: true,
-          },
-        },
-      });
-
-      const shippingMethod =
-        shippingMethods.docs.find(
-          (method) => method.id === (cart as any)?.shippingMethodId,
-        ) || shippingMethods.docs[0];
-
-      if (!shippingMethod) {
-        return;
-      }
-
-      const shippingProvider = shippingMethod.shippingProvider?.[0];
-
-      setShippingFee(shippingProvider?.baseRate || 0);
-    };
-
-    calculateShippingCost();
-  }, [cart]);
+  const { cartTotal, items } = useCheckout();
 
   return (
     <Card className="sticky top-12 self-start rounded-4xl shadow-xl lg:col-span-1">

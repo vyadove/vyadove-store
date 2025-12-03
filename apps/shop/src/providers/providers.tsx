@@ -1,8 +1,7 @@
 "use client";
 
 import { AuthProvider } from "@/providers/auth";
-
-import { CartProvider } from "./cart";
+import { CheckoutProvider } from "@/providers/checkout";
 
 import TanStackQueryProvider from "@/lib/tanstack-query-provider";
 
@@ -11,9 +10,9 @@ export const Providers: React.FC<{
 }> = ({ children }) => {
   return (
     <AuthProvider>
-      <CartProvider>
-        <TanStackQueryProvider>{children}</TanStackQueryProvider>
-      </CartProvider>
+      <TanStackQueryProvider>
+        <CheckoutProvider>{children}</CheckoutProvider>
+      </TanStackQueryProvider>
     </AuthProvider>
   );
 };

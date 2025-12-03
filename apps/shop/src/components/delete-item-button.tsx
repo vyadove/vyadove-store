@@ -1,17 +1,15 @@
 import { useState } from "react";
 
+import { useCheckout } from "@/providers/checkout";
 import { Button } from "@ui/shadcn/button";
 import { Spinner } from "@ui/shadcn/spinner";
 import { Trash } from "lucide-react";
 
 import { toast } from "@/components/ui/hot-toast";
 
-import { useCart } from "@/providers/cart";
-
-
 import { cn } from "@/lib/utils";
 
-const DeleteButton = ({
+const DeleteItemButton = ({
   variantId,
   children,
   className,
@@ -21,7 +19,7 @@ const DeleteButton = ({
   variantId: string;
 }) => {
   const [isDeleting, setIsDeleting] = useState(false);
-  const { removeItem } = useCart();
+  const { removeItem } = useCheckout();
 
   const handleDelete = async (variantId: string) => {
     setIsDeleting(true);
@@ -29,7 +27,7 @@ const DeleteButton = ({
     try {
       const result = await removeItem(variantId);
 
-      if (result.success) {
+      if (result.id) {
         toast.success("Item removed from cart");
       } else {
         toast.error("Failed to remove item from cart");
@@ -52,13 +50,13 @@ const DeleteButton = ({
       <Button
         className="hover:text-destructive hover:bg-destructive/10 cursor-pointer items-center"
         onClick={() => handleDelete(variantId)}
-        size="icon"
+        size="icon-sm"
         variant="secondary"
       >
         {isDeleting ? (
           <Spinner className="animate-spin" />
         ) : (
-          <Trash size={15} />
+          <Trash size={2} />
         )}
 
         {children && <span>{children}</span>}
@@ -67,4 +65,4 @@ const DeleteButton = ({
   );
 };
 
-export default DeleteButton;
+export default DeleteItemButton;

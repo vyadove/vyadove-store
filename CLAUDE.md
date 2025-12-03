@@ -293,4 +293,5 @@ pnpm --filter ./apps/cms generate:types
 - **Next.js 15 Docs**: https://nextjs.org/docs
 - **Stripe Integration**: Custom plugin in `packages/stripe-plugin/`
 - **Discord Community**: https://discord.gg/MFc9x7vdXK
-- uses the project's design system components (Button, Badge, TypographySmall, etc) instead of hardcoded HTML elements with custom styling. This ensures better consistency
+- use the project's design system components (Button, Badge, TypographySmall, etc) instead of hardcoded HTML elements with custom styling. This ensures better consistency.
+- avoid using `any` type in TypeScript whenever possible.

@@ -5,6 +5,10 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { useCheckout } from "@/providers/checkout";
+import type { EnrichedCheckoutItem } from "@/providers/checkout/types";
+import ErrorMessage from "@/scenes/cart/error-message";
+import { Button } from "@ui/shadcn/button";
 import {
   Select,
   SelectContent,
@@ -13,49 +17,40 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@ui/shadcn/select";
-// import Thumbnail from "./thumbnail";
 import { Spinner } from "@ui/shadcn/spinner";
-import { TypographyMuted, TypographyP } from "@ui/shadcn/typography";
+import {
+  TypographyH2,
+  TypographyMuted,
+  TypographyP,
+} from "@ui/shadcn/typography";
+import { Trash } from "lucide-react";
 
-import { TableCell, TableRow } from "@/components/ui/table";
-
-import { useCart } from "@/providers/cart";
-
-
-import type { StoreCartItem } from "@/providers/cart/store-cart";
+import DeleteItemButton from "@/components/delete-item-button";
+import { toast } from "@/components/ui/hot-toast";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 import { convertToLocale } from "@/utils/money";
 
-import DeleteButton from "./delete-button";
-import ErrorMessage from "./error-message";
-
 type ItemProps = {
-  item: StoreCartItem;
+  item: EnrichedCheckoutItem;
   type?: "full" | "preview";
 };
 
 const Item = ({ type = "full", item }: ItemProps) => {
   const [updating, setUpdating] = useState(false);
-  const { updateItemQuantity } = useCart();
+  const { updateItemQuantity } = useCheckout();
   const [error, setError] = useState<null | string>(null);
-
-  const changeQuantity = async (quantity: number) => {
-    setError(null);
-    setUpdating(true);
-
-    try {
-      await updateItemQuantity(item.variantId, quantity);
-    } catch (error: any) {
-      setError(error.message);
-    } finally {
-      setUpdating(false);
-    }
-  };
 
   return (
     <TableRow className="w-full" data-testid="product-row">
       <TableCell className="">
-        <DeleteButton
+        <DeleteItemButton
           data-testid="product-delete-button"
           variantId={item.variantId}
         />
@@ -74,15 +69,20 @@ const Item = ({ type = "full", item }: ItemProps) => {
             </div>
 
             <div className="flex flex-col gap-1">
-              <TypographyP className="text-md" data-testid="product-title">
+              <TypographyP
+                className="relative text-md flex items-center gap-2 pr-2"
+                data-testid="product-title"
+              >
                 {item.product?.title}
+
+                {item?.isLoading && <Spinner className="absolute -right-4" />}
               </TypographyP>
 
               <TypographyMuted className="">
                 {item.quantity} X{" "}
                 {convertToLocale({
                   hiddeCurrency: true,
-                  amount: item.variant?.price || 0,
+                  amount: item.unitPrice || 0,
                 })}{" "}
               </TypographyMuted>
             </div>
@@ -93,7 +93,7 @@ const Item = ({ type = "full", item }: ItemProps) => {
       <TableCell className="text-left">
         <TypographyP className="">
           {convertToLocale({
-            amount: item.variant?.price || 0,
+            amount: item.unitPrice || 0,
           })}
         </TypographyP>
       </TableCell>
@@ -104,7 +104,7 @@ const Item = ({ type = "full", item }: ItemProps) => {
             <Select
               disabled={updating}
               onValueChange={(value) => {
-                changeQuantity(Number.parseInt(value));
+                void updateItemQuantity(item.variantId, Number.parseInt(value));
               }}
               value={item.quantity?.toString()}
             >
@@ -139,7 +139,8 @@ const Item = ({ type = "full", item }: ItemProps) => {
       <TableCell align="right">
         <TypographyP className="font-semibold">
           {convertToLocale({
-            amount: (item.variant?.price || 0) * item.quantity,
+            // amount: (item.unitPrice || 0) * item.quantity,
+            amount: item.totalPrice || 0,
           })}
         </TypographyP>
       </TableCell>
@@ -147,4 +148,61 @@ const Item = ({ type = "full", item }: ItemProps) => {
   );
 };
 
-export default Item;
+const CartItems = () => {
+  const { items, totalUniqueItems, emptyCart } = useCheckout();
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col">
+        <TypographyH2 className="">Basket</TypographyH2>
+        <TypographyP className="">
+          You have <span className="">{totalUniqueItems} Items</span> in your
+          basket
+        </TypographyP>
+      </div>
+      <Table>
+        <TableHeader className="bg-accent">
+          <TableRow>
+            <TableCell className="rounded-l-lg font-semibold "></TableCell>
+            <TableCell className="p-6 font-bold">Product</TableCell>
+            <TableCell className="font-semibold ">Price</TableCell>
+            <TableCell className="font-semibold">Quantity</TableCell>
+            <TableCell align="right" className="rounded-r-lg p-6 font-semibold">
+              Total
+            </TableCell>
+          </TableRow>
+        </TableHeader>
+        <TableBody className="">
+          {items.map((item) => {
+            return <Item item={item} key={item.variantId} />;
+          })}
+        </TableBody>
+      </Table>
+
+      <div className="mt-10">
+        <Button
+          className="hover:text-destructive underline"
+          onClick={async () => {
+            try {
+              const result = await emptyCart();
+
+              if (result.id) {
+                toast.success("Cleared basket");
+              } else {
+                toast.error("Failed to clear basket");
+              }
+            } catch (_) {
+              toast.error("Failed to clear basket");
+            }
+          }}
+          size="lg"
+          variant="link"
+        >
+          <Trash className="" /> Clear Basket ({totalUniqueItems} Items)
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default CartItems;

@@ -15,13 +15,11 @@ import Cookies from "js-cookie";
 
 import CartTotals from "@/components/cart-totals";
 
-import { useCart } from "@/providers/cart";
-
 import { convertToLocale } from "@/utils/money";
 
-import Items from "./items/items";
 import OrderDetails from "./order-details/order-details";
 import ShippingDetails from "./shipping-details";
+import { useCheckout } from "@/providers/checkout";
 
 type OrderCompletedTemplateProps = {
   order: Order;
@@ -51,7 +49,7 @@ const Total = ({ order }: { order: Order }) => {
 };
 
 const OrderTemplate = ({ order }: OrderCompletedTemplateProps) => {
-  const { emptyCart } = useCart();
+  const { emptyCart } = useCheckout();
 
   useLayoutEffect(() => {
     emptyCart();

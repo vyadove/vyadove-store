@@ -108,7 +108,7 @@ const ShopMenuContent = ({ products }: { products: Product[] }) => {
                 </TypographyP>
                 <div className="flex items-center gap-2">
                   <TypographyMuted className="text-[.85rem] font-normal">
-                    {price?.toLocaleString("en-US", {
+                    {price?.amount?.toLocaleString("en-US", {
                       style: "currency",
                       currency: "ETB",
                       minimumFractionDigits: 2,

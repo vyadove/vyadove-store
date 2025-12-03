@@ -9,9 +9,10 @@ import SidebarCart from "@/components/sidebar-cart";
 import { useCart } from "@/providers/cart";
 
 import CartIcon from "./icons/cart-icon";
+import { useCheckout } from "@/providers/checkout";
 
 export function CartIconButton() {
-  const { totalItems: itemCount, totalUniqueItems, toggleCart } = useCart();
+  const { totalItems: itemCount, totalUniqueItems, toggleCart } = useCheckout();
 
   return (
     <>

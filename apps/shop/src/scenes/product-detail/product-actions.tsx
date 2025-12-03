@@ -14,6 +14,7 @@ import type { Product } from "@vyadove/types";
 
 import CartIcon from "@/components/icons/cart-icon";
 import { toast } from "@/components/ui/hot-toast";
+import { useCheckout } from "@/providers/checkout";
 
 type ProductActionsProps = {
   product: Product;
@@ -21,7 +22,7 @@ type ProductActionsProps = {
 
 export default function ProductActions({ product }: ProductActionsProps) {
   const [isAdding, setIsAdding] = useState(false);
-  const { addItem } = useCart();
+  const { addItem } = useCheckout();
   const router = useRouter();
   const { selectedVariant } = useProductDetailContext();
 

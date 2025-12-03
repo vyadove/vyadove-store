@@ -7,17 +7,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { useCart } from "@/providers/cart";
-import DeleteButton from "@/scenes/cart/delete-button";
-import LineItemPrice from "@/scenes/cart/line-item-price";
+import { useCheckout } from "@/providers/checkout";
 import { Routes } from "@/store.routes";
 import { Badge } from "@ui/shadcn/badge";
 import { Button } from "@ui/shadcn/button";
 import { ButtonGroup } from "@ui/shadcn/button-group";
 import { Spinner } from "@ui/shadcn/spinner";
-import { TypographyH3, TypographyP } from "@ui/shadcn/typography";
+import {
+  TypographyH3,
+  TypographyMuted,
+  TypographyP,
+} from "@ui/shadcn/typography";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { Drawer } from "vaul";
+
+import DeleteItemButton from "@/components/delete-item-button";
 
 import { convertToLocale } from "@/utils/money";
 
@@ -32,7 +36,7 @@ function SidebarCart() {
     updateItemQuantity,
     openCart,
     closeCart,
-  } = useCart();
+  } = useCheckout();
 
   const [activeTimer, setActiveTimer] = useState<NodeJS.Timeout | undefined>(
     undefined,
@@ -40,7 +44,6 @@ function SidebarCart() {
   const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
   const itemRef = useRef<number>(totalItems || 0);
-  const subtotal = cartTotal ?? 0;
 
   const modifyQuantity = async (
     variantId: string,
@@ -64,7 +67,7 @@ function SidebarCart() {
   }, [activeTimer]);
 
   // Auto-open cart when items change
-  /*useEffect(() => {
+  useEffect(() => {
     // Don't auto-open if already open or on cart/checkout pages
     if (
       isCartOpen ||
@@ -90,7 +93,7 @@ function SidebarCart() {
     if (totalItems > 0 && currentItems < totalItems) {
       timedOpen();
     }
-  }, [totalItems, pathname, isCartOpen, openCart, closeCart]);*/
+  }, [totalItems, pathname, isCartOpen, openCart, closeCart]);
 
   // hide sidebar when esc pressed
   useEffect(() => {
@@ -159,7 +162,7 @@ function SidebarCart() {
                         <div
                           className="flex gap-x-4 "
                           data-testid="cart-item"
-                          key={item.id || item.variantId}
+                          key={item.variantId}
                         >
                           <Link
                             className=""
@@ -188,15 +191,15 @@ function SidebarCart() {
                                     </Link>
                                   </TypographyP>
                                 </div>
-                                <div className="flex justify-end">
-                                  <LineItemPrice
-                                    cartTotal={
-                                      (item.variant?.price || 0) * item.quantity
-                                    }
-                                    currencyCode={product.currency || "USD"}
-                                    originalPrice={item.variant?.price || 0}
-                                    style="tight"
-                                  />
+                                <div className="flex">
+                                  <TypographyMuted
+                                    className=""
+                                    data-testid="product-price"
+                                  >
+                                    {convertToLocale({
+                                      amount: item.totalPrice || 0,
+                                    })}
+                                  </TypographyMuted>
                                 </div>
                               </div>
                             </div>
@@ -252,7 +255,7 @@ function SidebarCart() {
                               {item?.isLoading ? (
                                 <Spinner className="" />
                               ) : (
-                                <DeleteButton
+                                <DeleteItemButton
                                   className="mt-1"
                                   data-testid="cart-item-remove-button"
                                   variantId={item.variantId}
@@ -299,10 +302,10 @@ function SidebarCart() {
                   <TypographyP
                     className="text-lg font-bold"
                     data-testid="cart-subtotal"
-                    data-value={subtotal}
+                    data-value={cartTotal}
                   >
                     {convertToLocale({
-                      amount: subtotal,
+                      amount: cartTotal,
                     })}
                   </TypographyP>
                 </div>

@@ -4,7 +4,9 @@
       "Bash(dir \"C:\\Users\\phili\\WebstormProjects\\vyadove-org\\apps\\shop\")",
       "Bash(pnpm list:*)",
       "Bash(xargs:*)",
-      "Bash(pnpm lint:*)"
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm tsc:*)",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []

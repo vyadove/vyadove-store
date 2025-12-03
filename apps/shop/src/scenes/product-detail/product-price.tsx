@@ -16,7 +16,11 @@ export default function ProductPrice({ variant }: ProductPriceProps) {
     return null;
   }
 
-  const { price, originalPrice } = selectedVariant;
+  const {
+    price: { amount },
+    originalPrice,
+  } = selectedVariant;
+  const price = amount;
 
   const isOnSale = originalPrice && originalPrice > price;
   const percentageDiff = isOnSale

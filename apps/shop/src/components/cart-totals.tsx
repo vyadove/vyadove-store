@@ -2,24 +2,15 @@
 
 import React from "react";
 
+import { useCheckout } from "@/providers/checkout";
 import { TypographyP } from "@ui/shadcn/typography";
-import type { Order } from "@vyadove/types";
-
-import { useCart } from "@/providers/cart";
 
 import { convertToLocale } from "@/utils/money";
 
-const CartTotals = ({
-  currencyCode,
-  order,
-}: {
-  currencyCode: string;
-  order: Partial<Order>;
-}) => {
-  const taxTotal = 0;
-  const shippingSubtotal = 0;
-  const cartTotal = order.totalAmount;
-  const { totalUniqueItems } = useCart();
+const CartTotals = () => {
+  const { totalUniqueItems, cartTotal, total, checkout } = useCheckout();
+  const taxTotal = checkout?.taxTotal || 0;
+  const shippingSubtotal = checkout?.shippingTotal || 0;
 
   return (
     <div className="flex flex-col gap-6 pt-6">
@@ -37,7 +28,6 @@ const CartTotals = ({
           <TypographyP data-testid="cart-subtotal" data-value={cartTotal || 0}>
             {convertToLocale({
               amount: cartTotal ?? 0,
-              currency_code: currencyCode,
               minimumFractionDigits: 2,
             })}
           </TypographyP>
@@ -53,8 +43,7 @@ const CartTotals = ({
             data-value={shippingSubtotal || 0}
           >
             {convertToLocale({
-              amount: shippingSubtotal ?? 0,
-              currency_code: currencyCode,
+              amount: shippingSubtotal || 0,
               minimumFractionDigits: 2,
             })}
           </TypographyP>
@@ -65,7 +54,6 @@ const CartTotals = ({
           <TypographyP data-testid="cart-taxes" data-value={taxTotal || 0}>
             {convertToLocale({
               amount: taxTotal ?? 0,
-              currency_code: currencyCode,
               minimumFractionDigits: 2,
               minimumIntegerDigits: 1,
             })}
@@ -77,8 +65,7 @@ const CartTotals = ({
         <TypographyP className="text-muted-foreground">Total</TypographyP>
         <TypographyP data-testid="cart-taxes" data-value={taxTotal || 0}>
           {convertToLocale({
-            amount: cartTotal ?? 0,
-            currency_code: currencyCode,
+            amount: total ?? 0,
           })}
         </TypographyP>
       </div>

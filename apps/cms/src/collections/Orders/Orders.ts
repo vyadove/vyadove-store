@@ -57,6 +57,11 @@ export const Orders: CollectionConfig = {
                     type: "relationship",
                     relationTo: "carts",
                 },
+                {
+                    name: "checkout",
+                    type: "relationship",
+                    relationTo: "checkout",
+                },
             ],
         },
         {

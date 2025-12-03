@@ -5,30 +5,25 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { useCheckout } from "@/providers/checkout";
 import { Routes } from "@/store.routes";
 import { Button } from "@ui/shadcn/button";
-import { TypographyH2, TypographyH3 } from "@ui/shadcn/typography";
+import { TypographyH3 } from "@ui/shadcn/typography";
 import type { GiftCard } from "@vyadove/types";
 
 import CartTotals from "@/components/cart-totals";
-import { DiscountCode } from "@/components/discount-code";
 import Divider from "@/components/divider";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-
-import { useCart } from "@/providers/cart";
-
 
 const Summary = () => {
   const [isPending, startTransition] = useTransition();
   const [promotions, setPromotions] = useState<GiftCard[]>([]);
-  const { items } = useCart();
+  const { items, cartTotal } = useCheckout();
   const router = useRouter();
 
   const handleClick = () => {
@@ -70,16 +65,7 @@ const Summary = () => {
           setPromotions={setPromotions}
         />*/}
         <Divider />
-        <CartTotals
-          currencyCode={items[0]?.product?.currency || "USD"}
-          order={{
-            totalAmount: items.reduce(
-              (acc, item: any) =>
-                acc + (item.variant?.price || 0) * item.quantity,
-              0,
-            ),
-          }}
-        />
+        <CartTotals />
       </CardContent>
 
       <CardFooter className="flex flex-col gap-2">

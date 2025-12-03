@@ -82,7 +82,7 @@ const enrichCartWithVariants = (
   const enrichedItems = items.map((item) => {
     const product = typeof item.product === "object" ? item.product : undefined;
     const variant = product?.variants?.find((v) => v.id === item.variantId);
-    const price = variant?.price || 0;
+    const price = variant?.price?.amount || 0;
 
     return {
       ...item,

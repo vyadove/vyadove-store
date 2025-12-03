@@ -39,6 +39,7 @@ import { Forms } from "@/collections/pages/Forms";
 import { MainMenu } from "@/globals/MainMenu";
 import { seedForms } from "@/seed/seed-forms";
 import { Category } from "@/collections/category";
+import { Checkouts } from "@/collections/checkout";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -87,6 +88,7 @@ export default buildConfig({
         GiftCards,
         Themes,
         Carts,
+        Checkouts,
 
         // Pages
         HeroPage,

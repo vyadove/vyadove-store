@@ -182,17 +182,39 @@ export const Products: CollectionConfig = {
                     label: "Gallery",
                     relationTo: "media",
                 },
+
+                {
+                    name: "price",
+                    label: "Price",
+                    type: "group",
+                    fields: [
+                        {
+                            name: "amount",
+                            type: "number",
+                            required: true,
+                            defaultValue: 0,
+                            min: 0,
+                        },
+                        { name: "currency", type: "text", defaultValue: "USD" },
+                    ],
+                },
+
                 {
                     type: "row",
                     fields: [
-                        {
+                        /*{
                             name: "price",
                             type: "number",
                             required: true,
-                        },
+                        },*/
                         {
                             name: "originalPrice",
                             type: "number",
+                            admin: {
+                                readOnly: true,
+                                description:
+                                    "this field is deprecated, use price.amount instead",
+                            },
                         },
                         {
                             name: "available",

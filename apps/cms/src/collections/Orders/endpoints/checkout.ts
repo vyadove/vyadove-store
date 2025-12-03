@@ -24,7 +24,7 @@ const calculateOrderTotals = (
             if (!variant) {
                 return sum;
             }
-            return sum.plus(new Decimal(variant.price).times(item.quantity));
+            return sum.plus(new Decimal(variant.price?.amount).times(item.quantity));
         }, new Decimal(0)) || new Decimal(0);
     const total = subtotal.plus(new Decimal(shippingCost));
 

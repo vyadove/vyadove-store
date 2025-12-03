@@ -9,14 +9,12 @@ import Divider from "@/components/divider";
 import EmptyCartMessage from "@/components/empty-cart-message";
 import SignInPrompt from "@/components/sign-in-prompt";
 
-import { useCart } from "@/providers/cart";
-
-
-import ItemsTemplate from "./items";
+import CartItems from "./cart-items";
 import Summary from "./summary";
+import { useCheckout } from "@/providers/checkout";
 
 const CartTemplate = () => {
-  const { items } = useCart();
+  const { items } = useCheckout();
   const [isMounted, setIsMounted] = useState(false);
   const { user } = useAuth();
 
@@ -45,7 +43,7 @@ const CartTemplate = () => {
                 </>
               )}
 
-              <ItemsTemplate />
+              <CartItems />
             </div>
 
             <div className="relative">

@@ -149,7 +149,8 @@ const generateMeta = ({
       shortcut: "/favicon-16x16.png",
       apple: "/apple-touch-icon.png",
     },
-    manifest: `${siteUrl}/site.webmanifest`,
+    // manifest: `${siteUrl}/site.webmanifest`,
+    // manifest: `${siteUrl}/webmanifest.ts`,
   } satisfies Metadata;
 };
 

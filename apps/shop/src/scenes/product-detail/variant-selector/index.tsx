@@ -146,7 +146,7 @@ const VariantSelector = ({ variants }: Props) => {
 
                       <TypographyH5 className="mt-1 font-semibold">
                         {convertToLocale({
-                          amount: variant.price,
+                          amount: variant.price.amount,
                         })}
                       </TypographyH5>
                     </div>

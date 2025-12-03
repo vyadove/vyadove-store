@@ -78,6 +78,7 @@ export interface Config {
     'gift-cards': GiftCard;
     themes: Theme;
     carts: Cart;
+    checkout: Checkout;
     'hero-page': HeroPage;
     'footer-page': FooterPage;
     'privacy-policy-page': PrivacyPolicyPage;
@@ -124,6 +125,7 @@ export interface Config {
     'gift-cards': GiftCardsSelect<false> | GiftCardsSelect<true>;
     themes: ThemesSelect<false> | ThemesSelect<true>;
     carts: CartsSelect<false> | CartsSelect<true>;
+    checkout: CheckoutSelect<false> | CheckoutSelect<true>;
     'hero-page': HeroPageSelect<false> | HeroPageSelect<true>;
     'footer-page': FooterPageSelect<false> | FooterPageSelect<true>;
     'privacy-policy-page': PrivacyPolicyPageSelect<false> | PrivacyPolicyPageSelect<true>;
@@ -200,6 +202,7 @@ export interface Order {
   totalAmount: number;
   user?: (number | null) | User;
   cart?: (number | null) | Cart;
+  checkout?: (number | null) | Checkout;
   source?: 'manual' | null;
   currency: string;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
@@ -349,7 +352,13 @@ export interface Product {
     sku?: string | null;
     imageUrl?: string | null;
     gallery?: (number | Media)[] | null;
-    price: number;
+    price: {
+      amount: number;
+      currency?: string | null;
+    };
+    /**
+     * this field is deprecated, use price.amount instead
+     */
     originalPrice?: number | null;
     available?: boolean | null;
     /**
@@ -517,43 +526,130 @@ export interface Category {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payments".
+ * via the `definition` "checkout".
  */
-export interface Payment {
+export interface Checkout {
   id: number;
-  name: string;
-  enabled?: boolean | null;
-  providers?:
-    | (
-        | {
-            methodType: 'cod' | 'bankTransfer' | 'inStore' | 'other';
-            /**
-             * Shown to customers at checkout.
-             */
-            instructions: string;
-            details?:
-              | {
-                  label: string;
-                  value: string;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'manual';
-          }
-        | {
-            providerName: string;
-            testMode?: boolean | null;
-            methodType?: ('card' | 'ach' | 'auto') | null;
-            stripeSecretKey: string;
-            stripeWebhooksEndpointSecret: string;
-            publishableKey: string;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'stripe';
-          }
-      )[]
+  sessionId: string;
+  /**
+   * Linked user account if authenticated
+   */
+  customer?: (number | null) | User;
+  items?:
+    | {
+        product: number | Product;
+        variantId: string;
+        quantity: number;
+        /**
+         * Price per unit at time of adding to checkout
+         */
+        unitPrice?: number | null;
+        /**
+         * Unit price × quantity
+         */
+        totalPrice?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  shippingAddress?: {
+    firstName?: string;
+    lastName?: string;
+    company?: string;
+    streetAddress1?: string;
+    streetAddress2?: string;
+    city?: string;
+    postalCode?: string;
+    state?: string;
+    country?: string;
+    phone?: string;
+    [k: string]: unknown;
+  };
+  billingAddress?: {
+    firstName?: string;
+    lastName?: string;
+    company?: string;
+    streetAddress1?: string;
+    streetAddress2?: string;
+    city?: string;
+    postalCode?: string;
+    state?: string;
+    country?: string;
+    phone?: string;
+    [k: string]: unknown;
+  };
+  /**
+   * Selected shipping method
+   */
+  shippingMethod?: (number | null) | Shipping;
+  /**
+   * Selected payment method
+   */
+  payment?: (number | null) | Payment;
+  /**
+   * Stripe payment intent ID
+   */
+  paymentIntentId?: string | null;
+  currency: string;
+  /**
+   * Sum of all line item totals
+   */
+  subtotal?: number | null;
+  /**
+   * Shipping cost
+   */
+  shippingTotal?: number | null;
+  /**
+   * Total tax amount
+   */
+  taxTotal?: number | null;
+  /**
+   * Total discount applied
+   */
+  discountTotal?: number | null;
+  /**
+   * Grand total (subtotal + shipping + tax - discount)
+   */
+  total: number;
+  /**
+   * Applied coupon/voucher code
+   */
+  voucherCode?: string | null;
+  /**
+   * Applied gift card
+   */
+  giftCard?: (number | null) | GiftCard;
+  /**
+   * Optional note from customer
+   */
+  customerNote?: string | null;
+  /**
+   * Contact email for order confirmation
+   */
+  email?: string | null;
+  status: 'incomplete' | 'complete' | 'expired' | 'cancelled';
+  /**
+   * When checkout was completed and converted to order
+   */
+  completedAt?: string | null;
+  /**
+   * When this checkout session becomes invalid (typically 30 days)
+   */
+  expiresAt?: string | null;
+  /**
+   * Created order when checkout is completed
+   */
+  order?: (number | null) | Order;
+  /**
+   * Additional custom data
+   */
+  metadata?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
     | null;
   updatedAt: string;
   createdAt: string;
@@ -613,6 +709,65 @@ export interface Location {
   hours?: string | null;
   enabled?: boolean | null;
   isPickupLocation?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments".
+ */
+export interface Payment {
+  id: number;
+  name: string;
+  enabled?: boolean | null;
+  providers?:
+    | (
+        | {
+            methodType: 'cod' | 'bankTransfer' | 'inStore' | 'other';
+            /**
+             * Shown to customers at checkout.
+             */
+            instructions: string;
+            details?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'manual';
+          }
+        | {
+            providerName: string;
+            testMode?: boolean | null;
+            methodType?: ('card' | 'ach' | 'auto') | null;
+            stripeSecretKey: string;
+            stripeWebhooksEndpointSecret: string;
+            publishableKey: string;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'stripe';
+          }
+      )[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gift-cards".
+ */
+export interface GiftCard {
+  id: number;
+  code: string;
+  value: number;
+  customer?: (number | null) | User;
+  /**
+   * Date gift card will expire
+   */
+  expiryDate?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -684,22 +839,6 @@ export interface Policy {
   title: string;
   description?: string | null;
   handle?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "gift-cards".
- */
-export interface GiftCard {
-  id: number;
-  code: string;
-  value: number;
-  customer?: (number | null) | User;
-  /**
-   * Date gift card will expire
-   */
-  expiryDate?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1298,6 +1437,10 @@ export interface PayloadLockedDocument {
         value: number | Cart;
       } | null)
     | ({
+        relationTo: 'checkout';
+        value: number | Checkout;
+      } | null)
+    | ({
         relationTo: 'hero-page';
         value: number | HeroPage;
       } | null)
@@ -1420,6 +1563,7 @@ export interface OrdersSelect<T extends boolean = true> {
   totalAmount?: T;
   user?: T;
   cart?: T;
+  checkout?: T;
   source?: T;
   currency?: T;
   paymentStatus?: T;
@@ -1515,7 +1659,12 @@ export interface ProductsSelect<T extends boolean = true> {
         sku?: T;
         imageUrl?: T;
         gallery?: T;
-        price?: T;
+        price?:
+          | T
+          | {
+              amount?: T;
+              currency?: T;
+            };
         originalPrice?: T;
         available?: T;
         pricingTier?: T;
@@ -1691,6 +1840,46 @@ export interface CartsSelect<T extends boolean = true> {
         id?: T;
       };
   completed?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "checkout_select".
+ */
+export interface CheckoutSelect<T extends boolean = true> {
+  sessionId?: T;
+  customer?: T;
+  items?:
+    | T
+    | {
+        product?: T;
+        variantId?: T;
+        quantity?: T;
+        unitPrice?: T;
+        totalPrice?: T;
+        id?: T;
+      };
+  shippingAddress?: T;
+  billingAddress?: T;
+  shippingMethod?: T;
+  payment?: T;
+  paymentIntentId?: T;
+  currency?: T;
+  subtotal?: T;
+  shippingTotal?: T;
+  taxTotal?: T;
+  discountTotal?: T;
+  total?: T;
+  voucherCode?: T;
+  giftCard?: T;
+  customerNote?: T;
+  email?: T;
+  status?: T;
+  completedAt?: T;
+  expiresAt?: T;
+  order?: T;
+  metadata?: T;
   updatedAt?: T;
   createdAt?: T;
 }
