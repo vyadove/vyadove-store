@@ -110,7 +110,6 @@ const ShopMenuContent = ({ products }: { products: Product[] }) => {
                   <TypographyMuted className="text-[.85rem] font-normal">
                     {price?.amount?.toLocaleString("en-US", {
                       style: "currency",
-                      currency: "ETB",
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                       trailingZeroDisplay: "stripIfInteger",

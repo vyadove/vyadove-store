@@ -5,6 +5,7 @@ import React, { useLayoutEffect } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { useCheckout } from "@/providers/checkout";
 import { OrderSuccess } from "@/scenes/order/order-sucess";
 import PaymentDetails from "@/scenes/order/payment-details";
 import { usePayloadFindQuery } from "@/scenes/shop/use-payload-find-query";
@@ -19,7 +20,6 @@ import { convertToLocale } from "@/utils/money";
 
 import OrderDetails from "./order-details/order-details";
 import ShippingDetails from "./shipping-details";
-import { useCheckout } from "@/providers/checkout";
 
 type OrderCompletedTemplateProps = {
   order: Order;
@@ -53,8 +53,6 @@ const OrderTemplate = ({ order }: OrderCompletedTemplateProps) => {
 
   useLayoutEffect(() => {
     emptyCart();
-    Cookies.remove("cart-session");
-    Cookies.remove("checkout-session");
   }, []);
 
   return (

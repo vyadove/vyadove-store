@@ -7,13 +7,13 @@ import { TypographyP } from "@ui/shadcn/typography";
 
 import { convertToLocale } from "@/utils/money";
 
-const CartTotals = () => {
+const CartTotals = ({ totalLabel }: { totalLabel?: string }) => {
   const { totalUniqueItems, cartTotal, total, checkout } = useCheckout();
   const taxTotal = checkout?.taxTotal || 0;
   const shippingSubtotal = checkout?.shippingTotal || 0;
 
   return (
-    <div className="flex flex-col gap-6 pt-6">
+    <div className="flex flex-col gap-6 py-6">
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <TypographyP className="text-muted-foreground">Items</TypographyP>
@@ -61,8 +61,11 @@ const CartTotals = () => {
         </div>
       </div>
 
-      <div className=" flex justify-between border-t py-6">
-        <TypographyP className="text-muted-foreground">Total</TypographyP>
+      <div className=" flex justify-between border-t pt-6">
+        <TypographyP className="text-muted-foreground">
+          {" "}
+          {totalLabel || "Total"}
+        </TypographyP>
         <TypographyP data-testid="cart-taxes" data-value={taxTotal || 0}>
           {convertToLocale({
             amount: total ?? 0,

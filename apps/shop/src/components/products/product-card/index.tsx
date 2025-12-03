@@ -15,6 +15,7 @@ import { VyaLink } from "@ui/vya-link";
 import type { Media, Product } from "@vyadove/types";
 
 import InvertedCornerMask from "@/components/inverted-corner-mask";
+import { convertToLocale } from "@/utils/money";
 
 export const ProductPreview = ({ product }: { product: Product }) => {
   const { originalPrice, price } = product.variants?.[0] || {};
@@ -85,11 +86,15 @@ export const ProductPreview = ({ product }: { product: Product }) => {
 
         <div className="my-auto flex items-center gap-4">
           <TypographyP className="text-[1rem]">
-            ETB {price?.toLocaleString("en-US")}
+            {convertToLocale({
+              amount: price?.amount ?? 0,
+            })}
           </TypographyP>
           {originalPrice && (
             <TypographyMuted className="text-muted-foreground/60 text-[1rem] font-normal line-through">
-              ETB {originalPrice?.toLocaleString("en-US")}
+              {convertToLocale({
+                amount: originalPrice ?? 0,
+              })}
             </TypographyMuted>
           )}
         </div>

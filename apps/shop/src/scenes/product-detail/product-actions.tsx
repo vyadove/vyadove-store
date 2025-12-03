@@ -5,7 +5,6 @@ import { TbCreditCardPay } from "react-icons/tb";
 
 import { useRouter } from "next/navigation";
 
-import { useCart } from "@/providers/cart";
 import { useProductDetailContext } from "@/scenes/product-detail/index";
 import { Routes } from "@/store.routes";
 import { Button } from "@ui/shadcn/button";

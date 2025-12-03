@@ -19,6 +19,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { Edit2 } from "lucide-react";
 
 const Summary = () => {
   const [isPending, startTransition] = useTransition();

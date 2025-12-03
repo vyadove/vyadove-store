@@ -79,3 +79,6 @@ coverage/
 
 # Logs
 *.log
+nul
+/nul
+.playwright-mcp

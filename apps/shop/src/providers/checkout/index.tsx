@@ -4,6 +4,7 @@ import {
   createContext,
   type ReactNode,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -280,16 +281,39 @@ function optimisticRemoveItem(
   };
 }
 
+const CHECKOUT_SESSION_FLAG = "has-checkout-session";
+
 export function CheckoutProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Fetch checkout
+  // Track whether we should fetch checkout (only if session exists)
+  // Start with false to avoid hydration mismatch, then check localStorage on mount
+  const [shouldFetchCheckout, setShouldFetchCheckout] = useState(false);
+
+  // Check localStorage after mount to enable query if session exists
+  useEffect(() => {
+    const hasSession = localStorage.getItem(CHECKOUT_SESSION_FLAG) === "true";
+
+    if (hasSession) {
+      setShouldFetchCheckout(true);
+    }
+  }, []);
+
+  // Fetch checkout - only enabled if we know a session exists
   const { data: checkout, isLoading } = useQuery({
     queryKey: CHECKOUT_QUERY_KEY,
     queryFn: getCheckoutAction,
     staleTime: 5 * 60 * 1000, // 5 minutes
+    enabled: shouldFetchCheckout, // Only fetch if session flag is set
+    retry: false, // Don't retry on 403
   });
+
+  // Clear flag if checkout query returns undefined (session expired or completed)
+  /*  if (shouldFetchCheckout && !isLoading && !checkout) {
+    localStorage.removeItem(CHECKOUT_SESSION_FLAG);
+    setShouldFetchCheckout(false);
+  }*/
 
   // Add item mutation
   const addItemMutation = useMutation({
@@ -334,16 +358,25 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
 
       return { previousCheckout };
     },
-    onError: (error, _variables, context) => {
-      // Rollback on error
-      queryClient.setQueryData(CHECKOUT_QUERY_KEY, context?.previousCheckout);
-      toast.error(
-        error instanceof Error ? error.message : "Failed to add item to cart",
-      );
-    },
-    onSuccess: (data) => {
-      // Update with server data
-      queryClient.setQueryData(CHECKOUT_QUERY_KEY, data);
+    onSettled: (data, error, variables, onMutateResult) => {
+      if (error) {
+        // Rollback on error
+        queryClient.setQueryData(
+          CHECKOUT_QUERY_KEY,
+          onMutateResult?.previousCheckout,
+        );
+        toast.error(error.message || "Failed to add item to cart");
+      }
+
+      if (data) {
+        // Set flag to enable future queries (persists across page reloads)
+        if (!shouldFetchCheckout && data.sessionId) {
+          localStorage.setItem(CHECKOUT_SESSION_FLAG, "true");
+          setShouldFetchCheckout(true);
+        }
+
+        queryClient.setQueryData(CHECKOUT_QUERY_KEY, data);
+      }
     },
   });
 
