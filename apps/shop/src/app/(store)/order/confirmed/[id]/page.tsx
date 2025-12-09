@@ -4,13 +4,12 @@ import { notFound } from "next/navigation";
 
 import OrderTemplate from "@/scenes/order";
 
-import { getOrder } from "@/services/orders";
-
-import { payloadSdk } from "@/utils/payload-sdk";
+import { getServerSdk } from "@/utils/payload-sdk-server";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
+
 export const metadata: Metadata = {
   description: "You purchase was successful",
   title: "Order Confirmed",
@@ -18,8 +17,9 @@ export const metadata: Metadata = {
 
 export default async function OrderConfirmedPage(props: Props) {
   const params = await props.params;
+  const sdk = await getServerSdk();
 
-  const orderQuery = await payloadSdk.find({
+  const orderQuery = await sdk.find({
     collection: "orders",
     depth: 2,
     where: {
@@ -29,13 +29,7 @@ export default async function OrderConfirmedPage(props: Props) {
     },
   });
 
-  await new Promise(resolve => {
-    setTimeout(resolve, 3000);
-  })
-
-  const order = orderQuery.docs[0] || null;
-
-  console.log('order --  ', order);
+  const order = orderQuery.docs?.[0];
 
   if (!order) {
     return notFound();

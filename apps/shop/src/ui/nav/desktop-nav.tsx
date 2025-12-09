@@ -29,6 +29,7 @@ import { cn } from "@/lib/utils";
 import { getVariantImage } from "@/utils/get-variant-image";
 import { payloadSdk } from "@/utils/payload-sdk";
 import { SearchSheet } from "@ui/nav/search-input";
+import { convertToLocale } from "@/utils/money";
 
 const shopLinks = [
   {
@@ -108,11 +109,10 @@ const ShopMenuContent = ({ products }: { products: Product[] }) => {
                 </TypographyP>
                 <div className="flex items-center gap-2">
                   <TypographyMuted className="text-[.85rem] font-normal">
-                    {price?.amount?.toLocaleString("en-US", {
-                      style: "currency",
+                    {convertToLocale({
+                      amount: price?.amount || 0,
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
-                      trailingZeroDisplay: "stripIfInteger",
                     })}
                   </TypographyMuted>
                 </div>

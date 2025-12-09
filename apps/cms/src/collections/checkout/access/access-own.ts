@@ -11,6 +11,8 @@ export const canAccessOwnCheckout : Access = ({ req }) => {
 
     const sessionId = cookies.get("checkout-session");
 
+    console.log('session id --- : ', sessionId);
+
     if (!sessionId) {
         return false;
     }

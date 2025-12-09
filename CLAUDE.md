@@ -4,7 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Vyadove (ShopNex)** is an open-source e-commerce platform built as a monorepo. It consists of a headless CMS powered by Payload CMS and a Next.js 15 storefront with Stripe payment integration. The platform emphasizes developer experience with TypeScript, a modular plugin architecture, and modern React patterns.
+- **Vyadove** is a modern gifting and experience-sharing e-commerce platform.
+  It allows users to discover and purchase thoughtfully crafted gifts, each with multiple styles, variants, and personalization options. Vyadove emphasizes not only the product but the emotional experience behind the gift—combining visuals, storytelling, and interactive elements to enhance how gifts are chosen, shared, and remembered.
+
+
+- Technically, Vyadove is built on Next.js, Tailwind, shadcn/ui, Payload CMS, and Vercel, using a reusable component system and a clean design language. The architecture supports a flexible product model with variants, rich media, dynamic pages, and scalable checkout flows—designed for smooth, premium gifting experiences.
+
+- It consists of a headless CMS powered by Payload CMS and a Next.js 15 storefront with Stripe payment integration. The platform emphasizes developer experience with TypeScript, a modular plugin architecture, and modern React patterns.
 
 ## Monorepo Structure
 
@@ -110,7 +116,7 @@ Core collections defined in `apps/cms/src/payload.config.ts`:
 **Commerce Collections:**
 - `products` - Product catalog with variants, pricing tiers, inventory
 - `orders` - Order management with timeline tracking
-- `carts` - Shopping cart with session/user association
+- `checkouts` - Shopping checkout with session/user association
 - `payments` - Payment records (Stripe integration)
 - `checkout-sessions` - Checkout flow state
 - `collections` - Product collections/groupings

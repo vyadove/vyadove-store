@@ -20,6 +20,7 @@ import {
   getCheckoutAction,
   removeFromCheckoutAction,
   updateCheckoutAddressAction,
+  updateCheckoutFormAction,
   updateCheckoutItemAction,
   updateCheckoutPaymentAction,
   updateCheckoutShippingAction,
@@ -59,7 +60,7 @@ interface CheckoutContextType {
     quantity: number,
     product?: Product,
     unitPrice?: number,
-  ) => Promise<void>;
+  ) => Promise<Checkout>;
   updateItemQuantity: (
     variantId: string,
     quantity: number,
@@ -69,6 +70,11 @@ interface CheckoutContextType {
   updateAddress: (data: CheckoutAddressUpdate) => Promise<Checkout>;
   updateShipping: (shippingMethodId: number) => Promise<Checkout>;
   updatePayment: (paymentMethodId: number) => Promise<Checkout>;
+  updateCheckoutForm: (
+    providerId: string,
+    shippingMethodString: string,
+    addresses: CheckoutAddressUpdate,
+  ) => Promise<Checkout>;
 }
 
 const CheckoutContext = createContext<CheckoutContextType | null>(null);
@@ -90,15 +96,10 @@ function enrichCheckout(checkout: Checkout | null): StoreCheckout | null {
       const product = item.product as Product;
       const variant = product.variants?.find((v) => v.id === item.variantId);
 
-      // const unitPrice = item.unitPrice || variant?.price?.amount || 0;
-      // const totalPrice = item.totalPrice || unitPrice * item.quantity;
-
       return {
         ...item,
         product,
         variant,
-        // unitPrice,
-        // totalPrice,
       } as EnrichedCheckoutItem;
     })
     .filter((item): item is EnrichedCheckoutItem => item !== null);
@@ -289,31 +290,52 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
 
   // Track whether we should fetch checkout (only if session exists)
   // Start with false to avoid hydration mismatch, then check localStorage on mount
-  const [shouldFetchCheckout, setShouldFetchCheckout] = useState(false);
+  const [shouldFetchCheckout, setShouldFetchCheckout] = useState<{
+    value: boolean;
+    isInitial?: boolean;
+  }>({
+    isInitial: true,
+    value: false,
+  });
 
   // Check localStorage after mount to enable query if session exists
   useEffect(() => {
     const hasSession = localStorage.getItem(CHECKOUT_SESSION_FLAG) === "true";
 
     if (hasSession) {
-      setShouldFetchCheckout(true);
+      setShouldFetchCheckout({
+        value: true,
+        isInitial: false,
+      });
+    } else {
+      setShouldFetchCheckout({
+        value: false,
+        isInitial: false,
+      });
     }
   }, []);
 
   // Fetch checkout - only enabled if we know a session exists
-  const { data: checkout, isLoading } = useQuery({
+  const {
+    data: checkout,
+    isLoading,
+    isPending,
+  } = useQuery({
     queryKey: CHECKOUT_QUERY_KEY,
     queryFn: getCheckoutAction,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    enabled: shouldFetchCheckout, // Only fetch if session flag is set
-    retry: false, // Don't retry on 403
+    // enabled: shouldFetchCheckout.value, // Only fetch if session flag is set
   });
 
-  // Clear flag if checkout query returns undefined (session expired or completed)
-  /*  if (shouldFetchCheckout && !isLoading && !checkout) {
-    localStorage.removeItem(CHECKOUT_SESSION_FLAG);
-    setShouldFetchCheckout(false);
-  }*/
+  useEffect(() => {
+    // Clear flag if checkout query returns undefined (session expired or completed)
+    if (shouldFetchCheckout.value && !isLoading && !checkout) {
+      localStorage.removeItem(CHECKOUT_SESSION_FLAG);
+      setShouldFetchCheckout({
+        value: false,
+      });
+    }
+  }, [shouldFetchCheckout, checkout, isLoading]);
 
   // Add item mutation
   const addItemMutation = useMutation({
@@ -359,6 +381,9 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
       return { previousCheckout };
     },
     onSettled: (data, error, variables, onMutateResult) => {
+
+      console.log('data -- : ', data, error);
+
       if (error) {
         // Rollback on error
         queryClient.setQueryData(
@@ -372,12 +397,17 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
         // Set flag to enable future queries (persists across page reloads)
         if (!shouldFetchCheckout && data.sessionId) {
           localStorage.setItem(CHECKOUT_SESSION_FLAG, "true");
-          setShouldFetchCheckout(true);
+          setShouldFetchCheckout({
+            value: true,
+          });
         }
 
         queryClient.setQueryData(CHECKOUT_QUERY_KEY, data);
       }
     },
+    onSuccess: (data) => {
+      console.log('onSuccess data --- : ', data);
+    }
   });
 
   // Update item mutation
@@ -509,6 +539,35 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     },
   });
 
+  // Unified form update mutation
+  const updateFormMutation = useMutation({
+    mutationFn: ({
+      providerId,
+      shippingMethodString,
+      addresses,
+    }: {
+      providerId: string;
+      shippingMethodString: string;
+      addresses: CheckoutAddressUpdate;
+    }) =>
+      updateCheckoutFormAction(
+        providerId,
+        shippingMethodString,
+        addresses,
+        checkout!,
+      ),
+    onSuccess: (data) => {
+      queryClient.setQueryData(CHECKOUT_QUERY_KEY, data);
+    },
+    onError: (error) => {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to update checkout details",
+      );
+    },
+  });
+
   // Enrich checkout with computed fields
   const enrichedCheckout = useMemo(
     () => enrichCheckout(checkout || null),
@@ -519,10 +578,12 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
   const itemCount = enrichedCheckout?.itemCount || 0;
   const totalUniqueItems = enrichedCheckout?.totalUniqueItems || 0;
 
-  // todo : recalculate totals properly
   const cartTotal = enrichedCheckout?.subtotal || 0;
   const total = enrichedCheckout?.total || 0;
   const isEmpty = enrichedCheckout?.isEmpty ?? true;
+
+  const isCartLoading =
+    isLoading || (shouldFetchCheckout.isInitial && isPending);
 
   const isUpdating =
     addItemMutation.isPending ||
@@ -531,7 +592,8 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     clearCartMutation.isPending ||
     updateAddressMutation.isPending ||
     updateShippingMutation.isPending ||
-    updatePaymentMutation.isPending;
+    updatePaymentMutation.isPending ||
+    updateFormMutation.isPending;
 
   const openCart = () => setIsCartOpen(true);
   const closeCart = () => setIsCartOpen(false);
@@ -544,7 +606,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     product?: Product,
     unitPrice?: number,
   ) => {
-    await addItemMutation.mutateAsync({
+    return await addItemMutation.mutateAsync({
       variantId,
       quantity,
       productId: product?.id,
@@ -578,11 +640,23 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     return await updatePaymentMutation.mutateAsync(paymentMethodId);
   };
 
+  const updateCheckoutForm = async (
+    providerId: string,
+    shippingMethodString: string,
+    addresses: CheckoutAddressUpdate,
+  ) => {
+    return await updateFormMutation.mutateAsync({
+      providerId,
+      shippingMethodString,
+      addresses,
+    });
+  };
+
   const value = {
     checkout: enrichedCheckout,
     items,
     isCartOpen,
-    isLoading,
+    isLoading: isCartLoading,
     isUpdating,
     itemCount,
     totalItems: itemCount,
@@ -600,6 +674,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     updateAddress,
     updateShipping,
     updatePayment,
+    updateCheckoutForm,
   } as CheckoutContextType;
 
   return (

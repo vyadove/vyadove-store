@@ -88,7 +88,6 @@ export async function addToCheckoutAction(
   input: CheckoutItemInput,
   existingCheckout?: Checkout,
 ): Promise<Checkout> {
-
   try {
     if (!existingCheckout) {
       // Create new checkout
@@ -326,6 +325,57 @@ export async function updateCheckoutPaymentAction(
     return updatedCheckout;
   } catch (error) {
     console.error("Error updating checkout payment:", error);
+    throw error;
+  }
+}
+
+/**
+ * Unified checkout form update - updates addresses, shipping, and payment in one call
+ */
+export async function updateCheckoutFormAction(
+  providerId: string, // Payment provider block ID
+  shippingMethodString: string, // Format: "${shippingId}:${blockIndex}"
+  addresses: CheckoutAddressUpdate,
+  existingCheckout: Checkout,
+): Promise<Checkout> {
+  try {
+    if (!existingCheckout) throw new Error("Checkout not found");
+
+    // Parse shippingMethodString to extract shippingId
+    const [shippingId] = shippingMethodString.split(":");
+
+    // Lookup Payment doc by providerId
+    const paymentResult = await payloadSdk.find({
+      collection: "payments",
+      where: {
+        "providers.id": { equals: providerId },
+      },
+      limit: 1,
+    });
+
+    if (!paymentResult.docs[0]) {
+      throw new Error(
+        `Payment method with provider ID ${providerId} not found`,
+      );
+    }
+
+    // Update checkout with all form data
+    const updatedCheckout = await payloadSdk.update({
+      collection: "checkout",
+      id: existingCheckout.id,
+      data: {
+        shippingAddress: addresses.shippingAddress,
+        billingAddress: addresses.billingAddress,
+        email: addresses.email,
+        shippingMethod: Number(shippingId),
+        payment: paymentResult.docs[0].id,
+      },
+      depth: 2,
+    });
+
+    return updatedCheckout;
+  } catch (error) {
+    console.error("Error updating checkout form:", error);
     throw error;
   }
 }

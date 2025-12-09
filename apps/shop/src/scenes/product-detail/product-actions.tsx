@@ -35,7 +35,8 @@ export default function ProductActions({ product }: ProductActionsProps) {
     setIsAdding(true);
 
     try {
-      await addItem(selectedVariant.id, 1, product);
+      const res = await addItem(selectedVariant.id, 1, product);
+      console.log('addItem response:', res);
       toast.success("Added to cart");
     } catch (error) {
       console.error("Failed to add to cart:", error);

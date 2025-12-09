@@ -95,6 +95,11 @@ export const seed = async () => {
     );
 };
 
+// NOTE: Use the API endpoints for seeding instead:
+// - POST /api/seed/categories - Seed only categories
+// - POST /api/seed/products?count=2500 - Seed only products
+// - POST /api/seed/all?count=2500 - Seed everything
+
 // console.log("Seeding...");
 // await seed();
 // console.log("Seeding complete!");

@@ -201,11 +201,13 @@ export interface Order {
   orderId: string;
   totalAmount: number;
   user?: (number | null) | User;
-  cart?: (number | null) | Cart;
-  checkout?: (number | null) | Checkout;
+  /**
+   * Reference to the checkout that created this order
+   */
+  checkout: number | Checkout;
   source?: 'manual' | null;
   currency: string;
-  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
+  paymentStatus: 'pending' | 'awaiting_payment' | 'paid' | 'failed' | 'expired' | 'refunded';
   orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'canceled';
   payment?: (number | null) | Payment;
   shipping?: (number | null) | Shipping;
@@ -214,15 +216,11 @@ export interface Order {
   sessionUrl?: string | null;
   paymentMethod?: string | null;
   receiptUrl?: string | null;
-  metadata?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
+  metadata?: {
+    paymentType?: string;
+    checkoutId?: number;
+    [k: string]: unknown;
+  };
   shippingAddress?: {
     name?: string;
     address?: {
@@ -309,21 +307,131 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "carts".
+ * via the `definition` "checkout".
  */
-export interface Cart {
+export interface Checkout {
   id: number;
-  sessionId?: string | null;
+  sessionId: string;
+  /**
+   * Linked user account if authenticated
+   */
   customer?: (number | null) | User;
-  cartItems?:
+  items?:
     | {
-        variantId: string;
         product: number | Product;
+        variantId: string;
         quantity: number;
+        /**
+         * Price per unit at time of adding to checkout
+         */
+        unitPrice?: number | null;
+        /**
+         * Unit price × quantity
+         */
+        totalPrice?: number | null;
         id?: string | null;
       }[]
     | null;
-  completed?: boolean | null;
+  shippingAddress?: {
+    firstName?: string;
+    lastName?: string;
+    company?: string;
+    streetAddress1?: string;
+    streetAddress2?: string;
+    city?: string;
+    postalCode?: string;
+    state?: string;
+    country?: string;
+    phone?: string;
+    [k: string]: unknown;
+  };
+  billingAddress?: {
+    firstName?: string;
+    lastName?: string;
+    company?: string;
+    streetAddress1?: string;
+    streetAddress2?: string;
+    city?: string;
+    postalCode?: string;
+    state?: string;
+    country?: string;
+    phone?: string;
+    [k: string]: unknown;
+  };
+  /**
+   * Selected shipping method
+   */
+  shippingMethod?: (number | null) | Shipping;
+  /**
+   * Selected payment method
+   */
+  payment?: (number | null) | Payment;
+  /**
+   * Stripe payment intent ID
+   */
+  paymentIntentId?: string | null;
+  currency: string;
+  /**
+   * Sum of all line item totals
+   */
+  subtotal?: number | null;
+  /**
+   * Shipping cost
+   */
+  shippingTotal?: number | null;
+  /**
+   * Total tax amount
+   */
+  taxTotal?: number | null;
+  /**
+   * Total discount applied
+   */
+  discountTotal?: number | null;
+  /**
+   * Grand total (subtotal + shipping + tax - discount)
+   */
+  total: number;
+  /**
+   * Applied coupon/voucher code
+   */
+  voucherCode?: string | null;
+  /**
+   * Applied gift card
+   */
+  giftCard?: (number | null) | GiftCard;
+  /**
+   * Optional note from customer
+   */
+  customerNote?: string | null;
+  /**
+   * Contact email for order confirmation
+   */
+  email?: string | null;
+  status: 'incomplete' | 'complete' | 'expired' | 'cancelled';
+  /**
+   * When checkout was completed and converted to order
+   */
+  completedAt?: string | null;
+  /**
+   * When this checkout session becomes invalid (typically 30 days)
+   */
+  expiresAt?: string | null;
+  /**
+   * Created order when checkout is completed
+   */
+  order?: (number | null) | Order;
+  /**
+   * Additional custom data
+   */
+  metadata?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -521,136 +629,6 @@ export interface Category {
     title?: string | null;
     description?: string | null;
   };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "checkout".
- */
-export interface Checkout {
-  id: number;
-  sessionId: string;
-  /**
-   * Linked user account if authenticated
-   */
-  customer?: (number | null) | User;
-  items?:
-    | {
-        product: number | Product;
-        variantId: string;
-        quantity: number;
-        /**
-         * Price per unit at time of adding to checkout
-         */
-        unitPrice?: number | null;
-        /**
-         * Unit price × quantity
-         */
-        totalPrice?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  shippingAddress?: {
-    firstName?: string;
-    lastName?: string;
-    company?: string;
-    streetAddress1?: string;
-    streetAddress2?: string;
-    city?: string;
-    postalCode?: string;
-    state?: string;
-    country?: string;
-    phone?: string;
-    [k: string]: unknown;
-  };
-  billingAddress?: {
-    firstName?: string;
-    lastName?: string;
-    company?: string;
-    streetAddress1?: string;
-    streetAddress2?: string;
-    city?: string;
-    postalCode?: string;
-    state?: string;
-    country?: string;
-    phone?: string;
-    [k: string]: unknown;
-  };
-  /**
-   * Selected shipping method
-   */
-  shippingMethod?: (number | null) | Shipping;
-  /**
-   * Selected payment method
-   */
-  payment?: (number | null) | Payment;
-  /**
-   * Stripe payment intent ID
-   */
-  paymentIntentId?: string | null;
-  currency: string;
-  /**
-   * Sum of all line item totals
-   */
-  subtotal?: number | null;
-  /**
-   * Shipping cost
-   */
-  shippingTotal?: number | null;
-  /**
-   * Total tax amount
-   */
-  taxTotal?: number | null;
-  /**
-   * Total discount applied
-   */
-  discountTotal?: number | null;
-  /**
-   * Grand total (subtotal + shipping + tax - discount)
-   */
-  total: number;
-  /**
-   * Applied coupon/voucher code
-   */
-  voucherCode?: string | null;
-  /**
-   * Applied gift card
-   */
-  giftCard?: (number | null) | GiftCard;
-  /**
-   * Optional note from customer
-   */
-  customerNote?: string | null;
-  /**
-   * Contact email for order confirmation
-   */
-  email?: string | null;
-  status: 'incomplete' | 'complete' | 'expired' | 'cancelled';
-  /**
-   * When checkout was completed and converted to order
-   */
-  completedAt?: string | null;
-  /**
-   * When this checkout session becomes invalid (typically 30 days)
-   */
-  expiresAt?: string | null;
-  /**
-   * Created order when checkout is completed
-   */
-  order?: (number | null) | Order;
-  /**
-   * Additional custom data
-   */
-  metadata?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -862,6 +840,26 @@ export interface Theme {
    * Explore top-rated free themes loved by store owners—designed to help you launch quickly and look great.
    */
   customStorefrontThemes?: {};
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "carts".
+ */
+export interface Cart {
+  id: number;
+  sessionId?: string | null;
+  customer?: (number | null) | User;
+  cartItems?:
+    | {
+        variantId: string;
+        product: number | Product;
+        quantity: number;
+        id?: string | null;
+      }[]
+    | null;
+  completed?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1562,7 +1560,6 @@ export interface OrdersSelect<T extends boolean = true> {
   orderId?: T;
   totalAmount?: T;
   user?: T;
-  cart?: T;
   checkout?: T;
   source?: T;
   currency?: T;
