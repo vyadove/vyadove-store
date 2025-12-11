@@ -5,55 +5,29 @@ import { createContext, use, useCallback, useEffect, useState } from "react";
 
 import type { User } from "@vyadove/types";
 
-// Generic type for API requests
-type APIRequest<T> = (args: T) => Promise<any>;
+import { payloadSdk } from "@/utils/payload-sdk";
 
-// Specific API function types
-type Create = APIRequest<{
-  email: string;
-  password: string;
-  passwordConfirm: string;
-}>;
-type ForgotPassword = APIRequest<{ email: string }>;
-type Login = APIRequest<{ email: string; password: string }>;
-type Logout = () => Promise<void>;
-type ResetPassword = APIRequest<{
-  password: string;
-  passwordConfirm: string;
-  token: string;
-}>;
+// Auth status type
+type AuthStatus = "idle" | "loading" | "authenticated" | "unauthenticated";
+
+// Method parameter types
+type LoginArgs = { email: string; password: string };
+type CreateArgs = { email: string; password: string; passwordConfirm: string };
+type ForgotPasswordArgs = { email: string };
+type ResetPasswordArgs = { password: string; token: string };
 
 export type AuthContextType = {
-  create: Create;
-  forgotPassword: ForgotPassword;
-  login: Login;
-  logout: Logout;
-  resetPassword: ResetPassword;
-  setUser: (user: null | User) => void;
-  // Derived status: 'loggedIn' if user exists, else 'loggedOut'
-  status: "loggedIn" | "loggedOut";
+  user: User | null;
+  status: AuthStatus;
+  error: string | null;
+  isLoading: boolean;
+  login: (args: LoginArgs) => Promise<User>;
+  logout: () => Promise<void>;
+  create: (args: CreateArgs) => Promise<User>;
+  forgotPassword: (args: ForgotPasswordArgs) => Promise<void>;
+  resetPassword: (args: ResetPasswordArgs) => Promise<void>;
   updateUser: (updates: Partial<User>) => Promise<void>;
-  user: null | User;
-};
-
-// Utility function for API calls
-const fetchWithErrorHandling = async (url: string, options: RequestInit) => {
-  try {
-    const res = await fetch(url, options);
-
-    if (!res.ok) {
-      const errorText = await res.text();
-
-      throw new Error(`Failed to fetch ${url}: ${errorText}`);
-    }
-
-    return await res.json();
-  } catch (err) {
-    console.error(err);
-    throw new Error(
-      err instanceof Error ? err.message : "An unexpected error occurred.",
-    );
-  }
+  clearError: () => void;
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -61,107 +35,139 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<null | User>(null);
-  // Derived status: if user exists then loggedIn, else loggedOut.
-  const status: "loggedIn" | "loggedOut" = user ? "loggedIn" : "loggedOut";
+  const [user, setUser] = useState<User | null>(null);
+  const [status, setStatus] = useState<AuthStatus>("idle");
+  const [error, setError] = useState<string | null>(null);
 
-  const create: Create = useCallback(async (args) => {
-    const data : any = await fetchWithErrorHandling(`/api/users/create`, {
-      body: JSON.stringify({
-        email: args.email,
-        password: args.password,
-        passwordConfirm: args.passwordConfirm,
-      }),
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-    });
+  const isLoading = status === "idle" || status === "loading";
 
-    if (data.errors) {
-      throw new Error(data.errors[0]?.message || "Unknown error");
+  const clearError = useCallback(() => setError(null), []);
+
+  const login = useCallback(async (args: LoginArgs): Promise<User> => {
+    setStatus("loading");
+    setError(null);
+    try {
+      const result = await payloadSdk.login({
+        collection: "users",
+        data: { email: args.email, password: args.password },
+      });
+      setUser(result.user as User);
+      setStatus("authenticated");
+      return result.user as User;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Login failed";
+      setError(message);
+      setStatus("unauthenticated");
+      throw err;
     }
-    setUser(data?.loginUser?.user || null);
   }, []);
 
-  const login: Login = useCallback(async (args) => {
-    const data : any = await fetchWithErrorHandling(`/api/users/login`, {
-      body: JSON.stringify({
-        email: args.email,
-        password: args.password,
-      }),
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-    });
-
-    if (data.errors) {
-      throw new Error(data.errors[0]?.message || "Unknown error");
+  const logout = useCallback(async (): Promise<void> => {
+    setStatus("loading");
+    setError(null);
+    try {
+      await payloadSdk.logout({ collection: "users" });
+      setUser(null);
+      setStatus("unauthenticated");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Logout failed";
+      setError(message);
+      // Still set unauthenticated since we want to clear local state
+      setUser(null);
+      setStatus("unauthenticated");
     }
-    setUser(data.user);
-
-    return data.user;
   }, []);
 
-  const updateUser = useCallback(async (updates: Partial<User>) => {
-    const data : any = await fetchWithErrorHandling(
-      `/api/users/update/${updates?.id}`,
-      {
-        body: JSON.stringify(updates),
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        method: "PUT",
-      },
-    );
-
-    if (data.errors) {
-      throw new Error(data.errors[0]?.message || "Unknown error");
+  const create = useCallback(async (args: CreateArgs): Promise<User> => {
+    setStatus("loading");
+    setError(null);
+    try {
+      // Register the user
+      await payloadSdk.register({
+        collection: "users",
+        data: { email: args.email, password: args.password },
+      });
+      // Auto-login after registration
+      const loginResult = await payloadSdk.login({
+        collection: "users",
+        data: { email: args.email, password: args.password },
+      });
+      setUser(loginResult.user as User);
+      setStatus("authenticated");
+      return loginResult.user as User;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Registration failed";
+      setError(message);
+      setStatus("unauthenticated");
+      throw err;
     }
-    setUser(data.user); // Update local state after a successful update
   }, []);
 
-  const logout: Logout = useCallback(async () => {
-    const data = await fetchWithErrorHandling(`/api/users/logout`, {
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-    });
+  const forgotPassword = useCallback(
+    async (args: ForgotPasswordArgs): Promise<void> => {
+      setError(null);
+      try {
+        await payloadSdk.forgotPassword({
+          collection: "users",
+          data: { email: args.email },
+        });
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to send reset email";
+        setError(message);
+        throw err;
+      }
+    },
+    [],
+  );
 
-    // You might check for specific data response if needed.
-    setUser(null);
-  }, []);
+  const resetPassword = useCallback(
+    async (args: ResetPasswordArgs): Promise<void> => {
+      setStatus("loading");
+      setError(null);
+      try {
+        const result = await payloadSdk.resetPassword({
+          collection: "users",
+          data: { password: args.password, token: args.token },
+        });
+        if (result.user) {
+          setUser(result.user as User);
+          setStatus("authenticated");
+        }
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to reset password";
+        setError(message);
+        setStatus("unauthenticated");
+        throw err;
+      }
+    },
+    [],
+  );
 
-  const forgotPassword: ForgotPassword = useCallback(async (args) => {
-    const data : any = await fetchWithErrorHandling(`/api/users/forgot-password`, {
-      body: JSON.stringify({ email: args.email }),
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-    });
-
-    if (data.errors) {
-      throw new Error(data.errors[0]?.message || "Unknown error");
-    }
-    // Optionally update the user if your response includes it:
-    setUser(data?.loginUser?.user || null);
-  }, []);
-
-  const resetPassword: ResetPassword = useCallback(async (args) => {
-    const data: any = await fetchWithErrorHandling(`/api/users/reset-password`, {
-      body: JSON.stringify({
-        password: args.password,
-        passwordConfirm: args.passwordConfirm,
-        token: args.token,
-      }),
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-    });
-
-    if (data.errors) {
-      throw new Error(data.errors[0]?.message || "Unknown error");
-    }
-    setUser(data?.loginUser?.user || null);
-  }, []);
+  const updateUser = useCallback(
+    async (updates: Partial<User>): Promise<void> => {
+      if (!user?.id) {
+        setError("No user to update");
+        throw new Error("No user to update");
+      }
+      setError(null);
+      try {
+        const result = await payloadSdk.update({
+          collection: "users",
+          id: user.id,
+          data: updates,
+        });
+        setUser(result as User);
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to update user";
+        setError(message);
+        throw err;
+      }
+    },
+    [user?.id],
+  );
 
   // Fetch current user on mount
   useEffect(() => {
@@ -169,26 +175,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const fetchMe = async () => {
       try {
-        const data : any = await fetchWithErrorHandling(`/api/users/me`, {
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          method: "GET",
-        });
-
-
-        if (isMounted) {
-          setUser(data.user || null);
+        const result = await payloadSdk.me({ collection: "users" });
+        if (isMounted && result.user) {
+          setUser(result.user as User);
+          setStatus("authenticated");
+        } else if (isMounted) {
+          setStatus("unauthenticated");
         }
-      } catch (e) {
+      } catch {
         if (isMounted) {
           setUser(null);
+          setStatus("unauthenticated");
         }
       }
     };
 
     void fetchMe();
 
-    // Cleanup if needed when component unmounts
     return () => {
       isMounted = false;
     };
@@ -197,15 +200,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <AuthContext
       value={{
-        create,
-        forgotPassword,
+        user,
+        status,
+        error,
+        isLoading,
         login,
         logout,
+        create,
+        forgotPassword,
         resetPassword,
-        setUser,
-        status,
         updateUser,
-        user,
+        clearError,
       }}
     >
       {children}

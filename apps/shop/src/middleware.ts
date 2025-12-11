@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 import { decrypt, updateSession } from "./lib/auth";
 
-const ProtectedPaths = ["/orders"];
+const ProtectedPaths = ["/orders", "/account"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -29,5 +29,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/orders"],
+  matcher: ["/orders", "/account"],
 };

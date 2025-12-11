@@ -1,8 +1,8 @@
 import { NavMenu } from "@ui/nav/mobile/nav-menu";
 import { SearchNav } from "@ui/nav/mobile/search-nav";
 import TopNavSlider from "@ui/nav/top-nav-slider";
+import { UserNav } from "@ui/nav/user-nav";
 import { VyaLink } from "@ui/vya-link";
-import { UserIcon } from "lucide-react";
 
 import { CartIconButton } from "@/components/cart-icon-button";
 import VyaDoveLogo from "@/components/icons";
@@ -40,9 +40,7 @@ export const Nav = async () => {
 
         <CartIconButton />
 
-        <VyaLink href="/login">
-          <UserIcon className="hover:text-neutral-500" />
-        </VyaLink>
+        <UserNav />
       </div>
     </TopNavSlider>
   );
