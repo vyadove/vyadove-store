@@ -31,7 +31,16 @@
       "Bash(pnpm install:*)",
       "Bash(tree:*)",
       "Bash(SECRET=test-secret pnpm test:*)",
-      "Bash(pnpm test:*)"
+      "Bash(pnpm test:*)",
+      "Bash(pnpm --filter apps/shop tsc:*)",
+      "Bash(npx tsc:*)",
+      "Bash(pnpm --filter @shopnex/payload-sdk build:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(curl:*)",
+      "Bash(taskkill:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

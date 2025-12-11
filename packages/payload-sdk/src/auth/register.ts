@@ -37,5 +37,13 @@ export async function register<
         path: `/${options.collection}`,
     });
 
-    return response.json();
+    const data = await response.json();
+
+    if (!response.ok) {
+        const errorMsg =
+            data?.errors?.[0]?.message || data?.message || "Registration failed";
+        throw new Error(errorMsg);
+    }
+
+    return data;
 }

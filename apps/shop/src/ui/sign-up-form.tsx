@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
+import { useAuth } from "@/providers/auth";
+import { TypographyP } from "@ui/shadcn/typography";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +19,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { useAuth } from "@/providers/auth";
 import { cn } from "@/lib/utils";
 
 export function SignUpForm({
@@ -38,6 +41,7 @@ export function SignUpForm({
 
     if (password !== passwordConfirm) {
       setFormError("Passwords do not match");
+
       return;
     }
 
@@ -56,17 +60,15 @@ export function SignUpForm({
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Sign Up</CardTitle>
-          <CardDescription>
-            Create an account to get started
-          </CardDescription>
+          <CardDescription>Create an account to get started</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
             <div className="grid gap-6">
               {displayError && (
-                <div className="text-sm text-red-500 bg-red-50 p-3 rounded-md">
+                <TypographyP className="text-sm text-red-500 bg-red-50 p-3 rounded-md max-w-[20rem] text-wrap break-words">
                   {displayError}
-                </div>
+                </TypographyP>
               )}
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -82,28 +84,28 @@ export function SignUpForm({
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
+                  minLength={6}
                   name="password"
                   required
                   type="password"
-                  minLength={6}
                 />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="passwordConfirm">Confirm Password</Label>
                 <Input
                   id="passwordConfirm"
+                  minLength={6}
                   name="passwordConfirm"
                   required
                   type="password"
-                  minLength={6}
                 />
               </div>
-              <Button className="w-full" type="submit" disabled={isLoading}>
+              <Button className="w-full" disabled={isLoading} type="submit">
                 {isLoading ? "Creating account..." : "Sign Up"}
               </Button>
               <div className="text-center text-sm">
                 Already have an account?{" "}
-                <Link href="/login" className="underline underline-offset-4">
+                <Link className="underline underline-offset-4" href="/login">
                   Login
                 </Link>
               </div>

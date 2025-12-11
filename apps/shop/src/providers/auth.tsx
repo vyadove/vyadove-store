@@ -5,7 +5,7 @@ import { createContext, use, useCallback, useEffect, useState } from "react";
 
 import type { User } from "@vyadove/types";
 
-import { payloadSdk } from "@/utils/payload-sdk";
+import { payloadSdk, setStoredToken } from "@/utils/payload-sdk";
 
 // Auth status type
 type AuthStatus = "idle" | "loading" | "authenticated" | "unauthenticated";
@@ -46,16 +46,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = useCallback(async (args: LoginArgs): Promise<User> => {
     setStatus("loading");
     setError(null);
+
     try {
       const result = await payloadSdk.login({
         collection: "users",
         data: { email: args.email, password: args.password },
       });
+
+      // Store token for persistent auth
+      if (result.token) {
+        setStoredToken(result.token);
+      }
+
       setUser(result.user as User);
       setStatus("authenticated");
+
       return result.user as User;
     } catch (err) {
       const message = err instanceof Error ? err.message : "Login failed";
+
       setError(message);
       setStatus("unauthenticated");
       throw err;
@@ -65,14 +74,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const logout = useCallback(async (): Promise<void> => {
     setStatus("loading");
     setError(null);
+
     try {
       await payloadSdk.logout({ collection: "users" });
-      setUser(null);
-      setStatus("unauthenticated");
     } catch (err) {
       const message = err instanceof Error ? err.message : "Logout failed";
       setError(message);
-      // Still set unauthenticated since we want to clear local state
+    } finally {
+      // Always clear local state and token
+      setStoredToken(null);
       setUser(null);
       setStatus("unauthenticated");
     }
@@ -81,6 +91,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const create = useCallback(async (args: CreateArgs): Promise<User> => {
     setStatus("loading");
     setError(null);
+
     try {
       // Register the user
       await payloadSdk.register({
@@ -92,11 +103,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         collection: "users",
         data: { email: args.email, password: args.password },
       });
+
+      // Store token for persistent auth
+      if (loginResult.token) {
+        setStoredToken(loginResult.token);
+      }
+
       setUser(loginResult.user as User);
       setStatus("authenticated");
+
       return loginResult.user as User;
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Registration failed";
+      const message =
+        err instanceof Error ? err.message : "Registration failed";
+
       setError(message);
       setStatus("unauthenticated");
       throw err;
@@ -106,6 +126,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const forgotPassword = useCallback(
     async (args: ForgotPasswordArgs): Promise<void> => {
       setError(null);
+
       try {
         await payloadSdk.forgotPassword({
           collection: "users",
@@ -114,6 +135,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Failed to send reset email";
+
         setError(message);
         throw err;
       }
@@ -125,11 +147,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     async (args: ResetPasswordArgs): Promise<void> => {
       setStatus("loading");
       setError(null);
+
       try {
         const result = await payloadSdk.resetPassword({
           collection: "users",
           data: { password: args.password, token: args.token },
         });
+
         if (result.user) {
           setUser(result.user as User);
           setStatus("authenticated");
@@ -137,6 +161,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Failed to reset password";
+
         setError(message);
         setStatus("unauthenticated");
         throw err;
@@ -152,16 +177,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         throw new Error("No user to update");
       }
       setError(null);
+
       try {
         const result = await payloadSdk.update({
           collection: "users",
           id: user.id,
           data: updates,
         });
+
         setUser(result as User);
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Failed to update user";
+
         setError(message);
         throw err;
       }
@@ -176,6 +204,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const fetchMe = async () => {
       try {
         const result = await payloadSdk.me({ collection: "users" });
+
         if (isMounted && result.user) {
           setUser(result.user as User);
           setStatus("authenticated");
