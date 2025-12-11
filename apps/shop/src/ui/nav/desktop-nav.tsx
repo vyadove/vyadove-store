@@ -29,6 +29,7 @@ import { cn } from "@/lib/utils";
 import { getVariantImage } from "@/utils/get-variant-image";
 import { payloadSdk } from "@/utils/payload-sdk";
 import { SearchSheet } from "@ui/nav/search-input";
+import { UserNav } from "@ui/nav/user-nav";
 import { convertToLocale } from "@/utils/money";
 
 const shopLinks = [
@@ -258,14 +259,10 @@ export const DesktopNav = (props: ComponentPropsWithoutRef<"div">) => {
       <div className="hidden sm:flex">
         <Separator className="h-full" orientation="vertical" />
 
-        <div className="flex items-center">
-        {/*  <Button size="icon" variant="link">
-            <FiSearch stroke="#000" strokeWidth={2} />
-          </Button>*/}
-
-          <SearchSheet/>
-
+        <div className="flex items-center gap-1">
+          <SearchSheet />
           <CartIconButton />
+          <UserNav />
         </div>
       </div>
     </div>

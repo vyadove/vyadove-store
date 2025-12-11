@@ -1,0 +1,5 @@
+[test]
+preload = ["./src/setup-tests.ts"]
+
+[test.happy-dom]
+enabled = true

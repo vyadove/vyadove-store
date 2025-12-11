@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import { useAuth } from "@/providers/auth";
 import { Spinner } from "@ui/shadcn/spinner";
 
@@ -15,14 +13,9 @@ import { useCheckout } from "@/providers/checkout";
 
 const CartTemplate = () => {
   const { items } = useCheckout();
-  const [isMounted, setIsMounted] = useState(false);
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
+  if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Spinner />
