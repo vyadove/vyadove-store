@@ -17,7 +17,21 @@
       "mcp__playwright__browser_type",
       "mcp__playwright__browser_close",
       "Bash(find:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(git worktree:*)",
+      "Bash(dir:*)",
+      "Bash(cat:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:payloadcms.com)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs",
+      "Bash(ls:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(pnpm install:*)",
+      "Bash(tree:*)",
+      "Bash(SECRET=test-secret pnpm test:*)",
+      "Bash(pnpm test:*)"
     ],
     "deny": [],
     "ask": []

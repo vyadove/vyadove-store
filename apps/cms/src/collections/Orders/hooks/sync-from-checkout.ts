@@ -102,7 +102,7 @@ export const syncFromCheckout: CollectionBeforeChangeHook<Order> = async ({
 
     data.paymentMethod = paymentType;
     data.paymentStatus =  "pending";
-    data.orderStatus = data.orderStatus || "pending";
+    data.orderStatus = "pending";
 
     // Mark checkout as complete (update after order creation)
     // Note: This happens in afterChange hook to avoid circular updates

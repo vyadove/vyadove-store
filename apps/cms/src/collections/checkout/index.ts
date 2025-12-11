@@ -4,6 +4,7 @@ import { groups } from "../groups";
 import { admins, anyone } from "@/access/roles";
 import { canAccessOwnCheckout } from "./access/access-own";
 import { calculateTotals } from "./hooks/calculate-totals";
+import { guardCompletedCheckout } from "./hooks/guard-completed";
 import { handleGuestSession } from "@/collections/checkout/hooks/guest-session";
 
 export const MoneyField = (name: string, label?: string): Field => ({
@@ -35,7 +36,7 @@ export const Checkouts: CollectionConfig = {
     },
 
     hooks: {
-        beforeChange: [handleGuestSession, calculateTotals],
+        beforeChange: [guardCompletedCheckout, handleGuestSession, calculateTotals],
     },
 
     fields: [
