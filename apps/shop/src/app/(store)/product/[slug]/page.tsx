@@ -63,7 +63,6 @@ export default async function Product({
 }) {
   const { slug } = await params;
 
-
   const product = await payloadSdk.find({
     collection: "products",
     limit: 1,
@@ -73,7 +72,6 @@ export default async function Product({
       },
     },
   });
-
 
   const featuredCollections = await payloadSdk.find({
     collection: "collections",

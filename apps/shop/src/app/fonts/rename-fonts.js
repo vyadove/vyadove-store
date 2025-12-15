@@ -14,7 +14,7 @@ files.forEach((file) => {
 
   // Remove spaces and the trailing "Az" before extension
   const newName = file
-    .replace(/\s+/g, "")   // remove all spaces
+    .replace(/\s+/g, "") // remove all spaces
     .replace(/Az(?=\.woff)/, ""); // remove 'Az' right before .woff
 
   const newPath = path.join(folder, newName);

@@ -1,18 +1,20 @@
 import type { ComponentProps, PropsWithChildren } from "react";
 import React from "react";
 
+import { DesktopNav } from "@ui/nav/desktop-nav";
+
 import InvertedCornerMask from "@/components/inverted-corner-mask";
 
 import { cn } from "@/lib/utils";
-
-
-import { DesktopNav } from "@ui/nav/desktop-nav";
 
 type Props = {
   containerProps?: ComponentProps<typeof InvertedCornerMask>;
 };
 
-const AppHeroScaffold = ({ children, containerProps }: PropsWithChildren<Props>) => {
+const AppHeroScaffold = ({
+  children,
+  containerProps,
+}: PropsWithChildren<Props>) => {
   return (
     <InvertedCornerMask
       cornerContent={<DesktopNav />}

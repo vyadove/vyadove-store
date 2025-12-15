@@ -15,6 +15,7 @@ import { VyaLink } from "@ui/vya-link";
 import type { Media, Product } from "@vyadove/types";
 
 import InvertedCornerMask from "@/components/inverted-corner-mask";
+
 import { convertToLocale } from "@/utils/money";
 
 export const ProductPreview = ({ product }: { product: Product }) => {

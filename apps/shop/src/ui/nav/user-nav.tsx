@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LogOut, User, UserCircle } from "lucide-react";
 
+import { useAuth } from "@/providers/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,9 +12,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/ui/shadcn/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { LogOut, User, UserCircle } from "lucide-react";
 
-import { useAuth } from "@/providers/auth";
+import { Button } from "@/components/ui/button";
 
 export function UserNav() {
   const { user, isLoading, logout } = useAuth();

@@ -1,6 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+
+import { useAuth } from "@/providers/auth";
+import { Spinner } from "@ui/shadcn/spinner";
+import { VyaLink } from "@ui/vya-link";
 import { LogOut, Package, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -12,10 +16,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Spinner } from "@ui/shadcn/spinner";
-
-import { useAuth } from "@/providers/auth";
-import { VyaLink } from "@ui/vya-link";
 
 export default function AccountPage() {
   const { user, isLoading, logout } = useAuth();

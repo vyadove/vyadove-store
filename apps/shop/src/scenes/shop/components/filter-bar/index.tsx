@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React from "react";
 
@@ -24,13 +24,13 @@ export const FilterBar: React.FC<any> = () => {
       <div className="flex w-full max-w-full items-center justify-stretch gap-2">
         <CategoryFilterButton
           buttonLabel="Experiences"
-          filterName='experiences'
+          filterName="experiences"
           handlePath="experiences"
         />
 
         <CategoryFilterButton
           buttonLabel="Occasions"
-          filterName='occasions'
+          filterName="occasions"
           handlePath="occasions"
         />
 

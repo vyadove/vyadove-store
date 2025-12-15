@@ -1,4 +1,3 @@
-
 const SkeletonProductPreview = () => {
   return (
     <div className="animate-pulse">

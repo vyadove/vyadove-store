@@ -9,7 +9,12 @@ import { useCheckout } from "@/providers/checkout";
 import { Routes } from "@/store.routes";
 import { Button } from "@/ui/shadcn/button";
 import {
-  TypographyH2, TypographyH3, TypographyH5, TypographyLarge, TypographyMuted, TypographyP,
+  TypographyH2,
+  TypographyH3,
+  TypographyH5,
+  TypographyLarge,
+  TypographyMuted,
+  TypographyP,
 } from "@ui/shadcn/typography";
 import { VyaLink } from "@ui/vya-link";
 import { Edit, Edit2 } from "lucide-react";
@@ -38,7 +43,7 @@ export const OrderSummery = () => {
         </VyaLink>
       </CardHeader>
 
-      <CardContent className='pb-0'>
+      <CardContent className="pb-0">
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-2">
             <TypographyP className="text-muted-foreground">
@@ -86,7 +91,7 @@ export const OrderSummery = () => {
             </div>
           </div>
 
-          <CartTotals totalLabel='Total To Pay' />
+          <CartTotals totalLabel="Total To Pay" />
         </div>
       </CardContent>
 

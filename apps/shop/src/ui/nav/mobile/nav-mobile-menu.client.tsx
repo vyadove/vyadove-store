@@ -2,8 +2,6 @@
 
 import { type ReactNode, useState } from "react";
 
-import { MenuIcon } from "lucide-react";
-
 import {
   Drawer,
   DrawerContent,
@@ -12,6 +10,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@ui/shadcn/drawer";
+import { MenuIcon } from "lucide-react";
 
 export const NavMobileMenu = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);

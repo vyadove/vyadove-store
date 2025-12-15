@@ -3,25 +3,18 @@ import { BiSolidCategoryAlt } from "react-icons/bi";
 import { FaGift } from "react-icons/fa";
 import { PiConfettiBold } from "react-icons/pi";
 
-
-
-import { TypographyH1, TypographyH3, TypographyMuted, TypographyP } from "@ui/shadcn/typography";
-
-
+import {
+  TypographyH1,
+  TypographyH3,
+  TypographyMuted,
+  TypographyP,
+} from "@ui/shadcn/typography";
 
 import InvertedCornerMask from "@/components/inverted-corner-mask";
 
-
-
 import { cn } from "@/lib/utils";
 
-
-
 import VyadoveVidSection from "./vyadove-vid-section";
-
-
-
-
 
 const steps = [
   {
@@ -45,7 +38,6 @@ const steps = [
 ];
 
 const HowItWorks = () => {
-
   return (
     <div className="mt-24 flex flex-col gap-8">
       <div>
@@ -88,8 +80,6 @@ const HowItWorks = () => {
       </div>
 
       <VyadoveVidSection />
-
-
     </div>
   );
 };

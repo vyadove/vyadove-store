@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
 
 export const getSessionId = () => {
-    return Cookies.get("cart-session") || "";
+  return Cookies.get("cart-session") || "";
 };

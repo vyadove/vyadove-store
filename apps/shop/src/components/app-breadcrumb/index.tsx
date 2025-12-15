@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import type { IconType } from "react-icons";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -14,7 +15,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import type { IconType } from "react-icons";
 
 interface BreadcrumbSegment {
   name: string;

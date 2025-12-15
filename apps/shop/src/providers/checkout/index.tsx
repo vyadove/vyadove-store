@@ -382,8 +382,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
       return { previousCheckout };
     },
     onSettled: (data, error, variables, onMutateResult) => {
-
-      console.log('data -- : ', data, error);
+      console.log("data -- : ", data, error);
 
       if (error) {
         // Rollback on error

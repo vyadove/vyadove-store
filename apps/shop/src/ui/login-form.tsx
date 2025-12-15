@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { useAuth } from "@/providers/auth";
+import { Routes } from "@/store.routes";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,9 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { useAuth } from "@/providers/auth";
 import { cn } from "@/lib/utils";
-import { Routes } from "@/store.routes";
 
 export function LoginForm({
   className,
@@ -77,7 +78,10 @@ export function LoginForm({
               </Button>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <Link className="underline underline-offset-4" href={Routes.signUp}>
+                <Link
+                  className="underline underline-offset-4"
+                  href={Routes.signUp}
+                >
                   Sign up
                 </Link>
               </div>

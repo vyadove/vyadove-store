@@ -2,12 +2,12 @@
 
 import React from "react";
 
+import { useCheckout } from "@/providers/checkout";
 import { Button } from "@ui/shadcn/button";
 
 import SidebarCart from "@/components/sidebar-cart";
 
 import CartIcon from "./icons/cart-icon";
-import { useCheckout } from "@/providers/checkout";
 
 export function CartIconButton() {
   const { totalItems: itemCount, totalUniqueItems, toggleCart } = useCheckout();

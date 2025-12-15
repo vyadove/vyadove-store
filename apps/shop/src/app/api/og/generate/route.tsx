@@ -1,12 +1,6 @@
 import { ImageResponse } from "next/og";
 
-
-
 import { baseURL, person } from "@/resources";
-
-
-
-
 
 export const runtime = "nodejs";
 

@@ -1,13 +1,13 @@
 "use client";
 
 import * as React from "react";
+import { FaCheckCircle } from "react-icons/fa";
 
 import { Check } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
 
 import { cn } from "@/lib/utils";
-import { FaCheckCircle } from "react-icons/fa";
 
 export interface StepItem {
   name: string;
@@ -52,7 +52,8 @@ export const StepperItem = ({
           className={cn(
             "flex size-14_ p-3  aspect-square overflow-hidden items-center justify-center rounded-full border text-lg font-medium transition-all",
             isCompleted && "bg-primary text-primary-foreground border-primary",
-            isCurrent && "border-primary text-primary size-16_ p-4 bg-primary-background",
+            isCurrent &&
+              "border-primary text-primary size-16_ p-4 bg-primary-background",
             !isCompleted && !isCurrent && "border-muted text-muted-foreground",
           )}
         >
@@ -79,14 +80,14 @@ export const StepperItem = ({
           {step.title}
         </div>
 
-
-        <FaCheckCircle className={cn(
+        <FaCheckCircle
+          className={cn(
             "size-6",
             isCompleted && "bg-primary text-primary-foreground border-primary",
             isCurrent && "border-primary text-primary bg-primary-background",
             !isCompleted && !isCurrent && "border-muted text-muted-foreground",
-          )} />
-
+          )}
+        />
       </div>
 
       {/* Line */}

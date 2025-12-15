@@ -1,6 +1,12 @@
 import React from "react";
 
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@ui/shadcn/accordion";
+import {
   TypographyH1,
   TypographyH2,
   TypographyH4,
@@ -9,12 +15,6 @@ import {
 import { ChevronDown } from "lucide-react";
 
 import InvertedCornerMask from "@/components/inverted-corner-mask";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@ui/shadcn/accordion";
 
 import { cn } from "@/lib/utils";
 
@@ -98,10 +98,7 @@ export const QnaAccordion = () => {
             key={idx}
           >
             <div className="w-full">
-              <AccordionTrigger
-                className="w-full cursor-pointer p-6"
-                hideIcon
-              >
+              <AccordionTrigger className="w-full cursor-pointer p-6" hideIcon>
                 <TypographyH4>{qna.question}</TypographyH4>
               </AccordionTrigger>
               <AccordionContent className="flex flex-col gap-4 px-6 pb-6">
@@ -115,7 +112,7 @@ export const QnaAccordion = () => {
       ))}
     </Accordion>
   );
-}
+};
 
 export function QnAs() {
   return (
@@ -132,7 +129,7 @@ export function QnAs() {
         </TypographyP>
       </div>
 
-      <QnaAccordion/>
+      <QnaAccordion />
     </div>
   );
 }

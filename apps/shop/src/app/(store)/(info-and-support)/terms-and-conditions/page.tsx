@@ -20,10 +20,13 @@ const Page = async () => {
     <div>
       <AppHeroScaffold>
         <div className="mx-auto flex h-full w-full flex-col items-center justify-center gap-4 px-8 py-36 pb-20 lg:px-16 lg:pt-36 lg:pb-24">
-          <TypographyH1 className='!text-6xl font-medium'>{termsAndConditions?.title || "-"}</TypographyH1>
+          <TypographyH1 className="!text-6xl font-medium">
+            {termsAndConditions?.title || "-"}
+          </TypographyH1>
           {termsAndConditions?.updatedAt && (
             <TypographyLead>
-              Last Updated : {new Date(termsAndConditions?.updatedAt).toLocaleDateString(
+              Last Updated :{" "}
+              {new Date(termsAndConditions?.updatedAt).toLocaleDateString(
                 "en-US",
                 {
                   year: "numeric",
@@ -37,7 +40,7 @@ const Page = async () => {
       </AppHeroScaffold>
 
       <div
-        className='prose prose-lg dark:prose-invert mx-auto my-20 max-w-3xl [&_p]:text-lg [&_p]:text-black'
+        className="prose prose-lg dark:prose-invert mx-auto my-20 max-w-3xl [&_p]:text-lg [&_p]:text-black"
         dangerouslySetInnerHTML={{
           __html: termsAndConditions?.description || "-",
         }}

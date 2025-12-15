@@ -34,9 +34,7 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
           </TypographyP>
         </div>
 
-        <div
-          className="flex flex-col"
-        >
+        <div className="flex flex-col">
           <TypographyP className="text-muted-foreground font-light">
             Method
           </TypographyP>

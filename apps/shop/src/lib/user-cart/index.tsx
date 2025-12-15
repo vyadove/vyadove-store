@@ -85,7 +85,7 @@ function reducer(state: CartProviderState, action: Actions) {
     case "ADD_ITEM": {
       const items = [...state.items, action.payload];
 
-      return generateCartState(items, state );
+      return generateCartState(items, state);
     }
 
     case "UPDATE_ITEM": {
@@ -98,13 +98,13 @@ function reducer(state: CartProviderState, action: Actions) {
         };
       });
 
-      return generateCartState(items, state );
+      return generateCartState(items, state);
     }
 
     case "REMOVE_ITEM": {
       const items = state.items.filter((i: Item) => i.id !== action.id);
 
-      return generateCartState(items, state );
+      return generateCartState(items, state);
     }
 
     case "EMPTY_CART":
@@ -236,7 +236,10 @@ export const CartProvider: React.FC<{
     }),
   );
 
-  const [state, dispatch] = React.useReducer(reducer, JSON.parse(savedCart) as CartProviderState);
+  const [state, dispatch] = React.useReducer(
+    reducer,
+    JSON.parse(savedCart) as CartProviderState,
+  );
 
   React.useEffect(() => {
     saveCart(JSON.stringify(state));
@@ -269,13 +272,15 @@ export const CartProvider: React.FC<{
 
       dispatch({ type: "ADD_ITEM", payload });
 
-      if(onItemAdd) onItemAdd(payload);
+      if (onItemAdd) onItemAdd(payload);
 
       return;
     }
 
-
-    const payload = { ...item, quantity: (currentItem.quantity || 0) + quantity };
+    const payload = {
+      ...item,
+      quantity: (currentItem.quantity || 0) + quantity,
+    };
 
     dispatch({
       type: "UPDATE_ITEM",

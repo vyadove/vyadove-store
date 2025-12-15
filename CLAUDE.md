@@ -301,3 +301,4 @@ pnpm --filter ./apps/cms generate:types
 - **Discord Community**: https://discord.gg/MFc9x7vdXK
 - use the project's design system components (Button, Badge, TypographySmall, etc) instead of hardcoded HTML elements with custom styling. This ensures better consistency.
 - avoid using `any` type in TypeScript whenever possible.
+- when implementing or adding a new features in this gifting ecommerce project, try to explore/compare/analyses those features against popular ecommerce concepts and strategies.

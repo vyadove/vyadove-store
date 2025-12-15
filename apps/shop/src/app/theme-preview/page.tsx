@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+
+import { Moon, Sun } from "lucide-react";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Sun, Moon } from "lucide-react";
 
 export default function ThemePreviewPage() {
   const [dark, setDark] = useState(false);
@@ -14,7 +16,6 @@ export default function ThemePreviewPage() {
   return (
     <div className={dark ? "dark" : ""}>
       <div className="min-h-screen bg-background text-foreground p-10 space-y-10 transition-colors">
-
         {/* Toggle */}
         <div className="flex justify-end">
           <Button
@@ -34,11 +35,17 @@ export default function ThemePreviewPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
             {[
               { name: "Primary", class: "bg-primary text-primary-foreground" },
-              { name: "Secondary", class: "bg-secondary text-secondary-foreground" },
+              {
+                name: "Secondary",
+                class: "bg-secondary text-secondary-foreground",
+              },
               { name: "Accent", class: "bg-accent text-accent-foreground" },
               { name: "Muted", class: "bg-muted text-muted-foreground" },
               { name: "Card", class: "bg-card text-card-foreground" },
-              { name: "Background", class: "bg-background text-foreground border" },
+              {
+                name: "Background",
+                class: "bg-background text-foreground border",
+              },
               { name: "Border", class: "bg-border" },
             ].map((c) => (
               <div
@@ -98,7 +105,10 @@ export default function ThemePreviewPage() {
                 <CardTitle>Accent Card</CardTitle>
               </CardHeader>
               <CardContent>
-                <Badge className="bg-accent text-accent-foreground" variant="default">
+                <Badge
+                  className="bg-accent text-accent-foreground"
+                  variant="default"
+                >
                   NEW
                 </Badge>
               </CardContent>
@@ -129,16 +139,12 @@ export default function ThemePreviewPage() {
 
           <Alert className="bg-accent/10 border-accent/40">
             <AlertTitle>Accent Alert</AlertTitle>
-            <AlertDescription>
-              Accent colors appear here.
-            </AlertDescription>
+            <AlertDescription>Accent colors appear here.</AlertDescription>
           </Alert>
 
           <Alert variant="destructive">
             <AlertTitle>Error Alert</AlertTitle>
-            <AlertDescription>
-              Something went wrong.
-            </AlertDescription>
+            <AlertDescription>Something went wrong.</AlertDescription>
           </Alert>
         </section>
 

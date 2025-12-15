@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/providers/auth";
+import { useCheckout } from "@/providers/checkout";
 import { Spinner } from "@ui/shadcn/spinner";
 
 import Divider from "@/components/divider";
@@ -9,7 +10,6 @@ import SignInPrompt from "@/components/sign-in-prompt";
 
 import CartItems from "./cart-items";
 import Summary from "./summary";
-import { useCheckout } from "@/providers/checkout";
 
 const CartTemplate = () => {
   const { items } = useCheckout();

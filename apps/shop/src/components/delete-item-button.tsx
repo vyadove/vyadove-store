@@ -53,11 +53,7 @@ const DeleteItemButton = ({
         size="icon-sm"
         variant="secondary"
       >
-        {isDeleting ? (
-          <Spinner className="animate-spin" />
-        ) : (
-          <Trash size={2} />
-        )}
+        {isDeleting ? <Spinner className="animate-spin" /> : <Trash size={2} />}
 
         {children && <span>{children}</span>}
       </Button>

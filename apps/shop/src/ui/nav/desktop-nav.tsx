@@ -8,6 +8,8 @@ import Link from "next/link";
 // import { usePathname } from "next/navigation";
 import { Routes } from "@/store.routes";
 import { AnimateOnHoverText, NavMenuTrigger } from "@ui/nav/components";
+import { SearchSheet } from "@ui/nav/search-input";
+import { UserNav } from "@ui/nav/user-nav";
 import { Badge } from "@ui/shadcn/badge";
 import { Button } from "@ui/shadcn/button";
 import {
@@ -27,10 +29,8 @@ import VyaDoveLogo from "@/components/icons";
 import { cn } from "@/lib/utils";
 
 import { getVariantImage } from "@/utils/get-variant-image";
-import { payloadSdk } from "@/utils/payload-sdk";
-import { SearchSheet } from "@ui/nav/search-input";
-import { UserNav } from "@ui/nav/user-nav";
 import { convertToLocale } from "@/utils/money";
+import { payloadSdk } from "@/utils/payload-sdk";
 
 const shopLinks = [
   {
@@ -83,9 +83,7 @@ const ShopMenuContent = ({ products }: { products: Product[] }) => {
               className="relative z-0 h-[20rem] w-[14rem] overflow-hidden rounded-xl"
               key={idx}
             >
-              <Badge
-                className=" absolute top-2 right-2 z-10 border "
-              >
+              <Badge className=" absolute top-2 right-2 z-10 border ">
                 50% OFF
               </Badge>
 

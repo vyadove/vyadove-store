@@ -51,7 +51,8 @@ export const StepperItem = ({
           className={cn(
             "flex size-14_ p-3  aspect-square overflow-hidden items-center justify-center rounded-full border text-lg font-medium transition-all",
             isCompleted && "bg-primary text-primary-foreground border-primary",
-            isCurrent && "border-primary text-primary size-16_ p-4 bg-primary-background",
+            isCurrent &&
+              "border-primary text-primary size-16_ p-4 bg-primary-background",
             !isCompleted && !isCurrent && "border-muted text-muted-foreground",
           )}
         >

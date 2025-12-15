@@ -14,7 +14,6 @@ import {
 import { payloadSdk } from "@/utils/payload-sdk";
 
 const Page = async () => {
-
   /*const contactForm = await payloadSdk
       .find({
         collection: "forms",
@@ -25,7 +24,6 @@ const Page = async () => {
         }
       })
       .then((res) => res.docs[0]?.fields);*/
-
 
   return (
     <div className="flex flex-col gap-32">

@@ -6,6 +6,7 @@ export const filterKeys = {
   experiences: "experiences",
   price: "price",
   sortBy: "sort_by",
+  search: "q",
 } as const;
 
 export function useUpdateMultiFilterParam(

@@ -13,9 +13,7 @@ export const metadata: Metadata = {
   title: "Store",
 };
 
-
 export default async function Home() {
-
   return (
     <main>
       <Hero />

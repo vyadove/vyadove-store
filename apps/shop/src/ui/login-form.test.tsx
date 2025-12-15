@@ -1,12 +1,12 @@
-import { describe, expect, it, mock, beforeEach } from "bun:test";
 import { render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, it, mock } from "bun:test";
+
+import { LoginForm } from "./login-form";
 
 // Mock the auth server action
 mock.module("@/lib/auth", () => ({
   login: mock(() => Promise.resolve({})),
 }));
-
-import { LoginForm } from "./login-form";
 
 describe("LoginForm", () => {
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe("LoginForm", () => {
 
   it("renders the description text", () => {
     expect(
-      screen.getByText("Enter your email below to login to your account")
+      screen.getByText("Enter your email below to login to your account"),
     ).toBeInTheDocument();
   });
 

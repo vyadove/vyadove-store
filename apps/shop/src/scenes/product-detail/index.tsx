@@ -20,9 +20,11 @@ import {
   TypographyP,
 } from "@ui/shadcn/typography";
 import type { Product } from "@vyadove/types";
-import { toast } from "@/components/ui/hot-toast";
 
 import { AppBreadcrumb } from "@/components/app-breadcrumb";
+import { toast } from "@/components/ui/hot-toast";
+
+import { useRecentlyViewed } from "@/lib/use-recently-viewed";
 
 type Props = {
   product: Product;
@@ -44,6 +46,7 @@ const ProductDetail: React.FC<Props> = ({ product, relatedGifts }) => {
   const searchParams = useSearchParams();
 
   const { setDefaultValue } = useNavStore();
+  const { addItem: trackRecentlyViewed } = useRecentlyViewed();
   const [selectedVariant, setSelectedVariant] = useState<
     Product["variants"][number]
   >(product.variants[0] as any);
@@ -69,6 +72,11 @@ const ProductDetail: React.FC<Props> = ({ product, relatedGifts }) => {
     };
   }, []);
 
+  // Track recently viewed product
+  useEffect(() => {
+    trackRecentlyViewed(product);
+  }, [product.id]);
+
   /* useEffect(() => {
     if (selectedVariant) {
       return;
@@ -77,7 +85,7 @@ const ProductDetail: React.FC<Props> = ({ product, relatedGifts }) => {
     setSelectedVariant(product.variants[0]);
   }, [selectedVariant]);*/
 
-/*  useEffect(() => {
+  /*  useEffect(() => {
     const variantId = searchParams.get("variantId");
 
     if (!variantId) return;

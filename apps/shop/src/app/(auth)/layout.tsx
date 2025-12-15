@@ -1,5 +1,6 @@
-import { ShirtIcon } from "lucide-react";
 import Link from "next/link";
+
+import { ShirtIcon } from "lucide-react";
 
 export default function AuthLayout({
   children,

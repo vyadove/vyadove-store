@@ -1,6 +1,6 @@
 "use client";
 
-import { Toaster as HotToaster, toast, useToaster,  } from "react-hot-toast";
+import { Toaster as HotToaster, toast, useToaster } from "react-hot-toast";
 
 import { useTheme } from "next-themes";
 

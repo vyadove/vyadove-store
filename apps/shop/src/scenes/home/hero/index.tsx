@@ -39,9 +39,9 @@ const Hero = () => {
         </TypographyH1>
 
         <TypographyLead className="text-foreground max-w-2xl text-lg font-normal">
-          Vyadove is Africa&#39;s premier experience gifting platform. We help you
-          connect with loved ones through unforgettable experiences — from spa
-          days and fine dining to adventures and retreats.
+          Vyadove is Africa&#39;s premier experience gifting platform. We help
+          you connect with loved ones through unforgettable experiences — from
+          spa days and fine dining to adventures and retreats.
         </TypographyLead>
 
         <div className=" flex items-center gap-4">

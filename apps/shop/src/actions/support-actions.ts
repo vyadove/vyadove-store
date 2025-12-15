@@ -49,7 +49,6 @@ export async function submitContact(formData: FormData) {
     });
 
     return res;
-
   } catch (error) {
     console.error("Error adding to cart:", error);
     throw error;

@@ -3,7 +3,10 @@
 import type React from "react";
 import { createContext, use, useCallback, useEffect, useState } from "react";
 
+import { clearCheckoutSession } from "@/actions/logout-actions";
 import type { User } from "@vyadove/types";
+
+import { RECENTLY_VIEWED_STORAGE_KEY } from "@/lib/use-recently-viewed";
 
 import { payloadSdk, setStoredToken } from "@/utils/payload-sdk";
 
@@ -82,10 +85,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       setError(message);
     } finally {
-      // Always clear local state and token
+      // Clear local state and token
       setStoredToken(null);
       setUser(null);
       setStatus("unauthenticated");
+
+      // Clear checkout session cookie (server action for httpOnly cookie)
+      await clearCheckoutSession();
+
+      // Clear recently viewed
+      localStorage.removeItem(RECENTLY_VIEWED_STORAGE_KEY);
     }
   }, []);
 

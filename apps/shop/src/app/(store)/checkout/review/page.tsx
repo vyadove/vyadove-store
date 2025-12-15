@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useCheckoutSession } from "@/scenes/checkout/hooks";
 import { Button } from "@ui/shadcn/button";
 import { TypographyH2 } from "@ui/shadcn/typography";
+
 import { toast } from "@/components/ui/hot-toast";
 
 export default function ReviewPage() {

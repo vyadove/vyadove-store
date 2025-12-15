@@ -1,9 +1,5 @@
-import type {
-  UseQueryOptions} from "@tanstack/react-query";
-import {
-  type QueryFunction,
-  useQuery
-} from "@tanstack/react-query";
+import type { UseQueryOptions } from "@tanstack/react-query";
+import { type QueryFunction, useQuery } from "@tanstack/react-query";
 import type { Config } from "@vyadove/types";
 
 import { payloadSdk } from "@/utils/payload-sdk";

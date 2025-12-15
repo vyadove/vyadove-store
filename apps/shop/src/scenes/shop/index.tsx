@@ -82,7 +82,10 @@ const ShopScene = () => {
         const [min, max] = range.split("-");
 
         priceFilter.push({
-          "variants.price.amount": { greater_than_equal: min, less_than_equal: max },
+          "variants.price.amount": {
+            greater_than_equal: min,
+            less_than_equal: max,
+          },
         });
       }
     });
@@ -131,27 +134,39 @@ const ShopScene = () => {
       .filter(Boolean);
   }, [q, searchQuery.data]);
 
+  // Build where clause that combines search + category filters
+  const whereClause = useMemo(() => {
+    const conditions: any[] = [];
+
+    // Search filter (when searching)
+    if (q && searchIds?.length) {
+      conditions.push({ id: { in: searchIds } });
+    }
+
+    // Category filter (when categories selected)
+    if (selectedCategories.length > 0) {
+      conditions.push({ ["category.handle"]: { in: selectedCategories } });
+    }
+
+    // Price filters
+    if (priceFilters.length > 0) {
+      conditions.push({ or: priceFilters });
+    }
+
+    // Return combined conditions with AND, or undefined if no conditions
+    if (conditions.length === 0) return undefined;
+    if (conditions.length === 1) return conditions[0];
+
+    return { and: conditions };
+  }, [q, searchIds, selectedCategories, priceFilters]);
+
   const productsQuery = usePayloadFindQuery("products", {
     findArgs: {
       depth: 2,
       page: productsResponse.page,
       limit: itemLimit,
       sort: sortingFilter,
-      where: {
-        ...(q
-          ? {
-              id: {
-                in: searchIds || [],
-              },
-            }
-          : {
-              ["category.handle"]: {
-                in: selectedCategories,
-              },
-            }),
-
-        or: [...priceFilters],
-      },
+      ...(whereClause && { where: whereClause }),
     },
     useQueryArgs: {
       enabled: !q || (!!q && searchQuery.isSuccess),

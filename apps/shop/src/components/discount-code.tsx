@@ -4,8 +4,6 @@ import type React from "react";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 
-
-
 import { Badge } from "@ui/shadcn/badge";
 import { Button } from "@ui/shadcn/button";
 import { Input } from "@ui/shadcn/input";
@@ -13,13 +11,7 @@ import { TypographyH3, TypographyH5 } from "@ui/shadcn/typography";
 import type { GiftCard } from "@vyadove/types";
 import { Loader2Icon, Trash } from "lucide-react";
 
-
-
 import ErrorMessage from "./error-message";
-
-
-
-
 
 type DiscountCodeProps = {
   applyPromotion: (code: string) => Promise<void>;
@@ -71,13 +63,11 @@ export const DiscountCode: React.FC<DiscountCodeProps> = ({
     <div className="flex w-full flex-col bg-white">
       <div className="">
         <form className="mb-6 w-full" onSubmit={addPromotionCode}>
-
-
           <Button
             data-testid="add-discount-button"
             onClick={() => setIsOpen((prev) => !prev)}
             type="button"
-            variant='link'
+            variant="link"
           >
             <FaPlus />
             Add Promotion Code(s)
@@ -88,7 +78,7 @@ export const DiscountCode: React.FC<DiscountCodeProps> = ({
               <Input
                 className="max-w-2xl flex-1 bg-white"
                 name="code"
-                placeholder='code'
+                placeholder="code"
                 required
                 type="text"
               />
@@ -109,9 +99,7 @@ export const DiscountCode: React.FC<DiscountCodeProps> = ({
 
         {promotions?.length > 0 && (
           <div className="flex w-full flex-col">
-            <TypographyH3 className="mb-2">
-              Promotion(s) applied:
-            </TypographyH3>
+            <TypographyH3 className="mb-2">Promotion(s) applied:</TypographyH3>
 
             {promotions.map((promo) => (
               <div

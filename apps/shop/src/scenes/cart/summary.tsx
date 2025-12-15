@@ -10,6 +10,7 @@ import { Routes } from "@/store.routes";
 import { Button } from "@ui/shadcn/button";
 import { TypographyH3 } from "@ui/shadcn/typography";
 import type { GiftCard } from "@vyadove/types";
+import { Edit2 } from "lucide-react";
 
 import CartTotals from "@/components/cart-totals";
 import Divider from "@/components/divider";
@@ -19,7 +20,6 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { Edit2 } from "lucide-react";
 
 const Summary = () => {
   const [isPending, startTransition] = useTransition();

@@ -34,7 +34,7 @@ export const convertToLocale = ({
   if (hiddeCurrency) {
     const parts = value.split(/[\s\d.,]+/);
 
-    return value.replace(parts[0] || '', "").trim();
+    return value.replace(parts[0] || "", "").trim();
   }
 
   return value;

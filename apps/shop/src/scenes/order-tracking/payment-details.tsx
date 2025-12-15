@@ -2,8 +2,9 @@ import { TypographyH2, TypographyP } from "@ui/shadcn/typography";
 import type { Order } from "@vyadove/types";
 import { CreditCard } from "lucide-react";
 
-import { convertToLocale } from "@/utils/money";
 import Divider from "@/components/divider";
+
+import { convertToLocale } from "@/utils/money";
 
 type PaymentDetailsProps = {
   order: Order;

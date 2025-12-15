@@ -5,11 +5,9 @@ import { AiFillDelete } from "react-icons/ai";
 
 import { useSearchParams } from "next/navigation";
 
-import {
-  filterKeys,
-  useUpdateMultiFilterParam,
-} from "../util";
 import { Button } from "@ui/shadcn/button";
+
+import { filterKeys, useUpdateMultiFilterParam } from "../util";
 
 const ResetFilterButton = () => {
   const { resetMultiple } = useUpdateMultiFilterParam("");
