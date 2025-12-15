@@ -12,8 +12,6 @@ export const handleGuestSession: CollectionBeforeChangeHook<Checkout> = async ({
         return data;
     }
 
-    console.log('user : --------------- ', req.user);
-
     // Authenticated users: associate checkout with user
     if (req.user) {
         // Check if user already has an active checkout
@@ -22,7 +20,7 @@ export const handleGuestSession: CollectionBeforeChangeHook<Checkout> = async ({
             where: {
                 and: [
                     { customer: { equals: req.user.id } },
-                    { completed: { equals: false } },
+                    { status: { equals: 'incomplete' } },
                 ],
             },
             limit: 1,
@@ -43,33 +41,11 @@ export const handleGuestSession: CollectionBeforeChangeHook<Checkout> = async ({
     const cookies = parseCookies(req.headers);
     let sessionId = cookies.get("checkout-session");
 
-    // If session exists, check for active checkout
-    if (sessionId) {
-        const existingCheckout = await req.payload.find({
-            collection: "checkout",
-            where: {
-                and: [
-                    { sessionId: { equals: sessionId } },
-                    { completed: { equals: false } },
-                ],
-            },
-            limit: 1,
-        });
-
-        if (existingCheckout.docs.length > 0) {
-            throw new Error(
-                `Active checkout already exists with ID: ${existingCheckout.docs[0].id}.           
-                Please update the existing checkout instead of creating a new one.`
-            );
-        }
-    } else {
-        // Create new session for new guest
-        sessionId = crypto.randomUUID();
-
+    // Helper to generate new session cookie
+    const createSessionCookie = (newSessionId: string) => {
         const checkoutCookie = generateCookie({
             name: "checkout-session",
-            value: sessionId,
-            // domain: '.vyadove.com',
+            value: newSessionId,
             expires: getCookieExpiration({ seconds: 60 * 60 * 24 * 30 }),
             path: "/",
             httpOnly: true,
@@ -77,9 +53,35 @@ export const handleGuestSession: CollectionBeforeChangeHook<Checkout> = async ({
             sameSite: "Strict",
             returnCookieAsObject: false
         });
+        req.responseHeaders = new Headers({ "Set-Cookie": checkoutCookie as string });
+    };
 
-        const headers = new Headers({ "Set-Cookie": checkoutCookie as string });
-        req.responseHeaders = headers;
+    // If session exists, check if sessionId is already used
+    if (sessionId) {
+        const existingCheckout = await req.payload.find({
+            collection: "checkout",
+            where: { sessionId: { equals: sessionId } },
+            limit: 1,
+        });
+
+        if (existingCheckout.docs.length > 0) {
+            const checkout = existingCheckout.docs[0];
+
+            if (checkout.status === "incomplete") {
+                // Active checkout exists - user should update, not create
+                throw new Error(
+                    `Active checkout already exists with ID: ${checkout.id}. Please update the existing checkout instead of creating a new one.`
+                );
+            }
+
+            // SessionId used by completed/expired checkout - generate new one
+            sessionId = crypto.randomUUID();
+            createSessionCookie(sessionId);
+        }
+    } else {
+        // No session cookie - create new session for new guest
+        sessionId = crypto.randomUUID();
+        createSessionCookie(sessionId);
     }
 
     data.sessionId = sessionId;

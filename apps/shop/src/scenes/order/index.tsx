@@ -1,20 +1,11 @@
 "use client";
 
-import React, { useLayoutEffect } from "react";
-
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import React from "react";
 
 import { useCheckout } from "@/providers/checkout";
-import { OrderSuccess } from "@/scenes/order/order-sucess";
 import PaymentDetails from "@/scenes/order/payment-details";
-import { usePayloadFindQuery } from "@/scenes/shop/use-payload-find-query";
-import { Spinner } from "@ui/shadcn/spinner";
-import { TypographyH2, TypographyH4, TypographyP } from "@ui/shadcn/typography";
+import { TypographyH2, TypographyP } from "@ui/shadcn/typography";
 import type { Order } from "@vyadove/types";
-import Cookies from "js-cookie";
-
-import CartTotals from "@/components/cart-totals";
 
 import { convertToLocale } from "@/utils/money";
 
@@ -49,12 +40,6 @@ const Total = ({ order }: { order: Order }) => {
 };
 
 const OrderTemplate = ({ order }: OrderCompletedTemplateProps) => {
-  const { emptyCart } = useCheckout();
-
-  useLayoutEffect(() => {
-    emptyCart();
-  }, []);
-
   return (
     <div className="mt-6 mb-20 flex min-h-[calc(100vh-64px)] w-full flex-col gap-8 p-6">
       <OrderDetails order={order} />

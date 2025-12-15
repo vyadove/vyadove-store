@@ -1,4 +1,5 @@
 import type { CollectionAfterChangeHook } from "payload";
+import { generateCookie } from "payload";
 import type { Order } from "@vyadove/types";
 
 /**
@@ -24,16 +25,29 @@ export const markCheckoutComplete: CollectionAfterChangeHook<Order> = async ({
 	}
 
 	try {
-		// Update checkout to mark as complete and link to order
+		// Update checkout to mark as complete
+		// Note: order field is a join (virtual) - no need to set it
 		await req.payload.update({
 			collection: "checkout",
 			id: checkoutId,
 			data: {
 				status: "complete",
-				order: doc.id,
 			},
 			req,
 		});
+
+		// Clear checkout-session cookie to force new session on next cart action
+		const clearCookie = generateCookie({
+			name: "checkout-session",
+			value: "",
+			expires: new Date(0),
+			path: "/",
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			sameSite: "Strict",
+			returnCookieAsObject: false,
+		});
+		req.responseHeaders = new Headers({ "Set-Cookie": clearCookie as string });
 	} catch (error) {
 		req.payload.logger.error(
 			`Failed to mark checkout ${checkoutId} as complete: ${error instanceof Error ? error.message : "Unknown error"}`,

@@ -9,10 +9,7 @@ import { useCheckout } from "@/providers/checkout";
 import { Routes } from "@/store.routes";
 import { Button } from "@/ui/shadcn/button";
 import {
-  TypographyH2,
-  TypographyLarge,
-  TypographyMuted,
-  TypographyP,
+  TypographyH2, TypographyH3, TypographyH5, TypographyLarge, TypographyMuted, TypographyP,
 } from "@ui/shadcn/typography";
 import { VyaLink } from "@ui/vya-link";
 import { Edit, Edit2 } from "lucide-react";
@@ -64,9 +61,9 @@ export const OrderSummery = () => {
                   </div>
 
                   <div className="flex-1">
-                    <TypographyLarge className="line-clamp-2">
+                    <TypographyH5 className="line-clamp-2 font-medium">
                       {item.product?.title}
-                    </TypographyLarge>
+                    </TypographyH5>
 
                     <TypographyMuted className="text-sm">
                       {item.quantity} x{" "}

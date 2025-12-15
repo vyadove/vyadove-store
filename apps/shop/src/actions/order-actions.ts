@@ -112,6 +112,7 @@ export async function createOrderFromCheckoutAction(
 
     // Determine redirect based on payment type
     let redirectUrl: string;
+
     if (order.sessionUrl) {
       // Stripe payment - redirect to Stripe checkout
       redirectUrl = order.sessionUrl;

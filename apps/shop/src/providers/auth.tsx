@@ -79,6 +79,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       await payloadSdk.logout({ collection: "users" });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Logout failed";
+
       setError(message);
     } finally {
       // Always clear local state and token

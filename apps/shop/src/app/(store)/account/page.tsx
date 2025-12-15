@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@ui/shadcn/spinner";
 
 import { useAuth } from "@/providers/auth";
+import { VyaLink } from "@ui/vya-link";
 
 export default function AccountPage() {
   const { user, isLoading, logout } = useAuth();
@@ -30,6 +31,7 @@ export default function AccountPage() {
 
   if (!user) {
     router.push("/login");
+
     return null;
   }
 
@@ -77,8 +79,8 @@ export default function AccountPage() {
               <CardDescription>View your order history</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" asChild>
-                <a href="/order/track">View Orders</a>
+              <Button asChild variant="outline">
+                <VyaLink href="/order/track">View Orders</VyaLink>
               </Button>
             </CardContent>
           </Card>
@@ -86,9 +88,9 @@ export default function AccountPage() {
           <Separator />
 
           <Button
-            variant="destructive"
-            onClick={handleLogout}
             className="w-fit"
+            onClick={handleLogout}
+            variant="destructive"
           >
             <LogOut className="h-4 w-4 mr-2" />
             Sign Out

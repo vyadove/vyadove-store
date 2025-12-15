@@ -41,8 +41,10 @@ export const enum_orders_timeline_type = pgEnum("enum_orders_timeline_type", [
 export const enum_orders_source = pgEnum("enum_orders_source", ["manual"]);
 export const enum_orders_payment_status = pgEnum("enum_orders_payment_status", [
     "pending",
+    "awaiting_payment",
     "paid",
     "failed",
+    "expired",
     "refunded",
 ]);
 export const enum_orders_order_status = pgEnum("enum_orders_order_status", [
@@ -74,6 +76,12 @@ export const enum_campaigns_status = pgEnum("enum_campaigns_status", [
     "scheduled",
     "sent",
     "paused",
+]);
+export const enum_checkout_status = pgEnum("enum_checkout_status", [
+    "incomplete",
+    "complete",
+    "expired",
+    "cancelled",
 ]);
 export const enum_pages_status = pgEnum("enum_pages_status", [
     "draft",
@@ -352,9 +360,11 @@ export const orders = pgTable(
         user: integer("user_id").references(() => users.id, {
             onDelete: "set null",
         }),
-        cart: integer("cart_id").references(() => carts.id, {
-            onDelete: "set null",
-        }),
+        checkout: integer("checkout_id")
+            .notNull()
+            .references(() => checkout.id, {
+                onDelete: "set null",
+            }),
         source: enum_orders_source("source").default("manual"),
         currency: varchar("currency").notNull(),
         paymentStatus: enum_orders_payment_status("payment_status")
@@ -397,7 +407,7 @@ export const orders = pgTable(
             columns.orderId
         ),
         orders_user_idx: index("orders_user_idx").on(columns.user),
-        orders_cart_idx: index("orders_cart_idx").on(columns.cart),
+        orders_checkout_idx: index("orders_checkout_idx").on(columns.checkout),
         orders_payment_idx: index("orders_payment_idx").on(columns.payment),
         orders_shipping_idx: index("orders_shipping_idx").on(columns.shipping),
         orders_updated_at_idx: index("orders_updated_at_idx").on(
@@ -608,7 +618,8 @@ export const products_variants = pgTable(
         vid: varchar("vid"),
         sku: varchar("sku"),
         imageUrl: varchar("image_url"),
-        price: numeric("price").notNull(),
+        price_amount: numeric("price_amount").notNull().default("0"),
+        price_currency: varchar("price_currency").default("USD"),
         originalPrice: numeric("original_price"),
         available: boolean("available").default(true),
         pricingTier: enum_products_variants_pricing_tier("pricing_tier")
@@ -1169,6 +1180,120 @@ export const carts = pgTable(
             columns.updatedAt
         ),
         carts_created_at_idx: index("carts_created_at_idx").on(
+            columns.createdAt
+        ),
+    })
+);
+
+export const checkout_items = pgTable(
+    "checkout_items",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: integer("_parent_id").notNull(),
+        id: varchar("id").primaryKey(),
+        product: integer("product_id")
+            .notNull()
+            .references(() => products.id, {
+                onDelete: "set null",
+            }),
+        variantId: varchar("variant_id").notNull(),
+        quantity: numeric("quantity").notNull().default("1"),
+        unitPrice: numeric("unit_price"),
+        totalPrice: numeric("total_price"),
+    },
+    (columns) => ({
+        _orderIdx: index("checkout_items_order_idx").on(columns._order),
+        _parentIDIdx: index("checkout_items_parent_id_idx").on(
+            columns._parentID
+        ),
+        checkout_items_product_idx: index("checkout_items_product_idx").on(
+            columns.product
+        ),
+        _parentIDFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [checkout.id],
+            name: "checkout_items_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
+export const checkout = pgTable(
+    "checkout",
+    {
+        id: serial("id").primaryKey(),
+        sessionId: varchar("session_id").notNull(),
+        customer: integer("customer_id").references(() => users.id, {
+            onDelete: "set null",
+        }),
+        shippingAddress: jsonb("shipping_address"),
+        billingAddress: jsonb("billing_address"),
+        shippingMethod: integer("shipping_method_id").references(
+            () => shipping.id,
+            {
+                onDelete: "set null",
+            }
+        ),
+        payment: integer("payment_id").references(() => payments.id, {
+            onDelete: "set null",
+        }),
+        paymentIntentId: varchar("payment_intent_id"),
+        currency: varchar("currency").notNull().default("USD"),
+        subtotal: numeric("subtotal").default("0"),
+        shippingTotal: numeric("shipping_total").default("0"),
+        taxTotal: numeric("tax_total").default("0"),
+        discountTotal: numeric("discount_total").default("0"),
+        total: numeric("total").notNull().default("0"),
+        voucherCode: varchar("voucher_code"),
+        giftCard: integer("gift_card_id").references(() => gift_cards.id, {
+            onDelete: "set null",
+        }),
+        customerNote: varchar("customer_note"),
+        email: varchar("email"),
+        status: enum_checkout_status("status").notNull().default("incomplete"),
+        completedAt: timestamp("completed_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
+        expiresAt: timestamp("expires_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
+        metadata: jsonb("metadata"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        })
+            .defaultNow()
+            .notNull(),
+    },
+    (columns) => ({
+        checkout_session_id_idx: uniqueIndex("checkout_session_id_idx").on(
+            columns.sessionId
+        ),
+        checkout_customer_idx: index("checkout_customer_idx").on(
+            columns.customer
+        ),
+        checkout_shipping_method_idx: index("checkout_shipping_method_idx").on(
+            columns.shippingMethod
+        ),
+        checkout_payment_idx: index("checkout_payment_idx").on(columns.payment),
+        checkout_gift_card_idx: index("checkout_gift_card_idx").on(
+            columns.giftCard
+        ),
+        checkout_updated_at_idx: index("checkout_updated_at_idx").on(
+            columns.updatedAt
+        ),
+        checkout_created_at_idx: index("checkout_created_at_idx").on(
             columns.createdAt
         ),
     })
@@ -2734,6 +2859,7 @@ export const payload_locked_documents_rels = pgTable(
         "gift-cardsID": integer("gift_cards_id"),
         themesID: integer("themes_id"),
         cartsID: integer("carts_id"),
+        checkoutID: integer("checkout_id"),
         "hero-pageID": integer("hero_page_id"),
         "footer-pageID": integer("footer_page_id"),
         "privacy-policy-pageID": integer("privacy_policy_page_id"),
@@ -2796,6 +2922,9 @@ export const payload_locked_documents_rels = pgTable(
         payload_locked_documents_rels_carts_id_idx: index(
             "payload_locked_documents_rels_carts_id_idx"
         ).on(columns.cartsID),
+        payload_locked_documents_rels_checkout_id_idx: index(
+            "payload_locked_documents_rels_checkout_id_idx"
+        ).on(columns.checkoutID),
         payload_locked_documents_rels_hero_page_id_idx: index(
             "payload_locked_documents_rels_hero_page_id_idx"
         ).on(columns["hero-pageID"]),
@@ -2909,6 +3038,11 @@ export const payload_locked_documents_rels = pgTable(
             columns: [columns["cartsID"]],
             foreignColumns: [carts.id],
             name: "payload_locked_documents_rels_carts_fk",
+        }).onDelete("cascade"),
+        checkoutIdFk: foreignKey({
+            columns: [columns["checkoutID"]],
+            foreignColumns: [checkout.id],
+            name: "payload_locked_documents_rels_checkout_fk",
         }).onDelete("cascade"),
         "hero-pageIdFk": foreignKey({
             columns: [columns["hero-pageID"]],
@@ -3261,10 +3395,10 @@ export const relations_orders = relations(orders, ({ one, many }) => ({
         references: [users.id],
         relationName: "user",
     }),
-    cart: one(carts, {
-        fields: [orders.cart],
-        references: [carts.id],
-        relationName: "cart",
+    checkout: one(checkout, {
+        fields: [orders.checkout],
+        references: [checkout.id],
+        relationName: "checkout",
     }),
     payment: one(payments, {
         fields: [orders.payment],
@@ -3520,6 +3654,46 @@ export const relations_carts = relations(carts, ({ one, many }) => ({
     }),
     cartItems: many(carts_cart_items, {
         relationName: "cartItems",
+    }),
+}));
+export const relations_checkout_items = relations(
+    checkout_items,
+    ({ one }) => ({
+        _parentID: one(checkout, {
+            fields: [checkout_items._parentID],
+            references: [checkout.id],
+            relationName: "items",
+        }),
+        product: one(products, {
+            fields: [checkout_items.product],
+            references: [products.id],
+            relationName: "product",
+        }),
+    })
+);
+export const relations_checkout = relations(checkout, ({ one, many }) => ({
+    customer: one(users, {
+        fields: [checkout.customer],
+        references: [users.id],
+        relationName: "customer",
+    }),
+    items: many(checkout_items, {
+        relationName: "items",
+    }),
+    shippingMethod: one(shipping, {
+        fields: [checkout.shippingMethod],
+        references: [shipping.id],
+        relationName: "shippingMethod",
+    }),
+    payment: one(payments, {
+        fields: [checkout.payment],
+        references: [payments.id],
+        relationName: "payment",
+    }),
+    giftCard: one(gift_cards, {
+        fields: [checkout.giftCard],
+        references: [gift_cards.id],
+        relationName: "giftCard",
     }),
 }));
 export const relations_hero_page_blocks_hero = relations(
@@ -4041,6 +4215,11 @@ export const relations_payload_locked_documents_rels = relations(
             references: [carts.id],
             relationName: "carts",
         }),
+        checkoutID: one(checkout, {
+            fields: [payload_locked_documents_rels.checkoutID],
+            references: [checkout.id],
+            relationName: "checkout",
+        }),
         "hero-pageID": one(hero_page, {
             fields: [payload_locked_documents_rels["hero-pageID"]],
             references: [hero_page.id],
@@ -4239,6 +4418,7 @@ type DatabaseSchema = {
     enum_users_roles: typeof enum_users_roles;
     enum_campaigns_type: typeof enum_campaigns_type;
     enum_campaigns_status: typeof enum_campaigns_status;
+    enum_checkout_status: typeof enum_checkout_status;
     enum_pages_status: typeof enum_pages_status;
     enum__pages_v_version_status: typeof enum__pages_v_version_status;
     enum_payments_blocks_manual_method_type: typeof enum_payments_blocks_manual_method_type;
@@ -4278,6 +4458,8 @@ type DatabaseSchema = {
     themes_texts: typeof themes_texts;
     carts_cart_items: typeof carts_cart_items;
     carts: typeof carts;
+    checkout_items: typeof checkout_items;
+    checkout: typeof checkout;
     hero_page_blocks_hero: typeof hero_page_blocks_hero;
     hero_page_blocks_carousel: typeof hero_page_blocks_carousel;
     hero_page: typeof hero_page;
@@ -4358,6 +4540,8 @@ type DatabaseSchema = {
     relations_themes: typeof relations_themes;
     relations_carts_cart_items: typeof relations_carts_cart_items;
     relations_carts: typeof relations_carts;
+    relations_checkout_items: typeof relations_checkout_items;
+    relations_checkout: typeof relations_checkout;
     relations_hero_page_blocks_hero: typeof relations_hero_page_blocks_hero;
     relations_hero_page_blocks_carousel: typeof relations_hero_page_blocks_carousel;
     relations_hero_page_rels: typeof relations_hero_page_rels;

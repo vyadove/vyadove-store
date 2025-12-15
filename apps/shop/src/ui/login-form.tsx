@@ -72,12 +72,12 @@ export function LoginForm({
                 <Label htmlFor="password">Password</Label>
                 <Input id="password" name="password" required type="password" />
               </div>
-              <Button className="w-full" type="submit" disabled={isLoading}>
+              <Button className="w-full" disabled={isLoading} type="submit">
                 {isLoading ? "Signing in..." : "Login"}
               </Button>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <Link href={Routes.signUp} className="underline underline-offset-4">
+                <Link className="underline underline-offset-4" href={Routes.signUp}>
                   Sign up
                 </Link>
               </div>

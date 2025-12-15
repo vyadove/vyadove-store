@@ -372,14 +372,13 @@ export const Checkouts: CollectionConfig = {
             },
         },
 
-        // --- Related Order ---
+        // --- Related Order (virtual join - no DB column) ---
         {
             name: "order",
-            type: "relationship",
-            relationTo: "orders",
+            type: "join",
+            collection: "orders",
+            on: "checkout",
             admin: {
-                position: "sidebar",
-                readOnly: true,
                 description: "Created order when checkout is completed",
             },
         },

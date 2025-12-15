@@ -25,6 +25,7 @@ describe("LoginForm", () => {
 
   it("renders email input field", () => {
     const emailInput = screen.getByPlaceholderText("m@example.com");
+
     expect(emailInput).toBeInTheDocument();
     expect(emailInput).toHaveAttribute("type", "email");
     expect(emailInput).toHaveAttribute("name", "email");
@@ -33,6 +34,7 @@ describe("LoginForm", () => {
 
   it("renders password input field", () => {
     const passwordInput = screen.getByLabelText("Password");
+
     expect(passwordInput).toBeInTheDocument();
     expect(passwordInput).toHaveAttribute("type", "password");
     expect(passwordInput).toHaveAttribute("name", "password");
@@ -41,6 +43,7 @@ describe("LoginForm", () => {
 
   it("renders submit button", () => {
     const submitButton = screen.getByRole("button", { name: /login/i });
+
     expect(submitButton).toBeInTheDocument();
     expect(submitButton).toHaveAttribute("type", "submit");
   });
@@ -52,6 +55,7 @@ describe("LoginForm", () => {
 
   it("wraps form elements in a form tag", () => {
     const form = document.querySelector("form");
+
     expect(form).toBeInTheDocument();
   });
 });

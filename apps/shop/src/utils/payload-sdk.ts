@@ -7,11 +7,13 @@ const TOKEN_KEY = "payload-token";
 // Token storage helpers
 export const getStoredToken = (): string | null => {
   if (!isBrowser) return null;
+
   return localStorage.getItem(TOKEN_KEY);
 };
 
 export const setStoredToken = (token: string | null): void => {
   if (!isBrowser) return;
+
   if (token) {
     localStorage.setItem(TOKEN_KEY, token);
   } else {
@@ -37,5 +39,5 @@ export const payloadSdk = new PayloadSDK<Config>({
     credentials: "include",
   },
   baseURL: `${process.env.NEXT_PUBLIC_SERVER_URL}/api`,
-  fetch: isBrowser ? authFetch : (undefined as typeof fetch),
+  fetch: isBrowser ? authFetch : (undefined as unknown as typeof fetch),
 });

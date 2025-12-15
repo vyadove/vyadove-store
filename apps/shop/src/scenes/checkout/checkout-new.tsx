@@ -86,7 +86,7 @@ const formSchema = z.object({
 
 const CheckoutNew = () => {
 	const router = useRouter();
-	const { checkout, isLoading: checkoutLoading, updateAddress, updateCheckoutForm } = useCheckout();
+	const { checkout, isLoading: checkoutLoading, refechCheckout, updateCheckoutForm } = useCheckout();
 
 	const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
 	const [deliveryMethods, setDeliveryMethods] = useState<Shipping[]>([]);
@@ -208,6 +208,12 @@ const CheckoutNew = () => {
 		});
 	}, [step]);
 
+  useEffect(() => {
+    return () => {
+      toast.dismissAll();
+    }
+  }, [])
+
 	const onSubmit = async (data: z.infer<typeof formSchema>) => {
 		setIsSubmitting(true);
 
@@ -244,6 +250,7 @@ const CheckoutNew = () => {
 
 				toast.success("Order created successfully!");
 				toast.loading("Redirecting...");
+        await refechCheckout();
 
 				// Redirect to order confirmation
 				router.push(result.redirectUrl);
@@ -650,7 +657,7 @@ const CheckoutNew = () => {
 															<div>
 																<TypographyLarge>Delivery Address</TypographyLarge>
 																<TypographyMuted className="">
-																	We'll send you experience to this address
+																	We&#39;ll send you experience to this address
 																</TypographyMuted>
 															</div>
 

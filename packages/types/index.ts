@@ -109,6 +109,9 @@ export interface Config {
       products: 'products';
       subcategories: 'category';
     };
+    checkout: {
+      order: 'orders';
+    };
     'payload-folders': {
       documentsAndFolders: 'payload-folders' | 'media';
     };
@@ -419,7 +422,11 @@ export interface Checkout {
   /**
    * Created order when checkout is completed
    */
-  order?: (number | null) | Order;
+  order?: {
+    docs?: (number | Order)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   /**
    * Additional custom data
    */

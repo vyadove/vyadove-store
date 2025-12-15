@@ -5,6 +5,7 @@ import { TbCreditCardPay } from "react-icons/tb";
 
 import { useRouter } from "next/navigation";
 
+import { useCheckout } from "@/providers/checkout";
 import { useProductDetailContext } from "@/scenes/product-detail/index";
 import { Routes } from "@/store.routes";
 import { Button } from "@ui/shadcn/button";
@@ -13,7 +14,6 @@ import type { Product } from "@vyadove/types";
 
 import CartIcon from "@/components/icons/cart-icon";
 import { toast } from "@/components/ui/hot-toast";
-import { useCheckout } from "@/providers/checkout";
 
 type ProductActionsProps = {
   product: Product;
@@ -36,7 +36,9 @@ export default function ProductActions({ product }: ProductActionsProps) {
 
     try {
       const res = await addItem(selectedVariant.id, 1, product);
-      console.log('addItem response:', res);
+
+      console.log("addItem response:", res);
+
       toast.success("Added to cart");
     } catch (error) {
       console.error("Failed to add to cart:", error);

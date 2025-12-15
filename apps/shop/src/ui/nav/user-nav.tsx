@@ -35,7 +35,7 @@ export function UserNav() {
   // Not logged in - show sign in link
   if (!user) {
     return (
-      <Link href="/login" className="hover:text-neutral-500">
+      <Link className="hover:text-neutral-500" href="/login">
         <User className="h-6 w-6" />
       </Link>
     );
@@ -45,7 +45,7 @@ export function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
+        <Button className="h-8 w-8 rounded-full" size="icon" variant="ghost">
           <UserCircle className="h-6 w-6" />
         </Button>
       </DropdownMenuTrigger>
@@ -64,13 +64,13 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/account" className="cursor-pointer">
+          <Link className="cursor-pointer" href="/account">
             <User className="mr-2 h-4 w-4" />
             Account
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+        <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
           Sign out
         </DropdownMenuItem>

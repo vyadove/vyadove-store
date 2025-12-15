@@ -70,6 +70,7 @@ interface CheckoutContextType {
   updateAddress: (data: CheckoutAddressUpdate) => Promise<Checkout>;
   updateShipping: (shippingMethodId: number) => Promise<Checkout>;
   updatePayment: (paymentMethodId: number) => Promise<Checkout>;
+  refechCheckout: () => Promise<void>;
   updateCheckoutForm: (
     providerId: string,
     shippingMethodString: string,
@@ -406,8 +407,8 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
       }
     },
     onSuccess: (data) => {
-      console.log('onSuccess data --- : ', data);
-    }
+      console.log("addItemMutation data --- : ", data);
+    },
   });
 
   // Update item mutation
@@ -652,6 +653,12 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const refechCheckout = async () => {
+    queryClient.setQueryData(CHECKOUT_QUERY_KEY, () => null);
+
+    return queryClient.invalidateQueries({ queryKey: CHECKOUT_QUERY_KEY });
+  };
+
   const value = {
     checkout: enrichedCheckout,
     items,
@@ -675,6 +682,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     updateShipping,
     updatePayment,
     updateCheckoutForm,
+    refechCheckout,
   } as CheckoutContextType;
 
   return (

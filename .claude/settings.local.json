@@ -40,7 +40,7 @@
       "Bash(curl:*)",
       "Bash(taskkill:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(pnpm generate:types:*)"
     ],
     "deny": [],
     "ask": []

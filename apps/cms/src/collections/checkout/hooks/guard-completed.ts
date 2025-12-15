@@ -12,6 +12,7 @@ export const guardCompletedCheckout: CollectionBeforeChangeHook<Checkout> = asyn
 	operation,
 	originalDoc,
 }) => {
+
 	if (operation !== "update") return data;
 
 	// Allow admins to modify completed checkouts

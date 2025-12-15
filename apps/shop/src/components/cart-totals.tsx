@@ -62,11 +62,15 @@ const CartTotals = ({ totalLabel }: { totalLabel?: string }) => {
       </div>
 
       <div className=" flex justify-between border-t pt-6">
-        <TypographyP className="text-muted-foreground">
+        <TypographyP className="text-muted-foreground font-semibold">
           {" "}
           {totalLabel || "Total"}
         </TypographyP>
-        <TypographyP data-testid="cart-taxes" data-value={taxTotal || 0}>
+        <TypographyP
+          className="font-bold"
+          data-testid="cart-taxes"
+          data-value={taxTotal || 0}
+        >
           {convertToLocale({
             amount: total ?? 0,
           })}

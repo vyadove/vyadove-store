@@ -76,13 +76,13 @@ const ShopScene = () => {
         const [price] = range.split("-");
 
         priceFilter.push({
-          "variants.price": { greater_than_equal: price },
+          "variants.price.amount": { greater_than_equal: price },
         });
       } else {
         const [min, max] = range.split("-");
 
         priceFilter.push({
-          "variants.price": { greater_than_equal: min, less_than_equal: max },
+          "variants.price.amount": { greater_than_equal: min, less_than_equal: max },
         });
       }
     });
