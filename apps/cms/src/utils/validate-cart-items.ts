@@ -25,7 +25,6 @@ export const validateCartItems = (
             errors.push(
                 `Invalid variantId: ${item.variantId} for product: ${product.title}`
             );
-
         }
     }
 

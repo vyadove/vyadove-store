@@ -106,7 +106,7 @@ export function SearchSheet() {
           </div>
         </SheetHeader>
 
-        <div className="mx-auto w-full max-w-5xl p-8">
+        <div className="mx-auto w-full max-w-7xl p-8">
           {!query ? (
             <div className="grid gap-12 md:grid-cols-2">
               <RecentlyViewedSection onItemClick={() => setOpen(false)} />
@@ -136,30 +136,34 @@ export function SearchSheet() {
 
                   {/* Results grid */}
                   <div
-                    className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+                    className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
                     onClick={() => setOpen(false)}
                   >
                     {displayedResults.map((product) => (
-                      <ProductPreview key={product.id} product={product} />
+                      <ProductPreview
+                        key={product.id}
+                        product={product}
+                        size="sm"
+                      />
                     ))}
                   </div>
 
                   {/* See all results button */}
                   {(hasMoreResults || results.length > 0) && (
-                    <div className="pt-2">
-                      <Button
-                        asChild
-                        className="w-full"
-                        onClick={() => setOpen(false)}
-                        variant="outline"
+                    <div className="mt-10 mx-auto flex justify-center">
+                      <Link
+                        href={`${Routes.shop}?q=${encodeURIComponent(query)}`}
                       >
-                        <Link
-                          href={`${Routes.shop}?q=${encodeURIComponent(query)}`}
+                        <Button
+                          // asChild
+                          className="w-full"
+                          onClick={() => setOpen(false)}
+                          size="md"
                         >
                           See all results
                           {hasMoreResults && ` (${results.length})`}
-                        </Link>
-                      </Button>
+                        </Button>
+                      </Link>
                     </div>
                   )}
                 </div>

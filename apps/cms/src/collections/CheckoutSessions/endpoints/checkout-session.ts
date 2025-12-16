@@ -91,7 +91,8 @@ export const updateCheckoutSession: Endpoint = {
         if (!guard.ok) {
             return guard.response;
         }
-        const { shipping, payment, shippingAddress, billingAddress } = await req.json?.();
+        const { shipping, payment, shippingAddress, billingAddress } =
+            await req.json?.();
         const sessionId = req.routeParams?.sessionId;
         const cart = await getCartBySessionId(req);
 

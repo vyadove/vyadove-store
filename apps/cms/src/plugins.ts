@@ -94,6 +94,14 @@ export const plugins: Plugin[] = [
     }),
     searchPlugin({
         collections: ["products"],
+        searchOverrides: {
+            admin: {
+                components: {
+                    // Disable the broken ReindexButton by providing empty components
+                    beforeList: [],
+                },
+            },
+        },
         beforeSync: async ({ originalDoc, searchDoc, payload }) => {
             const { title = "", description = "", category } = originalDoc;
 

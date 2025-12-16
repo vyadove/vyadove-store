@@ -6,9 +6,11 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
+import { useAuth } from "@/providers/auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Checkout, Product } from "@vyadove/types";
 
@@ -288,6 +290,8 @@ const CHECKOUT_SESSION_FLAG = "has-checkout-session";
 export function CheckoutProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const { status: authStatus } = useAuth();
+  const prevAuthStatus = useRef<string | null>(null);
 
   // Track whether we should fetch checkout (only if session exists)
   // Start with false to avoid hydration mismatch, then check localStorage on mount
@@ -315,6 +319,27 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
       });
     }
   }, []);
+
+  // Refetch checkout when auth status changes (login/logout)
+  // Track last "settled" state (authenticated or unauthenticated, ignoring loading/idle)
+  useEffect(() => {
+    const isSettledState =
+      authStatus === "authenticated" || authStatus === "unauthenticated";
+
+    if (!isSettledState) return; // Ignore loading/idle states
+
+    const prevSettled = prevAuthStatus.current;
+    const didAuthChange = prevSettled !== null && prevSettled !== authStatus;
+
+    if (didAuthChange) {
+      // Clear and refetch checkout data
+      queryClient.setQueryData(CHECKOUT_QUERY_KEY, null);
+      queryClient.invalidateQueries({ queryKey: CHECKOUT_QUERY_KEY });
+    }
+
+    // Only update ref when we have a settled state
+    prevAuthStatus.current = authStatus;
+  }, [authStatus, queryClient]);
 
   // Fetch checkout - only enabled if we know a session exists
   const {

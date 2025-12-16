@@ -7,7 +7,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Vyadove** is a modern gifting and experience-sharing e-commerce platform.
   It allows users to discover and purchase thoughtfully crafted gifts, each with multiple styles, variants, and personalization options. Vyadove emphasizes not only the product but the emotional experience behind the gift—combining visuals, storytelling, and interactive elements to enhance how gifts are chosen, shared, and remembered.
 
-
 - Technically, Vyadove is built on Next.js, Tailwind, shadcn/ui, Payload CMS, and Vercel, using a reusable component system and a clean design language. The architecture supports a flexible product model with variants, rich media, dynamic pages, and scalable checkout flows—designed for smooth, premium gifting experiences.
 
 - It consists of a headless CMS powered by Payload CMS and a Next.js 15 storefront with Stripe payment integration. The platform emphasizes developer experience with TypeScript, a modular plugin architecture, and modern React patterns.
@@ -20,10 +19,10 @@ This is a pnpm workspace monorepo managed by Turbo:
 - **apps/shop** - Next.js 15 customer-facing storefront (port 3020)
 - **apps/test-shop** - Testing environment for storefront
 - **packages/** - Shared packages:
-  - `@vyadove/types` - Shared TypeScript types
-  - `@vyadove/stripe-plugin` - Custom Stripe payment integration
-  - `@shopnex/payload-sdk` - Type-safe SDK for Payload API communication
-  - `@shopnex/*-plugin` - Various CMS plugins (analytics, import-export, email, etc.)
+    - `@vyadove/types` - Shared TypeScript types
+    - `@vyadove/stripe-plugin` - Custom Stripe payment integration
+    - `@shopnex/payload-sdk` - Type-safe SDK for Payload API communication
+    - `@shopnex/*-plugin` - Various CMS plugins (analytics, import-export, email, etc.)
 
 ## Development Commands
 
@@ -91,19 +90,21 @@ pnpm --filter apps/shop test                # Run Bun tests
 The Shop app communicates with the CMS via the **Payload SDK** (`@shopnex/payload-sdk`):
 
 1. **Shop app** initializes SDK in `apps/shop/src/utils/payload-sdk.ts`:
-   ```typescript
-   const payloadSdk = new PayloadSDK({
-     baseURL: `${NEXT_PUBLIC_SERVER_URL}/api`,
-     credentials: "include"
-   });
-   ```
+
+    ```typescript
+    const payloadSdk = new PayloadSDK({
+        baseURL: `${NEXT_PUBLIC_SERVER_URL}/api`,
+        credentials: "include",
+    });
+    ```
 
 2. **All data fetching** uses this SDK with type-safe methods:
-   - `payloadSdk.find()` - Query collections with filters
-   - `payloadSdk.findByID()` - Get single document
-   - `payloadSdk.create()` - Create documents (carts, orders)
-   - `payloadSdk.update()` - Update documents
-   - `payloadSdk.login()` / `payloadSdk.me()` - Authentication
+
+    - `payloadSdk.find()` - Query collections with filters
+    - `payloadSdk.findByID()` - Get single document
+    - `payloadSdk.create()` - Create documents (carts, orders)
+    - `payloadSdk.update()` - Update documents
+    - `payloadSdk.login()` / `payloadSdk.me()` - Authentication
 
 3. **TypeScript types** are shared via `@vyadove/types` package and auto-generated from Payload collections
 
@@ -114,6 +115,7 @@ The Shop app communicates with the CMS via the **Payload SDK** (`@shopnex/payloa
 Core collections defined in `apps/cms/src/payload.config.ts`:
 
 **Commerce Collections:**
+
 - `products` - Product catalog with variants, pricing tiers, inventory
 - `orders` - Order management with timeline tracking
 - `checkouts` - Shopping checkout with session/user association
@@ -126,9 +128,11 @@ Core collections defined in `apps/cms/src/payload.config.ts`:
 - `locations` - Warehouse/inventory locations
 
 **Content Collections:**
+
 - `hero-page`, `footer-page`, `privacy-policy-page`, `terms-and-conditions-page`, `support`, `forms`
 
 **System Collections:**
+
 - `users` - Authentication and user management
 - `media` - File/image storage (Vercel Blob)
 - `campaigns` - Email campaigns with tracking
@@ -137,6 +141,7 @@ Core collections defined in `apps/cms/src/payload.config.ts`:
 - `themes` - Storefront theming
 
 **Globals:**
+
 - `store-settings` - Global store configuration (currency, policies)
 - `main-menu` - Navigation configuration
 
@@ -158,6 +163,7 @@ CMS uses a modular plugin architecture (`apps/cms/src/plugins.ts`):
 ### Key Architectural Patterns
 
 **CMS (apps/cms):**
+
 - Payload collections with custom hooks (beforeChange, afterChange)
 - Access control via role-based permissions (`admins`, custom access functions)
 - Webhooks for Stripe events → create/update payments and orders
@@ -165,6 +171,7 @@ CMS uses a modular plugin architecture (`apps/cms/src/plugins.ts`):
 - Order timeline tracking with status updates (pending → processing → shipped → delivered)
 
 **Shop (apps/shop):**
+
 - Server components by default for performance
 - Server actions for mutations (`apps/shop/src/actions/`)
 - Route groups: `(store)` for main store layout

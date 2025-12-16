@@ -1,7 +1,7 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
+import { MigrateUpArgs, MigrateDownArgs, sql } from "@payloadcms/db-postgres";
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
-  await db.execute(sql`
+    await db.execute(sql`
    CREATE TYPE "public"."enum_payload_folders_folder_type" AS ENUM('media');
   CREATE TABLE "category" (
   	"id" serial PRIMARY KEY NOT NULL,
@@ -74,11 +74,15 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "products_rels_category_id_idx" ON "products_rels" USING btree ("category_id");
   CREATE INDEX "media_folder_idx" ON "media" USING btree ("folder_id");
   CREATE INDEX "payload_locked_documents_rels_category_id_idx" ON "payload_locked_documents_rels" USING btree ("category_id");
-  CREATE INDEX "payload_locked_documents_rels_payload_folders_id_idx" ON "payload_locked_documents_rels" USING btree ("payload_folders_id");`)
+  CREATE INDEX "payload_locked_documents_rels_payload_folders_id_idx" ON "payload_locked_documents_rels" USING btree ("payload_folders_id");`);
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
-  await db.execute(sql`
+export async function down({
+    db,
+    payload,
+    req,
+}: MigrateDownArgs): Promise<void> {
+    await db.execute(sql`
    ALTER TABLE "category" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "products_locations" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "payload_folders_folder_type" DISABLE ROW LEVEL SECURITY;
@@ -106,5 +110,5 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   ALTER TABLE "media" DROP COLUMN "folder_id";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "category_id";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "payload_folders_id";
-  DROP TYPE "public"."enum_payload_folders_folder_type";`)
+  DROP TYPE "public"."enum_payload_folders_folder_type";`);
 }

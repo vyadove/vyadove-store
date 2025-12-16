@@ -1,6 +1,6 @@
 import { checkRole } from "@/access/roles";
 import { CheckoutSession } from "@vyadove/types";
-import { Access, Where, } from "payload";
+import { Access, Where } from "payload";
 import { rateLimitGuard } from "@/utils";
 
 export const readSessionAccess: Access<CheckoutSession> = ({ req }) => {

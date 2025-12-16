@@ -13,8 +13,6 @@ export const MainMenu: GlobalConfig = {
         group: groups.settings,
     },
     fields: [
-
-
         {
             type: "tabs",
             tabs: [
@@ -34,7 +32,7 @@ export const MainMenu: GlobalConfig = {
                         {
                             name: "form-submissions",
                             type: "relationship",
-                            relationTo: 'form-submissions',
+                            relationTo: "form-submissions",
                         },
                     ],
                     label: "Forms Submissions",

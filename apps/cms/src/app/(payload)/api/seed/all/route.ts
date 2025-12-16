@@ -41,12 +41,14 @@ export async function POST(request: NextRequest) {
                 total: productCount,
             },
         });
-    } catch (error: any) {
+    } catch (error) {
         console.error("❌ Error during full seed:", error);
+        const message =
+            error instanceof Error ? error.message : "Failed to seed database";
         return NextResponse.json(
             {
                 success: false,
-                error: error.message || "Failed to seed database",
+                error: message,
             },
             { status: 500 }
         );
@@ -66,6 +68,7 @@ export async function GET() {
             "/api/seed/all (seeds categories + 2500 products)",
             "/api/seed/all?count=3000 (seeds categories + 3000 products)",
         ],
-        warning: "This will create new records. Make sure your database can handle the volume.",
+        warning:
+            "This will create new records. Make sure your database can handle the volume.",
     });
 }

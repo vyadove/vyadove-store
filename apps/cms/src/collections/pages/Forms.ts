@@ -27,11 +27,11 @@ export const Forms: CollectionConfig = {
             required: true,
             // custom
         },
-         {
-             name: 'form',
-             type: 'relationship',
-             relationTo: 'forms',
-             required: true,
+        {
+            name: "form",
+            type: "relationship",
+            relationTo: "forms",
+            required: true,
         },
 
         {

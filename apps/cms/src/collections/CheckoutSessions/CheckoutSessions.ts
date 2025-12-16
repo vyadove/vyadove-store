@@ -13,6 +13,11 @@ import {
     updateCheckoutSession,
 } from "./endpoints/checkout-session";
 
+/**
+ * @deprecated Use Checkout collection instead. This collection is kept for
+ * backwards compatibility and will be removed in a future version.
+ * @see apps/cms/src/collections/checkout/index.ts
+ */
 export const CheckoutSessions: CollectionConfig = {
     slug: "checkout-sessions",
     access: {

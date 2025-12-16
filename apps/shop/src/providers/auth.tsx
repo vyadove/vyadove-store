@@ -3,7 +3,7 @@
 import type React from "react";
 import { createContext, use, useCallback, useEffect, useState } from "react";
 
-import { clearCheckoutSession } from "@/actions/logout-actions";
+import { transferCheckoutToUser } from "@/actions/checkout-transfer-actions";
 import type { User } from "@vyadove/types";
 
 import { RECENTLY_VIEWED_STORAGE_KEY } from "@/lib/use-recently-viewed";
@@ -61,6 +61,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setStoredToken(result.token);
       }
 
+      // Transfer any guest checkout to the authenticated user
+      await transferCheckoutToUser();
+
       setUser(result.user as User);
       setStatus("authenticated");
 
@@ -90,8 +93,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(null);
       setStatus("unauthenticated");
 
-      // Clear checkout session cookie (server action for httpOnly cookie)
-      await clearCheckoutSession();
+      // Keep checkout-session cookie - user's checkout remains linked via customer field
+      // On re-login, access control allows via customer = user.id
 
       // Clear recently viewed
       localStorage.removeItem(RECENTLY_VIEWED_STORAGE_KEY);
@@ -118,6 +121,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (loginResult.token) {
         setStoredToken(loginResult.token);
       }
+
+      // Transfer any guest checkout to the authenticated user
+      await transferCheckoutToUser();
 
       setUser(loginResult.user as User);
       setStatus("authenticated");

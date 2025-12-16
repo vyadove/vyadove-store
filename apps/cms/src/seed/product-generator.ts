@@ -32,7 +32,14 @@ const productTemplates: ProductTemplate[] = [
         priceRange: [150, 400],
         pricingTier: "luxury",
         variantOptions: [
-            { option: "Pairing", values: ["Wine Pairing", "Premium Pairing", "Non-Alcoholic Pairing"] },
+            {
+                option: "Pairing",
+                values: [
+                    "Wine Pairing",
+                    "Premium Pairing",
+                    "Non-Alcoholic Pairing",
+                ],
+            },
         ],
         customFields: [
             {
@@ -60,7 +67,10 @@ const productTemplates: ProductTemplate[] = [
         priceRange: [120, 350],
         pricingTier: "premium",
         variantOptions: [
-            { option: "Package", values: ["Single Person", "Couples Package", "Group (3-4)"] },
+            {
+                option: "Package",
+                values: ["Single Person", "Couples Package", "Group (3-4)"],
+            },
         ],
         customFields: [
             {
@@ -118,7 +128,15 @@ const productTemplates: ProductTemplate[] = [
         variantOptions: [
             {
                 option: "Cuisine",
-                values: ["Italian", "French", "Japanese", "Thai", "Mexican", "Mediterranean", "Indian"],
+                values: [
+                    "Italian",
+                    "French",
+                    "Japanese",
+                    "Thai",
+                    "Mexican",
+                    "Mediterranean",
+                    "Indian",
+                ],
             },
         ],
         customFields: [
@@ -147,7 +165,10 @@ const productTemplates: ProductTemplate[] = [
         priceRange: [350, 800],
         pricingTier: "premium",
         variantOptions: [
-            { option: "Room Type", values: ["Standard Room", "Suite", "Deluxe Suite"] },
+            {
+                option: "Room Type",
+                values: ["Standard Room", "Suite", "Deluxe Suite"],
+            },
             { option: "Season", values: ["Off-Peak", "Peak Season"] },
         ],
         customFields: [
@@ -176,12 +197,20 @@ const productTemplates: ProductTemplate[] = [
         priceRange: [120, 350],
         pricingTier: "premium",
         variantOptions: [
-            { option: "Group Size", values: ["Small Group (8-12)", "Private Tour (2-6)", "Exclusive Private"] },
+            {
+                option: "Group Size",
+                values: [
+                    "Small Group (8-12)",
+                    "Private Tour (2-6)",
+                    "Exclusive Private",
+                ],
+            },
         ],
         customFields: [
             {
                 name: "Tour Details",
-                valueTemplate: "6-hour tour with hotel pickup, designated driver, wine education, lunch pairing, must be 21+",
+                valueTemplate:
+                    "6-hour tour with hotel pickup, designated driver, wine education, lunch pairing, must be 21+",
             },
         ],
     },
@@ -209,7 +238,13 @@ const productTemplates: ProductTemplate[] = [
             },
             {
                 option: "Type",
-                values: ["Swedish", "Deep Tissue", "Hot Stone", "Aromatherapy", "Sports Massage"],
+                values: [
+                    "Swedish",
+                    "Deep Tissue",
+                    "Hot Stone",
+                    "Aromatherapy",
+                    "Sports Massage",
+                ],
             },
         ],
         customFields: [
@@ -238,7 +273,15 @@ const productTemplates: ProductTemplate[] = [
         priceRange: [250, 600],
         pricingTier: "luxury",
         variantOptions: [
-            { option: "Duration", values: ["15 Minutes", "30 Minutes", "45 Minutes", "60 Minutes"] },
+            {
+                option: "Duration",
+                values: [
+                    "15 Minutes",
+                    "30 Minutes",
+                    "45 Minutes",
+                    "60 Minutes",
+                ],
+            },
         ],
         customFields: [
             {
@@ -266,7 +309,14 @@ const productTemplates: ProductTemplate[] = [
         priceRange: [400, 1200],
         pricingTier: "premium",
         variantOptions: [
-            { option: "Package", values: ["Up to 8 Guests", "Up to 12 Guests", "Up to 20 Guests"] },
+            {
+                option: "Package",
+                values: [
+                    "Up to 8 Guests",
+                    "Up to 12 Guests",
+                    "Up to 20 Guests",
+                ],
+            },
         ],
         customFields: [
             {
@@ -294,7 +344,10 @@ const productTemplates: ProductTemplate[] = [
         priceRange: [250, 600],
         pricingTier: "premium",
         variantOptions: [
-            { option: "Accommodation", values: ["Shared Room", "Private Room", "Premium Suite"] },
+            {
+                option: "Accommodation",
+                values: ["Shared Room", "Private Room", "Premium Suite"],
+            },
         ],
         customFields: [
             {
@@ -324,7 +377,14 @@ const productTemplates: ProductTemplate[] = [
         variantOptions: [
             {
                 option: "Type",
-                values: ["Street", "Landscape", "Portrait", "Night", "Architecture", "Nature"],
+                values: [
+                    "Street",
+                    "Landscape",
+                    "Portrait",
+                    "Night",
+                    "Architecture",
+                    "Nature",
+                ],
             },
         ],
         customFields: [
@@ -353,7 +413,14 @@ const productTemplates: ProductTemplate[] = [
         priceRange: [75, 170],
         pricingTier: "basic",
         variantOptions: [
-            { option: "Tour Type", values: ["Group Tour", "Private Group (up to 8)", "Exclusive Private"] },
+            {
+                option: "Tour Type",
+                values: [
+                    "Group Tour",
+                    "Private Group (up to 8)",
+                    "Exclusive Private",
+                ],
+            },
         ],
         customFields: [
             {
@@ -383,7 +450,14 @@ const productTemplates: ProductTemplate[] = [
         variantOptions: [
             {
                 option: "Activity",
-                values: ["Kayaking", "Paddleboarding", "Surfing", "Sailing", "Jet Skiing", "Snorkeling"],
+                values: [
+                    "Kayaking",
+                    "Paddleboarding",
+                    "Surfing",
+                    "Sailing",
+                    "Jet Skiing",
+                    "Snorkeling",
+                ],
             },
         ],
         customFields: [
@@ -412,7 +486,10 @@ const productTemplates: ProductTemplate[] = [
         priceRange: [45, 95],
         pricingTier: "basic",
         variantOptions: [
-            { option: "Service", values: ["Classic Tea", "Champagne Tea", "Royal Tea Service"] },
+            {
+                option: "Service",
+                values: ["Classic Tea", "Champagne Tea", "Royal Tea Service"],
+            },
         ],
         customFields: [
             {
@@ -440,7 +517,10 @@ const productTemplates: ProductTemplate[] = [
         priceRange: [90, 200],
         pricingTier: "basic",
         variantOptions: [
-            { option: "Experience", values: ["Standard Tour", "Extreme Tour", "Night Tour"] },
+            {
+                option: "Experience",
+                values: ["Standard Tour", "Extreme Tour", "Night Tour"],
+            },
         ],
         customFields: [
             {
@@ -470,7 +550,14 @@ const productTemplates: ProductTemplate[] = [
         variantOptions: [
             {
                 option: "Art Type",
-                values: ["Painting", "Pottery", "Watercolor", "Sculpture", "Drawing", "Mixed Media"],
+                values: [
+                    "Painting",
+                    "Pottery",
+                    "Watercolor",
+                    "Sculpture",
+                    "Drawing",
+                    "Mixed Media",
+                ],
             },
         ],
         customFields: [
@@ -519,7 +606,15 @@ const locations = [
     "Coastal Paradise",
 ];
 
-const durations = ["2-night", "3-day", "weekend", "full day", "half day", "evening", "multi-day"];
+const durations = [
+    "2-night",
+    "3-day",
+    "weekend",
+    "full day",
+    "half day",
+    "evening",
+    "multi-day",
+];
 
 const times = ["sunrise", "sunset", "morning", "afternoon", "evening"];
 
@@ -569,18 +664,48 @@ function fillTemplate(template: string): string {
         .replace(/\{guests\}/g, String(randomInRange(6, 20)))
         .replace(/\{tastings\}/g, String(randomInRange(8, 15)))
         .replace(/\{teas\}/g, String(randomInRange(15, 30)))
-        .replace(/\{treatment\}/g, random(["massage", "facial", "body scrub", "spa treatments", "wellness therapies"]))
-        .replace(/\{amenity\}/g, random(["hot tub", "fireplace", "spa access", "private pool", "scenic views"]))
-        .replace(/\{art\}/g, random(["Painting", "Pottery", "Watercolor", "Sculpture"]))
-        .replace(/\{type\}/g, random(["Swedish", "Deep Tissue", "Hot Stone", "Aromatherapy"]))
-        .replace(/\{activity\}/g, random(["Kayaking", "Paddleboarding", "Surfing", "Sailing"]));
+        .replace(
+            /\{treatment\}/g,
+            random([
+                "massage",
+                "facial",
+                "body scrub",
+                "spa treatments",
+                "wellness therapies",
+            ])
+        )
+        .replace(
+            /\{amenity\}/g,
+            random([
+                "hot tub",
+                "fireplace",
+                "spa access",
+                "private pool",
+                "scenic views",
+            ])
+        )
+        .replace(
+            /\{art\}/g,
+            random(["Painting", "Pottery", "Watercolor", "Sculpture"])
+        )
+        .replace(
+            /\{type\}/g,
+            random(["Swedish", "Deep Tissue", "Hot Stone", "Aromatherapy"])
+        )
+        .replace(
+            /\{activity\}/g,
+            random(["Kayaking", "Paddleboarding", "Surfing", "Sailing"])
+        );
 }
 
 // Generate a single product from template
 export function generateProduct(template: ProductTemplate, index: number) {
     const title = fillTemplate(random(template.titleTemplate));
     const description = fillTemplate(random(template.descriptions));
-    const basePrice = randomInRange(template.priceRange[0], template.priceRange[1]);
+    const basePrice = randomInRange(
+        template.priceRange[0],
+        template.priceRange[1]
+    );
     const prices = generatePriceVariants(basePrice, randomInRange(1, 3));
 
     // Generate variants
@@ -607,25 +732,10 @@ export function generateProduct(template: ProductTemplate, index: number) {
         });
     }
 
-    // Generate custom fields
+    // Generate custom fields (value is plain text, not JSON - RichTextEditor stores as text)
     const customFields = template.customFields.map((field) => ({
         name: field.name,
-        value: {
-            root: {
-                type: "root",
-                children: [
-                    {
-                        type: "paragraph",
-                        children: [
-                            {
-                                type: "text",
-                                text: fillTemplate(field.valueTemplate),
-                            },
-                        ],
-                    },
-                ],
-            },
-        },
+        value: fillTemplate(field.valueTemplate),
     }));
 
     return {

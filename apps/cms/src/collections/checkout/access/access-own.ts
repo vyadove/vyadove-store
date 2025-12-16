@@ -1,25 +1,38 @@
 import { checkRole } from "@/access/roles";
-import { Access, parseCookies } from "payload";
+import { Access, parseCookies, Where } from "payload";
 
-export const canAccessOwnCheckout : Access = ({ req }) => {
-    if (req.user) {
-        if (checkRole(["admin"], req.user)) {
-            return true;
-        }
+import { CHECKOUT_COOKIE_NAME } from "../utils/checkout-cookie";
+
+export const canAccessOwnCheckout: Access = ({ req }) => {
+    // Admins: full access
+    if (req.user && checkRole(["admin"], req.user)) {
+        return true;
     }
+
     const cookies = parseCookies(req.headers);
+    const sessionId = cookies.get(CHECKOUT_COOKIE_NAME);
 
-    const sessionId = cookies.get("checkout-session");
+    // Build OR condition: sessionId match OR customer match
+    const conditions: Where[] = [];
 
-    console.log('session id --- : ', sessionId);
+    if (sessionId) {
+        conditions.push({ sessionId: { equals: sessionId } });
+    }
 
-    if (!sessionId) {
+    if (req.user) {
+        conditions.push({ customer: { equals: req.user.id } });
+    }
+
+    // No valid access method
+    if (conditions.length === 0) {
         return false;
     }
 
-    return {
-        sessionId: {
-            equals: sessionId,
-        },
-    };
+    // Single condition: return directly
+    if (conditions.length === 1) {
+        return conditions[0];
+    }
+
+    // Multiple conditions: OR them
+    return { or: conditions };
 };

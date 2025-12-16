@@ -45,8 +45,10 @@ export default function Address() {
     const defaultValues =
         process.env.NODE_ENV === "development"
             ? {
-                  firstName: (session?.shippingAddress as any)?.firstname || "John",
-                  lastName: (session?.shippingAddress as any)?.lastName || "Doe",
+                  firstName:
+                      (session?.shippingAddress as any)?.firstname || "John",
+                  lastName:
+                      (session?.shippingAddress as any)?.lastName || "Doe",
                   address: "123 Testing Lane",
                   company: "Test Corp",
                   postalCode: "12345",
@@ -97,12 +99,11 @@ export default function Address() {
 
             console.log("update data", updateData);
 
-            if(session){
+            if (session) {
                 await updateCheckoutSession(updateData);
-            }else {
+            } else {
                 await createCheckoutSession(updateData);
             }
-
 
             router.push("/checkout/shipping");
         } catch (error) {

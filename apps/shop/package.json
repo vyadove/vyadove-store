@@ -11,7 +11,7 @@
     "build:local": "next build",
     "ci": "next build",
     "start": "next start",
-    "lint": "next lint --max-warnings 0",
+    "lint": "next lint --fix --max-warnings 0",
     "test": "bun test",
     "prepare": "bun husky",
     "docker:build": "docker build -t yournextstore .",

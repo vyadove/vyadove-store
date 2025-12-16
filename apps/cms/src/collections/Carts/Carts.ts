@@ -4,6 +4,11 @@ import { canAccessOwnCart } from "./access/access-own-cart";
 import { sessionCartCreate } from "./hooks/session-cart-create";
 import { createCartSession, updateCartSession } from "./endpoints/cart-session";
 
+/**
+ * @deprecated Use Checkout collection instead. This collection is kept for
+ * backwards compatibility and will be removed in a future version.
+ * @see apps/cms/src/collections/checkout/index.ts
+ */
 export const Carts: CollectionConfig = {
     slug: "carts",
     access: {

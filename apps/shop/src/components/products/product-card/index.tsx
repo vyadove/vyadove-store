@@ -16,9 +16,25 @@ import type { Media, Product } from "@vyadove/types";
 
 import InvertedCornerMask from "@/components/inverted-corner-mask";
 
+import { cn } from "@/lib/utils";
+
 import { convertToLocale } from "@/utils/money";
 
-export const ProductPreview = ({ product }: { product: Product }) => {
+type ProductPreviewProps = {
+  product: Product;
+  /** Thumbnail size variant */
+  size?: "default" | "sm";
+};
+
+const thumbnailSizes = {
+  default: "h-[270px]",
+  sm: "h-[180px]",
+};
+
+export const ProductPreview = ({
+  product,
+  size = "default",
+}: ProductPreviewProps) => {
   const { originalPrice, price } = product.variants?.[0] || {};
 
   const thumbnailUrl = getProductGallery(product)[0]?.url;
@@ -47,7 +63,12 @@ export const ProductPreview = ({ product }: { product: Product }) => {
             br: { inverted: true, corners: [15, 15, 15] },
           }}
         >
-          <div className="relative flex size-[300px] h-[270px] w-full items-start">
+          <div
+            className={cn(
+              "relative flex w-full items-start",
+              thumbnailSizes[size],
+            )}
+          >
             {thumbnailUrl && (
               <Image
                 alt={"product image"}

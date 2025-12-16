@@ -54,8 +54,7 @@ export default function ProductActions({
     }, [options, selectedOptions]);
 
     const handleAddToCart = async () => {
-
-        console.log('handleAddToCart', product.variants);
+        console.log("handleAddToCart", product.variants);
 
         setIsAdding(true);
 
@@ -63,7 +62,7 @@ export default function ProductActions({
 
         if (!selectedVariant?.id) {
             setIsAdding(false);
-            console.error('variant not found')
+            console.error("variant not found");
             return;
         }
 

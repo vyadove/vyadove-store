@@ -1,6 +1,10 @@
-import { CollectionBeforeChangeHook } from "payload";
+import { CollectionBeforeChangeHook, parseCookies } from "payload";
 import { Checkout } from "@vyadove/types";
-import { parseCookies, generateCookie, getCookieExpiration } from "payload";
+
+import {
+    CHECKOUT_COOKIE_NAME,
+    createCheckoutCookieHeaders,
+} from "../utils/checkout-cookie";
 
 export const handleGuestSession: CollectionBeforeChangeHook<Checkout> = async ({
     data,
@@ -20,7 +24,7 @@ export const handleGuestSession: CollectionBeforeChangeHook<Checkout> = async ({
             where: {
                 and: [
                     { customer: { equals: req.user.id } },
-                    { status: { equals: 'incomplete' } },
+                    { status: { equals: "incomplete" } },
                 ],
             },
             limit: 1,
@@ -28,7 +32,7 @@ export const handleGuestSession: CollectionBeforeChangeHook<Checkout> = async ({
 
         if (existingCheckout.docs.length > 0) {
             throw new Error(
-                `create - Active checkout already exists with ID: ${existingCheckout.docs[0].id}.           
+                `create - Active checkout already exists with ID: ${existingCheckout.docs[0].id}.
                   Please update the existing checkout instead of creating a new one.`
             );
         }
@@ -39,21 +43,11 @@ export const handleGuestSession: CollectionBeforeChangeHook<Checkout> = async ({
 
     // Guest flow: Check for existing session
     const cookies = parseCookies(req.headers);
-    let sessionId = cookies.get("checkout-session");
+    let sessionId = cookies.get(CHECKOUT_COOKIE_NAME);
 
-    // Helper to generate new session cookie
-    const createSessionCookie = (newSessionId: string) => {
-        const checkoutCookie = generateCookie({
-            name: "checkout-session",
-            value: newSessionId,
-            expires: getCookieExpiration({ seconds: 60 * 60 * 24 * 30 }),
-            path: "/",
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "Strict",
-            returnCookieAsObject: false
-        });
-        req.responseHeaders = new Headers({ "Set-Cookie": checkoutCookie as string });
+    // Helper to set session cookie on response
+    const setSessionCookie = (newSessionId: string) => {
+        req.responseHeaders = createCheckoutCookieHeaders(newSessionId);
     };
 
     // If session exists, check if sessionId is already used
@@ -76,12 +70,12 @@ export const handleGuestSession: CollectionBeforeChangeHook<Checkout> = async ({
 
             // SessionId used by completed/expired checkout - generate new one
             sessionId = crypto.randomUUID();
-            createSessionCookie(sessionId);
+            setSessionCookie(sessionId);
         }
     } else {
         // No session cookie - create new session for new guest
         sessionId = crypto.randomUUID();
-        createSessionCookie(sessionId);
+        setSessionCookie(sessionId);
     }
 
     data.sessionId = sessionId;
@@ -90,9 +84,8 @@ export const handleGuestSession: CollectionBeforeChangeHook<Checkout> = async ({
 
     // Calculate pricing if items exist
     if (data.items && data.items.length > 0) {
-        const { calculateCheckoutPricing, applyPricingToCheckout } = await import(
-            "./utils/calculate-pricing"
-        );
+        const { calculateCheckoutPricing, applyPricingToCheckout } =
+            await import("./utils/calculate-pricing");
 
         const pricing = await calculateCheckoutPricing(req.payload, data, {
             fetchPrices: true,

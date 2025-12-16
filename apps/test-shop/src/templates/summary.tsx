@@ -7,7 +7,7 @@ import { Button, Divider, Heading } from "@medusajs/ui";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useCart } from "react-use-cart";
-import {DiscountCode} from "@/components/discount-code";
+import { DiscountCode } from "@/components/discount-code";
 
 const Summary = () => {
     const [isPending, startTransition] = useTransition();
@@ -47,7 +47,7 @@ const Summary = () => {
             <Heading className="text-[2rem] leading-[2.75rem]" level="h2">
                 Summary
             </Heading>
-             <DiscountCode
+            <DiscountCode
                 applyPromotion={applyPromotion}
                 promotions={promotions}
                 setPromotions={setPromotions}

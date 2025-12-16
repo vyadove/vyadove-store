@@ -50,7 +50,6 @@ export const revalidateShop = async ({
     }
 };
 
-
 export const TermsAndCollectionsPage: CollectionConfig = {
     slug: "terms-and-conditions-page",
     access: {

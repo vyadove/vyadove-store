@@ -5,20 +5,21 @@ import Link from "next/link";
 import { useConfig, useDocumentInfo } from "@payloadcms/ui";
 // import { useConfig } from "@payloadcms/ui";
 
-export default function SubcategoryLinkCell({ cellData, rowData, ...rest } : any){
+export default function SubcategoryLinkCell({
+    cellData,
+    rowData,
+    ...rest
+}: any) {
     const { config } = useConfig();
 
     const info = useDocumentInfo();
 
-
-    console.log('rowdata -- - : ', rest);
-
+    console.log("rowdata -- - : ", rest);
 
     if (!rowData?.id || !cellData) return <span>- klajs</span>;
 
     // Build admin edit link for this subcategory
     const editUrl = `${config.routes.admin}/collections/category/${rowData.id}`;
-
 
     return (
         <Link
@@ -32,4 +33,4 @@ export default function SubcategoryLinkCell({ cellData, rowData, ...rest } : any
             {cellData}
         </Link>
     );
-};
+}

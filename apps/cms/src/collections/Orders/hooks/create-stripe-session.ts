@@ -58,7 +58,7 @@ export const createStripeSession: CollectionAfterChangeHook<Order> = async ({
 
         // Create Stripe checkout session
 
-        throw new Error('createCheckoutSession is not implemented yet!');
+        throw new Error("createCheckoutSession is not implemented yet!");
 
         /*const shopUrl =
             process.env.NEXT_PUBLIC_SHOP_URL || "http://localhost:3020";
@@ -91,7 +91,7 @@ export const createStripeSession: CollectionAfterChangeHook<Order> = async ({
         );
 
         // todo -- handle failed session creation
-       /* // Mark order as failed
+        /* // Mark order as failed
         await req.payload.update({
             collection: "orders",
             id: doc.id,

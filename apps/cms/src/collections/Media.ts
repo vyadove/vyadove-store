@@ -6,13 +6,13 @@ import { groups } from "./groups";
 import { formatSlug } from "@/utils";
 
 const generateAltText = (filename: string): string => {
-    if (!filename) return 'Image description'; // Fallback
+    if (!filename) return "Image description"; // Fallback
 
     // 1. Remove the file extension (e.g., '.jpg', '.png')
-    let alt = filename.split('.').slice(0, -1).join('.');
+    let alt = filename.split(".").slice(0, -1).join(".");
 
     // 2. Replace common separators (hyphens and underscores) with spaces
-    alt = alt.replace(/[-_]/g, ' ');
+    alt = alt.replace(/[-_]/g, " ");
 
     // 3. Capitalize the first letter
     if (alt.length > 0) {
@@ -38,11 +38,10 @@ export const Media: CollectionConfig = {
             name: "alt",
             type: "text",
             hooks: {
-                beforeValidate: [formatSlug('filename')],
+                beforeValidate: [formatSlug("filename")],
             },
         },
     ],
     upload: true,
-    folders: {
-    },
+    folders: {},
 };

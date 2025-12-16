@@ -1,7 +1,7 @@
 import { TextField } from "payload";
 
 export const RichTextEditor = (fieldOverrides: any): TextField => {
-    return ({
+    return {
         type: "text",
         admin: {
             components: {
@@ -9,5 +9,5 @@ export const RichTextEditor = (fieldOverrides: any): TextField => {
             },
         },
         ...fieldOverrides,
-    });
+    };
 };

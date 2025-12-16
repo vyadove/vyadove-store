@@ -45,7 +45,7 @@ export default function ShippingPage() {
                     },
                 });
 
-                console.log('shipping data -- : ', data);
+                console.log("shipping data -- : ", data);
 
                 const sortedMethods = (data.docs || []).sort(
                     (a: any, b: any) => {

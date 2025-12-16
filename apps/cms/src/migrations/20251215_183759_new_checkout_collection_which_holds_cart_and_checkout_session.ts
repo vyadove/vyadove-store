@@ -1,7 +1,7 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
+import { MigrateUpArgs, MigrateDownArgs, sql } from "@payloadcms/db-postgres";
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
-  await db.execute(sql`
+    await db.execute(sql`
    CREATE TYPE "public"."enum_checkout_status" AS ENUM('incomplete', 'complete', 'expired', 'cancelled');
   ALTER TYPE "public"."enum_orders_payment_status" ADD VALUE 'awaiting_payment' BEFORE 'paid';
   ALTER TYPE "public"."enum_orders_payment_status" ADD VALUE 'expired' BEFORE 'refunded';
@@ -70,11 +70,15 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_checkout_fk" FOREIGN KEY ("checkout_id") REFERENCES "public"."checkout"("id") ON DELETE cascade ON UPDATE no action;
   CREATE INDEX "orders_checkout_idx" ON "orders" USING btree ("checkout_id");
   CREATE INDEX "payload_locked_documents_rels_checkout_id_idx" ON "payload_locked_documents_rels" USING btree ("checkout_id");
-  ALTER TABLE "orders" DROP COLUMN "cart_id";`)
+  ALTER TABLE "orders" DROP COLUMN "cart_id";`);
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
-  await db.execute(sql`
+export async function down({
+    db,
+    payload,
+    req,
+}: MigrateDownArgs): Promise<void> {
+    await db.execute(sql`
    ALTER TABLE "checkout_items" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "checkout" DISABLE ROW LEVEL SECURITY;
   DROP TABLE "checkout_items" CASCADE;
@@ -99,5 +103,5 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   ALTER TABLE "products_variants" DROP COLUMN "price_amount";
   ALTER TABLE "products_variants" DROP COLUMN "price_currency";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "checkout_id";
-  DROP TYPE "public"."enum_checkout_status";`)
+  DROP TYPE "public"."enum_checkout_status";`);
 }

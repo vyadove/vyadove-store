@@ -1,42 +1,39 @@
 // import type { MigrateUpArgs } from '@payloadcms/db-mongodb'
 
-import { home } from '@/seed/form-seed/home'
+import { home } from "@/seed/form-seed/home";
 
-import { advanced } from '@/seed/form-seed/advanced'
-import { advancedForm } from '@/seed/form-seed/advancedForm'
-import { basicForm } from '@/seed/form-seed/basicForm'
-import { contact } from '@/seed/form-seed/contact'
-import { contactForm } from '@/seed/form-seed/contactForm'
-import { signUp } from '@/seed/form-seed/signUp'
-import { signUpForm } from '@/seed/form-seed/signUpForm'
+import { advanced } from "@/seed/form-seed/advanced";
+import { advancedForm } from "@/seed/form-seed/advancedForm";
+import { basicForm } from "@/seed/form-seed/basicForm";
+import { contact } from "@/seed/form-seed/contact";
+import { contactForm } from "@/seed/form-seed/contactForm";
+import { signUp } from "@/seed/form-seed/signUp";
+import { signUpForm } from "@/seed/form-seed/signUpForm";
 import { getPayload } from "payload";
 import config from "@payload-config";
 
-export async function seedForms( ) {
-
+export async function seedForms() {
     const payload = await getPayload({ config });
 
-  const basicFormJSON = JSON.parse(JSON.stringify(basicForm))
+    const basicFormJSON = JSON.parse(JSON.stringify(basicForm));
 
-/*  const { id: basicFormID } = await payload.create({
+    /*  const { id: basicFormID } = await payload.create({
     collection: 'forms',
     data: basicFormJSON,
   })
 
     console.log('basice form id', basicFormID);*/
 
-  const contactFormJSON = JSON.parse(JSON.stringify(contactForm))
+    const contactFormJSON = JSON.parse(JSON.stringify(contactForm));
 
-  const { id: contactFormID } = await payload.create({
-    collection: 'forms',
-    data: contactFormJSON,
-  })
+    const { id: contactFormID } = await payload.create({
+        collection: "forms",
+        data: contactFormJSON,
+    });
 
-    console.log('contactFormID form id', contactFormID);
+    console.log("contactFormID form id", contactFormID);
 
-
-
-  /*
+    /*
 
     const advancedFormJSON = JSON.parse(JSON.stringify(advancedForm))
 
@@ -127,5 +124,4 @@ export async function seedForms( ) {
     },
   })
 */
-
 }

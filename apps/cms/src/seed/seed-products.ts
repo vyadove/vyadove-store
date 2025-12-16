@@ -1,25 +1,8 @@
 import config from "@payload-config";
+import type { Category } from "@vyadove/types";
 import { getPayload } from "payload";
-import { generateProducts } from "./product-generator";
 
-// Category name mapping to find category IDs
-const categoryMapping: Record<string, string> = {
-    "Fine Dining": "Fine Dining",
-    "Spa Days": "Spa Days",
-    "Air Adventures": "Air Adventures",
-    "Cooking Classes": "Cooking Classes",
-    "Romantic Getaways": "Romantic Getaways",
-    "Wine & Spirits": "Wine & Spirits",
-    "Massage Therapy": "Massage Therapy",
-    "Birthday Parties": "Birthday Parties",
-    "Yoga & Meditation": "Yoga & Meditation",
-    "Photography": "Photography",
-    "Brewery & Distillery": "Brewery & Distillery",
-    "Water Sports": "Water Sports",
-    "Afternoon Tea": "Afternoon Tea",
-    "Land Adventures": "Land Adventures",
-    "Art Classes": "Art Classes",
-};
+import { generateProducts } from "./product-generator";
 
 export const seedProducts = async (count: number = 2500) => {
     const payload = await getPayload({ config });
@@ -33,12 +16,45 @@ export const seedProducts = async (count: number = 2500) => {
         limit: 200,
     });
 
-    const categoryIdMap = new Map<string, string>();
-    categoriesResult.docs.forEach((cat: any) => {
+    const categoryIdMap = new Map<string, number>();
+    categoriesResult.docs.forEach((cat: Category) => {
         categoryIdMap.set(cat.title, cat.id);
     });
 
     console.log(`✓ Found ${categoryIdMap.size} categories`);
+
+    // Create or find a placeholder media for gallery
+    console.log("📷 Setting up placeholder media...");
+    let placeholderMediaId: number;
+
+    const existingMedia = await payload.find({
+        collection: "media",
+        where: { alt: { equals: "placeholder-product" } },
+        limit: 1,
+    });
+
+    if (existingMedia.docs.length > 0) {
+        placeholderMediaId = existingMedia.docs[0].id;
+        console.log(
+            `✓ Using existing placeholder media: ${placeholderMediaId}`
+        );
+    } else {
+        const placeholderMedia = await payload.create({
+            collection: "media",
+            data: {
+                alt: "placeholder-product",
+                filename: `placeholder-${Date.now()}.jpg`,
+                mimeType: "image/jpeg",
+                url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+                thumbnailURL:
+                    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&q=60",
+                width: 800,
+                height: 600,
+            },
+        });
+        placeholderMediaId = placeholderMedia.id;
+        console.log(`✓ Created placeholder media: ${placeholderMediaId}`);
+    }
 
     // Generate products
     const products = generateProducts(count);
@@ -47,57 +63,54 @@ export const seedProducts = async (count: number = 2500) => {
 
     let created = 0;
     let errors = 0;
-    const batchSize = 50;
+    const batchSize = 10; // Small batches to avoid connection pool exhaustion
 
-    // Process in batches to avoid overwhelming the database
     for (let i = 0; i < products.length; i += batchSize) {
         const batch = products.slice(i, i + batchSize);
 
-        await Promise.all(
-            batch.map(async (product, batchIndex) => {
-                try {
-                    // Find the category ID
-                    const categoryId = categoryIdMap.get(product.category);
+        const results = await Promise.allSettled(
+            batch.map(async (product) => {
+                const categoryId = categoryIdMap.get(product.category);
 
-                    if (!categoryId) {
-                        console.warn(`⚠️  Category not found: ${product.category}`);
-                    }
+                const productData = {
+                    pid: product.pid,
+                    title: product.title,
+                    currency: product.currency,
+                    visible: product.visible,
+                    salesChannels: product.salesChannels,
+                    description: product.description,
+                    handle: product.handle,
+                    variants: product.variants,
+                    customFields: product.customFields,
+                    gallery: [placeholderMediaId],
+                    category: categoryId ? [categoryId] : undefined,
+                };
 
-                    const productData: any = {
-                        pid: product.pid,
-                        title: product.title,
-                        currency: product.currency,
-                        visible: product.visible,
-                        salesChannels: product.salesChannels,
-                        description: product.description,
-                        handle: product.handle,
-                        variants: product.variants,
-                        customFields: product.customFields,
-                    };
+                await payload.create({
+                    collection: "products",
+                    data: productData,
+                });
 
-                    // Add category if found
-                    if (categoryId) {
-                        productData.category = [categoryId];
-                    }
-
-                    await payload.create({
-                        collection: "products",
-                        data: productData,
-                    });
-
-                    created++;
-
-                    if (created % 100 === 0) {
-                        console.log(`  ✓ Created ${created}/${products.length} products...`);
-                    }
-                } catch (error: any) {
-                    errors++;
-                    if (errors < 10) {
-                        // Only log first 10 errors
-                        console.error(`  ❌ Error creating product "${product.title}":`, error.message);
-                    }
-                }
+                return product.title;
             })
+        );
+
+        for (const result of results) {
+            if (result.status === "fulfilled") {
+                created++;
+            } else {
+                errors++;
+                if (errors <= 5) {
+                    console.error(
+                        `  ❌ Error:`,
+                        result.reason?.message || result.reason
+                    );
+                }
+            }
+        }
+
+        console.log(
+            `  ✓ Batch ${Math.floor(i / batchSize) + 1}: ${created}/${products.length} created, ${errors} errors`
         );
     }
 

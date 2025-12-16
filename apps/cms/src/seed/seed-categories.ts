@@ -40,7 +40,9 @@ export const seedCategories = async () => {
                 });
 
                 categoryMap.set(subcat.title, subcatResult.id.toString());
-                console.log(`  ✓ Created subcategory: ${subcat.title} (ID: ${subcatResult.id})`);
+                console.log(
+                    `  ✓ Created subcategory: ${subcat.title} (ID: ${subcatResult.id})`
+                );
             }
         }
     }

@@ -78,7 +78,11 @@ export const syncFromCheckout: CollectionBeforeChangeHook<Order> = async ({
     data.orderId = generateOrderId();
 
     // Sync data from checkout to order
-    data.user = checkout.customer || data.user;
+    const customerId =
+        typeof checkout.customer === "object"
+            ? checkout.customer?.id
+            : checkout.customer;
+    data.user = customerId || data.user;
     data.sessionId = checkout.sessionId;
     data.totalAmount = checkout.total;
     data.currency = checkout.currency || data.currency || "usd";
@@ -101,7 +105,7 @@ export const syncFromCheckout: CollectionBeforeChangeHook<Order> = async ({
     };
 
     data.paymentMethod = paymentType;
-    data.paymentStatus =  "pending";
+    data.paymentStatus = "pending";
     data.orderStatus = "pending";
 
     // Mark checkout as complete (update after order creation)

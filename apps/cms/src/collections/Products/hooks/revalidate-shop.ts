@@ -9,10 +9,9 @@ export const revalidateShop = async ({
     req: PayloadRequest;
     doc: Product;
 }): Promise<void> => {
-
     // if this is local dev ignore
-    if (process.env.IS_LOCAL_SERVER){
-        console.log('skipping revalidation on local server');
+    if (process.env.IS_LOCAL_SERVER) {
+        console.log("skipping revalidation on local server");
         return;
     }
 

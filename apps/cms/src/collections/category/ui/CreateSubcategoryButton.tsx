@@ -16,7 +16,7 @@ export default function CreateSubcategoryButton() {
     };
 
     return (
-        <Button onClick={handleClick}  className="mt-3">
+        <Button onClick={handleClick} className="mt-3">
             + Create Subcategory
         </Button>
     );

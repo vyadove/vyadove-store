@@ -82,7 +82,7 @@
                 "vid": "tasting-menu-001-standard",
                 "imageUrl": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
                 "price": {
-                    "amount": 225.00,
+                    "amount": 225.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -100,7 +100,7 @@
                 "vid": "tasting-menu-001-premium",
                 "imageUrl": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
                 "price": {
-                    "amount": 295.00,
+                    "amount": 295.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -151,7 +151,7 @@
                 "vid": "balloon-001-weekday",
                 "imageUrl": "https://images.unsplash.com/photo-1519974719765-e6559eac2575?w=800&q=80",
                 "price": {
-                    "amount": 249.00,
+                    "amount": 249.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -169,7 +169,7 @@
                 "vid": "balloon-001-weekend",
                 "imageUrl": "https://images.unsplash.com/photo-1519974719765-e6559eac2575?w=800&q=80",
                 "price": {
-                    "amount": 289.00,
+                    "amount": 289.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -220,7 +220,7 @@
                 "vid": "cabin-001-standard",
                 "imageUrl": "https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=800&q=80",
                 "price": {
-                    "amount": 459.00,
+                    "amount": 459.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -238,7 +238,7 @@
                 "vid": "cabin-001-peak",
                 "imageUrl": "https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=800&q=80",
                 "price": {
-                    "amount": 599.00,
+                    "amount": 599.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -289,7 +289,7 @@
                 "vid": "wine-tour-001-small",
                 "imageUrl": "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&q=80",
                 "price": {
-                    "amount": 179.00,
+                    "amount": 179.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -307,7 +307,7 @@
                 "vid": "wine-tour-001-private",
                 "imageUrl": "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&q=80",
                 "price": {
-                    "amount": 349.00,
+                    "amount": 349.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -358,7 +358,7 @@
                 "vid": "birthday-001-standard",
                 "imageUrl": "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=800&q=80",
                 "price": {
-                    "amount": 599.00,
+                    "amount": 599.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -376,7 +376,7 @@
                 "vid": "birthday-001-deluxe",
                 "imageUrl": "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=800&q=80",
                 "price": {
-                    "amount": 849.00,
+                    "amount": 849.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -427,7 +427,7 @@
                 "vid": "cooking-001-italian",
                 "imageUrl": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&q=80",
                 "price": {
-                    "amount": 125.00,
+                    "amount": 125.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -445,7 +445,7 @@
                 "vid": "cooking-001-french",
                 "imageUrl": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&q=80",
                 "price": {
-                    "amount": 125.00,
+                    "amount": 125.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -463,7 +463,7 @@
                 "vid": "cooking-001-sushi",
                 "imageUrl": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&q=80",
                 "price": {
-                    "amount": 145.00,
+                    "amount": 145.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -514,7 +514,7 @@
                 "vid": "massage-001-60min",
                 "imageUrl": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80",
                 "price": {
-                    "amount": 89.00,
+                    "amount": 89.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -532,7 +532,7 @@
                 "vid": "massage-001-90min",
                 "imageUrl": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80",
                 "price": {
-                    "amount": 129.00,
+                    "amount": 129.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -583,7 +583,7 @@
                 "vid": "heli-001-15min",
                 "imageUrl": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80",
                 "price": {
-                    "amount": 299.00,
+                    "amount": 299.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -601,7 +601,7 @@
                 "vid": "heli-001-30min",
                 "imageUrl": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80",
                 "price": {
-                    "amount": 499.00,
+                    "amount": 499.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -652,7 +652,7 @@
                 "vid": "beach-001-standard",
                 "imageUrl": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
                 "price": {
-                    "amount": 699.00,
+                    "amount": 699.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -670,7 +670,7 @@
                 "vid": "beach-001-suite",
                 "imageUrl": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
                 "price": {
-                    "amount": 999.00,
+                    "amount": 999.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -721,7 +721,7 @@
                 "vid": "choco-001-standard",
                 "imageUrl": "https://images.unsplash.com/photo-1511381939415-e44015466834?w=800&q=80",
                 "price": {
-                    "amount": 65.00,
+                    "amount": 65.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -739,7 +739,7 @@
                 "vid": "choco-001-premium",
                 "imageUrl": "https://images.unsplash.com/photo-1511381939415-e44015466834?w=800&q=80",
                 "price": {
-                    "amount": 95.00,
+                    "amount": 95.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -790,7 +790,7 @@
                 "vid": "anniv-001-standard",
                 "imageUrl": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=800&q=80",
                 "price": {
-                    "amount": 299.00,
+                    "amount": 299.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -808,7 +808,7 @@
                 "vid": "anniv-001-deluxe",
                 "imageUrl": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=800&q=80",
                 "price": {
-                    "amount": 399.00,
+                    "amount": 399.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -859,7 +859,7 @@
                 "vid": "yoga-001-shared",
                 "imageUrl": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80",
                 "price": {
-                    "amount": 349.00,
+                    "amount": 349.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -877,7 +877,7 @@
                 "vid": "yoga-001-private",
                 "imageUrl": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80",
                 "price": {
-                    "amount": 499.00,
+                    "amount": 499.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -928,7 +928,7 @@
                 "vid": "brew-001-group",
                 "imageUrl": "https://images.unsplash.com/photo-1532634733-cae1395e440f?w=800&q=80",
                 "price": {
-                    "amount": 89.00,
+                    "amount": 89.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -946,7 +946,7 @@
                 "vid": "brew-001-private",
                 "imageUrl": "https://images.unsplash.com/photo-1532634733-cae1395e440f?w=800&q=80",
                 "price": {
-                    "amount": 159.00,
+                    "amount": 159.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -997,7 +997,7 @@
                 "vid": "photo-001-beginner",
                 "imageUrl": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80",
                 "price": {
-                    "amount": 79.00,
+                    "amount": 79.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -1015,7 +1015,7 @@
                 "vid": "photo-001-advanced",
                 "imageUrl": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80",
                 "price": {
-                    "amount": 99.00,
+                    "amount": 99.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -1066,7 +1066,7 @@
                 "vid": "chef-001-small",
                 "imageUrl": "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800&q=80",
                 "price": {
-                    "amount": 399.00,
+                    "amount": 399.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -1084,7 +1084,7 @@
                 "vid": "chef-001-large",
                 "imageUrl": "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800&q=80",
                 "price": {
-                    "amount": 599.00,
+                    "amount": 599.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -1135,7 +1135,7 @@
                 "vid": "zip-001-standard",
                 "imageUrl": "https://images.unsplash.com/photo-1533167649158-6d508895b680?w=800&q=80",
                 "price": {
-                    "amount": 119.00,
+                    "amount": 119.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -1153,7 +1153,7 @@
                 "vid": "zip-001-extreme",
                 "imageUrl": "https://images.unsplash.com/photo-1533167649158-6d508895b680?w=800&q=80",
                 "price": {
-                    "amount": 169.00,
+                    "amount": 169.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -1204,7 +1204,7 @@
                 "vid": "tea-001-classic",
                 "imageUrl": "https://images.unsplash.com/photo-1563822249548-7a58f4840a8d?w=800&q=80",
                 "price": {
-                    "amount": 55.00,
+                    "amount": 55.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -1222,7 +1222,7 @@
                 "vid": "tea-001-champagne",
                 "imageUrl": "https://images.unsplash.com/photo-1563822249548-7a58f4840a8d?w=800&q=80",
                 "price": {
-                    "amount": 75.00,
+                    "amount": 75.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -1273,7 +1273,7 @@
                 "vid": "kayak-001-standard",
                 "imageUrl": "https://images.unsplash.com/photo-1502933691298-84fc14542831?w=800&q=80",
                 "price": {
-                    "amount": 69.00,
+                    "amount": 69.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,
@@ -1291,7 +1291,7 @@
                 "vid": "kayak-001-tandem",
                 "imageUrl": "https://images.unsplash.com/photo-1502933691298-84fc14542831?w=800&q=80",
                 "price": {
-                    "amount": 99.00,
+                    "amount": 99.0,
                     "currency": "USD"
                 },
                 "originalPrice": null,

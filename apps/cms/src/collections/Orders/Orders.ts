@@ -183,7 +183,7 @@ export const Orders: CollectionConfig = {
                     type: "object",
                     properties: {
                         paymentType: { type: "string" },
-                        checkoutId: { type: "number"  },
+                        checkoutId: { type: "number" },
                     },
                 }),
             ],

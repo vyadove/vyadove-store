@@ -2,7 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { SelectInput, useField } from "@payloadcms/ui";
-import { ReactSelect, RelationshipField, RelationshipInput,   } from "@payloadcms/ui";
+import {
+    ReactSelect,
+    RelationshipField,
+    RelationshipInput,
+} from "@payloadcms/ui";
 
 // {
 //     field: {
@@ -22,7 +26,7 @@ import { ReactSelect, RelationshipField, RelationshipInput,   } from "@payloadcm
 
 type Props = {};
 
-const CategoryTreeSelect = (props : any) => {
+const CategoryTreeSelect = (props: any) => {
     const { path, field } = props;
     const { value, setValue } = useField({ path });
 
@@ -43,18 +47,16 @@ const CategoryTreeSelect = (props : any) => {
         fetchCategories();
     }, []);
 
-
-
     return (
-
-        <div className='flex flex-col gap-3 border-2' style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "12px",
-        }}>
-
-            <RelationshipField path={path} field={field}    />
-
+        <div
+            className="flex flex-col gap-3 border-2"
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "12px",
+            }}
+        >
+            <RelationshipField path={path} field={field} />
 
             {/*<ReactSelect
                 value={options.find((opt: any) => opt.value === value) || null}
@@ -64,14 +66,12 @@ const CategoryTreeSelect = (props : any) => {
                 placeholder="Select Category"
             />*/}
         </div>
-
-
     );
 };
 
 // helper: build nested tree
 function buildCategoryTree(categories: any[]) {
-    const map : any = {};
+    const map: any = {};
     categories.forEach((c: any) => (map[c.id] = { ...c, children: [] }));
     const tree = [];
     for (const cat_ of Object.values(map)) {
@@ -84,8 +84,8 @@ function buildCategoryTree(categories: any[]) {
 }
 
 // helper: flatten tree with path labels
-function flattenCategoryTree(tree: any , prefix = "") {
-    return tree.flatMap((node : any) => {
+function flattenCategoryTree(tree: any, prefix = "") {
+    return tree.flatMap((node: any) => {
         const label = prefix ? `${prefix} / ${node.title}` : node.title;
         const current = [{ label, value: node.id }];
         const children = flattenCategoryTree(node.children, label);

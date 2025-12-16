@@ -41,7 +41,9 @@ export async function register<
 
     if (!response.ok) {
         const errorMsg =
-            data?.errors?.[0]?.message || data?.message || "Registration failed";
+            data?.errors?.[0]?.message ||
+            data?.message ||
+            "Registration failed";
         throw new Error(errorMsg);
     }
 

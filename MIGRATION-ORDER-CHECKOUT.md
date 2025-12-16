@@ -13,14 +13,17 @@ The Order collection has been updated to work seamlessly with the unified Checko
 #### **File: `apps/cms/src/collections/Orders/Orders.ts`**
 
 **Removed:**
+
 - Custom checkout endpoint (`checkoutEndpoint`)
 - Old `cart` relationship field
 
 **Added:**
+
 - New hooks: `syncFromCheckout`, `markCheckoutComplete`
 - Updated `checkout` relationship to be required
 
 **Changes:**
+
 ```typescript
 // Before
 endpoints: [checkoutEndpoint],
@@ -58,20 +61,22 @@ hooks: {
 **Purpose:** Automatically syncs order data from the unified Checkout collection when creating an order.
 
 **Key Features:**
+
 - Runs on order creation (`operation === "create"`)
 - Fetches full checkout details with depth 2
 - Validates checkout has items, shipping, and payment
 - Generates unique `orderId` if not provided
 - Copies data from checkout to order:
-  - User/customer
-  - Total amount
-  - Currency
-  - Addresses (shipping & billing)
-  - Shipping method
-  - Payment method
+    - User/customer
+    - Total amount
+    - Currency
+    - Addresses (shipping & billing)
+    - Shipping method
+    - Payment method
 - Sets default statuses (pending)
 
 **Error Handling:**
+
 - Throws error if checkout not found
 - Throws error if checkout is empty
 - Throws error if shipping/payment missing
@@ -81,6 +86,7 @@ hooks: {
 **Purpose:** Marks the checkout as complete after order is successfully created.
 
 **Key Features:**
+
 - Runs after order creation (`operation === "create"`)
 - Updates checkout status to "complete"
 - Links order back to checkout
@@ -93,6 +99,7 @@ hooks: {
 **New server actions replacing custom endpoints:**
 
 **`createOrderFromCheckoutAction(input: CreateOrderInput)`**
+
 - Creates an order from a checkout using PayloadSDK
 - Validates checkout exists and is ready
 - Validates checkout status (not already complete/expired/cancelled)
@@ -101,14 +108,17 @@ hooks: {
 - Returns success/error with redirect URL
 
 **`getOrderByIdAction(orderId: string)`**
+
 - Fetches order by orderId using PayloadSDK
 - Returns order with depth 2
 
 **`getUserOrdersAction()`**
+
 - Fetches all orders for current user
 - Sorted by creation date (newest first)
 
 **Benefits:**
+
 - No custom endpoints (better security)
 - Uses built-in Payload access control
 - Type-safe with TypeScript
@@ -122,16 +132,18 @@ hooks: {
 **New streamlined checkout page:**
 
 **Key Changes:**
+
 - Uses unified checkout provider (`useCheckout()`)
 - Removes old `useCheckoutSession` hook
 - Uses new `createOrderFromCheckoutAction` for order creation
 - Simplified two-step flow:
-  1. Collect details and update checkout
-  2. Review and create order
+    1. Collect details and update checkout
+    2. Review and create order
 - Better type safety
 - Cleaner code structure
 
 **Flow:**
+
 ```
 Step 1: Checkout Info
   ↓
@@ -153,6 +165,7 @@ Step 2: Review Order
 #### **File: `apps/shop/src/scenes/checkout/index.tsx`**
 
 **Updated to export new component:**
+
 ```typescript
 export { default } from "./checkout-new";
 ```
@@ -160,11 +173,13 @@ export { default } from "./checkout-new";
 ### 5. Order Confirmation Flow
 
 #### **Files Verified (No changes needed):**
+
 - `apps/shop/src/app/(store)/order/confirmed/[id]/page.tsx` ✅
 - `apps/shop/src/scenes/order/index.tsx` ✅
 - `apps/shop/src/scenes/order/order-details/order-details.tsx` ✅
 
 These components already use:
+
 - PayloadSDK for fetching orders
 - Order fields directly (not dependent on cart structure)
 - Unified checkout provider's `emptyCart()` method
@@ -210,30 +225,32 @@ These components already use:
 
 ### Checkout → Order Field Mapping
 
-| Checkout Field | Order Field | Notes |
-|---|---|---|
-| `customer` | `user` | User relationship |
-| `total` | `totalAmount` | Grand total |
-| `currency` | `currency` | Currency code (USD) |
-| `shippingAddress` | `shippingAddress` | JSON address |
-| `billingAddress` | `billingAddress` | JSON address |
-| `shippingMethod` | `shipping` | Relationship to shipping |
-| `payment` | `payment` | Relationship to payments |
-| `items` | *(referenced via checkout)* | Items stored in checkout |
-| `status` | - | Checkout status (incomplete → complete) |
-| - | `orderId` | Generated: ORD-XXXXXX |
-| - | `paymentStatus` | Default: pending |
-| - | `orderStatus` | Default: pending |
+| Checkout Field    | Order Field                 | Notes                                   |
+| ----------------- | --------------------------- | --------------------------------------- |
+| `customer`        | `user`                      | User relationship                       |
+| `total`           | `totalAmount`               | Grand total                             |
+| `currency`        | `currency`                  | Currency code (USD)                     |
+| `shippingAddress` | `shippingAddress`           | JSON address                            |
+| `billingAddress`  | `billingAddress`            | JSON address                            |
+| `shippingMethod`  | `shipping`                  | Relationship to shipping                |
+| `payment`         | `payment`                   | Relationship to payments                |
+| `items`           | _(referenced via checkout)_ | Items stored in checkout                |
+| `status`          | -                           | Checkout status (incomplete → complete) |
+| -                 | `orderId`                   | Generated: ORD-XXXXXX                   |
+| -                 | `paymentStatus`             | Default: pending                        |
+| -                 | `orderStatus`               | Default: pending                        |
 
 ## Security Improvements
 
 ### Before (Old System)
+
 - Custom REST endpoints in CMS (`/api/orders/checkout`)
 - Manual data copying and validation
 - Exposed endpoints vulnerable to misuse
 - Mixed concerns (checkout logic in order endpoint)
 
 ### After (New System)
+
 - No custom endpoints - using hooks only
 - Automatic data sync via hooks
 - Built-in Payload access control
@@ -270,6 +287,7 @@ These components already use:
 ## Breaking Changes
 
 **None** - This is a parallel implementation. Old endpoints still exist but are deprecated:
+
 - Old: `POST /api/orders/checkout` (endpoint)
 - New: `createOrderFromCheckoutAction()` (server action with hooks)
 
@@ -279,14 +297,14 @@ If you have code using the old checkout endpoint:
 
 ```typescript
 // Old way (custom endpoint)
-const response = await fetch('/api/orders/checkout', {
-    method: 'POST',
+const response = await fetch("/api/orders/checkout", {
+    method: "POST",
     body: JSON.stringify({}),
-    credentials: 'include',
+    credentials: "include",
 });
 
 // New way (server action)
-import { createOrderFromCheckoutAction } from '@/actions/order-actions';
+import { createOrderFromCheckoutAction } from "@/actions/order-actions";
 
 const result = await createOrderFromCheckoutAction({
     checkoutId: checkout.id,
@@ -304,39 +322,45 @@ if (result.success) {
 Potential improvements for future iterations:
 
 1. **Payment Integration:**
-   - Add Stripe payment intent creation in order hook
-   - Handle payment webhook updates
-   - Support multiple payment providers
+
+    - Add Stripe payment intent creation in order hook
+    - Handle payment webhook updates
+    - Support multiple payment providers
 
 2. **Inventory Management:**
-   - Reserve inventory on order creation
-   - Release inventory on order cancellation
-   - Update product stock levels
+
+    - Reserve inventory on order creation
+    - Release inventory on order cancellation
+    - Update product stock levels
 
 3. **Email Notifications:**
-   - Send order confirmation email
-   - Send shipping notifications
-   - Send payment receipts
+
+    - Send order confirmation email
+    - Send shipping notifications
+    - Send payment receipts
 
 4. **Order Status Updates:**
-   - Add workflow for status transitions
-   - Validate status changes
-   - Send notifications on status updates
+
+    - Add workflow for status transitions
+    - Validate status changes
+    - Send notifications on status updates
 
 5. **Refunds & Returns:**
-   - Add refund processing hook
-   - Handle partial refunds
-   - Create return orders
+    - Add refund processing hook
+    - Handle partial refunds
+    - Create return orders
 
 ## Related Files
 
 ### CMS Files
+
 - `apps/cms/src/collections/Orders/Orders.ts` - Main collection config
 - `apps/cms/src/collections/Orders/hooks/sync-from-checkout.ts` - Data sync hook
 - `apps/cms/src/collections/Orders/hooks/mark-checkout-complete.ts` - Status update hook
 - `apps/cms/src/collections/checkout/index.ts` - Unified checkout collection
 
 ### Shop Files
+
 - `apps/shop/src/actions/order-actions.ts` - Server actions for orders
 - `apps/shop/src/scenes/checkout/checkout-new.tsx` - New checkout page
 - `apps/shop/src/scenes/checkout/index.tsx` - Checkout page export
@@ -346,6 +370,7 @@ Potential improvements for future iterations:
 ## Support
 
 For questions or issues with this migration:
+
 1. Check this migration document
 2. Review the Checkout collection documentation (`apps/cms/src/collections/checkout/README.md`)
 3. Check the unified checkout provider implementation

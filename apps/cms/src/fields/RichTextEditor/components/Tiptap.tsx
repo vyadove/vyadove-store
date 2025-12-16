@@ -20,7 +20,7 @@ import { TextField, TextFieldClientComponent } from "payload";
 import { useState, useRef, useEffect } from "react";
 import pretty from "pretty";
 
-const Tiptap : TextFieldClientComponent  = ({ field, ...rest }) => {
+const Tiptap: TextFieldClientComponent = ({ field, ...rest }) => {
     const { value, setValue } = useField<TextField>({ path: rest.path });
     const [isHtmlPreview, setIsHtmlPreview] = useState(false);
     const [showColorPicker, setShowColorPicker] = useState(false);

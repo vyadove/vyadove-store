@@ -6,7 +6,7 @@ export const addOrderTimelineEntry: BeforeChangeHook<Order> = ({
     originalDoc,
     req,
 }) => {
-    const newTimeline : Order['timeline'] = [...(data.timeline || [])];
+    const newTimeline: Order["timeline"] = [...(data.timeline || [])];
 
     // if order is new, add initial timeline entry as "Order Created"
     if (!originalDoc) {

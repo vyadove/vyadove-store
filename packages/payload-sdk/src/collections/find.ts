@@ -10,8 +10,6 @@ import type {
     TypedLocale,
 } from "../types";
 
-
-
 export type FindOptions<
     T extends PayloadGeneratedTypes,
     TSlug extends CollectionSlug<T>,
