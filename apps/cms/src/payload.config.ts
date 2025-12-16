@@ -1,3 +1,4 @@
+import { resendAdapter } from "@payloadcms/email-resend";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -123,13 +124,18 @@ export default buildConfig({
         },
     }),
 
+    email: resendAdapter({
+        defaultFromAddress: "hello@vyadove.com",
+        defaultFromName: process.env.RESEND_FROM_NAME || "",
+        apiKey: process.env.RESEND_API_KEY || "",
+    }),
+
     editor: lexicalEditor(),
     endpoints,
     plugins,
     secret: process.env.PAYLOAD_SECRET || "",
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",
     sharp: sharp as any,
-
     telemetry: false,
     typescript: {
         outputFile: path.resolve(dirname, "../../../packages/types/index.ts"),

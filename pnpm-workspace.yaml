@@ -4,6 +4,6 @@ packages:
     - "apps/cms"
     - "apps/shop"
     - "apps/test-shop"
-#    - "apps/vyadove-email"
+    - "apps/vyadove-email"
 #    - "apps/vyadove-docs"
 

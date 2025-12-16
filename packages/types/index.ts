@@ -2641,6 +2641,38 @@ export interface StoreSetting {
               | "ZWG"
           )
         | null;
+    emailBranding?: {
+        /**
+         * Logo displayed in email header
+         */
+        logo?: (number | null) | Media;
+        /**
+         * Primary brand color (hex)
+         */
+        primaryColor?: string | null;
+        /**
+         * Accent/secondary color (hex)
+         */
+        accentColor?: string | null;
+        /**
+         * Footer text (supports {{current_year}})
+         */
+        footerText?: string | null;
+        /**
+         * Business address for email footer
+         */
+        address?: string | null;
+        socialLinks?: {
+            facebook?: string | null;
+            instagram?: string | null;
+            twitter?: string | null;
+            linkedin?: string | null;
+        };
+        /**
+         * Unsubscribe page URL
+         */
+        unsubscribeUrl?: string | null;
+    };
     updatedAt?: string | null;
     createdAt?: string | null;
 }
@@ -2709,6 +2741,24 @@ export interface MainMenu {
 export interface StoreSettingsSelect<T extends boolean = true> {
     name?: T;
     currency?: T;
+    emailBranding?:
+        | T
+        | {
+              logo?: T;
+              primaryColor?: T;
+              accentColor?: T;
+              footerText?: T;
+              address?: T;
+              socialLinks?:
+                  | T
+                  | {
+                        facebook?: T;
+                        instagram?: T;
+                        twitter?: T;
+                        linkedin?: T;
+                    };
+              unsubscribeUrl?: T;
+          };
     updatedAt?: T;
     createdAt?: T;
     globalType?: T;
