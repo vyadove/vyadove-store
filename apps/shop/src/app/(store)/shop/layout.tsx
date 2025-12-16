@@ -1,48 +1,15 @@
-import React from "react";
+import React, { Suspense } from "react";
 
-
-
-import { RadioGroup, RadioGroupItem } from "@/ui/shadcn/radio-group";
+import FilterBar from "@/scenes/shop/components/filter-bar";
 import AppHeroScaffold from "@ui/nav/app-hero-scaffold";
 import { Badge } from "@ui/shadcn/badge";
 import {
   TypographyH1,
-  TypographyH2,
-  TypographyH4,
   TypographyLead,
   TypographyP,
 } from "@ui/shadcn/typography";
 
-
-
-import { payloadSdk } from "@/utils/payload-sdk";
-import { Label } from "@ui/shadcn/label";
-import CollectionFilterClient from "@/app/(store)/shop/CollectionFilterNav";
-
-
-
-
-
-// import { payloadSdk } from "@/utils/payload-sdk";
-// import { ProductPreview } from "@/components/products/product-card";
-
-/*Explore our curated categories — something for every taste and occasion.
-Find gifts by category: for him, for her, for friends, for the home.
-Browse by occasion, personality, or price to find the perfect match.
-Handpicked collections to inspire thoughtful gifting.
-Shop by theme: cozy, luxury, novelty, sustainable.*/
-
 const Layout = async ({ children }: React.PropsWithChildren) => {
-  const collections = await payloadSdk.find({
-    collection: "collections",
-    // limit: 1,
-    where: {
-      visible: {
-        equals: true,
-      },
-    },
-  });
-
   return (
     <div>
       <AppHeroScaffold>
@@ -64,18 +31,10 @@ const Layout = async ({ children }: React.PropsWithChildren) => {
         </div>
       </AppHeroScaffold>
 
-      <div className="my-20 flex gap-10">
-        <div className="flex max-w-[20rem] flex-col gap-2">
-          <div className="flex flex-col gap-1">
-            <TypographyH2>Shop</TypographyH2>
-            <TypographyLead className='text-muted-foreground font-normal'>
-              Find gifts by category: for him, for her, for friends, for the home.
-            </TypographyLead>
-          </div>
-
-          <CollectionFilterClient collections={collections.docs || []}/>
-
-        </div>
+      <div className="my-20 flex flex-col">
+        <Suspense fallback={null}>
+          <FilterBar />
+        </Suspense>
 
         {children}
       </div>

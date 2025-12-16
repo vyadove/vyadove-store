@@ -1,4 +1,4 @@
-import type { StripeWebhookHandler } from "@shopnex/stripe-plugin/types";
+import type { StripeWebhookHandler } from "@vyadove/stripe-plugin/types";
 import type { Payload } from "payload";
 import type Stripe from "stripe";
 

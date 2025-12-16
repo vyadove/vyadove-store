@@ -1,5 +1,5 @@
 import { payloadSdk } from "@/utils/payload-sdk";
-import { Cart } from "@shopnex/types";
+import { Cart } from "@vyadove/types";
 import Cookies from "js-cookie";
 
 export const setAddresses = (cartId: string, addresses: any) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import type { Product } from "@shopnex/types";
+import type { Product } from "@vyadove/types";
 import type React from "react";
 
 import { notFound } from "next/navigation";

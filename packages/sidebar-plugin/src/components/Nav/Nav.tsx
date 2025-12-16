@@ -29,6 +29,7 @@ const Nav = (props: NavProps) => {
         visibleEntities,
         groupsConfig,
     } = props;
+
     const {
         admin: {
             components: { afterNavLinks, beforeNavLinks, logout },

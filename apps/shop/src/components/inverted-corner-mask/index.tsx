@@ -152,7 +152,7 @@ const InvertedCornerMask = (props: PropsWithChildren<Props>) => {
       </div>
 
       <motion.div
-        className={cn("bg-green-50", props.className)}
+        className={cn("bg-primary-background", props.className)}
         // ref={ref as any}
         style={{
           clipPath: 'path("' + pathCode + '")',

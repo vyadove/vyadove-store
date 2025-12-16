@@ -1,4 +1,4 @@
-import type { CollectionConfig } from "payload";
+import type { Block, CollectionConfig } from "payload";
 
 import { admins, anyone } from "@/access/roles";
 import { RichTextEditor } from "@/fields/RichTextEditor/RichTextEditor";
@@ -8,6 +8,9 @@ import { groups } from "../groups";
 import { deleteMedia } from "./hooks/delete-media";
 import { SeoField } from "@/fields/seo";
 import { revalidateShop } from "@/collections/Products/hooks/revalidate-shop";
+import { ManualProvider } from "@/collections/Payments";
+import { PricingTierArrayField } from "@/collections/Products/fields/pricing-tier";
+import { syncHandleWithTitle } from "@/collections/Products/hooks";
 
 export const Products: CollectionConfig = {
     slug: "products",
@@ -97,13 +100,22 @@ export const Products: CollectionConfig = {
         },
         {
             name: "description",
-            type: "text",
+            type: "textarea",
             required: true,
         },
-        // RichTextEditor({
-        //     name: "description",
-        //     label: "Description",
-        // }),
+
+        {
+            name: "gallery",
+            type: "upload",
+            required: true,
+            admin: {
+                isSortable: true,
+            },
+            hasMany: true,
+            label: "Gallery",
+            relationTo: "media",
+        },
+
         {
             name: "collections",
             type: "relationship",
@@ -111,62 +123,20 @@ export const Products: CollectionConfig = {
                 position: "sidebar",
             },
             hasMany: true,
-            label: "Tags",
+            label: "Collections",
             relationTo: "collections",
         },
-        HandleField(),
         {
-            type: "collapsible",
+            name: "category",
+            relationTo: "category",
+            type: "relationship",
             admin: {
-                initCollapsed: true,
+                position: "sidebar",
             },
-            fields: [
-                {
-                    name: "variantOptions",
-                    type: "array",
-                    admin: {
-                        description: "Choose the options for this product.",
-                    },
-                    fields: [
-                        {
-                            type: "row",
-                            fields: [
-                                {
-                                    name: "option",
-                                    type: "text",
-                                    admin: {
-                                        placeholder: "Enter an option",
-                                    },
-                                    required: true,
-                                },
-                                {
-                                    name: "value",
-                                    type: "text",
-                                    admin: {
-                                        description:
-                                            "(press enter to add multiple values)",
-                                        placeholder: "Enter a value",
-                                    },
-                                    hasMany: true,
-                                    required: true,
-                                },
-                            ],
-                        },
-                    ],
-                    maxRows: 5,
-                },
-                {
-                    name: "buildVariantsButton",
-                    type: "ui",
-                    admin: {
-                        components: {
-                            Field: "@/collections/Products/fields/BuildVariantsButton",
-                        },
-                    },
-                },
-            ],
-            label: "Build Variants",
+            hasMany: true,
+            label: "Category",
         },
+        HandleField(),
 
         {
             name: "variants",
@@ -190,7 +160,7 @@ export const Products: CollectionConfig = {
                     name: "sku",
                     type: "text",
                     defaultValue: () => {
-                        return `SN-${crypto.randomUUID().slice(0, 8)}`;
+                        return `SKU-${crypto.randomUUID().slice(0, 8)}`;
                     },
                     label: "SKU",
                 },
@@ -206,33 +176,120 @@ export const Products: CollectionConfig = {
                     name: "gallery",
                     type: "upload",
                     admin: {
-                        components: {
-                            // Field: "@/custom/custom-image-field#UploadField",
-                        },
-                        isSortable: false,
+                        isSortable: true,
                     },
                     hasMany: true,
-                    label: "Image",
+                    label: "Gallery",
                     relationTo: "media",
+                },
+
+                {
+                    name: "price",
+                    label: "Price",
+                    type: "group",
+                    fields: [
+                        {
+                            name: "amount",
+                            type: "number",
+                            required: true,
+                            defaultValue: 0,
+                            min: 0,
+                        },
+                        { name: "currency", type: "text", defaultValue: "USD" },
+                    ],
                 },
 
                 {
                     type: "row",
                     fields: [
-                        {
+                        /*{
                             name: "price",
                             type: "number",
                             required: true,
-                        },
+                        },*/
                         {
                             name: "originalPrice",
                             type: "number",
+                            admin: {
+                                readOnly: true,
+                                description:
+                                    "this field is deprecated, use price.amount instead",
+                            },
                         },
                         {
-                            name: "stockCount",
-                            type: "number",
-                            defaultValue: 0,
-                            min: 0,
+                            name: "available",
+                            label: "Available",
+                            type: "checkbox",
+                            defaultValue: true,
+                        },
+                    ],
+                },
+                {
+                    name: "pricingTier",
+                    type: "select",
+                    admin: {
+                        description: "Price tier for this variant.",
+                    },
+                    defaultValue: "basic",
+                    label: "Pricing Tier",
+                    required: true,
+                    options: [
+                        {
+                            label: "Basic (default)",
+                            value: "basic",
+                        },
+                        {
+                            label: "Premium",
+                            value: "premium",
+                        },
+                        { label: "Luxury", value: "luxury" },
+                    ],
+                },
+
+                {
+                    name: "additionalInfo",
+                    type: "array",
+                    // minRows: 1,
+                    maxRows: 10,
+                    // required: true,
+                    admin: {
+                        description:
+                            "Add additional product variant info such as care instructions, materials, or sizing notes.",
+                        // position: "sidebar",
+                    },
+                    fields: [
+                        {
+                            name: "name",
+                            type: "text",
+                            required: true,
+                        },
+                        RichTextEditor({
+                            name: "value",
+                            label: "Rich Text",
+                            required: true,
+                        }),
+                    ],
+                },
+
+                {
+                    name: "locations",
+                    type: "array",
+                    maxRows: 100,
+                    fields: [
+                        {
+                            name: "coordinates",
+                            type: "point",
+                            label: "Coordinates",
+                        },
+                        {
+                            name: "map_url",
+                            label: "Map URL",
+                            type: "text",
+                        },
+                        {
+                            name: "address",
+                            label: "Address",
+                            type: "text",
                         },
                     ],
                 },
@@ -267,7 +324,7 @@ export const Products: CollectionConfig = {
                     label: "Options",
                 },
             ],
-            maxRows: 100,
+            maxRows: 5,
             minRows: 1,
             required: true,
         },
@@ -275,10 +332,13 @@ export const Products: CollectionConfig = {
         {
             name: "customFields",
             type: "array",
+            minRows: 1,
+            maxRows: 10,
+            required: true,
             admin: {
                 description:
                     "Add additional product info such as care instructions, materials, or sizing notes.",
-                position: "sidebar",
+                // position: "sidebar",
             },
             fields: [
                 {
@@ -286,16 +346,19 @@ export const Products: CollectionConfig = {
                     type: "text",
                     required: true,
                 },
-                {
+                RichTextEditor({
                     name: "value",
-                    type: "text",
-                },
+                    label: "Rich Text",
+                    required: true,
+                }),
             ],
         },
+
         SeoField(),
     ],
     hooks: {
         afterDelete: [deleteMedia],
         afterChange: [revalidateShop],
+        beforeChange: [syncHandleWithTitle],
     },
 };

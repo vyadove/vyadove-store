@@ -78,7 +78,7 @@ export default async function CheckoutLayout({
 
                                 {/* Step Content */}
                                 <Card>
-                                    <CardContent className="p-6">
+                                    <CardContent className="p-6 border-2">
                                         {children}
                                     </CardContent>
                                 </Card>

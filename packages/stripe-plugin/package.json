@@ -1,5 +1,5 @@
 {
-    "name": "@shopnex/stripe-plugin",
+    "name": "@vyadove/stripe-plugin",
     "version": "3.31.10",
     "description": "Stripe plugin for Payload",
     "keywords": [
@@ -66,7 +66,7 @@
         "prepublishOnly": "pnpm clean && pnpm build"
     },
     "dependencies": {
-        "@shopnex/types": "workspace:^",
+        "@vyadove/types": "workspace:^",
         "@shopnex/utils": "workspace:*",
         "decimal.js": "^10.5.0",
         "lodash.get": "^4.4.2",

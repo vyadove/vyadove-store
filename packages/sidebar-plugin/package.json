@@ -58,7 +58,7 @@
     },
     "dependencies": {
         "recharts": "^2.15.3",
-        "@shopnex/types": "workspace:*"
+        "@vyadove/types": "workspace:*"
     },
     "publishConfig": {
         "access": "public",

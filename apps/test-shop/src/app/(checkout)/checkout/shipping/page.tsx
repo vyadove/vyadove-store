@@ -7,7 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button, Label } from "@medusajs/ui";
 import { Truck } from "lucide-react";
 import { payloadSdk } from "@/utils/payload-sdk";
-import type { Shipping } from "@shopnex/types";
+import type { Shipping } from "@vyadove/types";
 import { updateCheckoutSession } from "@/services/checkout-session";
 import { useCart } from "react-use-cart";
 import { useCheckoutSession } from "@/hooks/use-checkout-session";
@@ -44,6 +44,9 @@ export default function ShippingPage() {
                         },
                     },
                 });
+
+                console.log("shipping data -- : ", data);
+
                 const sortedMethods = (data.docs || []).sort(
                     (a: any, b: any) => {
                         return (

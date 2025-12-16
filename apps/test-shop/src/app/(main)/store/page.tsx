@@ -28,6 +28,8 @@ export default async function StorePage(props: Params) {
     const searchParams = await props.searchParams;
     const { collectionId, page, productsIds, sortBy } = searchParams;
 
+    console.log("searchparams-- --- : ", searchParams);
+
     const { docs: products, total } = await getPaginatedProducts({
         collectionId,
         limit: 12,

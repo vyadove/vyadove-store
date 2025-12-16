@@ -1,9 +1,13 @@
 export const Routes = {
-  home: '/',
-  privacyPolicy: '/privacy-policy',
-  support: '/support',
-  register: '/register',
-  login: '/login',
-  logout: '/logout',
-  termsAndConditions: '/terms-and-conditions',
-}
+  home: "/",
+  privacyPolicy: "/privacy-policy",
+  support: "/support",
+  login: "/login",
+  signUp: "/sign-up",
+  account: "/account",
+  checkout: "/checkout",
+  cart: "/cart",
+  shop: "/shop",
+  productLink: (handle: string) => `/product/${handle}`,
+  termsAndConditions: "/terms-and-conditions",
+};

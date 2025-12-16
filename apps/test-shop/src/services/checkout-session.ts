@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckoutSession } from "@shopnex/types";
+import { CheckoutSession } from "@vyadove/types";
 import Cookies from "js-cookie";
 
 export const updateCheckoutSession = async (data: Partial<CheckoutSession>) => {

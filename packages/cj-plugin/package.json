@@ -65,7 +65,7 @@
         "jsdom": "^26.0.0",
         "lexical": "0.28.0",
         "@shopnex/utils": "workspace:*",
-        "@shopnex/types": "workspace:*"
+        "@vyadove/types": "workspace:*"
     },
     "devDependencies": {
         "@types/jsdom": "^21.1.7"

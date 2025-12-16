@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import { Routes } from "@/store.routes";
 import { Input } from "@ui/shadcn/input";
 
 import { useDebouncedValue } from "@/lib/hooks";
@@ -44,31 +45,28 @@ export const SearchInput = ({ placeholder }: { placeholder: string }) => {
   const [_isQueryPending, debouncedQuery] = useDebouncedValue(query, 100);
 
   useEffect(() => {
+    if (!query) return;
 
-    if (!query) return
-
-    router.prefetch(`/search?q=${encodeURIComponent(query)}`);
+    router.prefetch(`${Routes.shop}?q=${encodeURIComponent(query)}`);
   }, [query, router]);
 
   useEffect(() => {
     if (debouncedQuery) {
-      router.push(`/search?q=${encodeURIComponent(debouncedQuery)}`, {
+      router.push(`${Routes.shop}?q=${encodeURIComponent(debouncedQuery)}`, {
         scroll: false,
       });
     }
   }, [debouncedQuery, router]);
 
+  // Sync query state with URL when navigating away from shop
   useEffect(() => {
-    if (pathname === "/search" && !query) {
-      router.push(`/`, { scroll: true });
-    }
-  }, [pathname, query, router]);
-
-  useEffect(() => {
-    if (pathname !== "/search") {
+    if (pathname !== Routes.shop) {
       setQuery("");
+    } else {
+      // Sync with URL query param when on shop page
+      setQuery(searchParamQuery);
     }
-  }, [pathname]);
+  }, [pathname, searchParamQuery]);
 
   return (
     <Input

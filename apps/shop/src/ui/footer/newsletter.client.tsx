@@ -4,9 +4,9 @@ import { useState } from "react";
 
 import { signForNewsletter } from "@/ui/footer/actions";
 import { Loader2Icon } from "lucide-react";
-import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/hot-toast";
 import { Input } from "@/components/ui/input";
 
 import { useTranslations } from "@/i18n/client";
@@ -22,7 +22,7 @@ export const Newsletter = () => {
           const result = await signForNewsletter(formData);
 
           if (result?.status && result.status < 400) {
-            toast.info(t("success"), {
+            toast(t("success"), {
               position: "bottom-left",
             });
           } else {

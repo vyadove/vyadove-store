@@ -1,6 +1,6 @@
 // revalidate the shop page when products are updated at vidadove.com
 import { PayloadRequest } from "payload";
-import { Product } from "@shopnex/types";
+import { Product } from "@vyadove/types";
 
 export const revalidateShop = async ({
     req,
@@ -9,6 +9,12 @@ export const revalidateShop = async ({
     req: PayloadRequest;
     doc: Product;
 }): Promise<void> => {
+    // if this is local dev ignore
+    if (process.env.IS_LOCAL_SERVER) {
+        console.log("skipping revalidation on local server");
+        return;
+    }
+
     req.payload.logger.info(
         `Starting revalidation of shop page due to product update: ${doc.id}`
     );

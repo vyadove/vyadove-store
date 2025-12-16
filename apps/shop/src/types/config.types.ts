@@ -23,7 +23,20 @@ export type SurfaceStyle = "filled" | "translucent";
 export type TransitionStyle = "all" | "micro" | "macro" | "none";
 export type ScalingSize = "90" | "95" | "100" | "105" | "110";
 export type DataStyle = "categorical" | "divergent" | "sequential";
-export type Schemes = "blue" | "indigo" | "violet" | "magenta" | "pink" | "red" | "orange" | "yellow" | "moss" | "green" | "emerald" | "aqua" | "cyan";
+export type Schemes =
+  | "blue"
+  | "indigo"
+  | "violet"
+  | "magenta"
+  | "pink"
+  | "red"
+  | "orange"
+  | "yellow"
+  | "moss"
+  | "green"
+  | "emerald"
+  | "aqua"
+  | "cyan";
 
 /**
  * Display configuration for UI elements.

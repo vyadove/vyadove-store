@@ -1,4 +1,4 @@
-import type { Product } from "@shopnex/types";
+import type { Product } from "@vyadove/types";
 
 import { Suspense } from "react";
 

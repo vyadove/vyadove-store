@@ -27,7 +27,7 @@ export const easyEmailPlugin = (pluginConfig: EmailChannelPluginConfig) => {
                 license: pkg.license,
                 author: pkg.author,
                 icon: pkg.icon,
-                category: pkg.category,
+                categories: pkg.category,
             });
         };
         return config;

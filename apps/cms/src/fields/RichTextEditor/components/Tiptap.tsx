@@ -16,12 +16,12 @@ import { Color } from "@tiptap/extension-color";
 import { Highlight } from "@tiptap/extension-highlight";
 import "./Tiptap.scss";
 import { ChevronDown, CodeIcon, ImageIcon, LinkIcon } from "lucide-react";
-import { TextField } from "payload";
+import { TextField, TextFieldClientComponent } from "payload";
 import { useState, useRef, useEffect } from "react";
 import pretty from "pretty";
 
-const Tiptap = ({ field }: any) => {
-    const { value, setValue } = useField<TextField>({ path: field.name });
+const Tiptap: TextFieldClientComponent = ({ field, ...rest }) => {
+    const { value, setValue } = useField<TextField>({ path: rest.path });
     const [isHtmlPreview, setIsHtmlPreview] = useState(false);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [colorMode, setColorMode] = useState<"text" | "background">("text");
@@ -327,7 +327,7 @@ const Tiptap = ({ field }: any) => {
                 {isHtmlPreview ? (
                     <TextareaInput
                         className="textarea-input"
-                        path={field.name}
+                        path={rest.path}
                         onChange={setValue}
                         value={pretty(value as unknown as string, {
                             ocd: true,

@@ -1,4 +1,4 @@
-import { Payment } from "@shopnex/types";
+import { Payment } from "@vyadove/types";
 import { PayloadRequest, PaginatedDocs } from "payload";
 
 export const getStripeBlock = async ({

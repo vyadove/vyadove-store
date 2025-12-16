@@ -1,6 +1,7 @@
 import { checkRole } from "@/access/roles";
-import { CheckoutSession } from "@shopnex/types";
+import { CheckoutSession } from "@vyadove/types";
 import { Access, Where } from "payload";
+import { rateLimitGuard } from "@/utils";
 
 export const readSessionAccess: Access<CheckoutSession> = ({ req }) => {
     if (checkRole(["admin"], req.user)) {
@@ -21,7 +22,7 @@ export const createSessionAccess: Access<CheckoutSession> = async ({ req }) => {
     return true;
 };
 
-export const updateSessionAccess: Access<CheckoutSession> = ({ req }) => {
+export const updateSessionAccess: Access<CheckoutSession> = async ({ req }) => {
     if (checkRole(["admin"], req.user)) {
         return true;
     }

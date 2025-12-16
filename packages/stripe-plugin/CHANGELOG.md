@@ -1,4 +1,4 @@
-# @shopnex/stripe-plugin
+# @vyadove/stripe-plugin
 
 ## 3.31.10
 
@@ -29,14 +29,14 @@
 ### Patch Changes
 
 - Updated dependencies
-    - @shopnex/types@0.0.3
+    - @vyadove/types@0.0.3
 
 ## 3.31.5
 
 ### Patch Changes
 
 - Updated dependencies
-    - @shopnex/types@0.0.2
+    - @vyadove/types@0.0.2
 
 ## 3.31.4
 

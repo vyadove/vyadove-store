@@ -14,7 +14,7 @@ export async function generateMetadata(
     const params = await props.params;
     const { productHandle } = params;
 
-    const result = await payloadSdk.find({
+    const result: any = await payloadSdk.find({
         collection: "products",
         limit: 1,
         where: {

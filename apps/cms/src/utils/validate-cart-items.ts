@@ -1,4 +1,4 @@
-import type { Cart, Product } from "@shopnex/types";
+import type { Cart, Product } from "@vyadove/types";
 import type { Payload } from "payload";
 
 import { isExpandedDoc } from "./is-expanded-doc";
@@ -24,13 +24,6 @@ export const validateCartItems = (
         if (!variant) {
             errors.push(
                 `Invalid variantId: ${item.variantId} for product: ${product.title}`
-            );
-            continue;
-        }
-
-        if (variant.stockCount == null || item.quantity > variant.stockCount) {
-            errors.push(
-                `Not enough stock for product ${product.title} (variant ${variant.id}): requested ${item.quantity}, available ${variant.stockCount ?? "0"}`
             );
         }
     }

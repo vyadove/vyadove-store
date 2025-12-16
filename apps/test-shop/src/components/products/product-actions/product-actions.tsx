@@ -1,6 +1,6 @@
 "use client";
 
-import type { Product } from "@shopnex/types";
+import type { Product } from "@vyadove/types";
 
 import { Button } from "@medusajs/ui";
 import Cookies from "js-cookie";
@@ -54,12 +54,15 @@ export default function ProductActions({
     }, [options, selectedOptions]);
 
     const handleAddToCart = async () => {
+        console.log("handleAddToCart", product.variants);
+
         setIsAdding(true);
 
-        const selectedVariant = findSelectedVariant();
+        const selectedVariant = findSelectedVariant() || product.variants[0];
 
         if (!selectedVariant?.id) {
             setIsAdding(false);
+            console.error("variant not found");
             return;
         }
 

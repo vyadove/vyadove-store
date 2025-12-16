@@ -14,7 +14,7 @@
         "prepublishOnly": "pnpm clean && pnpm build"
     },
     "dependencies": {
-        "@shopnex/types": "workspace:^"
+        "@vyadove/types": "workspace:^"
     },
     "keywords": [],
     "exports": {

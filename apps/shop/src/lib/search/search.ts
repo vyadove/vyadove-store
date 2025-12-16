@@ -1,3 +1,4 @@
+/*
 import { unstable_cache } from "next/cache";
 
 import { commerce } from "@/lib/commerce";
@@ -19,3 +20,4 @@ export const searchProducts = unstable_cache(
     tags: ["search", "products"],
   },
 );
+*/

@@ -4,10 +4,11 @@ import localFont from "next/font/local";
 
 import "@/app/globals.css";
 import { publicUrl } from "@/env.mjs";
+import { Providers } from "@/providers/providers";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/hot-toast";
 
 import { IntlClientProvider } from "@/i18n/client";
 import { getLocale, getMessages, getTranslations } from "@/i18n/server";
@@ -15,62 +16,83 @@ import { getLocale, getMessages, getTranslations } from "@/i18n/server";
 const sofiaPro = localFont({
   src: [
     {
-      path: "./fonts/sofia-pro/SofiaProSemiBold.woff2",
+      path: "./fonts/sofia-pro-az/SofiaProSemiBold.woff",
       weight: "600",
       style: "normal",
     },
     {
-      path: "./fonts/sofia-pro/SofiaProRegular.woff2",
+      path: "./fonts/sofia-pro-az/SofiaProRegular.woff",
       weight: "normal",
       style: "normal",
     },
     {
-      path: "./fonts/sofia-pro/SofiaProRegular-Italic.woff2",
+      path: "./fonts/sofia-pro-az/SofiaProRegularItalic.woff",
       weight: "normal",
       style: "italic",
     },
     {
-      path: "./fonts/sofia-pro/SofiaProLight.woff2",
+      path: "./fonts/sofia-pro-az/SofiaProLight.woff",
       weight: "300",
       style: "normal",
     },
     {
-      path: "./fonts/sofia-pro/SofiaProExtraLight.woff2",
+      path: "./fonts/sofia-pro-az/SofiaProExtraLight.woff",
       weight: "200",
       style: "normal",
     },
     {
-      path: "./fonts/sofia-pro/SofiaProMedium.woff2",
+      path: "./fonts/sofia-pro-az/SofiaProMedium.woff",
       weight: "500",
       style: "normal",
     },
     {
-      path: "./fonts/sofia-pro/SofiaProMedium-Italic.woff2",
+      path: "./fonts/sofia-pro-az/SofiaProMediumItalic.woff",
       weight: "500",
       style: "italic",
     },
     {
-      path: "./fonts/sofia-pro/SofiaProBold-Italic.woff2",
+      path: "./fonts/sofia-pro-az/SofiaProBoldItalic.woff",
       weight: "bold",
       style: "italic",
     },
     {
-      path: "./fonts/sofia-pro/SofiaProBold.woff2",
+      path: "./fonts/sofia-pro-az/SofiaProBold.woff",
       weight: "bold",
       style: "normal",
     },
     {
-      path: "./fonts/sofia-pro/SofiaProBlack.woff2",
+      path: "./fonts/sofia-pro-az/SofiaProBlack.woff",
       weight: "900",
       style: "normal",
     },
     {
-      path: "./fonts/sofia-pro/SofiaProBlack-Italic.woff2",
+      path: "./fonts/sofia-pro-az/SofiaProBlackItalic.woff",
       weight: "900",
       style: "italic",
     },
   ],
   variable: "--sofia-pro",
+});
+
+const sofiaProSoft = localFont({
+  src: [
+    {
+      path: "./fonts/sofia-pro-az/SofiaProSoft-Regular.woff",
+      weight: "normal",
+      style: "normal",
+    },
+    {
+      path: "./fonts/sofia-pro-az/SofiaProSoft-Light.woff",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "./fonts/sofia-pro-az/SofiaProSoft-Bold.woff",
+      weight: "bold",
+      style: "normal",
+    },
+  ],
+  variable: "--sofia-pro-soft",
 });
 
 const generateMeta = ({
@@ -127,12 +149,12 @@ const generateMeta = ({
       shortcut: "/favicon-16x16.png",
       apple: "/apple-touch-icon.png",
     },
-    manifest: `${siteUrl}/site.webmanifest`,
+    // manifest: `${siteUrl}/site.webmanifest`,
+    // manifest: `${siteUrl}/webmanifest.ts`,
   } satisfies Metadata;
 };
 
 export const generateMetadata = async (): Promise<Metadata> => {
-
   // todo use this for i8n
   const t = await getTranslations("Global.metadata");
 
@@ -146,19 +168,25 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html className={`h-full antialiased ${sofiaPro.className}  `} lang={locale}>
+    <html
+      className={`h-full antialiased ${sofiaProSoft.variable} ${sofiaPro.variable}  `}
+      // className={`h-full antialiased `}
+      lang={locale}
+    >
       <body className="flex min-h-full flex-col">
-        <IntlClientProvider locale={locale} messages={messages}>
-          <div
-            className="flex min-h-full flex-1 flex-col bg-white"
-            vaul-drawer-wrapper=""
-          >
-            {children}
-          </div>
-          <Toaster offset={10} position="top-center" />
-        </IntlClientProvider>
-        <SpeedInsights />
-        <Analytics />
+        <Providers>
+          <IntlClientProvider locale={locale} messages={messages}>
+            <div
+              className="flex min-h-full flex-1 flex-col"
+              vaul-drawer-wrapper=""
+            >
+              {children}
+            </div>
+            <Toaster gutter={8} position="top-right" />
+          </IntlClientProvider>
+          <SpeedInsights />
+          <Analytics />
+        </Providers>
       </body>
     </html>
   );

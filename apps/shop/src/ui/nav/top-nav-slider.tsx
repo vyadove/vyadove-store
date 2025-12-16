@@ -3,6 +3,7 @@
 import type { ComponentPropsWithoutRef } from "react";
 import React, { type PropsWithChildren, useState } from "react";
 
+import useNavStore from "@ui/nav/nav.store";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 
 import { cn } from "@/lib/utils";
@@ -12,15 +13,34 @@ const TopNavSlider = ({
   ...rest
 }: PropsWithChildren<ComponentPropsWithoutRef<typeof motion.div>>) => {
   const { scrollY } = useScroll();
-  const [visible, setVisible] = useState(false);
+  // const [visible, setVisible] = useState(false);
+  const {
+    setShowTopNav: setVisible,
+    showTopNav: visible,
+    defaultValue,
+  } = useNavStore();
+
+  const prevYRef = React.useRef(0);
 
   // Listen for scroll position changes
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 60) {
-      setVisible(true);
+    const prev = prevYRef.current;
+
+    if (latest <= 60) {
+      setVisible(defaultValue ?? false);
     } else {
-      setVisible(false);
+      setVisible(true);
     }
+
+    // else if (latest < prev) {
+    //   // scrolling up and scrolled at least 60
+    //   setVisible(true);
+    // } else if (latest > prev) {
+    //   // scrolling down
+    //   setVisible(false);
+    // }
+
+    prevYRef.current = latest;
   });
 
   return (

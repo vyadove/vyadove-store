@@ -1,6 +1,6 @@
 "use client";
 
-import type { Order } from "@shopnex/types";
+import type { Order } from "@vyadove/types";
 import type React from "react";
 
 import { XMark } from "@medusajs/icons";

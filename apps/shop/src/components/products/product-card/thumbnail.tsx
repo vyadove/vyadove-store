@@ -49,7 +49,7 @@ const ImageOrPlaceholder = ({
   size,
 }: { image?: string } & Pick<ThumbnailProps, "size">) => {
   return image ? (
-    <Image
+    <img
       alt="Product image"
       className="rounded-rounded absolute inset-0 h-full object-cover"
       decoding="async"

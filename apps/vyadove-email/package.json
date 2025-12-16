@@ -1,40 +1,40 @@
 {
-  "name": "easy-email-nextjs-demo",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev -p 3040",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@arco-design/web-react": "^2.66.4",
-    "@arco-themes/react-easy-email-theme": "^0.0.3",
-    "@shopnex/payload-sdk": "^3.1.7",
-    "@types/node": "20.5.9",
-    "@types/react": "18.2.21",
-    "@types/react-dom": "18.2.7",
-    "autoprefixer": "10.4.15",
-    "axios": "^1.12.0",
-    "easy-email-core": "^4.16.4",
-    "easy-email-editor": "^4.12.2",
-    "easy-email-extensions": "^4.14.1",
-    "eslint": "8.48.0",
-    "eslint-config-next": "15.4.6",
-    "final-form": "^4.20.10",
-    "http-proxy-middleware": "^3.0.5",
-    "mjml-browser": "^4.14.1",
-    "next": "15.4.10",
-    "postcss": "8.4.29",
-    "react": "^18.3.0",
-    "react-dom": "^18.3.0",
-    "react-final-form": "^6.5.9",
-    "react-use": "^17.4.0",
-    "tailwindcss": "3.3.3",
-    "typescript": "5.2.2"
-  },
-  "devDependencies": {
-    "@types/mjml-browser": "^4.15.0"
-  }
+    "name": "easy-email-nextjs-demo",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev -p 3040",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@arco-design/web-react": "^2.66.4",
+        "@arco-themes/react-easy-email-theme": "^0.0.3",
+        "@shopnex/payload-sdk": "^3.1.7",
+        "@types/node": "20.5.9",
+        "@types/react": "18.2.21",
+        "@types/react-dom": "18.2.7",
+        "autoprefixer": "10.4.15",
+        "axios": "^1.12.0",
+        "easy-email-core": "^4.16.4",
+        "easy-email-editor": "^4.12.2",
+        "easy-email-extensions": "^4.14.1",
+        "eslint": "8.48.0",
+        "eslint-config-next": "15.4.6",
+        "final-form": "^4.20.10",
+        "http-proxy-middleware": "^3.0.5",
+        "mjml-browser": "^4.14.1",
+        "next": "15.4.10",
+        "postcss": "8.4.29",
+        "react": "^18.3.0",
+        "react-dom": "^18.3.0",
+        "react-final-form": "^6.5.9",
+        "react-use": "^17.4.0",
+        "tailwindcss": "3.3.3",
+        "typescript": "5.2.2"
+    },
+    "devDependencies": {
+        "@types/mjml-browser": "^4.15.0"
+    }
 }

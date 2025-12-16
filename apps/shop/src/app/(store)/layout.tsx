@@ -1,14 +1,9 @@
-import type { Metadata } from "next";
-
 import "@/app/globals.css";
-import { config } from "@/store.config";
 import { Footer } from "@/ui/footer/footer";
 import { accountToWebsiteJsonLd, JsonLd } from "@/ui/json-ld";
 import { Nav } from "@ui/nav/nav";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
-
-import { CartProvider } from "@/context/cart-context";
 
 // todo -> metadata needs to be fixed properly
 // export const metadata: Metadata = {
@@ -35,7 +30,7 @@ export default async function StoreLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <CartProvider>
+    <>
       <TooltipProvider>
         <Nav />
 
@@ -50,6 +45,6 @@ export default async function StoreLayout({
           logoUrl: null,
         })}
       />
-    </CartProvider>
+    </>
   );
 }

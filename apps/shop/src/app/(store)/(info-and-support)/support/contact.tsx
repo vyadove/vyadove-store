@@ -3,17 +3,20 @@
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 
-
-
 import { submitContact } from "@/actions/support-actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
+import { TypographyP } from "@ui/shadcn/typography";
 import * as z from "zod";
 
-
-
 import { Button } from "@/components/ui/button";
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { toast } from "@/components/ui/hot-toast";
 import { Input } from "@/components/ui/input";
 import {
   InputGroup,
@@ -21,10 +24,6 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "@/components/ui/input-group";
-
-
-
-
 
 const formSchema = z.object({
   name: z
@@ -53,9 +52,7 @@ export function BugReportForm() {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-
     try {
-
       // construct the form data
       const formData = new FormData();
 
@@ -63,31 +60,25 @@ export function BugReportForm() {
       formData.append("email", data.email);
       formData.append("message", data.description);
 
-      const res = await submitContact(formData)
+      const res = await submitContact(formData);
 
-      if(res?.id){
-        toast(`Thanks you ${data.name} !`, {
-          description: "Submitted successfully, we will be in touch in short.",
-          position: "bottom-right",
-          classNames: {
-            content: "flex flex-col gap-2",
-          },
-          style: {
-            "--border-radius": "calc(var(--radius)  + 4px)",
-          } as React.CSSProperties,
-        });
+      if (res?.id) {
+        const message = (
+          <TypographyP>
+            Thanks you ${data.name}! <br /> Submitted successfully, we will be
+            in touch in short.
+          </TypographyP>
+        );
+
+        toast(message);
 
         form.reset();
-      }else {
-        toast.error('Failed to send your information');
+      } else {
+        toast.error("Failed to send your information");
       }
-
-
-
-    }catch (error : any){
+    } catch (error: any) {
       toast.error(error.message);
     }
-
   }
 
   return (

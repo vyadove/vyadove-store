@@ -1,4 +1,4 @@
-import type { Media, Product } from "@shopnex/types";
+import type { Media, Product } from "@vyadove/types";
 import type { CollectionAfterDeleteHook } from "payload";
 
 import { isExpandedDoc } from "@/utils/is-expanded-doc";
@@ -55,6 +55,15 @@ export const deleteMedia: CollectionAfterDeleteHook<Product> = async ({
                     );
                 })
                 .catch((error) => {
+                    payload.find({
+                        collection: "products",
+                        where: {
+                            category: {
+                                in: [],
+                            },
+                        },
+                    });
+
                     payload.logger.error(
                         `Failed to delete: ${image.filename}`,
                         error

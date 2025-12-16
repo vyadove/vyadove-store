@@ -113,13 +113,11 @@ const DrawerDescription = React.forwardRef<
 DrawerDescription.displayName = DrawerPrimitive.Description.displayName;
 
 export default function VaulDrawer(
-
   props: React.ComponentProps<typeof DrawerPrimitive.Root> & {
     shouldScaleBackground?: boolean;
     title?: string;
     description?: string;
-  }
-
+  },
 ) {
   return (
     <DrawerPrimitive.Root direction="right">

@@ -1,22 +1,22 @@
+import DesktopNav from "@ui/nav/desktop-nav";
 import { NavMenu } from "@ui/nav/mobile/nav-menu";
 import { SearchNav } from "@ui/nav/mobile/search-nav";
 import TopNavSlider from "@ui/nav/top-nav-slider";
+import { UserNav } from "@ui/nav/user-nav";
 import { VyaLink } from "@ui/vya-link";
-import { UserIcon } from "lucide-react";
 
 import { CartIconButton } from "@/components/cart-icon-button";
 import VyaDoveLogo from "@/components/icons";
 
 import { cn } from "@/lib/utils";
 
-import { NavItems } from "@ui/nav/nav-bar-links";
-
 // className="nav-border-reveal sticky top-0 z-50  py-4 backdrop-blur-xs"
 
 export const Nav = async () => {
   return (
     <TopNavSlider className="">
-      <NavItems className="bg-accent-foreground/70 hidden rounded-xl backdrop-blur-lg md:mt-4 md:flex" />
+      {/* --- DESKTOP --- */}
+      <DesktopNav className="bg-primary-background/70 hidden rounded-xl backdrop-blur-lg md:mt-4 md:flex shadow-sm" />
 
       {/* --- MOBILE --- */}
       <div
@@ -38,9 +38,7 @@ export const Nav = async () => {
 
         <CartIconButton />
 
-        <VyaLink href="/login">
-          <UserIcon className="hover:text-neutral-500" />
-        </VyaLink>
+        <UserNav />
       </div>
     </TopNavSlider>
   );

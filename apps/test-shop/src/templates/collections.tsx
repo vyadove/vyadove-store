@@ -5,7 +5,7 @@ import type { SortOptions } from "@/utils/sort-options";
 import RefinementList from "@/components/refinement-list";
 import SkeletonProductGrid from "@/components/skeleton-product-grid";
 import PaginatedProducts from "./paginated-product";
-import { Collection } from "@shopnex/types";
+import { Collection } from "@vyadove/types";
 
 export default function CollectionTemplate({
     collection,

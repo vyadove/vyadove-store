@@ -1,5 +1,5 @@
 import type { BasePayload, Where } from "payload";
-import { Product } from "@shopnex/types";
+import { Product } from "@vyadove/types";
 import {
     convertHTMLToLexical,
     editorConfigFactory,

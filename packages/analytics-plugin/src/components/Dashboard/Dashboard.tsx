@@ -1,4 +1,4 @@
-import type { Order } from "@shopnex/types";
+import type { Order } from "@vyadove/types";
 
 import { Gutter, RenderTitle, SetStepNav } from "@payloadcms/ui";
 import { type AdminViewServerProps, type BasePayload } from "payload";

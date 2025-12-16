@@ -41,8 +41,8 @@ export const NavMenuTrigger = ({
 }) => {
   return (
     <NavigationMenuTrigger className="group/trigger" hideIcon>
-      <div className="hover:text-accent hover:bg-accent-foreground flex items-center overflow-hidden rounded-md border-none px-3 py-1 shadow-none">
-        <AnimateOnHoverText className="">{children}</AnimateOnHoverText>
+      <div className="hover:text-accent hover:bg-primary-background flex items-center overflow-hidden rounded-md border-none px-3 py-1 shadow-none">
+        {children}
 
         {!props?.hideIcon && (
           <ChevronDownIcon
@@ -74,7 +74,7 @@ export const AnimateOnHoverText = ({
     >
       <TypographyP className="">{children}</TypographyP>
 
-      <TypographyP className="absolute hidden font-light md:block">
+      <TypographyP className="absolute hidden  md:block">
         {children}
       </TypographyP>
     </motion.div>

@@ -57,7 +57,7 @@
     },
     "dependencies": {
         "@measured/puck": "^0.20.1",
-        "@shopnex/types": "workspace:^",
+        "@vyadove/types": "workspace:^",
         "classnames": "^2.5.1",
         "recharts": "^2.15.3"
     },

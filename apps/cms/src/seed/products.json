@@ -1,174 +1,1331 @@
 [
     {
-        "pid": "1446366641976905728",
-        "title": "Staying overnight in your own country",
+        "pid": "spa-day-deluxe-001",
+        "title": "Deluxe Spa Day Experience",
         "currency": "USD",
         "visible": true,
-
         "salesChannels": [],
-
-        "description": "Staying overnight in your own country",
-
-        "collections": 1,
-        "handle": "watch-wallet-sunglasses-belt-gift-box-set-for-men",
-
-        "variantOptions": [],
-
-        "variants": [
-            {
-                "vid": "1446366642018848768",
-                "imageUrl": "https://cf.cjdropshipping.com/e4d52bca-791c-41cb-95df-dd32b0c30ba6.jpg",
-                "price": 4000,
-                "originalPrice": null,
-
-                "options": [
-                    {
-                        "option": "Color",
-                        "value": "Black"
-                    }
-                ],
-
-                "gallery": []
-            },
-
-            {
-                "vid": "1446366642031431680",
-                "imageUrl": "https://cf.cjdropshipping.com/416206fb-34a1-4e03-b33b-022b10e1ce99.jpg",
-                "price": 16.3,
-                "originalPrice": null,
-
-                "options": [
-                    {
-                        "option": "Color",
-                        "value": "Brown"
-                    }
-                ],
-
-                "gallery": []
-            }
-        ],
-
-        "customFields": []
-    },
-    {
-        "pid": "6B4C8D6B-3DDC-4137-A340-DC2273FCA01F",
-        "title": "Delicious Dinner in Addis",
-        "currency": "USD",
-        "visible": true,
-
-        "salesChannels": [],
-
-        "description": "Delicious Dinner in Addis",
-
-        "collections": 1,
-        "handle": "butterfly-clasp-solid-steel-band-quartz-watch-for-men",
-
-        "variantOptions": [],
-
-        "variants": [
-            {
-                "vid": "24E54A1B-107F-4584-9E6B-54353005F6A2",
-                "imageUrl": "https://cf.cjdropshipping.com/20200417/88836744746.jpg",
-                "price": 11.11,
-                "originalPrice": null,
-
-                "options": [
-                    {
-                        "option": "Color",
-                        "value": "Black steel belt"
-                    }
-                ],
-
-                "gallery": []
-            }
-        ],
-
-        "customFields": []
-    },
-    {
-        "pid": "2407210941151627500",
-        "title": "Weekend in Kuriftu",
-        "currency": "USD",
-        "visible": true,
-
-        "salesChannels": [],
-
-        "description": "Weekend in Kuriftu",
-
-        "collections": 1,
-        "handle": "personalized-creative-magnetic-suspension-waterproof-watch",
-
-        "variantOptions": [],
-
-        "variants": [
-            {
-                "vid": "2407210941151627700",
-                "imageUrl": "https://cf.cjdropshipping.com/quick/product/2f48fa66-25f0-4a54-9a04-99076b1b998b.jpg",
-                "price": 17.08,
-                "originalPrice": null,
-
-                "options": [
-                    {
-                        "option": "Color",
-                        "value": "Black Steel Belt Set"
-                    }
-                ],
-
-                "gallery": []
-            },
-
-            {
-                "vid": "2407210941151627900",
-                "imageUrl": "https://cf.cjdropshipping.com/quick/product/43c875e4-353b-46e5-a99a-824d436449d6.jpg",
-                "price": 16.25,
-                "originalPrice": null,
-
-                "options": [
-                    {
-                        "option": "Color",
-                        "value": "Black Belt Set"
-                    }
-                ],
-
-                "gallery": []
-            }
-        ],
-
-        "customFields": []
-    },
-    {
-        "pid": "1598944813683060736",
-        "title": "Cozy overnight stay in Hawassa: enjoy this Christmas together",
-        "currency": "USD",
-        "visible": true,
-
-        "salesChannels": [],
-
-        "description": "Cozy overnight stay in Hawassa: enjoy this Christmas together",
-
+        "description": "Indulge in a full day of relaxation with our deluxe spa package. Includes 60-min massage, facial, body scrub, and access to all spa facilities including sauna, steam room, and relaxation lounge. Perfect gift for anyone needing stress relief.",
         "collections": 2,
-        "handle": "new-automatic-mechanical-watches-for-men",
-
-        "variantOptions": [],
-
+        "handle": "deluxe-spa-day-experience",
         "variants": [
             {
-                "vid": "1598944813712420864",
-                "imageUrl": "https://cf.cjdropshipping.com/795d942f-822e-4055-a902-370953bd4a5b.jpg",
-                "price": 26.2,
+                "vid": "spa-day-deluxe-var-single",
+                "imageUrl": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80",
+                "price": {
+                    "amount": 189.99,
+                    "currency": "USD"
+                },
                 "originalPrice": null,
-
+                "available": true,
+                "pricingTier": "premium",
                 "options": [
                     {
-                        "option": "Color",
-                        "value": "Grey"
+                        "option": "Package",
+                        "value": "Single Person"
                     }
                 ],
-
+                "gallery": []
+            },
+            {
+                "vid": "spa-day-deluxe-var-couple",
+                "imageUrl": "https://images.unsplash.com/photo-1596178060671-7a80dc8059ea?w=800&q=80",
+                "price": {
+                    "amount": 349.99,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "luxury",
+                "options": [
+                    {
+                        "option": "Package",
+                        "value": "Couples Package"
+                    }
+                ],
                 "gallery": []
             }
         ],
-
-        "customFields": []
+        "customFields": [
+            {
+                "name": "What's Included",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "60-minute Swedish or deep tissue massage, 45-minute custom facial, body scrub treatment, full-day access to spa facilities, healthy lunch, herbal teas and refreshments"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "fine-dining-tasting-menu-001",
+        "title": "Michelin-Star Tasting Menu Experience",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "An unforgettable 7-course tasting menu at our award-winning restaurant. Each course expertly paired with wines selected by our sommelier. Experience culinary artistry at its finest.",
+        "collections": 0,
+        "handle": "michelin-star-tasting-menu",
+        "variants": [
+            {
+                "vid": "tasting-menu-001-standard",
+                "imageUrl": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
+                "price": {
+                    "amount": 225.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "luxury",
+                "options": [
+                    {
+                        "option": "Pairing",
+                        "value": "Wine Pairing Included"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "tasting-menu-001-premium",
+                "imageUrl": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
+                "price": {
+                    "amount": 295.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "luxury",
+                "options": [
+                    {
+                        "option": "Pairing",
+                        "value": "Premium Wine & Cocktail Pairing"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Dietary Requirements",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "Vegetarian, vegan, and gluten-free options available. Please notify us 48 hours in advance."
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "hot-air-balloon-001",
+        "title": "Sunrise Hot Air Balloon Adventure",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Float peacefully above breathtaking landscapes at sunrise. This 3-hour experience includes pre-flight refreshments, 60-minute flight, and champagne toast upon landing. An adventure gift they'll never forget.",
+        "collections": 3,
+        "handle": "sunrise-hot-air-balloon-adventure",
+        "variants": [
+            {
+                "vid": "balloon-001-weekday",
+                "imageUrl": "https://images.unsplash.com/photo-1519974719765-e6559eac2575?w=800&q=80",
+                "price": {
+                    "amount": 249.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Day",
+                        "value": "Weekday"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "balloon-001-weekend",
+                "imageUrl": "https://images.unsplash.com/photo-1519974719765-e6559eac2575?w=800&q=80",
+                "price": {
+                    "amount": 289.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Day",
+                        "value": "Weekend"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Important Information",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "Weight limit: 250 lbs per person. Not recommended for pregnant guests. Weather-dependent - we'll reschedule if conditions aren't safe."
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "weekend-getaway-cabin-001",
+        "title": "Romantic Mountain Cabin Getaway",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Escape to a luxury cabin nestled in the mountains. Includes 2 nights accommodation, private hot tub, fireplace, gourmet breakfast basket, and stunning views. Perfect romantic gift for couples.",
+        "collections": 5,
+        "handle": "romantic-mountain-cabin-getaway",
+        "variants": [
+            {
+                "vid": "cabin-001-standard",
+                "imageUrl": "https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=800&q=80",
+                "price": {
+                    "amount": 459.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Season",
+                        "value": "Off-Peak"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "cabin-001-peak",
+                "imageUrl": "https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=800&q=80",
+                "price": {
+                    "amount": 599.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "luxury",
+                "options": [
+                    {
+                        "option": "Season",
+                        "value": "Peak Season"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Amenities",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "King bed, private hot tub, gas fireplace, full kitchen, WiFi, streaming services, hiking trails access, complimentary breakfast basket with fresh pastries and coffee"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "wine-tasting-tour-001",
+        "title": "Premium Wine Country Tour",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Visit 3 award-winning wineries with private transportation. Includes guided tastings, vineyard tours, gourmet lunch, and a bottle of wine to take home. Learn about winemaking from expert vintners.",
+        "collections": 0,
+        "handle": "premium-wine-country-tour",
+        "variants": [
+            {
+                "vid": "wine-tour-001-small",
+                "imageUrl": "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&q=80",
+                "price": {
+                    "amount": 179.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Group Size",
+                        "value": "Small Group (8-12)"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "wine-tour-001-private",
+                "imageUrl": "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&q=80",
+                "price": {
+                    "amount": 349.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "luxury",
+                "options": [
+                    {
+                        "option": "Group Size",
+                        "value": "Private Tour (2-6)"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Duration & Pickup",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "6-hour tour with pickup from select hotels. Must be 21+. Designated driver provided."
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "birthday-celebration-001",
+        "title": "Ultimate Birthday Celebration Package",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Make their birthday unforgettable! Private dining room for up to 12 guests, custom menu, champagne toast, birthday cake, decorations, and personalized playlist. Let us handle everything.",
+        "collections": 4,
+        "handle": "ultimate-birthday-celebration-package",
+        "variants": [
+            {
+                "vid": "birthday-001-standard",
+                "imageUrl": "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=800&q=80",
+                "price": {
+                    "amount": 599.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Package",
+                        "value": "Up to 8 Guests"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "birthday-001-deluxe",
+                "imageUrl": "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=800&q=80",
+                "price": {
+                    "amount": 849.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "luxury",
+                "options": [
+                    {
+                        "option": "Package",
+                        "value": "Up to 12 Guests"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Customization Options",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "Choose your menu style: Italian, Asian Fusion, or Classic American. Cake flavors: chocolate, vanilla, red velvet, or carrot. Dietary accommodations available."
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "cooking-class-001",
+        "title": "Professional Chef's Cooking Masterclass",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Learn from a professional chef in this hands-on cooking class. Master essential techniques while preparing a 3-course meal. Includes recipes, apron, and of course, eating your creations!",
+        "collections": 1,
+        "handle": "professional-chef-cooking-masterclass",
+        "variants": [
+            {
+                "vid": "cooking-001-italian",
+                "imageUrl": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&q=80",
+                "price": {
+                    "amount": 125.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "basic",
+                "options": [
+                    {
+                        "option": "Cuisine",
+                        "value": "Italian"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "cooking-001-french",
+                "imageUrl": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&q=80",
+                "price": {
+                    "amount": 125.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "basic",
+                "options": [
+                    {
+                        "option": "Cuisine",
+                        "value": "French"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "cooking-001-sushi",
+                "imageUrl": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&q=80",
+                "price": {
+                    "amount": 145.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Cuisine",
+                        "value": "Sushi Making"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Class Details",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "3-hour class, small groups (max 12), all ingredients provided, take-home recipe cards, complimentary wine"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "massage-wellness-001",
+        "title": "Therapeutic Massage & Wellness Session",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Customized therapeutic massage focusing on your specific needs. Choose from Swedish, deep tissue, hot stone, or aromatherapy. Includes consultation with licensed therapist.",
+        "collections": 2,
+        "handle": "therapeutic-massage-wellness-session",
+        "variants": [
+            {
+                "vid": "massage-001-60min",
+                "imageUrl": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80",
+                "price": {
+                    "amount": 89.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "basic",
+                "options": [
+                    {
+                        "option": "Duration",
+                        "value": "60 Minutes"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "massage-001-90min",
+                "imageUrl": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80",
+                "price": {
+                    "amount": 129.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Duration",
+                        "value": "90 Minutes"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Massage Styles Available",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "Swedish relaxation, deep tissue, hot stone therapy, aromatherapy, sports massage, prenatal massage"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "helicopter-tour-001",
+        "title": "Private Helicopter City Tour",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Soar above the city on a private helicopter tour. See iconic landmarks from a unique perspective. Includes professional pilot commentary and photo opportunities. An experience of a lifetime!",
+        "collections": 3,
+        "handle": "private-helicopter-city-tour",
+        "variants": [
+            {
+                "vid": "heli-001-15min",
+                "imageUrl": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80",
+                "price": {
+                    "amount": 299.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Duration",
+                        "value": "15 Minutes"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "heli-001-30min",
+                "imageUrl": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80",
+                "price": {
+                    "amount": 499.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "luxury",
+                "options": [
+                    {
+                        "option": "Duration",
+                        "value": "30 Minutes"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Safety & Requirements",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "Up to 3 passengers. Weight limit 600 lbs combined. Photo ID required. Weather-dependent."
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "beach-resort-001",
+        "title": "Luxury Beach Resort Weekend",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "2 nights at an exclusive beachfront resort. Oceanview room, daily breakfast, beach cabana access, spa credit, and water sports equipment. Paradise awaits!",
+        "collections": 5,
+        "handle": "luxury-beach-resort-weekend",
+        "variants": [
+            {
+                "vid": "beach-001-standard",
+                "imageUrl": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
+                "price": {
+                    "amount": 699.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Room",
+                        "value": "Oceanview Room"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "beach-001-suite",
+                "imageUrl": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
+                "price": {
+                    "amount": 999.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "luxury",
+                "options": [
+                    {
+                        "option": "Room",
+                        "value": "Beachfront Suite"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Resort Amenities",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "Infinity pool, private beach, fitness center, yoga classes, kayaks, paddleboards, snorkeling gear, beach volleyball, $100 spa credit"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "chocolate-tasting-001",
+        "title": "Artisan Chocolate & Dessert Tasting",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Discover the art of fine chocolate. Taste 12+ artisan chocolates from around the world paired with wines and spirits. Learn from a certified chocolatier about cacao origins and production.",
+        "collections": 1,
+        "handle": "artisan-chocolate-dessert-tasting",
+        "variants": [
+            {
+                "vid": "choco-001-standard",
+                "imageUrl": "https://images.unsplash.com/photo-1511381939415-e44015466834?w=800&q=80",
+                "price": {
+                    "amount": 65.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "basic",
+                "options": [
+                    {
+                        "option": "Experience",
+                        "value": "Standard Tasting"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "choco-001-premium",
+                "imageUrl": "https://images.unsplash.com/photo-1511381939415-e44015466834?w=800&q=80",
+                "price": {
+                    "amount": 95.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Experience",
+                        "value": "Premium with Pairings"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "What to Expect",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "90-minute guided tasting, 12+ chocolate samples, wine/spirit pairings (premium option), educational presentation, take-home chocolate box"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "anniversary-dinner-001",
+        "title": "Romantic Anniversary Dinner Experience",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Celebrate your love story with an intimate 5-course dinner. Private table, rose petals, champagne, live music, and personalized dessert. Make memories that last forever.",
+        "collections": 4,
+        "handle": "romantic-anniversary-dinner-experience",
+        "variants": [
+            {
+                "vid": "anniv-001-standard",
+                "imageUrl": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=800&q=80",
+                "price": {
+                    "amount": 299.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Package",
+                        "value": "Celebration Dinner"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "anniv-001-deluxe",
+                "imageUrl": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=800&q=80",
+                "price": {
+                    "amount": 399.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "luxury",
+                "options": [
+                    {
+                        "option": "Package",
+                        "value": "Deluxe with Flowers & Photographer"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Romantic Touches",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "Secluded table, rose petals, champagne on arrival, live pianist, personalized dessert plate, keepsake menu. Deluxe adds: bouquet of roses, 30-min photo session."
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "yoga-retreat-001",
+        "title": "Weekend Yoga & Meditation Retreat",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Reconnect with yourself at our tranquil retreat center. Includes accommodation, daily yoga sessions, guided meditation, healthy meals, and nature walks. Perfect for wellness enthusiasts.",
+        "collections": 2,
+        "handle": "weekend-yoga-meditation-retreat",
+        "variants": [
+            {
+                "vid": "yoga-001-shared",
+                "imageUrl": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80",
+                "price": {
+                    "amount": 349.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "basic",
+                "options": [
+                    {
+                        "option": "Accommodation",
+                        "value": "Shared Room"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "yoga-001-private",
+                "imageUrl": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80",
+                "price": {
+                    "amount": 499.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Accommodation",
+                        "value": "Private Room"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Retreat Schedule",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "2 nights accommodation, 4 yoga classes, guided meditation sessions, healthy vegetarian meals, nature walks, journaling workshop, relaxation time, yoga mat provided"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "brewery-tour-001",
+        "title": "Craft Brewery Tour & Tasting",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Visit 3 local craft breweries and learn the brewing process. Taste 12+ craft beers, meet brewmasters, enjoy beer-paired lunch. Transportation included. Perfect gift for beer lovers!",
+        "collections": 0,
+        "handle": "craft-brewery-tour-tasting",
+        "variants": [
+            {
+                "vid": "brew-001-group",
+                "imageUrl": "https://images.unsplash.com/photo-1532634733-cae1395e440f?w=800&q=80",
+                "price": {
+                    "amount": 89.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "basic",
+                "options": [
+                    {
+                        "option": "Tour Type",
+                        "value": "Group Tour"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "brew-001-private",
+                "imageUrl": "https://images.unsplash.com/photo-1532634733-cae1395e440f?w=800&q=80",
+                "price": {
+                    "amount": 159.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Tour Type",
+                        "value": "Private Group (up to 8)"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Tour Highlights",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "5-hour tour, 3 breweries, behind-the-scenes access, 12+ beer tastings, brewing education, lunch with beer pairings, souvenir pint glass, transportation included"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "photography-walk-001",
+        "title": "City Photography Walking Tour",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Capture the city's beauty with a professional photographer. Learn composition, lighting, and camera techniques while exploring hidden gems. All skill levels welcome.",
+        "collections": 6,
+        "handle": "city-photography-walking-tour",
+        "variants": [
+            {
+                "vid": "photo-001-beginner",
+                "imageUrl": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80",
+                "price": {
+                    "amount": 79.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "basic",
+                "options": [
+                    {
+                        "option": "Level",
+                        "value": "Beginner"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "photo-001-advanced",
+                "imageUrl": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80",
+                "price": {
+                    "amount": 99.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "basic",
+                "options": [
+                    {
+                        "option": "Level",
+                        "value": "Advanced"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "What You'll Learn",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "3-hour walking tour, composition techniques, natural light mastery, street photography ethics, editing tips, instant feedback, coffee break included, bring your camera/phone"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "private-chef-dinner-001",
+        "title": "Private Chef Home Dinner Experience",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "A professional chef comes to your home! Personalized 4-course menu, grocery shopping, cooking, serving, and cleanup included. Enjoy restaurant quality at home with loved ones.",
+        "collections": 6,
+        "handle": "private-chef-home-dinner-experience",
+        "variants": [
+            {
+                "vid": "chef-001-small",
+                "imageUrl": "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800&q=80",
+                "price": {
+                    "amount": 399.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "luxury",
+                "options": [
+                    {
+                        "option": "Guests",
+                        "value": "2-4 People"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "chef-001-large",
+                "imageUrl": "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800&q=80",
+                "price": {
+                    "amount": 599.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "luxury",
+                "options": [
+                    {
+                        "option": "Guests",
+                        "value": "5-8 People"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Service Includes",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "Menu planning consultation, grocery shopping, professional chef for 3-4 hours, 4-course plated dinner, professional serving, complete kitchen cleanup, dietary accommodations"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "zip-line-adventure-001",
+        "title": "Extreme Zip Line Canopy Tour",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Fly through the treetops on 8 zip lines and suspension bridges. Includes safety training, equipment, and professional guides. An adrenaline-pumping gift for adventure seekers!",
+        "collections": 3,
+        "handle": "extreme-zip-line-canopy-tour",
+        "variants": [
+            {
+                "vid": "zip-001-standard",
+                "imageUrl": "https://images.unsplash.com/photo-1533167649158-6d508895b680?w=800&q=80",
+                "price": {
+                    "amount": 119.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "basic",
+                "options": [
+                    {
+                        "option": "Experience",
+                        "value": "Standard Tour"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "zip-001-extreme",
+                "imageUrl": "https://images.unsplash.com/photo-1533167649158-6d508895b680?w=800&q=80",
+                "price": {
+                    "amount": 169.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Experience",
+                        "value": "Extreme + Rappelling"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Adventure Details",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "2.5-3 hour experience, 8 zip lines (longest 800ft), 2 suspension bridges, safety training, all equipment provided, photos included, weight: 70-250 lbs, age 10+"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "afternoon-tea-001",
+        "title": "Luxury Afternoon Tea Service",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Traditional afternoon tea in an elegant setting. Three-tier service with finger sandwiches, scones with clotted cream, pastries, and premium tea selection. A sophisticated gift experience.",
+        "collections": 1,
+        "handle": "luxury-afternoon-tea-service",
+        "variants": [
+            {
+                "vid": "tea-001-classic",
+                "imageUrl": "https://images.unsplash.com/photo-1563822249548-7a58f4840a8d?w=800&q=80",
+                "price": {
+                    "amount": 55.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "basic",
+                "options": [
+                    {
+                        "option": "Service",
+                        "value": "Classic Tea"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "tea-001-champagne",
+                "imageUrl": "https://images.unsplash.com/photo-1563822249548-7a58f4840a8d?w=800&q=80",
+                "price": {
+                    "amount": 75.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "premium",
+                "options": [
+                    {
+                        "option": "Service",
+                        "value": "Champagne Tea"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Menu Selection",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "Assorted finger sandwiches, freshly baked scones with clotted cream and jam, selection of French pastries and cakes, 20+ premium tea varieties, champagne option available"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "pid": "kayak-sunset-tour-001",
+        "title": "Sunset Kayaking Adventure",
+        "currency": "USD",
+        "visible": true,
+        "salesChannels": [],
+        "description": "Paddle through calm waters as the sun sets. Includes kayak rental, safety equipment, guide, and light refreshments. Perfect peaceful adventure for nature lovers.",
+        "collections": 3,
+        "handle": "sunset-kayaking-adventure",
+        "variants": [
+            {
+                "vid": "kayak-001-standard",
+                "imageUrl": "https://images.unsplash.com/photo-1502933691298-84fc14542831?w=800&q=80",
+                "price": {
+                    "amount": 69.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "basic",
+                "options": [
+                    {
+                        "option": "Type",
+                        "value": "Single Kayak"
+                    }
+                ],
+                "gallery": []
+            },
+            {
+                "vid": "kayak-001-tandem",
+                "imageUrl": "https://images.unsplash.com/photo-1502933691298-84fc14542831?w=800&q=80",
+                "price": {
+                    "amount": 99.0,
+                    "currency": "USD"
+                },
+                "originalPrice": null,
+                "available": true,
+                "pricingTier": "basic",
+                "options": [
+                    {
+                        "option": "Type",
+                        "value": "Tandem Kayak"
+                    }
+                ],
+                "gallery": []
+            }
+        ],
+        "customFields": [
+            {
+                "name": "Tour Information",
+                "value": {
+                    "root": {
+                        "type": "root",
+                        "children": [
+                            {
+                                "type": "paragraph",
+                                "children": [
+                                    {
+                                        "type": "text",
+                                        "text": "2-hour guided tour, all equipment provided, life jacket, waterproof bag, light snacks and water, no experience necessary, age 12+, weather permitting"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
     }
 ]

@@ -1,0 +1,35 @@
+import { Table, TableCell, TableRow } from "@/components/ui/table";
+
+const SkeletonLineItem = () => {
+  return (
+    <TableRow className="m-4 w-full">
+      <TableCell className="w-24 p-4">
+        <div className="flex h-24 w-24 animate-pulse bg-gray-200 p-4" />
+      </TableCell>
+      <TableCell className="text-left">
+        <div className="flex flex-col gap-y-2">
+          <div className="h-4 w-32 animate-pulse bg-gray-200" />
+          <div className="h-4 w-24 animate-pulse bg-gray-200" />
+        </div>
+      </TableCell>
+      <TableCell>
+        <div className="flex items-center gap-2">
+          <div className="h-8 w-6 animate-pulse bg-gray-200" />
+          <div className="h-10 w-14 animate-pulse bg-gray-200" />
+        </div>
+      </TableCell>
+      <TableCell>
+        <div className="flex gap-2">
+          <div className="h-6 w-12 animate-pulse bg-gray-200" />
+        </div>
+      </TableCell>
+      <TableCell>
+        <div className="flex justify-end gap-2">
+          <div className="h-6 w-12 animate-pulse bg-gray-200" />
+        </div>
+      </TableCell>
+    </TableRow>
+  );
+};
+
+export default SkeletonLineItem;

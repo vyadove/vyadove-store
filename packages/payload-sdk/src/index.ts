@@ -45,12 +45,18 @@ import type { OperationArgs } from "./utilities/buildSearchParams";
 
 import { forgotPassword } from "./auth/forgotPassword";
 import { login } from "./auth/login";
+import { logout, type LogoutOptions, type LogoutResult } from "./auth/logout";
 import { me } from "./auth/me";
 import {
     type RefreshOptions,
     type RefreshResult,
     refreshToken,
 } from "./auth/refreshToken";
+import {
+    register,
+    type RegisterOptions,
+    type RegisterResult,
+} from "./auth/register";
 import { resetPassword } from "./auth/resetPassword";
 import { verifyEmail, type VerifyEmailOptions } from "./auth/verifyEmail";
 import { count } from "./collections/count";
@@ -311,6 +317,13 @@ export class PayloadSDK<
         return login(this, options, init);
     }
 
+    logout<TSlug extends AuthCollectionSlug<T>>(
+        options: LogoutOptions<T, TSlug>,
+        init?: RequestInit
+    ): Promise<LogoutResult> {
+        return logout(this, options, init);
+    }
+
     me<TSlug extends AuthCollectionSlug<T>>(
         options: MeOptions<T, TSlug>,
         init?: RequestInit
@@ -323,6 +336,16 @@ export class PayloadSDK<
         init?: RequestInit
     ): Promise<RefreshResult<T, TSlug>> {
         return refreshToken(this, options, init);
+    }
+
+    /**
+     * Register a new user in an auth-enabled collection.
+     */
+    register<TSlug extends AuthCollectionSlug<T>>(
+        options: RegisterOptions<T, TSlug>,
+        init?: RequestInit
+    ): Promise<RegisterResult<T>> {
+        return register(this, options, init);
     }
 
     async request({

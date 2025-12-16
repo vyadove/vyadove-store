@@ -1,7 +1,7 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
+import { MigrateUpArgs, MigrateDownArgs, sql } from "@payloadcms/db-postgres";
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
-  await db.execute(sql`
+    await db.execute(sql`
    CREATE TYPE "public"."enum_orders_timeline_type" AS ENUM('note', 'order_created', 'order_paid', 'order_cancelled', 'refund_issued', 'fulfillment_started', 'shipped', 'delivered', 'return_requested', 'return_completed', 'other');
   CREATE TYPE "public"."enum_orders_source" AS ENUM('manual');
   CREATE TYPE "public"."enum_orders_payment_status" AS ENUM('pending', 'paid', 'failed', 'refunded');
@@ -1195,11 +1195,15 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "main_menu_rels_order_idx" ON "main_menu_rels" USING btree ("order");
   CREATE INDEX "main_menu_rels_parent_idx" ON "main_menu_rels" USING btree ("parent_id");
   CREATE INDEX "main_menu_rels_path_idx" ON "main_menu_rels" USING btree ("path");
-  CREATE INDEX "main_menu_rels_pages_id_idx" ON "main_menu_rels" USING btree ("pages_id");`)
+  CREATE INDEX "main_menu_rels_pages_id_idx" ON "main_menu_rels" USING btree ("pages_id");`);
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
-  await db.execute(sql`
+export async function down({
+    db,
+    payload,
+    req,
+}: MigrateDownArgs): Promise<void> {
+    await db.execute(sql`
    DROP TABLE "orders_timeline" CASCADE;
   DROP TABLE "orders" CASCADE;
   DROP TABLE "collections" CASCADE;
@@ -1296,5 +1300,5 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum_payload_jobs_task_slug";
   DROP TYPE "public"."enum_store_settings_currency";
   DROP TYPE "public"."enum_main_menu_nav_items_link_type";
-  DROP TYPE "public"."enum_main_menu_nav_items_link_appearance";`)
+  DROP TYPE "public"."enum_main_menu_nav_items_link_appearance";`);
 }

@@ -1,4 +1,3 @@
-import { sqliteAdapter } from "@payloadcms/db-sqlite";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -31,30 +30,25 @@ import { Campaigns } from "./collections/Campaigns/Campaigns";
 import { Plugins } from "./collections/Plugins/Plugins";
 import { syncPlugin } from "./collections/Plugins/utils/sync-plugin";
 import { postgresAdapter } from "@payloadcms/db-postgres";
-import { seed } from "@/seed";
-import { admins, checkRole } from "@/access/roles";
 import { migrations } from "./migrations";
 import { Support } from "@/collections/pages/support";
 import { Forms } from "@/collections/pages/Forms";
 import { MainMenu } from "@/globals/MainMenu";
-import { seedForms } from "@/seed/seed-forms";
+import { Category } from "@/collections/category";
+import { Checkouts } from "@/collections/checkout";
+import { endpoints } from "@/endpoints";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-console.log('process.env.DATABASE_URL ----------------------------- : ', process.env.DATABASE_URL);
+// console.log('process.env.DATABASE_URL ----------------------------- : ', process.env.DATABASE_URL);
 
 export default buildConfig({
     routes: {
         admin: "/",
     },
     admin: {
-        autoLogin: {
-            email: process.env.ADMIN_EMAIL,
-            password: process.env.ADMIN_PASSWORD,
-        },
         importMap: {
-            autoGenerate: false,
             baseDir: path.resolve(dirname),
         },
         suppressHydrationWarning: true,
@@ -76,6 +70,7 @@ export default buildConfig({
     collections: [
         Orders,
         Collections,
+        Category,
         Products,
         Users,
         Campaigns,
@@ -85,6 +80,7 @@ export default buildConfig({
         GiftCards,
         Themes,
         Carts,
+        Checkouts,
 
         // Pages
         HeroPage,
@@ -114,14 +110,6 @@ export default buildConfig({
             process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3020",
         syncPlugin,
     },
-    // db: sqliteAdapter({
-    //     client: {
-    //         url: process.env.DATABASE_URI || "",
-    //     },
-    // }),
-
-    debug: true,
-
     db: postgresAdapter({
         prodMigrations: migrations,
         // logger: true,
@@ -136,38 +124,12 @@ export default buildConfig({
     }),
 
     editor: lexicalEditor(),
-    endpoints: [
-        {
-            handler: (req) => {
-                return Response.json({ status: "OK" });
-            },
-            method: "get",
-            path: "/healthz",
-        },
-        {
-            handler: async (req) => {
-                if (!checkRole(["admin"], req?.user)) {
-                    return Response.json(
-                        { status: "UNAUTHORIZED" },
-                        { status: 403 }
-                    );
-                }
-
-                try {
-                    await seed();
-                    return Response.json({ status: "SEED OK" });
-                } catch (error) {
-                    return Response.json({ status: "ERROR", error });
-                }
-            },
-            method: "get",
-            path: "/seed",
-        },
-    ],
+    endpoints,
     plugins,
     secret: process.env.PAYLOAD_SECRET || "",
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",
     sharp: sharp as any,
+
     telemetry: false,
     typescript: {
         outputFile: path.resolve(dirname, "../../../packages/types/index.ts"),

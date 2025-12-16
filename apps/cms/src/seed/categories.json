@@ -1,0 +1,352 @@
+[
+    {
+        "title": "Dining & Culinary",
+        "description": "Exceptional food and beverage experiences for food lovers",
+        "visible": true,
+        "handle": "dining-culinary",
+        "subcategories": [
+            {
+                "title": "Fine Dining",
+                "description": "Michelin-star restaurants and gourmet tasting menus",
+                "visible": true
+            },
+            {
+                "title": "Wine & Spirits",
+                "description": "Wine tastings, vineyard tours, and spirit experiences",
+                "visible": true
+            },
+            {
+                "title": "Cooking Classes",
+                "description": "Hands-on cooking lessons with professional chefs",
+                "visible": true
+            },
+            {
+                "title": "Food Tours",
+                "description": "Culinary walking tours and food adventures",
+                "visible": true
+            },
+            {
+                "title": "Afternoon Tea",
+                "description": "Traditional tea service experiences",
+                "visible": true
+            },
+            {
+                "title": "Brewery & Distillery",
+                "description": "Craft beer and spirits tours with tastings",
+                "visible": true
+            },
+            {
+                "title": "Private Dining",
+                "description": "Exclusive chef experiences at home or private venues",
+                "visible": true
+            }
+        ]
+    },
+    {
+        "title": "Wellness & Spa",
+        "description": "Relaxation, self-care, and wellness experiences",
+        "visible": true,
+        "handle": "wellness-spa",
+        "subcategories": [
+            {
+                "title": "Spa Days",
+                "description": "Full day spa packages with multiple treatments",
+                "visible": true
+            },
+            {
+                "title": "Massage Therapy",
+                "description": "Therapeutic and relaxation massages",
+                "visible": true
+            },
+            {
+                "title": "Yoga & Meditation",
+                "description": "Yoga classes, retreats, and meditation sessions",
+                "visible": true
+            },
+            {
+                "title": "Wellness Retreats",
+                "description": "Multi-day wellness and detox programs",
+                "visible": true
+            },
+            {
+                "title": "Fitness Experiences",
+                "description": "Personal training, bootcamps, and fitness classes",
+                "visible": true
+            },
+            {
+                "title": "Beauty Treatments",
+                "description": "Facials, beauty services, and makeovers",
+                "visible": true
+            }
+        ]
+    },
+    {
+        "title": "Adventure & Outdoor",
+        "description": "Thrilling outdoor activities and adventures",
+        "visible": true,
+        "handle": "adventure-outdoor",
+        "subcategories": [
+            {
+                "title": "Air Adventures",
+                "description": "Hot air balloons, helicopter tours, and skydiving",
+                "visible": true
+            },
+            {
+                "title": "Water Sports",
+                "description": "Kayaking, surfing, sailing, and water activities",
+                "visible": true
+            },
+            {
+                "title": "Land Adventures",
+                "description": "Zip lining, rock climbing, and hiking",
+                "visible": true
+            },
+            {
+                "title": "Wildlife Experiences",
+                "description": "Safari tours, animal encounters, and nature walks",
+                "visible": true
+            },
+            {
+                "title": "Winter Sports",
+                "description": "Skiing, snowboarding, and ice activities",
+                "visible": true
+            },
+            {
+                "title": "Cycling Tours",
+                "description": "Guided bike tours and cycling adventures",
+                "visible": true
+            }
+        ]
+    },
+    {
+        "title": "Stays & Travel",
+        "description": "Getaways, accommodations, and travel experiences",
+        "visible": true,
+        "handle": "stays-travel",
+        "subcategories": [
+            {
+                "title": "Romantic Getaways",
+                "description": "Couples retreats and romantic escapes",
+                "visible": true
+            },
+            {
+                "title": "Beach Resorts",
+                "description": "Coastal stays and beach vacations",
+                "visible": true
+            },
+            {
+                "title": "Mountain Retreats",
+                "description": "Cabins, lodges, and mountain escapes",
+                "visible": true
+            },
+            {
+                "title": "City Breaks",
+                "description": "Urban hotel stays and city experiences",
+                "visible": true
+            },
+            {
+                "title": "Glamping",
+                "description": "Luxury camping and unique accommodations",
+                "visible": true
+            },
+            {
+                "title": "Bed & Breakfast",
+                "description": "Charming B&B stays with breakfast included",
+                "visible": true
+            },
+            {
+                "title": "Luxury Hotels",
+                "description": "Five-star hotels and premium accommodations",
+                "visible": true
+            }
+        ]
+    },
+    {
+        "title": "Celebrations & Events",
+        "description": "Special occasion experiences and celebrations",
+        "visible": true,
+        "handle": "celebrations-events",
+        "subcategories": [
+            {
+                "title": "Birthday Parties",
+                "description": "Birthday celebration packages and parties",
+                "visible": true
+            },
+            {
+                "title": "Anniversary Celebrations",
+                "description": "Romantic anniversary experiences",
+                "visible": true
+            },
+            {
+                "title": "Engagement & Proposals",
+                "description": "Romantic proposal settings and experiences",
+                "visible": true
+            },
+            {
+                "title": "Baby Showers",
+                "description": "Baby celebration events and packages",
+                "visible": true
+            },
+            {
+                "title": "Graduation Celebrations",
+                "description": "Graduation party experiences",
+                "visible": true
+            }
+        ]
+    },
+    {
+        "title": "Arts & Culture",
+        "description": "Creative, educational, and cultural experiences",
+        "visible": true,
+        "handle": "arts-culture",
+        "subcategories": [
+            {
+                "title": "Photography",
+                "description": "Photography classes and tours",
+                "visible": true
+            },
+            {
+                "title": "Art Classes",
+                "description": "Painting, pottery, and creative workshops",
+                "visible": true
+            },
+            {
+                "title": "Music Experiences",
+                "description": "Concerts, music lessons, and performances",
+                "visible": true
+            },
+            {
+                "title": "Theater & Shows",
+                "description": "Live theater, musicals, and performances",
+                "visible": true
+            },
+            {
+                "title": "Museum Tours",
+                "description": "Guided museum and gallery experiences",
+                "visible": true
+            },
+            {
+                "title": "Dance Classes",
+                "description": "Ballroom, salsa, and dance lessons",
+                "visible": true
+            }
+        ]
+    },
+    {
+        "title": "For Couples",
+        "description": "Romantic experiences designed for two",
+        "visible": true,
+        "handle": "for-couples",
+        "subcategories": [
+            {
+                "title": "Date Nights",
+                "description": "Perfect evening date experiences",
+                "visible": true
+            },
+            {
+                "title": "Couple's Spa",
+                "description": "Spa treatments for two",
+                "visible": true
+            },
+            {
+                "title": "Romantic Dinners",
+                "description": "Intimate dining experiences",
+                "visible": true
+            },
+            {
+                "title": "Adventure for Two",
+                "description": "Exciting activities for couples",
+                "visible": true
+            }
+        ]
+    },
+    {
+        "title": "For Groups",
+        "description": "Experiences perfect for groups and teams",
+        "visible": true,
+        "handle": "for-groups",
+        "subcategories": [
+            {
+                "title": "Team Building",
+                "description": "Corporate team activities and bonding",
+                "visible": true
+            },
+            {
+                "title": "Bachelor & Bachelorette",
+                "description": "Pre-wedding celebration experiences",
+                "visible": true
+            },
+            {
+                "title": "Family Activities",
+                "description": "Fun for the whole family",
+                "visible": true
+            },
+            {
+                "title": "Friend Groups",
+                "description": "Activities perfect for groups of friends",
+                "visible": true
+            }
+        ]
+    },
+    {
+        "title": "Seasonal Experiences",
+        "description": "Seasonal and holiday-themed activities",
+        "visible": true,
+        "handle": "seasonal-experiences",
+        "subcategories": [
+            {
+                "title": "Summer Activities",
+                "description": "Beach, outdoor, and warm-weather fun",
+                "visible": true
+            },
+            {
+                "title": "Winter Experiences",
+                "description": "Cold-weather activities and cozy experiences",
+                "visible": true
+            },
+            {
+                "title": "Holiday Specials",
+                "description": "Christmas, Valentine's, and holiday experiences",
+                "visible": true
+            },
+            {
+                "title": "Spring Adventures",
+                "description": "Fresh spring outdoor activities",
+                "visible": true
+            },
+            {
+                "title": "Fall Experiences",
+                "description": "Autumn activities and harvest experiences",
+                "visible": true
+            }
+        ]
+    },
+    {
+        "title": "By Price Range",
+        "description": "Find experiences that fit your budget",
+        "visible": true,
+        "handle": "by-price-range",
+        "subcategories": [
+            {
+                "title": "Under $100",
+                "description": "Affordable experiences and activities",
+                "visible": true
+            },
+            {
+                "title": "$100 - $250",
+                "description": "Mid-range experiences",
+                "visible": true
+            },
+            {
+                "title": "$250 - $500",
+                "description": "Premium experiences",
+                "visible": true
+            },
+            {
+                "title": "Luxury ($500+)",
+                "description": "Ultra-premium and luxury experiences",
+                "visible": true
+            }
+        ]
+    }
+]

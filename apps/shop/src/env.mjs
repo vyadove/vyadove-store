@@ -44,11 +44,8 @@ export const env = createEnv({
   },
 });
 
-
 if (!process.env.NEXT_PUBLIC_SHOP_URL || !process.env.NEXT_PUBLIC_SERVER_URL) {
-  throw new Error(
-    "Missing NEXT_PUBLIC_SHOP_URL variable!",
-  );
+  throw new Error("Missing NEXT_PUBLIC_SHOP_URL variable!");
 }
 
 // force type inference to string

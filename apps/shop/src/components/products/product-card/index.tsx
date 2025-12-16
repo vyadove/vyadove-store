@@ -1,35 +1,48 @@
 import { AiOutlineArrowRight } from "react-icons/ai";
 
+import Image from "next/image";
 import Link from "next/link";
 
+import { Routes } from "@/store.routes";
 import { Button } from "@/ui/shadcn/button";
-import type { Product } from "@shopnex/types";
-import { TypographyH3, TypographyMuted } from "@ui/shadcn/typography";
+import { getProductGallery } from "@/utils";
+import {
+  TypographyH5,
+  TypographyMuted,
+  TypographyP,
+} from "@ui/shadcn/typography";
+import { VyaLink } from "@ui/vya-link";
+import type { Media, Product } from "@vyadove/types";
 
 import InvertedCornerMask from "@/components/inverted-corner-mask";
 
-import { getVariantImage } from "@/utils/get-variant-image";
-import Image from "next/image";
+import { cn } from "@/lib/utils";
+
+import { convertToLocale } from "@/utils/money";
+
+type ProductPreviewProps = {
+  product: Product;
+  /** Thumbnail size variant */
+  size?: "default" | "sm";
+};
+
+const thumbnailSizes = {
+  default: "h-[270px]",
+  sm: "h-[180px]",
+};
 
 export const ProductPreview = ({
-  isFeatured,
   product,
-}: {
-  isFeatured?: boolean;
-  product: Product;
-}) => {
+  size = "default",
+}: ProductPreviewProps) => {
   const { originalPrice, price } = product.variants?.[0] || {};
-  const variantWithImage = product.variants?.find((v) => {
-    return getVariantImage(v);
-  });
-  const thumbnail = getVariantImage(variantWithImage as Product["variants"][0]);
-  const thumbnailUrl = thumbnail ? thumbnail : variantWithImage?.imageUrl;
+
+  const thumbnailUrl = getProductGallery(product)[0]?.url;
 
   return (
-    <Link
-      className="group/card flex flex-col rounded-xl p-0 "
-      // href={`/products/${product.handle}`}
-      href={`/`}
+    <VyaLink
+      className="group/card flex flex-col rounded-xl p-0"
+      href={`${Routes.productLink(product.handle as string)}`}
     >
       <div className="">
         {/* --- THUMBNAIL --- */}
@@ -50,7 +63,12 @@ export const ProductPreview = ({
             br: { inverted: true, corners: [15, 15, 15] },
           }}
         >
-          <div className="relative flex size-[300px] w-full items-start">
+          <div
+            className={cn(
+              "relative flex w-full items-start",
+              thumbnailSizes[size],
+            )}
+          >
             {thumbnailUrl && (
               <Image
                 alt={"product image"}
@@ -65,13 +83,16 @@ export const ProductPreview = ({
 
       {/* -- PRODUCT META --- */}
       <div className="shadow-sm_ flex flex-1 flex-col gap-1 rounded-xl p-2 px-1">
-        <TypographyH3 className="line-clamp-1" title={product.title}>
+        <TypographyH5
+          className="line-clamp-1 font-semibold"
+          title={product.title}
+        >
           {product.title}
-        </TypographyH3>
+        </TypographyH5>
 
         <div className="itmes-center flex gap-2">
           {/*<FaInfoCircle className="mt-1" />*/}
-          <TypographyMuted className="font-light">
+          <TypographyMuted className="line-clamp-2 font-light">
             {product.description}
           </TypographyMuted>
 
@@ -85,13 +106,17 @@ export const ProductPreview = ({
 					<ItemDescription className="flex-1 text-wrap">{model.location}</ItemDescription>
 				</div> */}
 
-        <div className="flex items-center gap-4 ">
-          <TypographyMuted className="text-muted-foreground text-[1rem]">
-            ETB {price?.toLocaleString("en-US")}
-          </TypographyMuted>
+        <div className="my-auto flex items-center gap-4">
+          <TypographyP className="text-[1rem]">
+            {convertToLocale({
+              amount: price?.amount ?? 0,
+            })}
+          </TypographyP>
           {originalPrice && (
             <TypographyMuted className="text-muted-foreground/60 text-[1rem] font-normal line-through">
-              ETB {originalPrice?.toLocaleString("en-US")}
+              {convertToLocale({
+                amount: originalPrice ?? 0,
+              })}
             </TypographyMuted>
           )}
         </div>
@@ -100,6 +125,6 @@ export const ProductPreview = ({
           Add to Cart
         </Button>
       </div>
-    </Link>
+    </VyaLink>
   );
 };

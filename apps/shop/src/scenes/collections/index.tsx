@@ -3,8 +3,8 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 
 import Image from "next/image";
 
-import type { Media } from "@shopnex/types";
 import { TypographyH1, TypographyH3, TypographyP } from "@ui/shadcn/typography";
+import type { Media } from "@vyadove/types";
 
 import InvertedCornerMask from "@/components/inverted-corner-mask";
 

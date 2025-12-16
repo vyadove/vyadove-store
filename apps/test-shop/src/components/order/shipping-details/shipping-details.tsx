@@ -1,4 +1,4 @@
-import type { Order } from "@shopnex/types";
+import type { Order } from "@vyadove/types";
 
 import { convertToLocale } from "@/utils/money";
 import { Heading, Text } from "@medusajs/ui";

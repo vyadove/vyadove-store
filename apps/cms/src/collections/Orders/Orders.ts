@@ -1,17 +1,20 @@
 import type { CollectionConfig } from "payload";
 
-import { admins, anyone } from "@/access/roles";
+import { adminOrHaveSessionCookie, admins, anyone } from "@/access/roles";
 
 import { groups } from "../groups";
 import { readOrderAccess } from "./access/order-access";
-import { checkoutEndpoint } from "./endpoints/checkout";
 import { OrderTimeline } from "./fields/OrderTimeline";
 import { addOrderTimelineEntry } from "./hooks/add-order-timeline-entry";
+import { syncFromCheckout } from "./hooks/sync-from-checkout";
+import { markCheckoutComplete } from "./hooks/mark-checkout-complete";
+import { createStripeSession } from "./hooks/create-stripe-session";
 
 export const Orders: CollectionConfig = {
     slug: "orders",
     access: {
-        create: anyone,
+        // create: anyone,
+        create: adminOrHaveSessionCookie,
         delete: admins,
         read: readOrderAccess,
         update: admins,
@@ -20,7 +23,6 @@ export const Orders: CollectionConfig = {
         group: groups.orders,
         useAsTitle: "orderId",
     },
-    endpoints: [checkoutEndpoint],
     fields: [
         {
             type: "row",
@@ -52,9 +54,14 @@ export const Orders: CollectionConfig = {
                     required: false,
                 },
                 {
-                    name: "cart",
+                    name: "checkout",
                     type: "relationship",
-                    relationTo: "carts",
+                    relationTo: "checkout",
+                    required: true,
+                    admin: {
+                        description:
+                            "Reference to the checkout that created this order",
+                    },
                 },
             ],
         },
@@ -84,8 +91,13 @@ export const Orders: CollectionConfig = {
                     defaultValue: "pending",
                     options: [
                         { label: "Pending", value: "pending" },
+                        {
+                            label: "Awaiting Payment",
+                            value: "awaiting_payment",
+                        },
                         { label: "Paid", value: "paid" },
                         { label: "Failed", value: "failed" },
+                        { label: "Expired", value: "expired" },
                         { label: "Refunded", value: "refunded" },
                     ],
                     required: true,
@@ -166,6 +178,15 @@ export const Orders: CollectionConfig = {
             admin: {
                 readOnly: true,
             },
+            typescriptSchema: [
+                () => ({
+                    type: "object",
+                    properties: {
+                        paymentType: { type: "string" },
+                        checkoutId: { type: "number" },
+                    },
+                }),
+            ],
         },
         {
             name: "shippingAddress",
@@ -230,6 +251,7 @@ export const Orders: CollectionConfig = {
         OrderTimeline,
     ],
     hooks: {
-        beforeChange: [addOrderTimelineEntry],
+        beforeChange: [syncFromCheckout, addOrderTimelineEntry],
+        afterChange: [markCheckoutComplete, createStripeSession],
     },
 };

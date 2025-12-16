@@ -1,10 +1,11 @@
-import { Cart } from "@shopnex/types";
+import type { Checkout } from "@vyadove/types";
 
-export const mapCartItems = (cartItems: Cart["cartItems"]) => {
-    return cartItems?.map((item) => {
-        return {
-            id: item.variantId,
-            quantity: item.quantity,
-        };
-    });
+export const mapCheckoutItems = (items: Checkout["items"]) => {
+    return items?.map((item) => ({
+        id: item.variantId,
+        quantity: item.quantity,
+    }));
 };
+
+/** @deprecated Use mapCheckoutItems instead */
+export const mapCartItems = mapCheckoutItems;

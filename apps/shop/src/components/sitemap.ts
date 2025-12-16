@@ -1,3 +1,4 @@
+/*
 import type { MetadataRoute } from "next";
 
 import { publicUrl } from "@/env.mjs";
@@ -40,3 +41,4 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...categoryUrls,
   ];
 }
+*/

@@ -1,32 +1,34 @@
 import Stripe from "stripe";
 import Decimal from "decimal.js";
-import { Cart } from "@shopnex/types";
+import type { Checkout, Product } from "@vyadove/types";
+
+type CheckoutItem = NonNullable<Checkout["items"]>[number];
 
 export const mapToStripeLineItems = (
-    cartItems: NonNullable<Cart["cartItems"]>
+    items: NonNullable<Checkout["items"]>,
+    currency = "usd"
 ): Stripe.Checkout.SessionCreateParams.LineItem[] => {
-    return cartItems.map((item) => {
-        const variants =
-            typeof item.product === "object" ? item.product.variants : [];
-        const variant = variants.find(
-            (variant) => variant.id === item.variantId
-        );
-        // const imageUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}${variant?.gallery?.[0]}`;
+    return items.map((item) => {
+        const product = typeof item.product === "object" ? item.product : null;
+        const variant = product?.variants?.find((v) => v.id === item.variantId);
+
+        // Build variant description from options
+        const variantDesc = variant?.options
+            ?.map((opt) => `${opt.option}: ${opt.value}`)
+            .join(", ");
+
         return {
             price_data: {
-                currency: "usd", // Adjust if needed
+                currency,
                 product_data: {
-                    name: `Product ${item.variantId}`, // Modify if you have actual product names
-                    description: variant?.options
-                        ?.map((opt) => `${opt.option}: ${opt.value}`)
-                        .join(", "),
-                    images: variant?.gallery?.length ? [] : [],
+                    name: product?.title || `Product ${item.variantId}`,
+                    description: variantDesc || undefined,
                 },
-                unit_amount: +new Decimal(variant?.price || 0)
-                    .times(100)
-                    .toFixed(0),
+                unit_amount: Math.round(
+                    new Decimal(item.unitPrice || 0).times(100).toNumber()
+                ),
             },
-            quantity: new Decimal(item.quantity).toNumber(),
+            quantity: item.quantity,
         };
     });
 };

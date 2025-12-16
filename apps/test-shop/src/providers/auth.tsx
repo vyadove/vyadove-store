@@ -1,6 +1,6 @@
 "use client";
 
-import type { User } from "@shopnex/types";
+import type { User } from "@vyadove/types";
 import type React from "react";
 
 import { createContext, use, useCallback, useEffect, useState } from "react";

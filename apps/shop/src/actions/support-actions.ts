@@ -1,6 +1,6 @@
 "use server";
 
-import type { PrivacyPolicyPage } from "@shopnex/types";
+import type { PrivacyPolicyPage } from "@vyadove/types";
 
 import { payloadSdk } from "@/utils/payload-sdk";
 
@@ -49,7 +49,6 @@ export async function submitContact(formData: FormData) {
     });
 
     return res;
-
   } catch (error) {
     console.error("Error adding to cart:", error);
     throw error;

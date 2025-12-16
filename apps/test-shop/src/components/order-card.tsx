@@ -1,4 +1,4 @@
-import type { Order } from "@shopnex/types";
+import type { Order } from "@vyadove/types";
 
 import { isExpandedDoc } from "@/utils/is-expanded-doc";
 import { convertToLocale } from "@/utils/money";

@@ -1,9 +1,34 @@
 import config from "@payload-config";
+import type { RequiredDataFromCollectionSlug } from "payload";
 import { getPayload } from "payload";
 
 import collections from "./collections.json";
 import globals from "./globals.json";
 import products from "./products.json";
+
+type RichTextNode = {
+    type: string;
+    text?: string;
+    children?: RichTextNode[];
+};
+
+type RichTextRoot = {
+    root: RichTextNode;
+};
+
+/**
+ * Extract plain text from rich text JSON structure
+ */
+function extractTextFromRichText(richText: RichTextRoot): string {
+    const extractText = (node: RichTextNode): string => {
+        if (node.text) return node.text;
+        if (node.children) {
+            return node.children.map(extractText).join(" ");
+        }
+        return "";
+    };
+    return extractText(richText.root).trim();
+}
 
 export const seed = async () => {
     const payload = await getPayload({ config });
@@ -47,6 +72,9 @@ export const seed = async () => {
         },
     });
 
+    // Extract copyright from globals JSON
+    const footerGlobal = globals[1] as { type: Array<{ copyright: unknown }> };
+
     await payload.create({
         collection: "footer-page",
         data: {
@@ -54,17 +82,22 @@ export const seed = async () => {
                 {
                     blockName: null,
                     blockType: "basic-footer",
-                    copyright: (globals[1].type[0] as any).copyright,
+                    copyright: footerGlobal.type[0].copyright,
                 },
             ],
-        },
+        } as RequiredDataFromCollectionSlug<"footer-page">,
     });
 
     const collectionResults = await Promise.all(
-        collections.map((collection: any) =>
+        collections.map((collection) =>
             payload.create({
                 collection: "collections",
-                data: collection,
+                data: {
+                    title: collection.title,
+                    description: collection.description,
+                    imageUrl: collection.imageUrl,
+                    handle: collection.handle,
+                },
             })
         )
     );
@@ -78,40 +111,54 @@ export const seed = async () => {
         collectionResults[2].id,
     ];
 
-    await Promise.all(
-        products.map(async (product: any, index: number) => {
-            for (const variant of product.variants || []) {
-                const filename = variant?.imageUrl?.split("/").pop();
-                if (!filename || !variant.imageUrl) {
-                    continue;
-                }
-                const alt = filename.split(".")[0];
-                const imageUrl = variant.imageUrl;
+    // Create placeholder media for products gallery (required field)
+    const placeholderMedia = await payload.create({
+        collection: "media",
+        data: {
+            alt: "placeholder-product",
+            filename: `placeholder-product-${Date.now()}.jpg`,
+            mimeType: "image/jpeg",
+            url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+            thumbnailURL:
+                "https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&q=60",
+            width: 800,
+            height: 600,
+        },
+    });
 
-                const imageResult = await payload.create({
-                    collection: "media",
-                    data: {
-                        alt,
-                        filename,
-                        thumbnailURL: imageUrl,
-                        url: imageUrl,
-                    },
-                });
-                variant.gallery = [imageResult.id];
-            }
+    await Promise.all(
+        products.map(async (product, index: number) => {
+            // Transform customFields value from rich text JSON to plain text
+            const transformedCustomFields = product.customFields.map(
+                (field) => ({
+                    name: field.name,
+                    // Extract text from rich text structure
+                    value:
+                        typeof field.value === "string"
+                            ? field.value
+                            : extractTextFromRichText(field.value),
+                })
+            );
 
             const productResult = await payload.create({
                 collection: "products",
                 data: {
                     ...product,
-                    collections: productCollectionIds[index],
-                },
+                    collections: [productCollectionIds[index]],
+                    gallery: [placeholderMedia.id], // Required field
+                    customFields: transformedCustomFields,
+                } as RequiredDataFromCollectionSlug<"products">,
             });
 
             console.log(`Created product: ${productResult.id}`);
         })
     );
 };
+
+// NOTE: Use the API endpoints for seeding instead:
+// - POST /api/seed/categories - Seed only categories
+// - POST /api/seed/products?count=2500 - Seed only products
+// - POST /api/seed/all?count=2500 - Seed everything
 
 // console.log("Seeding...");
 // await seed();

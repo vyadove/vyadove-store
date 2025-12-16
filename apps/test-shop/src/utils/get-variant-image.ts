@@ -1,4 +1,4 @@
-import { Product } from "@shopnex/types";
+import { Product } from "@vyadove/types";
 
 export const getVariantImage = (variant: Product["variants"][0]) => {
     if (!variant) return;
