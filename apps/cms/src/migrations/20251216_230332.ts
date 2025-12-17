@@ -2,34 +2,37 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from "@payloadcms/db-postgres";
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
     await db.execute(sql`
-   ALTER TYPE "public"."enum_orders_order_status" ADD VALUE 'failed' BEFORE 'delivered';
-  ALTER TABLE "carts_cart_items" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "carts" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "checkout_sessions" DISABLE ROW LEVEL SECURITY;
-  DROP TABLE "carts_cart_items" CASCADE;
-  DROP TABLE "carts" CASCADE;
-  DROP TABLE "checkout_sessions" CASCADE;
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_carts_fk";
-  
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_checkout_sessions_fk";
-  
-  DROP INDEX "payload_locked_documents_rels_carts_id_idx";
-  DROP INDEX "payload_locked_documents_rels_checkout_sessions_id_idx";
-  ALTER TABLE "orders" ADD COLUMN "stripe_session_id" varchar;
-  ALTER TABLE "store_settings" ADD COLUMN "email_branding_logo_id" integer;
-  ALTER TABLE "store_settings" ADD COLUMN "email_branding_primary_color" varchar DEFAULT '#000000';
-  ALTER TABLE "store_settings" ADD COLUMN "email_branding_accent_color" varchar DEFAULT '#666666';
-  ALTER TABLE "store_settings" ADD COLUMN "email_branding_footer_text" varchar DEFAULT '© {{current_year}} Vyadove. All rights reserved.';
-  ALTER TABLE "store_settings" ADD COLUMN "email_branding_address" varchar;
-  ALTER TABLE "store_settings" ADD COLUMN "email_branding_social_links_facebook" varchar;
-  ALTER TABLE "store_settings" ADD COLUMN "email_branding_social_links_instagram" varchar;
-  ALTER TABLE "store_settings" ADD COLUMN "email_branding_social_links_twitter" varchar;
-  ALTER TABLE "store_settings" ADD COLUMN "email_branding_social_links_linkedin" varchar;
-  ALTER TABLE "store_settings" ADD COLUMN "email_branding_unsubscribe_url" varchar;
-  ALTER TABLE "store_settings" ADD CONSTRAINT "store_settings_email_branding_logo_id_media_id_fk" FOREIGN KEY ("email_branding_logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  CREATE INDEX "store_settings_email_branding_email_branding_logo_idx" ON "store_settings" USING btree ("email_branding_logo_id");
-  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "carts_id";
-  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "checkout_sessions_id";`);
+  DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_enum WHERE enumlabel = 'failed' AND enumtypid = 'public.enum_orders_order_status'::regtype) THEN
+      ALTER TYPE "public"."enum_orders_order_status" ADD VALUE 'failed' BEFORE 'delivered';
+    END IF;
+  END $$;
+  DROP TABLE IF EXISTS "carts_cart_items" CASCADE;
+  DROP TABLE IF EXISTS "carts" CASCADE;
+  DROP TABLE IF EXISTS "checkout_sessions" CASCADE;
+  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_carts_fk";
+  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_checkout_sessions_fk";
+  DROP INDEX IF EXISTS "payload_locked_documents_rels_carts_id_idx";
+  DROP INDEX IF EXISTS "payload_locked_documents_rels_checkout_sessions_id_idx";
+  ALTER TABLE "orders" ADD COLUMN IF NOT EXISTS "stripe_session_id" varchar;
+  ALTER TABLE "store_settings" ADD COLUMN IF NOT EXISTS "email_branding_logo_id" integer;
+  ALTER TABLE "store_settings" ADD COLUMN IF NOT EXISTS "email_branding_primary_color" varchar DEFAULT '#000000';
+  ALTER TABLE "store_settings" ADD COLUMN IF NOT EXISTS "email_branding_accent_color" varchar DEFAULT '#666666';
+  ALTER TABLE "store_settings" ADD COLUMN IF NOT EXISTS "email_branding_footer_text" varchar DEFAULT '© {{current_year}} Vyadove. All rights reserved.';
+  ALTER TABLE "store_settings" ADD COLUMN IF NOT EXISTS "email_branding_address" varchar;
+  ALTER TABLE "store_settings" ADD COLUMN IF NOT EXISTS "email_branding_social_links_facebook" varchar;
+  ALTER TABLE "store_settings" ADD COLUMN IF NOT EXISTS "email_branding_social_links_instagram" varchar;
+  ALTER TABLE "store_settings" ADD COLUMN IF NOT EXISTS "email_branding_social_links_twitter" varchar;
+  ALTER TABLE "store_settings" ADD COLUMN IF NOT EXISTS "email_branding_social_links_linkedin" varchar;
+  ALTER TABLE "store_settings" ADD COLUMN IF NOT EXISTS "email_branding_unsubscribe_url" varchar;
+  DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'store_settings_email_branding_logo_id_media_id_fk') THEN
+      ALTER TABLE "store_settings" ADD CONSTRAINT "store_settings_email_branding_logo_id_media_id_fk" FOREIGN KEY ("email_branding_logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
+    END IF;
+  END $$;
+  CREATE INDEX IF NOT EXISTS "store_settings_email_branding_email_branding_logo_idx" ON "store_settings" USING btree ("email_branding_logo_id");
+  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN IF EXISTS "carts_id";
+  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN IF EXISTS "checkout_sessions_id";`);
 }
 
 export async function down({
