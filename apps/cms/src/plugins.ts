@@ -8,6 +8,7 @@ import { formBuilderPlugin } from "@payloadcms/plugin-form-builder";
 
 import { adminPluginAccess, admins } from "./access/roles";
 import {
+    checkoutCompleted,
     checkoutSessionCompleted,
     paymentCanceled,
     paymentSucceeded,
@@ -38,6 +39,7 @@ export const plugins: Plugin[] = [
             process.env.STRIPE_WEBHOOKS_SIGNING_SECRET,
         webhooks: {
             "checkout.session.completed": checkoutSessionCompleted,
+            // "checkout.session.completed": checkoutCompleted,
             "payment_intent.canceled": paymentCanceled,
             "payment_intent.succeeded": paymentSucceeded,
         },

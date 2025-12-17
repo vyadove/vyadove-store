@@ -24,6 +24,7 @@ import { VyaLink } from "@ui/vya-link";
 import type { Collection, Media, Product } from "@vyadove/types";
 
 import { CartIconButton } from "@/components/cart-icon-button";
+import { CurrencySelector } from "@/components/currency-selector";
 import VyaDoveLogo from "@/components/icons";
 
 import { cn } from "@/lib/utils";
@@ -258,7 +259,10 @@ export const DesktopNav = (props: ComponentPropsWithoutRef<"div">) => {
         <Separator className="h-full" orientation="vertical" />
 
         <div className="flex items-center gap-1">
-          <SearchSheet />
+          <CurrencySelector variant="compact" />
+
+          <SearchSheet/>
+
           <CartIconButton />
           <UserNav />
         </div>

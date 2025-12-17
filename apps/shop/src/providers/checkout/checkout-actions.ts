@@ -96,6 +96,7 @@ export async function getCheckoutAction(): Promise<Checkout | undefined> {
  */
 async function createCheckoutAction(
   item: CheckoutItemInput,
+  currency: string = "USD",
 ): Promise<Checkout> {
   try {
     const checkout = await payloadSdk.create({
@@ -112,7 +113,7 @@ async function createCheckoutAction(
           },
         ],
         status: "incomplete",
-        currency: "USD",
+        currency,
         subtotal: item.unitPrice ? item.unitPrice * item.quantity : 0,
         total: item.unitPrice ? item.unitPrice * item.quantity : 0,
       },
@@ -142,6 +143,7 @@ function sanitizeCheckoutItems(items: CheckoutLineItem[]): CheckoutLineItem[] {
 export async function addToCheckoutAction(
   input: CheckoutItemInputZod,
   existingCheckout?: Checkout,
+  currency: string = "USD",
 ): Promise<Checkout> {
   // Validate input
   const parsed = CheckoutItemInputSchema.safeParse(input);
@@ -153,8 +155,8 @@ export async function addToCheckoutAction(
 
   try {
     if (!existingCheckout) {
-      // Create new checkout
-      return await createCheckoutAction(validatedInput as CheckoutItemInput);
+      // Create new checkout with selected currency
+      return await createCheckoutAction(validatedInput as CheckoutItemInput, currency);
     }
 
     // Update existing checkout - add or increment quantity
@@ -422,6 +424,32 @@ export async function updateCheckoutPaymentAction(
     return updatedCheckout;
   } catch (error) {
     console.error("Error updating checkout payment:", error);
+    throw error;
+  }
+}
+
+/**
+ * Update checkout currency
+ */
+export async function updateCheckoutCurrencyAction(
+  currency: string,
+  existingCheckout?: Checkout,
+): Promise<Checkout> {
+  try {
+    if (!existingCheckout) throw new Error("Checkout not found");
+
+    const updatedCheckout = await payloadSdk.update({
+      collection: "checkout",
+      id: existingCheckout.id,
+      data: {
+        currency,
+      },
+      depth: 2,
+    });
+
+    return updatedCheckout;
+  } catch (error) {
+    console.error("Error updating checkout currency:", error);
     throw error;
   }
 }

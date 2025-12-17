@@ -24,9 +24,9 @@ export const mapToStripeLineItems = (
                     name: product?.title || `Product ${item.variantId}`,
                     description: variantDesc || undefined,
                 },
-                unit_amount: Math.round(
-                    new Decimal(item.unitPrice || 0).times(100).toNumber()
-                ),
+                unit_amount: +new Decimal(variant?.price?.amount || 0)
+                    .times(100)
+                    .toFixed(0),
             },
             quantity: item.quantity,
         };

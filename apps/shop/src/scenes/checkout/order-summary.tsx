@@ -20,6 +20,7 @@ import { VyaLink } from "@ui/vya-link";
 import { Edit, Edit2 } from "lucide-react";
 
 import CartTotals from "@/components/cart-totals";
+import { usePrice } from "@/components/price";
 import {
   Card,
   CardContent,
@@ -27,10 +28,9 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 
-import { convertToLocale } from "@/utils/money";
-
 export const OrderSummery = () => {
   const { cartTotal, items, totalUniqueItems, checkout } = useCheckout();
+  const { format } = usePrice();
 
   return (
     <Card className="sticky top-12 self-start rounded-4xl shadow-xl lg:col-span-1 ">
@@ -71,17 +71,8 @@ export const OrderSummery = () => {
                     </TypographyH5>
 
                     <TypographyMuted className="text-sm">
-                      {item.quantity} x{" "}
-                      {convertToLocale({
-                        amount: item.unitPrice || 0,
-                        minimumFractionDigits: 2,
-                        hiddeCurrency: true,
-                      })}{" "}
-                      ={" "}
-                      {convertToLocale({
-                        amount: item.totalPrice || 0,
-                        minimumFractionDigits: 2,
-                      })}
+                      {item.quantity} x {format(item.unitPrice || 0)} ={" "}
+                      {format(item.totalPrice || 0)}
                     </TypographyMuted>
 
                     <TypographyMuted className="font-medium"></TypographyMuted>

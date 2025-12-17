@@ -1,7 +1,6 @@
 import { AiOutlineArrowRight } from "react-icons/ai";
 
 import Image from "next/image";
-import Link from "next/link";
 
 import { Routes } from "@/store.routes";
 import { Button } from "@/ui/shadcn/button";
@@ -15,10 +14,9 @@ import { VyaLink } from "@ui/vya-link";
 import type { Media, Product } from "@vyadove/types";
 
 import InvertedCornerMask from "@/components/inverted-corner-mask";
+import { Price } from "@/components/price";
 
 import { cn } from "@/lib/utils";
-
-import { convertToLocale } from "@/utils/money";
 
 type ProductPreviewProps = {
   product: Product;
@@ -108,17 +106,12 @@ export const ProductPreview = ({
 
         <div className="my-auto flex items-center gap-4">
           <TypographyP className="text-[1rem]">
-            {convertToLocale({
-              amount: price?.amount ?? 0,
-            })}
+            <Price
+              amount={price?.amount ?? 0}
+              originalAmount={originalPrice ?? undefined}
+              originalClassName="text-muted-foreground/60"
+            />
           </TypographyP>
-          {originalPrice && (
-            <TypographyMuted className="text-muted-foreground/60 text-[1rem] font-normal line-through">
-              {convertToLocale({
-                amount: originalPrice ?? 0,
-              })}
-            </TypographyMuted>
-          )}
         </div>
 
         <Button className="bg-accent/60 mt-2 hidden self-start">

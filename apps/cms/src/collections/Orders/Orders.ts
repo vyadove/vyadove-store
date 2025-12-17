@@ -79,8 +79,28 @@ export const Orders: CollectionConfig = {
             type: "text",
             admin: {
                 position: "sidebar",
+                description: "Base currency used for pricing",
             },
             required: true,
+        },
+        // Stripe Adaptive Pricing fields (populated from webhook)
+        {
+            name: "presentmentCurrency",
+            type: "text",
+            admin: {
+                position: "sidebar",
+                description: "Currency customer actually paid in (Stripe Adaptive Pricing)",
+                readOnly: true,
+            },
+        },
+        {
+            name: "presentmentAmount",
+            type: "number",
+            admin: {
+                position: "sidebar",
+                description: "Amount in presentment currency",
+                readOnly: true,
+            },
         },
         {
             type: "row",

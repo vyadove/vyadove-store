@@ -1,6 +1,5 @@
-// pages/api/revalidate-content.ts (or app/api/revalidate-content/route.ts in App Router)
 import { revalidatePath, revalidateTag } from "next/cache";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const { path, tag, secret }: any = await req.json();
@@ -12,6 +11,7 @@ export async function POST(req: Request) {
 
   if (path && tag) {
     await revalidatePath(path);
+    await revalidateTag(tag);
 
     return NextResponse.json({ revalidated: true, type: "path", path });
   }

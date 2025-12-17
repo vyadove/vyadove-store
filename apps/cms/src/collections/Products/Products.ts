@@ -11,6 +11,13 @@ import { revalidateShop } from "@/collections/Products/hooks/revalidate-shop";
 import { ManualProvider } from "@/collections/Payments";
 import { PricingTierArrayField } from "@/collections/Products/fields/pricing-tier";
 import { syncHandleWithTitle } from "@/collections/Products/hooks";
+import currencyCodes from "currency-codes";
+
+// All available currencies from ISO 4217 standard
+const allCurrencyOptions = currencyCodes.codes().map((code) => ({
+    label: `${currencyCodes.code(code)?.currency} (${code})`,
+    value: code,
+}));
 
 export const Products: CollectionConfig = {
     slug: "products",
@@ -49,10 +56,12 @@ export const Products: CollectionConfig = {
         },
         {
             name: "currency",
-            type: "text",
+            type: "select",
+            defaultValue: "USD",
             admin: {
-                disabled: true,
+                description: "Base currency for product pricing",
             },
+            options: allCurrencyOptions,
         },
         {
             name: "visible",
@@ -195,7 +204,12 @@ export const Products: CollectionConfig = {
                             defaultValue: 0,
                             min: 0,
                         },
-                        { name: "currency", type: "text", defaultValue: "USD" },
+                        {
+                            name: "currency",
+                            type: "select",
+                            defaultValue: "USD",
+                            options: allCurrencyOptions,
+                        },
                     ],
                 },
 

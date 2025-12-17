@@ -15,6 +15,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Checkout, Product } from "@vyadove/types";
 
 import { toast } from "@/components/ui/hot-toast";
+import { useCurrencyOptional } from "@/providers/currency";
 
 import {
   addToCheckoutAction,
@@ -22,6 +23,7 @@ import {
   getCheckoutAction,
   removeFromCheckoutAction,
   updateCheckoutAddressAction,
+  updateCheckoutCurrencyAction,
   updateCheckoutFormAction,
   updateCheckoutItemAction,
   updateCheckoutPaymentAction,
@@ -129,8 +131,9 @@ function optimisticAddItem(args: {
   quantity: number;
   productId?: number;
   unitPrice?: number;
+  currency?: string;
 }): Checkout {
-  const { oldCheckout, variantId, quantity, productId, unitPrice } = args;
+  const { oldCheckout, variantId, quantity, productId, unitPrice, currency = "USD" } = args;
 
   if (!oldCheckout) {
     return {
@@ -147,7 +150,7 @@ function optimisticAddItem(args: {
         } as CheckoutLineItem,
       ],
       status: "incomplete",
-      currency: "USD",
+      currency,
       subtotal: unitPrice ? unitPrice * quantity : 0,
       shippingTotal: 0,
       taxTotal: 0,
@@ -292,6 +295,8 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { status: authStatus } = useAuth();
   const prevAuthStatus = useRef<string | null>(null);
+  const currencyContext = useCurrencyOptional();
+  const selectedCurrency = currencyContext?.currency || "USD";
 
   // Track whether we should fetch checkout (only if session exists)
   // Start with false to avoid hydration mismatch, then check localStorage on mount
@@ -384,6 +389,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
           unitPrice,
         },
         checkout,
+        selectedCurrency,
       ),
     onMutate: async ({ variantId, quantity, productId, unitPrice }) => {
       // Cancel outgoing refetches
@@ -401,13 +407,13 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
           quantity,
           productId,
           unitPrice,
+          currency: selectedCurrency,
         }),
       );
 
       return { previousCheckout };
     },
     onSettled: (data, error, variables, onMutateResult) => {
-      console.log("data -- : ", data, error);
 
       if (error) {
         // Rollback on error
@@ -431,8 +437,8 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
       }
     },
     onSuccess: (data) => {
-      console.log("addItemMutation data --- : ", data);
-    },
+      console.log('onSuccess data --- : ', data);
+    }
   });
 
   // Update item mutation
@@ -593,6 +599,36 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     },
   });
 
+  // Update currency mutation
+  const updateCurrencyMutation = useMutation({
+    mutationFn: (currency: string) =>
+      updateCheckoutCurrencyAction(currency, checkout),
+    onMutate: async (currency) => {
+      await queryClient.cancelQueries({ queryKey: CHECKOUT_QUERY_KEY });
+      const previousCheckout =
+        queryClient.getQueryData<Checkout>(CHECKOUT_QUERY_KEY);
+
+      queryClient.setQueryData<Checkout | null>(CHECKOUT_QUERY_KEY, (old) =>
+        old ? { ...old, currency } : null,
+      );
+
+      return { previousCheckout };
+    },
+    onError: (_error, _variables, context) => {
+      queryClient.setQueryData(CHECKOUT_QUERY_KEY, context?.previousCheckout);
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(CHECKOUT_QUERY_KEY, data);
+    },
+  });
+
+  // Sync currency changes to checkout (when user changes currency and checkout exists)
+  useEffect(() => {
+    if (!isLoading && checkout && checkout.currency !== selectedCurrency) {
+      updateCurrencyMutation.mutate(selectedCurrency);
+    }
+  }, [selectedCurrency, checkout?.id]);
+
   // Enrich checkout with computed fields
   const enrichedCheckout = useMemo(
     () => enrichCheckout(checkout || null),
@@ -618,7 +654,8 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     updateAddressMutation.isPending ||
     updateShippingMutation.isPending ||
     updatePaymentMutation.isPending ||
-    updateFormMutation.isPending;
+    updateFormMutation.isPending ||
+    updateCurrencyMutation.isPending;
 
   const openCart = () => setIsCartOpen(true);
   const closeCart = () => setIsCartOpen(false);

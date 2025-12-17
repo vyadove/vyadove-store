@@ -10,6 +10,7 @@ import {
 } from "@ui/shadcn/typography";
 import { VyaLink } from "@ui/vya-link";
 
+import { CurrencySelector } from "@/components/currency-selector";
 import VyaDoveLogo from "@/components/icons";
 import InvertedCornerMask from "@/components/inverted-corner-mask";
 
@@ -154,6 +155,7 @@ export async function Footer() {
               </TypographyMuted>
             </div>
             <div className="flex items-center gap-4">
+              <CurrencySelector />
               <VyaLink
                 className="inline-flex items-center gap-1 transition-colors hover:text-neutral-700"
                 href="https://x.com/vyadove"

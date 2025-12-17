@@ -25,7 +25,7 @@ import { type SwiperRef } from "swiper/react";
 
 import { cn } from "@/lib/utils";
 
-import { convertToLocale } from "@/utils/money";
+import { Price } from "@/components/price";
 
 type Props = {
   variants: Product["variants"];
@@ -145,9 +145,7 @@ const VariantSelector = ({ variants }: Props) => {
                       </Badge>
 
                       <TypographyH5 className="mt-1 font-semibold">
-                        {convertToLocale({
-                          amount: variant.price.amount,
-                        })}
+                        <Price amount={variant.price.amount} />
                       </TypographyH5>
                     </div>
                   </div>

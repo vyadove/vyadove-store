@@ -10,6 +10,8 @@ type StripeCheckoutProps = {
     shipping: Shipping;
     total: number;
     orderId: string;
+    /** Base currency for the order (e.g., 'usd'). Stripe AP may convert at checkout. */
+    currency?: string;
 };
 
 export async function stripeCheckout({
@@ -19,6 +21,7 @@ export async function stripeCheckout({
     shipping,
     total,
     orderId,
+    currency = "usd",
 }: StripeCheckoutProps) {
     const shopUrl =
         req.payload.config?.custom?.shopUrl || process.env.NEXT_PUBLIC_SHOP_URL;
@@ -26,8 +29,8 @@ export async function stripeCheckout({
     const order = await req.payload.create({
         collection: "orders",
         data: {
+            currency: currency.toLowerCase(),
             checkout: checkout.id,
-            currency: checkout.currency || "usd",
             orderId,
             orderStatus: "pending",
             paymentMethod: "stripe",
@@ -56,6 +59,7 @@ export async function stripeCheckout({
         orderId,
         cancelUrl,
         successUrl,
+        currency: currency.toLowerCase(),
     });
 
     // Update order with session info

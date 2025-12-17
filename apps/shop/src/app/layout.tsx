@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { headers } from "next/headers";
 import localFont from "next/font/local";
 
 import "@/app/globals.css";
@@ -167,6 +168,11 @@ export default async function RootLayout({
   const locale = await getLocale();
   const messages = await getMessages();
 
+  // Get detected currency from middleware (Vercel GeoIP)
+  const headersList = await headers();
+  const detectedCurrency =
+    headersList.get("x-detected-currency") || undefined;
+
   return (
     <html
       className={`h-full antialiased ${sofiaProSoft.variable} ${sofiaPro.variable}  `}
@@ -174,7 +180,7 @@ export default async function RootLayout({
       lang={locale}
     >
       <body className="flex min-h-full flex-col">
-        <Providers>
+        <Providers detectedCurrency={detectedCurrency}>
           <IntlClientProvider locale={locale} messages={messages}>
             <div
               className="flex min-h-full flex-1 flex-col"
