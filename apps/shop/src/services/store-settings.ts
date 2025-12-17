@@ -2,7 +2,11 @@ import { unstable_cache } from "next/cache";
 
 import { payloadSdk } from "@/utils/payload-sdk";
 
-import type { CurrencyConfig, PriceRoundingRule, RoundingRule } from "./currency";
+import type {
+  CurrencyConfig,
+  PriceRoundingRule,
+  RoundingRule,
+} from "./currency";
 import { getCurrencySymbol } from "./currency";
 
 export type StoreSettings = {

@@ -156,7 +156,10 @@ export async function addToCheckoutAction(
   try {
     if (!existingCheckout) {
       // Create new checkout with selected currency
-      return await createCheckoutAction(validatedInput as CheckoutItemInput, currency);
+      return await createCheckoutAction(
+        validatedInput as CheckoutItemInput,
+        currency,
+      );
     }
 
     // Update existing checkout - add or increment quantity

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-import { headers } from "next/headers";
 import localFont from "next/font/local";
+import { headers } from "next/headers";
 
 import "@/app/globals.css";
 import { publicUrl } from "@/env.mjs";
@@ -170,8 +170,7 @@ export default async function RootLayout({
 
   // Get detected currency from middleware (Vercel GeoIP)
   const headersList = await headers();
-  const detectedCurrency =
-    headersList.get("x-detected-currency") || undefined;
+  const detectedCurrency = headersList.get("x-detected-currency") || undefined;
 
   return (
     <html

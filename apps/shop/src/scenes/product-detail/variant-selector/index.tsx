@@ -23,9 +23,9 @@ import type { Product } from "@vyadove/types";
 import { Circle } from "lucide-react";
 import { type SwiperRef } from "swiper/react";
 
-import { cn } from "@/lib/utils";
-
 import { Price } from "@/components/price";
+
+import { cn } from "@/lib/utils";
 
 type Props = {
   variants: Product["variants"];

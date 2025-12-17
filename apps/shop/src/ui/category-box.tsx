@@ -1,5 +1,6 @@
 import Image, { type ImageProps } from "next/image";
 
+import { Routes } from "@/store.routes";
 import { VyaLink } from "@ui/vya-link";
 
 import { getTranslations } from "@/i18n/server";
@@ -16,7 +17,10 @@ export async function CategoryBox({
   const t = await getTranslations("Global.actions");
 
   return (
-    <VyaLink className="group relative" href={`/category/${categorySlug}`}>
+    <VyaLink
+      className="group relative"
+      href={Routes.categoryLink(categorySlug)}
+    >
       <div className="relative overflow-hidden rounded-lg">
         <Image
           alt="Cover image"

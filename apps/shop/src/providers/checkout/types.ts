@@ -1,4 +1,4 @@
-import type { Cart, Checkout, Media, Product } from "@vyadove/types";
+import type { Checkout, Media, Product } from "@vyadove/types";
 
 /**
  * Address structure for shipping and billing

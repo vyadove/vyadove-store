@@ -11,5 +11,9 @@ export { formatSlug } from "./format-slug";
 export { fetchExchangeRates } from "./fetch-exchange-rates";
 export { generateGiftCardCode } from "./generate-gift-card-code";
 
+// Email
+export { sendEmail } from "./send-email";
+export type { EmailType } from "./send-email";
+
 // Payload SDK
 export { payloadSdk } from "./payload-sdk";

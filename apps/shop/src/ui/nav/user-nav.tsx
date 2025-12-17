@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/providers/auth";
+import { Routes } from "@/store.routes";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,7 +23,7 @@ export function UserNav() {
 
   const handleLogout = async () => {
     await logout();
-    router.push("/");
+    router.push(Routes.home);
   };
 
   // Loading state - show placeholder
@@ -35,7 +36,7 @@ export function UserNav() {
   // Not logged in - show sign in link
   if (!user) {
     return (
-      <Link className="hover:text-neutral-500" href="/login">
+      <Link className="hover:text-neutral-500" href={Routes.login}>
         <User className="h-6 w-6" />
       </Link>
     );
@@ -64,7 +65,7 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link className="cursor-pointer" href="/account">
+          <Link className="cursor-pointer" href={Routes.account}>
             <User className="mr-2 h-4 w-4" />
             Account
           </Link>

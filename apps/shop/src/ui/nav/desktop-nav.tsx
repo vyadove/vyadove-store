@@ -218,7 +218,7 @@ async function NavBarLinks() {
         <NavigationMenuItem className="group/item">
           <div className="hover:text-accent hover:bg-primary-background flex items-center overflow-hidden rounded-md border-none px-3 py-1 shadow-none">
             <AnimateOnHoverText className="group-hover/item:-translate-y-full">
-              <Link href="/apps/shop/public">About</Link>
+              <Link href="/about">About</Link>
             </AnimateOnHoverText>
           </div>
         </NavigationMenuItem>
@@ -261,7 +261,7 @@ export const DesktopNav = (props: ComponentPropsWithoutRef<"div">) => {
         <div className="flex items-center gap-1">
           <CurrencySelector variant="compact" />
 
-          <SearchSheet/>
+          <SearchSheet />
 
           <CartIconButton />
           <UserNav />

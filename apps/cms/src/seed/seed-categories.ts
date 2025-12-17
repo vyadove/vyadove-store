@@ -1,15 +1,20 @@
 import config from "@payload-config";
 import { getPayload } from "payload";
+
+import type { SeedCategory } from "./types";
 import categoriesData from "./categories.json";
 
-export const seedCategories = async () => {
+// Type assertion for JSON import
+const categories = categoriesData as SeedCategory[];
+
+export const seedCategories = async (): Promise<Map<string, string>> => {
     const payload = await getPayload({ config });
 
     console.log("🌱 Seeding categories...");
 
     const categoryMap = new Map<string, string>(); // title -> id mapping
 
-    for (const parentCat of categoriesData) {
+    for (const parentCat of categories) {
         console.log(`Creating parent category: ${parentCat.title}`);
 
         // Create parent category
@@ -35,7 +40,7 @@ export const seedCategories = async () => {
                         title: subcat.title,
                         description: subcat.description,
                         visible: subcat.visible,
-                        parent: parentResult.id, // Link to parent
+                        parent: parentResult.id,
                     },
                 });
 

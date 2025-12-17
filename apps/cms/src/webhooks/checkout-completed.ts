@@ -14,7 +14,8 @@ interface CheckoutSessionEvent {
     id: string;
 }
 
-export type CheckoutCompletedHandler = StripeWebhookHandler<CheckoutSessionEvent>;
+export type CheckoutCompletedHandler =
+    StripeWebhookHandler<CheckoutSessionEvent>;
 
 /**
  * Handle checkout.session.completed event
@@ -30,7 +31,9 @@ export const checkoutCompleted: CheckoutCompletedHandler = async ({
     const orderId = session.metadata?.orderId;
 
     if (!orderId) {
-        logger.info("checkout.session.completed: No orderId in metadata, skipping");
+        logger.info(
+            "checkout.session.completed: No orderId in metadata, skipping"
+        );
         return;
     }
 
@@ -47,7 +50,8 @@ export const checkoutCompleted: CheckoutCompletedHandler = async ({
             const result = await payload.update({
                 collection: "orders",
                 data: {
-                    presentmentCurrency: presentmentDetails.presentment_currency,
+                    presentmentCurrency:
+                        presentmentDetails.presentment_currency,
                     presentmentAmount: presentmentDetails.presentment_amount
                         ? presentmentDetails.presentment_amount / 100 // Convert from cents
                         : undefined,

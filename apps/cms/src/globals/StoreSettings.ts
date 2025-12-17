@@ -23,11 +23,14 @@ const StoreSettings: GlobalConfig = {
         afterChange: [
             async () => {
                 // Revalidate shop cache when settings change
-                const shopUrl = process.env.NEXT_PUBLIC_SHOP_URL || "http://localhost:3020";
+                const shopUrl =
+                    process.env.NEXT_PUBLIC_SHOP_URL || "http://localhost:3020";
                 const secret = process.env.REVALIDATION_SECRET_TOKEN;
 
                 if (!secret) {
-                    console.warn("REVALIDATION_SECRET_TOKEN not set, skipping shop cache invalidation");
+                    console.warn(
+                        "REVALIDATION_SECRET_TOKEN not set, skipping shop cache invalidation"
+                    );
                     return;
                 }
 
@@ -62,7 +65,8 @@ const StoreSettings: GlobalConfig = {
                             label: "Base Currency",
                             defaultValue: "USD",
                             admin: {
-                                description: "Primary currency for product pricing",
+                                description:
+                                    "Primary currency for product pricing",
                             },
                             options: allCurrencyOptions,
                         },
@@ -73,7 +77,8 @@ const StoreSettings: GlobalConfig = {
                             hasMany: true,
                             defaultValue: ["USD"],
                             admin: {
-                                description: "Currencies available for customers to select (from ISO 4217)",
+                                description:
+                                    "Currencies available for customers to select (from ISO 4217)",
                             },
                             options: allCurrencyOptions,
                         },
@@ -97,7 +102,8 @@ const StoreSettings: GlobalConfig = {
                             type: "array",
                             label: "Manual Rate Overrides",
                             admin: {
-                                description: "Override API rates with fixed values. Use currency codes from supported currencies.",
+                                description:
+                                    "Override API rates with fixed values. Use currency codes from supported currencies.",
                             },
                             fields: [
                                 {
@@ -109,7 +115,8 @@ const StoreSettings: GlobalConfig = {
                                             required: true,
                                             admin: {
                                                 placeholder: "e.g., USD",
-                                                description: "Source currency code",
+                                                description:
+                                                    "Source currency code",
                                             },
                                         },
                                         {
@@ -118,7 +125,8 @@ const StoreSettings: GlobalConfig = {
                                             required: true,
                                             admin: {
                                                 placeholder: "e.g., EUR",
-                                                description: "Target currency code",
+                                                description:
+                                                    "Target currency code",
                                             },
                                         },
                                         {
@@ -128,7 +136,8 @@ const StoreSettings: GlobalConfig = {
                                             min: 0,
                                             admin: {
                                                 step: 0.0001,
-                                                description: "e.g., 0.92 for USD→EUR",
+                                                description:
+                                                    "e.g., 0.92 for USD→EUR",
                                             },
                                         },
                                     ],
@@ -146,11 +155,18 @@ const StoreSettings: GlobalConfig = {
                             label: "Default Rounding Rule",
                             defaultValue: "charm",
                             admin: {
-                                description: "Applied to all currencies unless overridden below",
+                                description:
+                                    "Applied to all currencies unless overridden below",
                             },
                             options: [
-                                { label: "Charm pricing (.99)", value: "charm" },
-                                { label: "Clean pricing (.00)", value: "clean" },
+                                {
+                                    label: "Charm pricing (.99)",
+                                    value: "charm",
+                                },
+                                {
+                                    label: "Clean pricing (.00)",
+                                    value: "clean",
+                                },
                                 { label: "No rounding", value: "none" },
                             ],
                         },
@@ -159,7 +175,8 @@ const StoreSettings: GlobalConfig = {
                             type: "array",
                             label: "Per-Currency Rounding Rules",
                             admin: {
-                                description: "Override default rounding for specific currencies",
+                                description:
+                                    "Override default rounding for specific currencies",
                             },
                             fields: [
                                 {
@@ -180,9 +197,18 @@ const StoreSettings: GlobalConfig = {
                                             required: true,
                                             defaultValue: "charm",
                                             options: [
-                                                { label: "Charm pricing (.99)", value: "charm" },
-                                                { label: "Clean pricing (.00)", value: "clean" },
-                                                { label: "No rounding", value: "none" },
+                                                {
+                                                    label: "Charm pricing (.99)",
+                                                    value: "charm",
+                                                },
+                                                {
+                                                    label: "Clean pricing (.00)",
+                                                    value: "clean",
+                                                },
+                                                {
+                                                    label: "No rounding",
+                                                    value: "none",
+                                                },
                                             ],
                                             admin: {
                                                 width: "50%",

@@ -89,7 +89,8 @@ export const Orders: CollectionConfig = {
             type: "text",
             admin: {
                 position: "sidebar",
-                description: "Currency customer actually paid in (Stripe Adaptive Pricing)",
+                description:
+                    "Currency customer actually paid in (Stripe Adaptive Pricing)",
                 readOnly: true,
             },
         },

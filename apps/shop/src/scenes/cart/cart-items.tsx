@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useCheckout } from "@/providers/checkout";
 import type { EnrichedCheckoutItem } from "@/providers/checkout/types";
 import ErrorMessage from "@/scenes/cart/error-message";
+import { Routes } from "@/store.routes";
 import { Button } from "@ui/shadcn/button";
 import {
   Select,
@@ -57,7 +58,10 @@ const Item = ({ type = "full", item }: ItemProps) => {
       </TableCell>
 
       <TableCell className="max-w-[16rem] px-2 py-4" rowSpan={1}>
-        <Link className="" href={`/products/${item.product?.handle}`}>
+        <Link
+          className=""
+          href={Routes.productLink(item.product?.handle as string)}
+        >
           <div className="flex items-center gap-2">
             <div className="relative size-16 overflow-hidden rounded-lg">
               <Image

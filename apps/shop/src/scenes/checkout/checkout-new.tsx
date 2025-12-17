@@ -13,6 +13,7 @@ import { useCheckout } from "@/providers/checkout";
 import { OrderSummery } from "@/scenes/checkout/order-summary";
 import { Stepper } from "@/scenes/checkout/stepper";
 import { usePayloadFindQuery } from "@/scenes/shop/use-payload-find-query";
+import { Routes } from "@/store.routes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   TypographyH2,
@@ -408,7 +409,9 @@ const CheckoutNew = () => {
     return (
       <div className="flex h-full min-h-[80vh] flex-1 flex-col items-center justify-center gap-4">
         <TypographyH2>Your checkout is empty</TypographyH2>
-        <Button onClick={() => router.push("/shop")}>Continue Shopping</Button>
+        <Button onClick={() => router.push(Routes.shop)}>
+          Continue Shopping
+        </Button>
       </div>
     );
   }

@@ -59,5 +59,4 @@ export const createCheckoutSession = async ({
     // webhook via the presentment_details object.
 
     return stripe.checkout.sessions.create(sessionParams, requestOptions);
-
 };

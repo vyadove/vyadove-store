@@ -27,7 +27,7 @@ export async function GET() {
     const config = getCurrencyConfig(settings);
     const rates = await getExchangeRates(config);
 
-    console.log('settings  --- : ', settings);
+    console.log("settings  --- : ", settings);
 
     return NextResponse.json<CurrencyConfigResponse>({
       baseCurrency: config.baseCurrency,

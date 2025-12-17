@@ -11,11 +11,11 @@ import {
 } from "react";
 
 import { useAuth } from "@/providers/auth";
+import { useCurrencyOptional } from "@/providers/currency";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Checkout, Product } from "@vyadove/types";
 
 import { toast } from "@/components/ui/hot-toast";
-import { useCurrencyOptional } from "@/providers/currency";
 
 import {
   addToCheckoutAction,
@@ -133,7 +133,14 @@ function optimisticAddItem(args: {
   unitPrice?: number;
   currency?: string;
 }): Checkout {
-  const { oldCheckout, variantId, quantity, productId, unitPrice, currency = "USD" } = args;
+  const {
+    oldCheckout,
+    variantId,
+    quantity,
+    productId,
+    unitPrice,
+    currency = "USD",
+  } = args;
 
   if (!oldCheckout) {
     return {
@@ -414,7 +421,6 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
       return { previousCheckout };
     },
     onSettled: (data, error, variables, onMutateResult) => {
-
       if (error) {
         // Rollback on error
         queryClient.setQueryData(
@@ -437,8 +443,8 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
       }
     },
     onSuccess: (data) => {
-      console.log('onSuccess data --- : ', data);
-    }
+      console.log("onSuccess data --- : ", data);
+    },
   });
 
   // Update item mutation

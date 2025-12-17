@@ -3,15 +3,8 @@
  * Generates 2000-3000 realistic gift experience products
  */
 
-type ProductTemplate = {
-    titleTemplate: string[];
-    descriptions: string[];
-    category: string;
-    priceRange: [number, number];
-    pricingTier: "basic" | "premium" | "luxury";
-    variantOptions: { option: string; values: string[] }[];
-    customFields: { name: string; valueTemplate: string }[];
-};
+import type { ProductTemplate, SeedProduct } from "./types";
+import { getCategoryImages } from "./types";
 
 // Product templates for different categories
 const productTemplates: ProductTemplate[] = [
@@ -699,7 +692,10 @@ function fillTemplate(template: string): string {
 }
 
 // Generate a single product from template
-export function generateProduct(template: ProductTemplate, index: number) {
+export function generateProduct(
+    template: ProductTemplate,
+    index: number
+): SeedProduct {
     const title = fillTemplate(random(template.titleTemplate));
     const description = fillTemplate(random(template.descriptions));
     const basePrice = randomInRange(
@@ -707,6 +703,9 @@ export function generateProduct(template: ProductTemplate, index: number) {
         template.priceRange[1]
     );
     const prices = generatePriceVariants(basePrice, randomInRange(1, 3));
+
+    // Get contextual images for this category
+    const categoryImages = getCategoryImages(template.category);
 
     // Generate variants
     const variants = [];
@@ -716,10 +715,13 @@ export function generateProduct(template: ProductTemplate, index: number) {
             value: opt.values[i % opt.values.length],
         }));
 
+        // Use category-specific image (cycle through available images)
+        const imageUrl = categoryImages[i % categoryImages.length];
+
         variants.push({
             vid: `var-${index}-${i}`,
             sku: `SKU-${Date.now()}-${index}-${i}`,
-            imageUrl: `https://images.unsplash.com/photo-${1400000000000 + index + i}?w=800&q=80`,
+            imageUrl,
             price: {
                 amount: prices[i],
                 currency: "USD",
@@ -753,8 +755,8 @@ export function generateProduct(template: ProductTemplate, index: number) {
 }
 
 // Generate all products
-export function generateProducts(count: number = 2500) {
-    const products = [];
+export function generateProducts(count: number = 2500): SeedProduct[] {
+    const products: SeedProduct[] = [];
     console.log(`🏭 Generating ${count} products...`);
 
     for (let i = 0; i < count; i++) {

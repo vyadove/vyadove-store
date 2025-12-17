@@ -4,6 +4,7 @@ import * as migration_20251114_164554 from "./20251114_164554";
 import * as migration_20251127_202804 from "./20251127_202804";
 import * as migration_20251215_183759_new_checkout_collection_which_holds_cart_and_checkout_session from "./20251215_183759_new_checkout_collection_which_holds_cart_and_checkout_session";
 import * as migration_20251216_230332 from "./20251216_230332";
+import * as migration_20251217_220928 from "./20251217_220928";
 
 export const migrations = [
     {
@@ -35,5 +36,10 @@ export const migrations = [
         up: migration_20251216_230332.up,
         down: migration_20251216_230332.down,
         name: "20251216_230332",
+    },
+    {
+        up: migration_20251217_220928.up,
+        down: migration_20251217_220928.down,
+        name: "20251217_220928",
     },
 ];

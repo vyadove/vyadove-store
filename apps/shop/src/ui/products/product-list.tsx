@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { Routes } from "@/store.routes";
 import { JsonLd, mappedProductsToJsonLd } from "@/ui/json-ld";
 import { VyaLink } from "@ui/vya-link";
 import type { Product } from "commerce-kit";
@@ -17,7 +18,7 @@ export const ProductList = async ({ products }: { products: Product[] }) => {
         {products.map((product, idx) => {
           return (
             <li className="group" key={product.id}>
-              <VyaLink href={`/product/${product.slug}`}>
+              <VyaLink href={Routes.productLink(product.slug ?? "")}>
                 <article className="overflow-hidden bg-white">
                   {product.images[0] && (
                     <div className="aspect-square w-full overflow-hidden rounded-lg bg-neutral-100">

@@ -59,18 +59,18 @@ export const paymentCanceled: PaymentCanceledHandler = async ({
 
         // Send cancellation + failure email with retry link
         if (customerEmail) {
-            sendOrderCancellationEmail(customerEmail, orderId, logger);
+            await sendOrderCancellationEmail(payload, customerEmail, orderId);
 
-            // Send failure email with retry link if checkout exists
+            // Send failure email with a retry link if checkout exists
             if (checkoutId) {
                 const shopUrl =
                     process.env.NEXT_PUBLIC_SHOP_URL || "http://localhost:3020";
                 const retryUrl = `${shopUrl}/checkout?retry=${checkoutId}`;
-                sendPaymentFailedEmail(
+                await sendPaymentFailedEmail(
+                    payload,
                     customerEmail,
                     orderId,
-                    retryUrl,
-                    logger
+                    retryUrl
                 );
             }
         }

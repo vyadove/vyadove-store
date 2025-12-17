@@ -128,7 +128,7 @@ export const paymentSucceeded: PaymentSucceededHandler = async ({
 
         // Send confirmation email
         if (customerEmail) {
-            sendOrderConfirmationEmail(customerEmail, orderId, logger);
+            await sendOrderConfirmationEmail(payload, customerEmail, orderId);
         }
     } catch (error) {
         logger.error("❌ Error updating order status:", error);

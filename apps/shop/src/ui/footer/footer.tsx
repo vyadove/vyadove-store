@@ -19,11 +19,11 @@ import { getTranslations } from "@/i18n/server";
 const pageLinks = [
   {
     label: "Home",
-    href: "/",
+    href: Routes.home,
   },
   {
     label: "Shop",
-    href: "/shop",
+    href: Routes.shop,
   },
   {
     label: "About",
@@ -31,7 +31,7 @@ const pageLinks = [
   },
   {
     label: "Collections",
-    href: "/shop",
+    href: Routes.shop,
   },
 ];
 
@@ -60,11 +60,11 @@ const sections = [
       },
       {
         label: "Support",
-        href: "/support",
+        href: Routes.support,
       },
       {
         label: "Pricing",
-        href: "/",
+        href: Routes.home,
       },
     ],
   },
@@ -113,7 +113,7 @@ export async function Footer() {
                     We Care about your date in our{" "}
                     <VyaLink
                       className="underline underline-offset-4"
-                      href="/privacy-policy"
+                      href={Routes.privacyPolicy}
                     >
                       Privacy Policy
                     </VyaLink>

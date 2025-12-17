@@ -76,7 +76,11 @@ export const checkoutSessionCompleted: CheckoutSessionCompletedHandler =
 
             // Send confirmation email
             if (customerEmail) {
-                sendOrderConfirmationEmail(customerEmail, orderId, logger);
+                await sendOrderConfirmationEmail(
+                    payload,
+                    customerEmail,
+                    orderId
+                );
             }
         } catch (error) {
             logger.error(

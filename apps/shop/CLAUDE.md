@@ -155,3 +155,4 @@ src/
 - Docker-ready with standalone output mode
 - Git hooks configured with Husky for commit linting
 - don't use `bun run dev` I have server running in background all the time, just ask about checking if needed
+- **Routes**: Always use `store.routes.ts` for navigation paths. Import `Routes` and use methods like `Routes.productLink(slug)`, `Routes.categoryLink(slug)`, `Routes.home`, `Routes.checkout`, etc. Never hardcode paths like `/product/...` or `/category/...`

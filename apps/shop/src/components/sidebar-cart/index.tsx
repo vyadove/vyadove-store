@@ -166,7 +166,7 @@ function SidebarCart() {
                         >
                           <Link
                             className=""
-                            href={`/products/${product.handle}`}
+                            href={Routes.productLink(product.handle as string)}
                           >
                             <div className="relative flex size-[70px] items-start">
                               <Image
@@ -185,7 +185,9 @@ function SidebarCart() {
                                   <TypographyP className="overflow-hidden text-ellipsis line-clamp-2">
                                     <Link
                                       data-testid="product-link"
-                                      href={`/products/${product.handle}`}
+                                      href={Routes.productLink(
+                                        product.handle as string,
+                                      )}
                                     >
                                       {product.title}
                                     </Link>

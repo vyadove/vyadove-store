@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/providers/auth";
+import { Routes } from "@/store.routes";
 import { TypographyP } from "@ui/shadcn/typography";
 
 import { Button } from "@/components/ui/button";
@@ -47,7 +48,7 @@ export function SignUpForm({
 
     try {
       await create({ email, password, passwordConfirm });
-      router.push("/");
+      router.push(Routes.home);
     } catch {
       // Error is handled by auth context
     }
@@ -105,7 +106,10 @@ export function SignUpForm({
               </Button>
               <div className="text-center text-sm">
                 Already have an account?{" "}
-                <Link className="underline underline-offset-4" href="/login">
+                <Link
+                  className="underline underline-offset-4"
+                  href={Routes.login}
+                >
                   Login
                 </Link>
               </div>
@@ -115,8 +119,8 @@ export function SignUpForm({
       </Card>
       <div className="text-muted-foreground hover:[&_a]:text-primary text-center text-xs text-balance [&_a]:underline [&_a]:underline-offset-4">
         By clicking continue, you agree to our{" "}
-        <Link href="/terms-and-conditions">Terms of Service</Link> and{" "}
-        <Link href="/privacy-policy">Privacy Policy</Link>.
+        <Link href={Routes.termsAndConditions}>Terms of Service</Link> and{" "}
+        <Link href={Routes.privacyPolicy}>Privacy Policy</Link>.
       </div>
     </div>
   );

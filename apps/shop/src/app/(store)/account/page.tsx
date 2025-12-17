@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/providers/auth";
+import { Routes } from "@/store.routes";
 import { Spinner } from "@ui/shadcn/spinner";
 import { VyaLink } from "@ui/vya-link";
 import { LogOut, Package, User } from "lucide-react";
@@ -30,14 +31,14 @@ export default function AccountPage() {
   }
 
   if (!user) {
-    router.push("/login");
+    router.push(Routes.login);
 
     return null;
   }
 
   const handleLogout = async () => {
     await logout();
-    router.push("/");
+    router.push(Routes.home);
   };
 
   return (
@@ -80,7 +81,7 @@ export default function AccountPage() {
             </CardHeader>
             <CardContent>
               <Button asChild variant="outline">
-                <VyaLink href="/order/track">View Orders</VyaLink>
+                <VyaLink href={Routes.orderTrack}>View Orders</VyaLink>
               </Button>
             </CardContent>
           </Card>

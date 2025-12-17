@@ -1,56 +1,84 @@
 import type { Payload } from "payload";
-import type { WebhookLogger } from "@/types/webhooks";
+import { sendEmail } from "@/utils";
 
 /**
  * Send order confirmation email
  */
-export const sendOrderConfirmationEmail = (
+export const sendOrderConfirmationEmail = async (
+    payload: Payload,
     email: string,
-    orderId: string,
-    logger: WebhookLogger
-): void => {
-    logger.info(
-        `📧 Sending confirmation email to ${email} for Order ID: ${orderId}`
-    );
-    // TODO: Implement actual email sending logic
+    orderId: string
+): Promise<void> => {
+    await sendEmail({
+        payload,
+        to: email,
+        type: "order_confirmation",
+        data: { orderId },
+    });
 };
 
 /**
  * Send order cancellation email
  */
-export const sendOrderCancellationEmail = (
+export const sendOrderCancellationEmail = async (
+    payload: Payload,
     email: string,
-    orderId: string,
-    logger?: WebhookLogger
-): void => {
-    const message = `📧 Sending cancellation email to ${email} for Order ID: ${orderId}`;
-    if (logger) {
-        logger.info(message);
-    } else {
-        console.log(message);
-    }
-    // TODO: Implement actual email sending logic
+    orderId: string
+): Promise<void> => {
+    await sendEmail({
+        payload,
+        to: email,
+        type: "order_cancellation",
+        data: { orderId },
+    });
 };
 
 /**
  * Send payment failure email with retry link
  */
-export const sendPaymentFailedEmail = (
+export const sendPaymentFailedEmail = async (
+    payload: Payload,
     email: string,
     orderId: string,
-    retryUrl: string,
-    logger?: WebhookLogger
-): void => {
-    const message = `📧 Sending payment failure email to ${email} for Order ID: ${orderId} with retry link: ${retryUrl}`;
-    if (logger) {
-        logger.info(message);
-    } else {
-        console.log(message);
-    }
-    // TODO: Implement actual email sending logic
-    // Email should include:
-    // - Order details summary
-    // - Reason for failure (if available)
-    // - Retry link to complete payment
-    // - Contact support info
+    retryUrl: string
+): Promise<void> => {
+    await sendEmail({
+        payload,
+        to: email,
+        type: "payment_failed",
+        data: { orderId, retryUrl },
+    });
+};
+
+/**
+ * Send order shipped email
+ */
+export const sendOrderShippedEmail = async (
+    payload: Payload,
+    email: string,
+    orderId: string,
+    trackingUrl?: string
+): Promise<void> => {
+    await sendEmail({
+        payload,
+        to: email,
+        type: "order_shipped",
+        data: { orderId, trackingUrl: trackingUrl || "" },
+    });
+};
+
+/**
+ * Send order delivered email
+ */
+export const sendOrderDeliveredEmail = async (
+    payload: Payload,
+    email: string,
+    orderId: string
+): Promise<void> => {
+    await sendEmail({
+        payload,
+        to: email,
+        type: "order_delivered",
+        data: { orderId },
+    });
 };

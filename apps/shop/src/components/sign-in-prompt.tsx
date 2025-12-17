@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Routes } from "@/store.routes";
 import { Button } from "@ui/shadcn/button";
 import { TypographyH2, TypographyP } from "@ui/shadcn/typography";
 
@@ -15,7 +16,7 @@ const SignInPrompt = () => {
         </TypographyP>
       </div>
       <div>
-        <Link href="/account">
+        <Link href={Routes.account}>
           <Button
             className="h-10"
             data-testid="sign-in-button"

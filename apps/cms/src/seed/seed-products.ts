@@ -1,10 +1,19 @@
 import config from "@payload-config";
 import type { Category } from "@vyadove/types";
+import type { RequiredDataFromCollectionSlug } from "payload";
 import { getPayload } from "payload";
 
 import { generateProducts } from "./product-generator";
+import { getCategoryImages } from "./types";
 
-export const seedProducts = async (count: number = 2500) => {
+interface SeedResult {
+    created: number;
+    errors: number;
+}
+
+export const seedProducts = async (
+    count: number = 2500
+): Promise<SeedResult> => {
     const payload = await getPayload({ config });
 
     console.log("🌱 Starting product seeding...");
@@ -23,38 +32,9 @@ export const seedProducts = async (count: number = 2500) => {
 
     console.log(`✓ Found ${categoryIdMap.size} categories`);
 
-    // Create or find a placeholder media for gallery
-    console.log("📷 Setting up placeholder media...");
-    let placeholderMediaId: number;
-
-    const existingMedia = await payload.find({
-        collection: "media",
-        where: { alt: { equals: "placeholder-product" } },
-        limit: 1,
-    });
-
-    if (existingMedia.docs.length > 0) {
-        placeholderMediaId = existingMedia.docs[0].id;
-        console.log(
-            `✓ Using existing placeholder media: ${placeholderMediaId}`
-        );
-    } else {
-        const placeholderMedia = await payload.create({
-            collection: "media",
-            data: {
-                alt: "placeholder-product",
-                filename: `placeholder-${Date.now()}.jpg`,
-                mimeType: "image/jpeg",
-                url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-                thumbnailURL:
-                    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&q=60",
-                width: 800,
-                height: 600,
-            },
-        });
-        placeholderMediaId = placeholderMedia.id;
-        console.log(`✓ Created placeholder media: ${placeholderMediaId}`);
-    }
+    // Create media entries for each category
+    console.log("📷 Setting up category-specific media...");
+    const mediaCache = new Map<string, number[]>();
 
     // Generate products
     const products = generateProducts(count);
@@ -63,7 +43,7 @@ export const seedProducts = async (count: number = 2500) => {
 
     let created = 0;
     let errors = 0;
-    const batchSize = 10; // Small batches to avoid connection pool exhaustion
+    const batchSize = 10;
 
     for (let i = 0; i < products.length; i += batchSize) {
         const batch = products.slice(i, i + batchSize);
@@ -72,19 +52,58 @@ export const seedProducts = async (count: number = 2500) => {
             batch.map(async (product) => {
                 const categoryId = categoryIdMap.get(product.category);
 
-                const productData = {
-                    pid: product.pid,
-                    title: product.title,
-                    currency: product.currency,
-                    visible: product.visible,
-                    salesChannels: product.salesChannels,
-                    description: product.description,
-                    handle: product.handle,
-                    variants: product.variants,
-                    customFields: product.customFields,
-                    gallery: [placeholderMediaId],
-                    category: categoryId ? [categoryId] : undefined,
-                };
+                // Get or create media for this category
+                let mediaIds = mediaCache.get(product.category);
+                if (!mediaIds) {
+                    const images = getCategoryImages(product.category);
+                    mediaIds = [];
+
+                    for (let imgIdx = 0; imgIdx < images.length; imgIdx++) {
+                        const media = await payload.create({
+                            collection: "media",
+                            data: {
+                                alt: `${product.category}-${imgIdx + 1}`,
+                                filename: `${product.category.toLowerCase().replace(/\s+/g, "-")}-${imgIdx + 1}-${Date.now()}.jpg`,
+                                mimeType: "image/jpeg",
+                                url: images[imgIdx],
+                                thumbnailURL: images[imgIdx].replace(
+                                    "w=800",
+                                    "w=200"
+                                ),
+                                width: 800,
+                                height: 600,
+                            },
+                        });
+                        mediaIds.push(media.id);
+                    }
+                    mediaCache.set(product.category, mediaIds);
+                }
+
+                const productData: RequiredDataFromCollectionSlug<"products"> =
+                    {
+                        pid: product.pid,
+                        title: product.title,
+                        currency:
+                            product.currency as RequiredDataFromCollectionSlug<"products">["currency"],
+                        visible: product.visible,
+                        salesChannels: ["all"],
+                        description: product.description,
+                        handle: product.handle,
+                        variants: product.variants.map((v) => ({
+                            ...v,
+                            pricingTier: v.pricingTier as
+                                | "basic"
+                                | "premium"
+                                | "luxury",
+                            price: {
+                                amount: v.price.amount,
+                                currency: v.price.currency as "USD",
+                            },
+                        })),
+                        customFields: product.customFields,
+                        gallery: mediaIds,
+                        category: categoryId ? [categoryId] : undefined,
+                    };
 
                 await payload.create({
                     collection: "products",

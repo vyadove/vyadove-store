@@ -1,6 +1,7 @@
 import React from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 
+import { Routes } from "@/store.routes";
 import { Button } from "@ui/shadcn/button";
 import { TypographyH1, TypographyP } from "@ui/shadcn/typography";
 import { VyaLink } from "@ui/vya-link";
@@ -45,7 +46,7 @@ export async function PopularGifts() {
         </div>
 
         <Button asChild className="border-none" size="lg" variant="outline">
-          <VyaLink href="/apps/shop/public">
+          <VyaLink href={Routes.shop}>
             View All
             <AiOutlineArrowRight className="" />
           </VyaLink>

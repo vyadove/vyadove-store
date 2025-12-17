@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Routes } from "@/store.routes";
 import { X } from "lucide-react";
 
 import { VyaLink } from "./vya-link";
@@ -28,7 +29,7 @@ export const Banner = () => {
             </p>
             <VyaLink
               className="flex-none rounded-full bg-indigo-500 px-3 py-1 text-sm font-semibold text-white shadow-xs hover:bg-indigo-600"
-              href="/product/horizon-gaze-sunglasses"
+              href={Routes.productLink("horizon-gaze-sunglasses")}
             >
               Check it out
             </VyaLink>

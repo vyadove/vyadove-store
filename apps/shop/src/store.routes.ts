@@ -6,8 +6,12 @@ export const Routes = {
   signUp: "/sign-up",
   account: "/account",
   checkout: "/checkout",
+  checkoutReview: "/checkout/review",
   cart: "/cart",
   shop: "/shop",
+  orderTrack: "/order/track",
+  orderTrackById: (orderId: string) => `/order/track/${orderId}`,
   productLink: (handle: string) => `/product/${handle}`,
+  categoryLink: (slug: string) => `/category/${slug}`,
   termsAndConditions: "/terms-and-conditions",
 };

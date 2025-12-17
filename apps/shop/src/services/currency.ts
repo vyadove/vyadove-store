@@ -248,6 +248,7 @@ export function applyRounding(
     }
 
     case "none":
+
     default: {
       // Keep 2 decimal places
       return Math.round(amount * 100) / 100;
