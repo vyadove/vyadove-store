@@ -3,6 +3,7 @@ import * as migration_20251110_050500 from "./20251110_050500";
 import * as migration_20251114_164554 from "./20251114_164554";
 import * as migration_20251127_202804 from "./20251127_202804";
 import * as migration_20251215_183759_new_checkout_collection_which_holds_cart_and_checkout_session from "./20251215_183759_new_checkout_collection_which_holds_cart_and_checkout_session";
+import * as migration_20251216_230332 from "./20251216_230332";
 
 export const migrations = [
     {
@@ -29,5 +30,10 @@ export const migrations = [
         up: migration_20251215_183759_new_checkout_collection_which_holds_cart_and_checkout_session.up,
         down: migration_20251215_183759_new_checkout_collection_which_holds_cart_and_checkout_session.down,
         name: "20251215_183759_new_checkout_collection_which_holds_cart_and_checkout_session",
+    },
+    {
+        up: migration_20251216_230332.up,
+        down: migration_20251216_230332.down,
+        name: "20251216_230332",
     },
 ];

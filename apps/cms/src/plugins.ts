@@ -7,7 +7,11 @@ import { builderIoPlugin } from "@shopnex/builder-io-plugin";
 import { formBuilderPlugin } from "@payloadcms/plugin-form-builder";
 
 import { adminPluginAccess, admins } from "./access/roles";
-import { paymentCanceled, paymentSucceeded } from "./webhooks";
+import {
+    checkoutSessionCompleted,
+    paymentCanceled,
+    paymentSucceeded,
+} from "./webhooks";
 import { quickActionsPlugin } from "@shopnex/quick-actions-plugin";
 import { easyEmailPlugin } from "@shopnex/easy-email-plugin";
 import { seoPlugin } from "@payloadcms/plugin-seo";
@@ -33,6 +37,7 @@ export const plugins: Plugin[] = [
         stripeWebhooksEndpointSecret:
             process.env.STRIPE_WEBHOOKS_SIGNING_SECRET,
         webhooks: {
+            "checkout.session.completed": checkoutSessionCompleted,
             "payment_intent.canceled": paymentCanceled,
             "payment_intent.succeeded": paymentSucceeded,
         },

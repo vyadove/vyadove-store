@@ -269,8 +269,12 @@ const CheckoutNew = () => {
         toast.loading("Redirecting...");
         await refechCheckout();
 
-        // Redirect to order confirmation
-        router.push(result.redirectUrl);
+        // Redirect - use window.location for external URLs (Stripe)
+        if (result.redirectUrl.startsWith("http")) {
+          window.location.href = result.redirectUrl;
+        } else {
+          router.push(result.redirectUrl);
+        }
 
         return;
       }
@@ -282,7 +286,7 @@ const CheckoutNew = () => {
       if (form.formState.isDirty) {
         try {
           await updateCheckoutForm(
-            data.paymentMethod, // providerId
+            selectedPayment?.paymentId?.toString() ?? data.paymentMethod, // Payment doc ID
             data.shippingMethod, // "${shippingId}:${blockIndex}"
             {
               shippingAddress: {

@@ -51,6 +51,7 @@ export const enum_orders_order_status = pgEnum("enum_orders_order_status", [
     "pending",
     "processing",
     "shipped",
+    "failed",
     "delivered",
     "canceled",
 ]);
@@ -381,6 +382,7 @@ export const orders = pgTable(
         }),
         paymentIntentId: varchar("payment_intent_id"),
         sessionId: varchar("session_id"),
+        stripeSessionId: varchar("stripe_session_id"),
         sessionUrl: varchar("session_url"),
         paymentMethod: varchar("payment_method"),
         receiptUrl: varchar("receipt_url"),
@@ -1117,71 +1119,6 @@ export const themes_texts = pgTable(
             foreignColumns: [themes.id],
             name: "themes_texts_parent_fk",
         }).onDelete("cascade"),
-    })
-);
-
-export const carts_cart_items = pgTable(
-    "carts_cart_items",
-    {
-        _order: integer("_order").notNull(),
-        _parentID: integer("_parent_id").notNull(),
-        id: varchar("id").primaryKey(),
-        variantId: varchar("variant_id").notNull(),
-        product: integer("product_id")
-            .notNull()
-            .references(() => products.id, {
-                onDelete: "set null",
-            }),
-        quantity: numeric("quantity").notNull(),
-    },
-    (columns) => ({
-        _orderIdx: index("carts_cart_items_order_idx").on(columns._order),
-        _parentIDIdx: index("carts_cart_items_parent_id_idx").on(
-            columns._parentID
-        ),
-        carts_cart_items_product_idx: index("carts_cart_items_product_idx").on(
-            columns.product
-        ),
-        _parentIDFk: foreignKey({
-            columns: [columns["_parentID"]],
-            foreignColumns: [carts.id],
-            name: "carts_cart_items_parent_id_fk",
-        }).onDelete("cascade"),
-    })
-);
-
-export const carts = pgTable(
-    "carts",
-    {
-        id: serial("id").primaryKey(),
-        sessionId: varchar("session_id"),
-        customer: integer("customer_id").references(() => users.id, {
-            onDelete: "set null",
-        }),
-        completed: boolean("completed").default(false),
-        updatedAt: timestamp("updated_at", {
-            mode: "string",
-            withTimezone: true,
-            precision: 3,
-        })
-            .defaultNow()
-            .notNull(),
-        createdAt: timestamp("created_at", {
-            mode: "string",
-            withTimezone: true,
-            precision: 3,
-        })
-            .defaultNow()
-            .notNull(),
-    },
-    (columns) => ({
-        carts_customer_idx: index("carts_customer_idx").on(columns.customer),
-        carts_updated_at_idx: index("carts_updated_at_idx").on(
-            columns.updatedAt
-        ),
-        carts_created_at_idx: index("carts_created_at_idx").on(
-            columns.createdAt
-        ),
     })
 );
 
@@ -2025,64 +1962,6 @@ export const shipping = pgTable(
     })
 );
 
-export const checkout_sessions = pgTable(
-    "checkout_sessions",
-    {
-        id: serial("id").primaryKey(),
-        sessionId: varchar("session_id"),
-        customer: integer("customer_id").references(() => users.id, {
-            onDelete: "set null",
-        }),
-        cart: integer("cart_id")
-            .notNull()
-            .references(() => carts.id, {
-                onDelete: "set null",
-            }),
-        shipping: integer("shipping_id").references(() => shipping.id, {
-            onDelete: "set null",
-        }),
-        payment: integer("payment_id").references(() => payments.id, {
-            onDelete: "set null",
-        }),
-        shippingAddress: jsonb("shipping_address"),
-        billingAddress: jsonb("billing_address"),
-        updatedAt: timestamp("updated_at", {
-            mode: "string",
-            withTimezone: true,
-            precision: 3,
-        })
-            .defaultNow()
-            .notNull(),
-        createdAt: timestamp("created_at", {
-            mode: "string",
-            withTimezone: true,
-            precision: 3,
-        })
-            .defaultNow()
-            .notNull(),
-    },
-    (columns) => ({
-        checkout_sessions_customer_idx: index(
-            "checkout_sessions_customer_idx"
-        ).on(columns.customer),
-        checkout_sessions_cart_idx: index("checkout_sessions_cart_idx").on(
-            columns.cart
-        ),
-        checkout_sessions_shipping_idx: index(
-            "checkout_sessions_shipping_idx"
-        ).on(columns.shipping),
-        checkout_sessions_payment_idx: index(
-            "checkout_sessions_payment_idx"
-        ).on(columns.payment),
-        checkout_sessions_updated_at_idx: index(
-            "checkout_sessions_updated_at_idx"
-        ).on(columns.updatedAt),
-        checkout_sessions_created_at_idx: index(
-            "checkout_sessions_created_at_idx"
-        ).on(columns.createdAt),
-    })
-);
-
 export const forms_blocks_checkbox = pgTable(
     "forms_blocks_checkbox",
     {
@@ -2858,7 +2737,6 @@ export const payload_locked_documents_rels = pgTable(
         policiesID: integer("policies_id"),
         "gift-cardsID": integer("gift_cards_id"),
         themesID: integer("themes_id"),
-        cartsID: integer("carts_id"),
         checkoutID: integer("checkout_id"),
         "hero-pageID": integer("hero_page_id"),
         "footer-pageID": integer("footer_page_id"),
@@ -2870,7 +2748,6 @@ export const payload_locked_documents_rels = pgTable(
         paymentsID: integer("payments_id"),
         locationsID: integer("locations_id"),
         shippingID: integer("shipping_id"),
-        "checkout-sessionsID": integer("checkout_sessions_id"),
         formsID: integer("forms_id"),
         "form-submissionsID": integer("form_submissions_id"),
         exportsID: integer("exports_id"),
@@ -2919,9 +2796,6 @@ export const payload_locked_documents_rels = pgTable(
         payload_locked_documents_rels_themes_id_idx: index(
             "payload_locked_documents_rels_themes_id_idx"
         ).on(columns.themesID),
-        payload_locked_documents_rels_carts_id_idx: index(
-            "payload_locked_documents_rels_carts_id_idx"
-        ).on(columns.cartsID),
         payload_locked_documents_rels_checkout_id_idx: index(
             "payload_locked_documents_rels_checkout_id_idx"
         ).on(columns.checkoutID),
@@ -2955,9 +2829,6 @@ export const payload_locked_documents_rels = pgTable(
         payload_locked_documents_rels_shipping_id_idx: index(
             "payload_locked_documents_rels_shipping_id_idx"
         ).on(columns.shippingID),
-        payload_locked_documents_rels_checkout_sessions_id_idx: index(
-            "payload_locked_documents_rels_checkout_sessions_id_idx"
-        ).on(columns["checkout-sessionsID"]),
         payload_locked_documents_rels_forms_id_idx: index(
             "payload_locked_documents_rels_forms_id_idx"
         ).on(columns.formsID),
@@ -3034,11 +2905,6 @@ export const payload_locked_documents_rels = pgTable(
             foreignColumns: [themes.id],
             name: "payload_locked_documents_rels_themes_fk",
         }).onDelete("cascade"),
-        cartsIdFk: foreignKey({
-            columns: [columns["cartsID"]],
-            foreignColumns: [carts.id],
-            name: "payload_locked_documents_rels_carts_fk",
-        }).onDelete("cascade"),
         checkoutIdFk: foreignKey({
             columns: [columns["checkoutID"]],
             foreignColumns: [checkout.id],
@@ -3093,11 +2959,6 @@ export const payload_locked_documents_rels = pgTable(
             columns: [columns["shippingID"]],
             foreignColumns: [shipping.id],
             name: "payload_locked_documents_rels_shipping_fk",
-        }).onDelete("cascade"),
-        "checkout-sessionsIdFk": foreignKey({
-            columns: [columns["checkout-sessionsID"]],
-            foreignColumns: [checkout_sessions.id],
-            name: "payload_locked_documents_rels_checkout_sessions_fk",
         }).onDelete("cascade"),
         formsIdFk: foreignKey({
             columns: [columns["formsID"]],
@@ -3233,21 +3094,58 @@ export const payload_migrations = pgTable(
     })
 );
 
-export const store_settings = pgTable("store_settings", {
-    id: serial("id").primaryKey(),
-    name: varchar("name").default("Vya-dove"),
-    currency: enum_store_settings_currency("currency").default("USD"),
-    updatedAt: timestamp("updated_at", {
-        mode: "string",
-        withTimezone: true,
-        precision: 3,
-    }),
-    createdAt: timestamp("created_at", {
-        mode: "string",
-        withTimezone: true,
-        precision: 3,
-    }),
-});
+export const store_settings = pgTable(
+    "store_settings",
+    {
+        id: serial("id").primaryKey(),
+        name: varchar("name").default("Vya-dove"),
+        currency: enum_store_settings_currency("currency").default("USD"),
+        emailBranding_logo: integer("email_branding_logo_id").references(
+            () => media.id,
+            {
+                onDelete: "set null",
+            }
+        ),
+        emailBranding_primaryColor: varchar(
+            "email_branding_primary_color"
+        ).default("#000000"),
+        emailBranding_accentColor: varchar(
+            "email_branding_accent_color"
+        ).default("#666666"),
+        emailBranding_footerText: varchar("email_branding_footer_text").default(
+            "© {{current_year}} Vyadove. All rights reserved."
+        ),
+        emailBranding_address: varchar("email_branding_address"),
+        emailBranding_socialLinks_facebook: varchar(
+            "email_branding_social_links_facebook"
+        ),
+        emailBranding_socialLinks_instagram: varchar(
+            "email_branding_social_links_instagram"
+        ),
+        emailBranding_socialLinks_twitter: varchar(
+            "email_branding_social_links_twitter"
+        ),
+        emailBranding_socialLinks_linkedin: varchar(
+            "email_branding_social_links_linkedin"
+        ),
+        emailBranding_unsubscribeUrl: varchar("email_branding_unsubscribe_url"),
+        updatedAt: timestamp("updated_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
+        createdAt: timestamp("created_at", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
+    },
+    (columns) => ({
+        store_settings_email_branding_email_branding_logo_idx: index(
+            "store_settings_email_branding_email_branding_logo_idx"
+        ).on(columns.emailBranding_logo),
+    })
+);
 
 export const main_menu_blocks_form_block = pgTable(
     "main_menu_blocks_form_block",
@@ -3631,31 +3529,6 @@ export const relations_themes = relations(themes, ({ many }) => ({
         relationName: "_texts",
     }),
 }));
-export const relations_carts_cart_items = relations(
-    carts_cart_items,
-    ({ one }) => ({
-        _parentID: one(carts, {
-            fields: [carts_cart_items._parentID],
-            references: [carts.id],
-            relationName: "cartItems",
-        }),
-        product: one(products, {
-            fields: [carts_cart_items.product],
-            references: [products.id],
-            relationName: "product",
-        }),
-    })
-);
-export const relations_carts = relations(carts, ({ one, many }) => ({
-    customer: one(users, {
-        fields: [carts.customer],
-        references: [users.id],
-        relationName: "customer",
-    }),
-    cartItems: many(carts_cart_items, {
-        relationName: "cartItems",
-    }),
-}));
 export const relations_checkout_items = relations(
     checkout_items,
     ({ one }) => ({
@@ -3894,31 +3767,6 @@ export const relations_shipping = relations(shipping, ({ one, many }) => ({
         relationName: "_blocks_custom-shipping",
     }),
 }));
-export const relations_checkout_sessions = relations(
-    checkout_sessions,
-    ({ one }) => ({
-        customer: one(users, {
-            fields: [checkout_sessions.customer],
-            references: [users.id],
-            relationName: "customer",
-        }),
-        cart: one(carts, {
-            fields: [checkout_sessions.cart],
-            references: [carts.id],
-            relationName: "cart",
-        }),
-        shipping: one(shipping, {
-            fields: [checkout_sessions.shipping],
-            references: [shipping.id],
-            relationName: "shipping",
-        }),
-        payment: one(payments, {
-            fields: [checkout_sessions.payment],
-            references: [payments.id],
-            relationName: "payment",
-        }),
-    })
-);
 export const relations_forms_blocks_checkbox = relations(
     forms_blocks_checkbox,
     ({ one }) => ({
@@ -4210,11 +4058,6 @@ export const relations_payload_locked_documents_rels = relations(
             references: [themes.id],
             relationName: "themes",
         }),
-        cartsID: one(carts, {
-            fields: [payload_locked_documents_rels.cartsID],
-            references: [carts.id],
-            relationName: "carts",
-        }),
         checkoutID: one(checkout, {
             fields: [payload_locked_documents_rels.checkoutID],
             references: [checkout.id],
@@ -4271,11 +4114,6 @@ export const relations_payload_locked_documents_rels = relations(
             fields: [payload_locked_documents_rels.shippingID],
             references: [shipping.id],
             relationName: "shipping",
-        }),
-        "checkout-sessionsID": one(checkout_sessions, {
-            fields: [payload_locked_documents_rels["checkout-sessionsID"]],
-            references: [checkout_sessions.id],
-            relationName: "checkout-sessions",
         }),
         formsID: one(forms, {
             fields: [payload_locked_documents_rels.formsID],
@@ -4349,7 +4187,16 @@ export const relations_payload_migrations = relations(
     payload_migrations,
     () => ({})
 );
-export const relations_store_settings = relations(store_settings, () => ({}));
+export const relations_store_settings = relations(
+    store_settings,
+    ({ one }) => ({
+        emailBranding_logo: one(media, {
+            fields: [store_settings.emailBranding_logo],
+            references: [media.id],
+            relationName: "emailBranding_logo",
+        }),
+    })
+);
 export const relations_main_menu_blocks_form_block = relations(
     main_menu_blocks_form_block,
     ({ one }) => ({
@@ -4456,8 +4303,6 @@ type DatabaseSchema = {
     themes_blocks_custom_storefront_block: typeof themes_blocks_custom_storefront_block;
     themes: typeof themes;
     themes_texts: typeof themes_texts;
-    carts_cart_items: typeof carts_cart_items;
-    carts: typeof carts;
     checkout_items: typeof checkout_items;
     checkout: typeof checkout;
     hero_page_blocks_hero: typeof hero_page_blocks_hero;
@@ -4481,7 +4326,6 @@ type DatabaseSchema = {
     locations: typeof locations;
     shipping_blocks_custom_shipping: typeof shipping_blocks_custom_shipping;
     shipping: typeof shipping;
-    checkout_sessions: typeof checkout_sessions;
     forms_blocks_checkbox: typeof forms_blocks_checkbox;
     forms_blocks_country: typeof forms_blocks_country;
     forms_blocks_email: typeof forms_blocks_email;
@@ -4538,8 +4382,6 @@ type DatabaseSchema = {
     relations_themes_blocks_custom_storefront_block: typeof relations_themes_blocks_custom_storefront_block;
     relations_themes_texts: typeof relations_themes_texts;
     relations_themes: typeof relations_themes;
-    relations_carts_cart_items: typeof relations_carts_cart_items;
-    relations_carts: typeof relations_carts;
     relations_checkout_items: typeof relations_checkout_items;
     relations_checkout: typeof relations_checkout;
     relations_hero_page_blocks_hero: typeof relations_hero_page_blocks_hero;
@@ -4563,7 +4405,6 @@ type DatabaseSchema = {
     relations_locations: typeof relations_locations;
     relations_shipping_blocks_custom_shipping: typeof relations_shipping_blocks_custom_shipping;
     relations_shipping: typeof relations_shipping;
-    relations_checkout_sessions: typeof relations_checkout_sessions;
     relations_forms_blocks_checkbox: typeof relations_forms_blocks_checkbox;
     relations_forms_blocks_country: typeof relations_forms_blocks_country;
     relations_forms_blocks_email: typeof relations_forms_blocks_email;

@@ -12,7 +12,7 @@ export const createPendingOrder = async (
     currency: "usd",
     items,
     orderId,
-    sessionId: stripeSessionId,
+    stripeSessionId: stripeSessionId,
     totalAmount: total,
     user: null,
   };

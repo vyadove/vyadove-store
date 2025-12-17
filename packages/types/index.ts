@@ -77,7 +77,6 @@ export interface Config {
         policies: Policy;
         "gift-cards": GiftCard;
         themes: Theme;
-        carts: Cart;
         checkout: Checkout;
         "hero-page": HeroPage;
         "footer-page": FooterPage;
@@ -89,7 +88,6 @@ export interface Config {
         payments: Payment;
         locations: Location;
         shipping: Shipping;
-        "checkout-sessions": CheckoutSession;
         forms: Form;
         "form-submissions": FormSubmission;
         exports: Export;
@@ -127,7 +125,6 @@ export interface Config {
         policies: PoliciesSelect<false> | PoliciesSelect<true>;
         "gift-cards": GiftCardsSelect<false> | GiftCardsSelect<true>;
         themes: ThemesSelect<false> | ThemesSelect<true>;
-        carts: CartsSelect<false> | CartsSelect<true>;
         checkout: CheckoutSelect<false> | CheckoutSelect<true>;
         "hero-page": HeroPageSelect<false> | HeroPageSelect<true>;
         "footer-page": FooterPageSelect<false> | FooterPageSelect<true>;
@@ -143,9 +140,6 @@ export interface Config {
         payments: PaymentsSelect<false> | PaymentsSelect<true>;
         locations: LocationsSelect<false> | LocationsSelect<true>;
         shipping: ShippingSelect<false> | ShippingSelect<true>;
-        "checkout-sessions":
-            | CheckoutSessionsSelect<false>
-            | CheckoutSessionsSelect<true>;
         forms: FormsSelect<false> | FormsSelect<true>;
         "form-submissions":
             | FormSubmissionsSelect<false>
@@ -241,12 +235,20 @@ export interface Order {
         | "pending"
         | "processing"
         | "shipped"
+        | "failed"
         | "delivered"
         | "canceled";
     payment?: (number | null) | Payment;
     shipping?: (number | null) | Shipping;
     paymentIntentId?: string | null;
     sessionId?: string | null;
+    /**
+     * Stripe Checkout Session ID
+     */
+    stripeSessionId?: string | null;
+    /**
+     * Stripe Checkout Session URL
+     */
     sessionUrl?: string | null;
     paymentMethod?: string | null;
     receiptUrl?: string | null;
@@ -883,26 +885,6 @@ export interface Theme {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "carts".
- */
-export interface Cart {
-    id: number;
-    sessionId?: string | null;
-    customer?: (number | null) | User;
-    cartItems?:
-        | {
-              variantId: string;
-              product: number | Product;
-              quantity: number;
-              id?: string | null;
-          }[]
-        | null;
-    completed?: boolean | null;
-    updatedAt: string;
-    createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero-page".
  */
 export interface HeroPage {
@@ -1265,38 +1247,6 @@ export interface Plugin {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "checkout-sessions".
- */
-export interface CheckoutSession {
-    id: number;
-    sessionId?: string | null;
-    customer?: (number | null) | User;
-    cart: number | Cart;
-    shipping?: (number | null) | Shipping;
-    payment?: (number | null) | Payment;
-    shippingAddress?:
-        | {
-              [k: string]: unknown;
-          }
-        | unknown[]
-        | string
-        | number
-        | boolean
-        | null;
-    billingAddress?:
-        | {
-              [k: string]: unknown;
-          }
-        | unknown[]
-        | string
-        | number
-        | boolean
-        | null;
-    updatedAt: string;
-    createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
@@ -1504,10 +1454,6 @@ export interface PayloadLockedDocument {
               value: number | Theme;
           } | null)
         | ({
-              relationTo: "carts";
-              value: number | Cart;
-          } | null)
-        | ({
               relationTo: "checkout";
               value: number | Checkout;
           } | null)
@@ -1550,10 +1496,6 @@ export interface PayloadLockedDocument {
         | ({
               relationTo: "shipping";
               value: number | Shipping;
-          } | null)
-        | ({
-              relationTo: "checkout-sessions";
-              value: number | CheckoutSession;
           } | null)
         | ({
               relationTo: "forms";
@@ -1642,6 +1584,7 @@ export interface OrdersSelect<T extends boolean = true> {
     shipping?: T;
     paymentIntentId?: T;
     sessionId?: T;
+    stripeSessionId?: T;
     sessionUrl?: T;
     paymentMethod?: T;
     receiptUrl?: T;
@@ -1896,25 +1839,6 @@ export interface ThemesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "carts_select".
- */
-export interface CartsSelect<T extends boolean = true> {
-    sessionId?: T;
-    customer?: T;
-    cartItems?:
-        | T
-        | {
-              variantId?: T;
-              product?: T;
-              quantity?: T;
-              id?: T;
-          };
-    completed?: T;
-    updatedAt?: T;
-    createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "checkout_select".
  */
 export interface CheckoutSelect<T extends boolean = true> {
@@ -2161,21 +2085,6 @@ export interface ShippingSelect<T extends boolean = true> {
                         blockName?: T;
                     };
           };
-    updatedAt?: T;
-    createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "checkout-sessions_select".
- */
-export interface CheckoutSessionsSelect<T extends boolean = true> {
-    sessionId?: T;
-    customer?: T;
-    cart?: T;
-    shipping?: T;
-    payment?: T;
-    shippingAddress?: T;
-    billingAddress?: T;
     updatedAt?: T;
     createdAt?: T;
 }

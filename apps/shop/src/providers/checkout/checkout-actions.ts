@@ -1,5 +1,5 @@
-import type { Checkout, Product } from "@vyadove/types";
-import Cookies from "js-cookie";
+import type { Checkout } from "@vyadove/types";
+import { z } from "zod";
 
 import { payloadSdk } from "@/utils/payload-sdk";
 
@@ -8,6 +8,61 @@ import type {
   CheckoutItemInput,
   CheckoutLineItem,
 } from "./types";
+
+// Zod schemas for input validation
+const CheckoutItemInputSchema = z.object({
+  productId: z.number().int().positive().optional(),
+  variantId: z.string().min(1, "Variant ID required"),
+  quantity: z.number().int().min(1, "Quantity must be at least 1"),
+  unitPrice: z.number().min(0).optional(),
+});
+
+const VariantIdSchema = z.string().min(1, "Variant ID required");
+
+const ShippingMethodIdSchema = z
+  .number()
+  .int()
+  .positive("Invalid shipping method ID");
+
+const PaymentMethodIdSchema = z
+  .number()
+  .int()
+  .positive("Invalid payment method ID");
+
+const AddressSchema = z
+  .object({
+    firstName: z.string().min(1).max(100).optional(),
+    lastName: z.string().min(1).max(100).optional(),
+    streetAddress1: z.string().min(1).max(200).optional(),
+    streetAddress2: z.string().max(200).optional(),
+    city: z.string().min(1).max(100).optional(),
+    postalCode: z.string().min(1).max(20).optional(),
+    state: z.string().max(100).optional(),
+    country: z.string().min(2).max(2).optional(), // ISO country code
+    phone: z.string().max(30).optional(),
+  })
+  .optional();
+
+const CheckoutAddressUpdateSchema = z.object({
+  shippingAddress: AddressSchema,
+  billingAddress: AddressSchema,
+  email: z.string().email("Invalid email").optional(),
+});
+
+const CheckoutFormUpdateSchema = z.object({
+  paymentId: z.string().min(1, "Payment ID required"),
+  shippingMethodString: z
+    .string()
+    .regex(/^\d+:\d+$/, "Invalid shipping method format"),
+  addresses: CheckoutAddressUpdateSchema,
+});
+
+// Inferred types from Zod schemas
+type CheckoutItemInputZod = z.infer<typeof CheckoutItemInputSchema>;
+type VariantId = z.infer<typeof VariantIdSchema>;
+type ShippingMethodId = z.infer<typeof ShippingMethodIdSchema>;
+type PaymentMethodId = z.infer<typeof PaymentMethodIdSchema>;
+type CheckoutFormUpdate = z.infer<typeof CheckoutFormUpdateSchema>;
 
 /**
  * Get current checkout session
@@ -85,19 +140,27 @@ function sanitizeCheckoutItems(items: CheckoutLineItem[]): CheckoutLineItem[] {
  * Add item to checkout
  */
 export async function addToCheckoutAction(
-  input: CheckoutItemInput,
+  input: CheckoutItemInputZod,
   existingCheckout?: Checkout,
 ): Promise<Checkout> {
+  // Validate input
+  const parsed = CheckoutItemInputSchema.safeParse(input);
+
+  if (!parsed.success) {
+    throw new Error(`Invalid input: ${parsed.error.message}`);
+  }
+  const validatedInput = parsed.data;
+
   try {
     if (!existingCheckout) {
       // Create new checkout
-      return await createCheckoutAction(input);
+      return await createCheckoutAction(validatedInput as CheckoutItemInput);
     }
 
     // Update existing checkout - add or increment quantity
     const existingItems = (existingCheckout.items || []) as CheckoutLineItem[];
     const existingItemIndex = existingItems.findIndex(
-      (item) => item.variantId === input.variantId,
+      (item) => item.variantId === validatedInput.variantId,
     );
 
     let updatedItems: CheckoutLineItem[];
@@ -106,7 +169,7 @@ export async function addToCheckoutAction(
       // Update existing item
       updatedItems = existingItems.map((item, index) => {
         if (index === existingItemIndex) {
-          const newQuantity = item.quantity + input.quantity;
+          const newQuantity = item.quantity + validatedInput.quantity;
 
           return {
             ...item,
@@ -122,11 +185,13 @@ export async function addToCheckoutAction(
       updatedItems = [
         ...existingItems,
         {
-          product: input.productId || 0,
-          variantId: input.variantId,
-          quantity: input.quantity,
-          unitPrice: input.unitPrice,
-          totalPrice: input.unitPrice ? input.unitPrice * input.quantity : 0,
+          product: validatedInput.productId || 0,
+          variantId: validatedInput.variantId,
+          quantity: validatedInput.quantity,
+          unitPrice: validatedInput.unitPrice,
+          totalPrice: validatedInput.unitPrice
+            ? validatedInput.unitPrice * validatedInput.quantity
+            : 0,
         },
       ];
     }
@@ -151,9 +216,17 @@ export async function addToCheckoutAction(
  * Update checkout item quantity
  */
 export async function updateCheckoutItemAction(
-  input: CheckoutItemInput,
+  input: CheckoutItemInputZod,
   existingCheckout?: Checkout,
 ): Promise<Checkout> {
+  // Validate input
+  const parsed = CheckoutItemInputSchema.safeParse(input);
+
+  if (!parsed.success) {
+    throw new Error(`Invalid input: ${parsed.error.message}`);
+  }
+  const validatedInput = parsed.data;
+
   try {
     if (!existingCheckout) throw new Error("Checkout not found");
 
@@ -161,11 +234,13 @@ export async function updateCheckoutItemAction(
 
     // Update quantity or filter out if quantity is 0
     let updatedItems = existingItems.map((item) => {
-      if (item.variantId === input.variantId) {
+      if (item.variantId === validatedInput.variantId) {
         return {
           ...item,
-          quantity: input.quantity,
-          totalPrice: item.unitPrice ? item.unitPrice * input.quantity : 0,
+          quantity: validatedInput.quantity,
+          totalPrice: item.unitPrice
+            ? item.unitPrice * validatedInput.quantity
+            : 0,
         };
       }
 
@@ -195,15 +270,23 @@ export async function updateCheckoutItemAction(
  * Remove item from checkout
  */
 export async function removeFromCheckoutAction(
-  variantId: string,
+  variantId: VariantId,
   existingCheckout?: Checkout,
 ): Promise<Checkout> {
+  // Validate input
+  const parsed = VariantIdSchema.safeParse(variantId);
+
+  if (!parsed.success) {
+    throw new Error(`Invalid variant ID: ${parsed.error.message}`);
+  }
+  const validatedVariantId = parsed.data;
+
   try {
     if (!existingCheckout) throw new Error("Checkout not found");
 
     const existingItems = (existingCheckout.items || []) as CheckoutLineItem[];
     const updatedItems = existingItems.filter(
-      (item) => item.variantId !== variantId,
+      (item) => item.variantId !== validatedVariantId,
     );
 
     const updatedCheckout = await payloadSdk.update({
@@ -281,9 +364,16 @@ export async function updateCheckoutAddressAction(
  * Update checkout shipping method
  */
 export async function updateCheckoutShippingAction(
-  shippingMethodId: number,
+  shippingMethodId: ShippingMethodId,
   existingCheckout?: Checkout,
 ): Promise<Checkout> {
+  // Validate input
+  const parsed = ShippingMethodIdSchema.safeParse(shippingMethodId);
+
+  if (!parsed.success) {
+    throw new Error(`Invalid shipping method: ${parsed.error.message}`);
+  }
+
   try {
     if (!existingCheckout) throw new Error("Checkout not found");
 
@@ -291,7 +381,7 @@ export async function updateCheckoutShippingAction(
       collection: "checkout",
       id: existingCheckout.id,
       data: {
-        shippingMethod: shippingMethodId,
+        shippingMethod: parsed.data,
       },
       depth: 2,
     });
@@ -307,9 +397,16 @@ export async function updateCheckoutShippingAction(
  * Update checkout payment method
  */
 export async function updateCheckoutPaymentAction(
-  paymentMethodId: number,
+  paymentMethodId: PaymentMethodId,
   existingCheckout?: Checkout,
 ): Promise<Checkout> {
+  // Validate input
+  const parsed = PaymentMethodIdSchema.safeParse(paymentMethodId);
+
+  if (!parsed.success) {
+    throw new Error(`Invalid payment method: ${parsed.error.message}`);
+  }
+
   try {
     if (!existingCheckout) throw new Error("Checkout not found");
 
@@ -317,7 +414,7 @@ export async function updateCheckoutPaymentAction(
       collection: "checkout",
       id: existingCheckout.id,
       data: {
-        payment: paymentMethodId,
+        payment: parsed.data,
       },
       depth: 2,
     });
@@ -333,42 +430,39 @@ export async function updateCheckoutPaymentAction(
  * Unified checkout form update - updates addresses, shipping, and payment in one call
  */
 export async function updateCheckoutFormAction(
-  providerId: string, // Payment provider block ID
-  shippingMethodString: string, // Format: "${shippingId}:${blockIndex}"
-  addresses: CheckoutAddressUpdate,
+  paymentId: CheckoutFormUpdate["paymentId"],
+  shippingMethodString: CheckoutFormUpdate["shippingMethodString"],
+  addresses: CheckoutFormUpdate["addresses"],
   existingCheckout: Checkout,
 ): Promise<Checkout> {
+  // Validate inputs
+  const parsed = CheckoutFormUpdateSchema.safeParse({
+    paymentId,
+    shippingMethodString,
+    addresses,
+  });
+
+  if (!parsed.success) {
+    throw new Error(`Invalid form data: ${parsed.error.message}`);
+  }
+  const validated = parsed.data;
+
   try {
     if (!existingCheckout) throw new Error("Checkout not found");
 
     // Parse shippingMethodString to extract shippingId
-    const [shippingId] = shippingMethodString.split(":");
+    const [shippingId] = validated.shippingMethodString.split(":");
 
-    // Lookup Payment doc by providerId
-    const paymentResult = await payloadSdk.find({
-      collection: "payments",
-      where: {
-        "providers.id": { equals: providerId },
-      },
-      limit: 1,
-    });
-
-    if (!paymentResult.docs[0]) {
-      throw new Error(
-        `Payment method with provider ID ${providerId} not found`,
-      );
-    }
-
-    // Update checkout with all form data
+    // Update checkout with all form data - use paymentId directly
     const updatedCheckout = await payloadSdk.update({
       collection: "checkout",
       id: existingCheckout.id,
       data: {
-        shippingAddress: addresses.shippingAddress,
-        billingAddress: addresses.billingAddress,
-        email: addresses.email,
+        shippingAddress: validated.addresses.shippingAddress,
+        billingAddress: validated.addresses.billingAddress,
+        email: validated.addresses.email,
         shippingMethod: Number(shippingId),
-        payment: paymentResult.docs[0].id,
+        payment: Number(validated.paymentId),
       },
       depth: 2,
     });

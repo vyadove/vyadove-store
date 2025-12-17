@@ -5,7 +5,6 @@ import { fileURLToPath } from "node:url";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 
-import { Carts } from "./collections/Carts/Carts";
 import { Collections } from "./collections/Collections";
 import { GiftCards } from "./collections/GiftCards";
 import { Locations } from "./collections/Locations";
@@ -19,7 +18,6 @@ import { Users } from "./collections/Users";
 import StoreSettings from "./globals/StoreSettings";
 import { plugins } from "./plugins";
 import { Themes } from "./collections/Themes/Themes";
-import { CheckoutSessions } from "./collections/CheckoutSessions/CheckoutSessions";
 import { FooterPage } from "./collections/pages/Footer";
 
 import { HeroPage } from "./collections/pages/Hero";
@@ -80,7 +78,6 @@ export default buildConfig({
 
         GiftCards,
         Themes,
-        Carts,
         Checkouts,
 
         // Pages
@@ -95,7 +92,6 @@ export default buildConfig({
         Payments,
         Locations,
         Shipping,
-        CheckoutSessions,
     ],
     globals: [StoreSettings, MainMenu],
     cors: {

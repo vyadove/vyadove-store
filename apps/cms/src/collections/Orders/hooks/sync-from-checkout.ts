@@ -1,5 +1,9 @@
 import type { CollectionBeforeChangeHook } from "payload";
-import type { Checkout, Order } from "@vyadove/types";
+import type { Order } from "@vyadove/types";
+import { z } from "zod";
+
+// Zod schema for validating checkoutId
+const CheckoutIdSchema = z.number().int().positive();
 
 /**
  * Syncs order data from the unified Checkout collection
@@ -20,8 +24,35 @@ export const syncFromCheckout: CollectionBeforeChangeHook<Order> = async ({
         throw new Error("Checkout is required to create an order");
     }
 
-    const checkoutId =
+    const rawCheckoutId =
         typeof data.checkout === "object" ? data.checkout.id : data.checkout;
+
+    // Validate checkoutId with Zod
+    const checkoutIdResult = CheckoutIdSchema.safeParse(rawCheckoutId);
+    if (!checkoutIdResult.success) {
+        throw new Error(
+            `Invalid checkout ID: ${checkoutIdResult.error.message}`
+        );
+    }
+    const checkoutId = checkoutIdResult.data;
+
+    // P1.3: Check for existing order from this checkout (race condition prevention)
+    const existingOrder = await req.payload.find({
+        collection: "orders",
+        where: {
+            and: [
+                { checkout: { equals: checkoutId } },
+                { orderStatus: { not_equals: "failed" } },
+            ],
+        },
+        limit: 1,
+    });
+
+    if (existingOrder.docs.length > 0) {
+        throw new Error(
+            `Order already exists for checkout ${checkoutId}: ${existingOrder.docs[0].orderId}`
+        );
+    }
 
     // Fetch the checkout with full details
     const checkout = await req.payload.findByID({

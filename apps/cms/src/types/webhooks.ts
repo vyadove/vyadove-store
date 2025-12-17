@@ -31,3 +31,13 @@ export interface ShippingDetails {
 
 export type PaymentSucceededHandler = StripeWebhookHandler<PaymentWebhookEvent>;
 export type PaymentCanceledHandler = StripeWebhookHandler<PaymentWebhookEvent>;
+
+export interface CheckoutSessionWebhookEvent {
+    data: {
+        object: Stripe.Checkout.Session;
+    };
+    id: string;
+}
+
+export type CheckoutSessionCompletedHandler =
+    StripeWebhookHandler<CheckoutSessionWebhookEvent>;

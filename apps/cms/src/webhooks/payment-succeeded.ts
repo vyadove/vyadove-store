@@ -27,6 +27,30 @@ export const paymentSucceeded: PaymentSucceededHandler = async ({
     }
 
     try {
+        // Idempotency check: Find order and check if already processed
+        const existingOrders = await payload.find({
+            collection: "orders",
+            where: { orderId: { equals: orderId } },
+            limit: 1,
+        });
+
+        if (!existingOrders.docs.length) {
+            logger.error(`❌ Order ${orderId} not found`);
+            return;
+        }
+
+        const existingOrder = existingOrders.docs[0];
+
+        // Skip if already paid with same paymentIntentId (idempotency)
+        if (
+            existingOrder.paymentStatus === "paid" &&
+            existingOrder.paymentIntentId === paymentIntent.id
+        ) {
+            logger.info(
+                `⏭️ Order ${orderId} already marked as paid, skipping duplicate webhook`
+            );
+            return;
+        }
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
             apiVersion: "2025-02-24.acacia" as any,
         });

@@ -110,6 +110,7 @@ export const Orders: CollectionConfig = {
                         { label: "Pending", value: "pending" },
                         { label: "Processing", value: "processing" },
                         { label: "Shipped", value: "shipped" },
+                        { label: "Failed", value: "failed" },
                         { label: "Delivered", value: "delivered" },
                         { label: "Canceled", value: "canceled" },
                     ],
@@ -150,10 +151,20 @@ export const Orders: CollectionConfig = {
             },
         },
         {
+            name: "stripeSessionId",
+            type: "text",
+            admin: {
+                position: "sidebar",
+                readOnly: true,
+                description: "Stripe Checkout Session ID",
+            },
+        },
+        {
             name: "sessionUrl",
             type: "text",
             admin: {
                 disabled: true,
+                description: "Stripe Checkout Session URL",
             },
         },
         {

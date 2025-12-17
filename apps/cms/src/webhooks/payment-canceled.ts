@@ -1,5 +1,8 @@
 import type { PaymentCanceledHandler } from "@/types/webhooks";
-import { sendOrderCancellationEmail } from "./payment-handlers";
+import {
+    sendOrderCancellationEmail,
+    sendPaymentFailedEmail,
+} from "./payment-handlers";
 
 /**
  * This webhook will run whenever a payment intent is canceled
@@ -25,11 +28,25 @@ export const paymentCanceled: PaymentCanceledHandler = async ({
     }
 
     try {
+        // Find the order to get checkout ID for retry URL
+        const existingOrders = await payload.find({
+            collection: "orders",
+            where: { orderId: { equals: orderId } },
+            limit: 1,
+        });
+
+        const existingOrder = existingOrders.docs[0];
+        const checkoutId =
+            typeof existingOrder?.checkout === "object"
+                ? existingOrder.checkout.id
+                : existingOrder?.checkout;
+
         // Update order status in Payload CMS
         const result = await payload.update({
             collection: "orders",
             data: {
                 orderStatus: "canceled",
+                paymentStatus: "failed",
             },
             where: {
                 orderId: {
@@ -40,9 +57,22 @@ export const paymentCanceled: PaymentCanceledHandler = async ({
 
         logger.info(`✅ Payment canceled for Order ID: ${orderId}`, result);
 
-        // Send cancellation email
+        // Send cancellation + failure email with retry link
         if (customerEmail) {
             sendOrderCancellationEmail(customerEmail, orderId, logger);
+
+            // Send failure email with retry link if checkout exists
+            if (checkoutId) {
+                const shopUrl =
+                    process.env.NEXT_PUBLIC_SHOP_URL || "http://localhost:3020";
+                const retryUrl = `${shopUrl}/checkout?retry=${checkoutId}`;
+                sendPaymentFailedEmail(
+                    customerEmail,
+                    orderId,
+                    retryUrl,
+                    logger
+                );
+            }
         }
     } catch (error) {
         logger.error("❌ Error updating order status:", error);

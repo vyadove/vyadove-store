@@ -6,6 +6,8 @@ import { stripeWebhooks } from "./routes/webhooks";
 import { StripeBlock } from "./blocks/StripeBlock";
 
 export { stripeCheckout } from "./services/stripe-checkout";
+export { createCheckoutSession } from "./utilities/create-checkout-session";
+export { mapToStripeLineItems } from "./utilities/map-to-stripe";
 import pkg from "../package.json";
 
 export const stripePlugin =
