@@ -3,7 +3,8 @@ import type { CollectionConfig } from "payload";
 import { admins, anyone } from "@/access/roles";
 import { HandleField } from "@/fields/handle";
 import { SeoField } from "@/fields/seo";
-import { revalidateShop } from "@/collections/Products/hooks/revalidate-shop";
+import { createRevalidateHook } from "@/utils/revalidate-shop";
+import { CacheTags } from "@vyadove/types/cache";
 import { FormBlock } from "@/blocks/Form";
 import { groups } from "@/collections/groups";
 import slugify from "slugify";
@@ -165,7 +166,7 @@ export const Category: CollectionConfig = {
     ],
 
     hooks: {
-        afterChange: [revalidateShop],
+        afterChange: [createRevalidateHook({ tag: CacheTags.CATEGORIES })],
         beforeChange: [syncHandleWithTitle],
     },
 };

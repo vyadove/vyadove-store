@@ -134,6 +134,10 @@ const ShopScene = () => {
       .filter(Boolean);
   }, [q, searchQuery.data]);
 
+  // Check if search returned no results
+  const hasNoSearchResults =
+    !!q && searchQuery.isSuccess && searchIds?.length === 0;
+
   // Build where clause that combines search + category filters
   const whereClause = useMemo(() => {
     const conditions: any[] = [];
@@ -141,6 +145,9 @@ const ShopScene = () => {
     // Search filter (when searching)
     if (q && searchIds?.length) {
       conditions.push({ id: { in: searchIds } });
+    } else if (hasNoSearchResults) {
+      // Force empty results when search finds nothing
+      conditions.push({ id: { equals: -1 } });
     }
 
     // Category filter (when categories selected)
@@ -158,7 +165,7 @@ const ShopScene = () => {
     if (conditions.length === 1) return conditions[0];
 
     return { and: conditions };
-  }, [q, searchIds, selectedCategories, priceFilters]);
+  }, [q, searchIds, selectedCategories, priceFilters, hasNoSearchResults]);
 
   const productsQuery = usePayloadFindQuery("products", {
     findArgs: {
@@ -169,7 +176,7 @@ const ShopScene = () => {
       ...(whereClause && { where: whereClause }),
     },
     useQueryArgs: {
-      enabled: !q || (!!q && searchQuery.isSuccess),
+      enabled: !q || searchQuery.isSuccess,
     },
   });
 

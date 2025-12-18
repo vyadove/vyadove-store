@@ -123,7 +123,7 @@ export const CategoryFilterMenu = ({
 // Button Component
 interface CategoryFilterButtonProps {
   filterName: (typeof filterKeys)[keyof typeof filterKeys];
-  handlePath: string;
+  handlePath: string[];
   buttonLabel: string;
 }
 
@@ -141,7 +141,8 @@ const CategoryFilterButton = ({
         // parent: { equals: null },
         handle: {
           // equals: "experiences",
-          equals: handlePath,
+          // equals: handlePath,
+          in: handlePath,
         },
       },
       limit: 1,

@@ -25,13 +25,13 @@ export const FilterBar: React.FC<any> = () => {
         <CategoryFilterButton
           buttonLabel="Experiences"
           filterName="experiences"
-          handlePath="experiences"
+          handlePath={["dining-and-culinary"]}
         />
 
         <CategoryFilterButton
           buttonLabel="Occasions"
           filterName="occasions"
-          handlePath="occasions"
+          handlePath={[]}
         />
 
         <PriceFilterButton />

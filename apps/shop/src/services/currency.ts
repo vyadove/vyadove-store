@@ -1,5 +1,7 @@
 import { unstable_cache } from "next/cache";
 
+import { CacheTags } from "@vyadove/types/cache";
+
 // Currency codes are dynamic - sourced from CMS StoreSettings
 export type ExchangeRates = Record<string, number>;
 
@@ -102,8 +104,8 @@ export const getExchangeRates = unstable_cache(
 
     return rates;
   },
-  ["exchange-rates"],
-  { revalidate: CACHE_DURATION, tags: ["exchange-rates"] },
+  [CacheTags.EXCHANGE_RATES],
+  { revalidate: CACHE_DURATION, tags: [CacheTags.EXCHANGE_RATES] },
 );
 
 /**

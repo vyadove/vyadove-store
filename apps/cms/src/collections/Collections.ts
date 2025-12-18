@@ -3,7 +3,8 @@ import type { CollectionConfig } from "payload";
 import { admins, anyone } from "@/access/roles";
 import { HandleField } from "@/fields/handle";
 import { SeoField } from "@/fields/seo";
-import { revalidateShop } from "@/collections/Products/hooks/revalidate-shop";
+import { createRevalidateHook } from "@/utils/revalidate-shop";
+import { CacheTags } from "@vyadove/types/cache";
 import { groups } from "./groups";
 
 export const Collections: CollectionConfig = {
@@ -64,6 +65,6 @@ export const Collections: CollectionConfig = {
     ],
 
     hooks: {
-        afterChange: [revalidateShop],
+        afterChange: [createRevalidateHook({ tag: CacheTags.COLLECTIONS })],
     },
 };

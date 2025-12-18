@@ -7,7 +7,8 @@ import { HandleField } from "@/fields/handle";
 import { groups } from "../groups";
 import { deleteMedia } from "./hooks/delete-media";
 import { SeoField } from "@/fields/seo";
-import { revalidateShop } from "@/collections/Products/hooks/revalidate-shop";
+import { createRevalidateHook } from "@/utils/revalidate-shop";
+import { CacheTags } from "@vyadove/types/cache";
 import { ManualProvider } from "@/collections/Payments";
 import { PricingTierArrayField } from "@/collections/Products/fields/pricing-tier";
 import { syncHandleWithTitle } from "@/collections/Products/hooks";
@@ -372,7 +373,7 @@ export const Products: CollectionConfig = {
     ],
     hooks: {
         afterDelete: [deleteMedia],
-        afterChange: [revalidateShop],
+        afterChange: [createRevalidateHook({ tag: CacheTags.PRODUCTS })],
         beforeChange: [syncHandleWithTitle],
     },
 };

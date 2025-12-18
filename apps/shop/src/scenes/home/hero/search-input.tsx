@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Routes } from "@/store.routes";
 import {
@@ -16,16 +16,21 @@ import { useDebouncedValue } from "@/lib/hooks";
 
 export const SearchInput = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
   const [isPending, debouncedQuery] = useDebouncedValue(query, 500);
 
   const handleSearch = useCallback(
     (searchTerm: string = debouncedQuery) => {
       if (searchTerm.trim()) {
-        router.push(`${Routes.shop}?q=${encodeURIComponent(searchTerm)}`);
+        // Preserve existing URL params while updating search query
+        const newParams = new URLSearchParams(searchParams.toString());
+
+        newParams.set("q", searchTerm);
+        router.push(`${Routes.shop}?${newParams.toString()}`);
       }
     },
-    [debouncedQuery, router],
+    [debouncedQuery, router, searchParams],
   );
 
   // Auto-search when debounced value changes (optional)

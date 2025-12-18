@@ -3,5 +3,9 @@
     "version": "0.0.3",
     "main": "index.ts",
     "types": "index.ts",
-    "private": true
+    "private": true,
+    "exports": {
+        ".": "./index.ts",
+        "./cache": "./cache.ts"
+    }
 }

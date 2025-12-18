@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 
 import Link from "next/link";
@@ -157,7 +157,9 @@ export function SearchSheet() {
                         <Button
                           // asChild
                           className="w-full"
-                          onClick={() => setOpen(false)}
+                          onClick={() => {
+                            setOpen(false);
+                          }}
                           size="md"
                         >
                           See all results

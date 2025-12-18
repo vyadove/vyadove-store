@@ -3,6 +3,8 @@ import type { GlobalConfig } from "payload";
 import { admins, anyone } from "@/access/roles";
 import currencyCodes from "currency-codes";
 import { groups } from "@/collections/groups";
+import { revalidateShop } from "@/utils/revalidate-shop";
+import { CacheTags } from "@vyadove/types/cache";
 
 // All available currencies from ISO 4217 standard
 const allCurrencyOptions = currencyCodes.codes().map((code) => ({
@@ -21,29 +23,11 @@ const StoreSettings: GlobalConfig = {
     },
     hooks: {
         afterChange: [
-            async () => {
-                // Revalidate shop cache when settings change
-                const shopUrl =
-                    process.env.NEXT_PUBLIC_SHOP_URL || "http://localhost:3020";
-                const secret = process.env.REVALIDATION_SECRET_TOKEN;
-
-                if (!secret) {
-                    console.warn(
-                        "REVALIDATION_SECRET_TOKEN not set, skipping shop cache invalidation"
-                    );
-                    return;
-                }
-
-                try {
-                    await fetch(`${shopUrl}/api/revalidate`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ tag: "store-settings", secret }),
-                    });
-                    console.log("✓ Shop store-settings cache invalidated");
-                } catch (error) {
-                    console.error("Failed to invalidate shop cache:", error);
-                }
+            async ({ req }) => {
+                await revalidateShop({
+                    req,
+                    options: { tag: CacheTags.STORE_SETTINGS },
+                });
             },
         ],
     },

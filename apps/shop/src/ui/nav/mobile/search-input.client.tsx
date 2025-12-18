@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -44,21 +44,38 @@ export const SearchInput = ({ placeholder }: { placeholder: string }) => {
   const [query, setQuery] = useState(searchParamQuery);
   const [_isQueryPending, debouncedQuery] = useDebouncedValue(query, 100);
 
+  // Track if user is actively typing (vs URL sync)
+  const isUserTyping = useRef(false);
+
   useEffect(() => {
     if (!query) return;
 
-    router.prefetch(`${Routes.shop}?q=${encodeURIComponent(query)}`);
-  }, [query, router]);
+    // Preserve existing URL params while updating search query
+    const newParams = new URLSearchParams(searchParams.toString());
+
+    newParams.set("q", query);
+    router.prefetch(`${Routes.shop}?${newParams.toString()}`);
+  }, [query, router, searchParams]);
 
   useEffect(() => {
-    if (debouncedQuery) {
-      router.push(`${Routes.shop}?q=${encodeURIComponent(debouncedQuery)}`, {
+    // Only push if user is typing and query differs from URL
+    if (
+      isUserTyping.current &&
+      debouncedQuery &&
+      debouncedQuery !== searchParamQuery
+    ) {
+      const newParams = new URLSearchParams(searchParams.toString());
+
+      newParams.set("q", debouncedQuery);
+      router.push(`${Routes.shop}?${newParams.toString()}`, {
         scroll: false,
       });
     }
-  }, [debouncedQuery, router]);
+    // Reset typing flag after debounce completes
+    isUserTyping.current = false;
+  }, [debouncedQuery, router, searchParams, searchParamQuery]);
 
-  // Sync query state with URL when navigating away from shop
+  // Sync query state with URL when navigating or when URL changes externally
   useEffect(() => {
     if (pathname !== Routes.shop) {
       setQuery("");
@@ -74,9 +91,8 @@ export const SearchInput = ({ placeholder }: { placeholder: string }) => {
       enterKeyHint="search"
       name="search"
       onChange={(e) => {
-        const query = e.target.value;
-
-        setQuery(query);
+        isUserTyping.current = true;
+        setQuery(e.target.value);
       }}
       placeholder={placeholder}
       type="search"

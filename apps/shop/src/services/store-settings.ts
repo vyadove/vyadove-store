@@ -1,5 +1,7 @@
 import { unstable_cache } from "next/cache";
 
+import { CacheTags } from "@vyadove/types/cache";
+
 import { payloadSdk } from "@/utils/payload-sdk";
 
 import type {
@@ -8,6 +10,8 @@ import type {
   RoundingRule,
 } from "./currency";
 import { getCurrencySymbol } from "./currency";
+
+console.log("CacheTags --- :  , ", CacheTags);
 
 export type StoreSettings = {
   name: string;
@@ -113,8 +117,8 @@ export const fetchStoreSettings = unstable_cache(
       return DEFAULT_SETTINGS;
     }
   },
-  ["store-settings"],
-  { revalidate: 3600, tags: ["store-settings"] }, // 1 min cache (increase in prod)
+  [CacheTags.STORE_SETTINGS],
+  { revalidate: 3600, tags: [CacheTags.STORE_SETTINGS] }, // 1 min cache (increase in prod)
 );
 
 /**
