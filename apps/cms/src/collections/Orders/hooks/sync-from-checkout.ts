@@ -72,10 +72,6 @@ export const syncFromCheckout: CollectionBeforeChangeHook<Order> = async ({
     }
 
     // Validate required fields
-    if (!checkout.shippingMethod) {
-        throw new Error("Shipping method is required");
-    }
-
     if (!checkout.payment) {
         throw new Error("Payment method is required");
     }
@@ -119,10 +115,7 @@ export const syncFromCheckout: CollectionBeforeChangeHook<Order> = async ({
     data.currency = checkout.currency || data.currency || "usd";
     data.shippingAddress = checkout.shippingAddress || data.shippingAddress;
     data.billingAddress = checkout.billingAddress || data.billingAddress;
-    data.shipping =
-        typeof checkout.shippingMethod === "object"
-            ? checkout.shippingMethod.id
-            : checkout.shippingMethod;
+
     data.payment =
         typeof checkout.payment === "object"
             ? checkout.payment.id

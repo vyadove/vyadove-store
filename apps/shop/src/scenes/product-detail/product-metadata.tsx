@@ -31,7 +31,9 @@ export const ProductMetadata = ({ className }: { className?: string }) => {
     const config = variant?.participants;
     const min = config?.min ?? 1;
     const max = config?.max ?? 20;
+
     if (min === max) return `${min} ${min === 1 ? "person" : "people"}`;
+
     return `${min}-${max} people`;
   }, [variant]);
 
@@ -42,6 +44,7 @@ export const ProductMetadata = ({ className }: { className?: string }) => {
   // Compute validity text
   const validityText = useMemo(() => {
     const prod = product as any;
+
     if (!prod.validity) return "Lifetime validity";
 
     const date = new Date(prod.validity);
@@ -52,6 +55,7 @@ export const ProductMetadata = ({ className }: { className?: string }) => {
     if (diffDays <= 0) return "Expired";
     if (diffDays <= 30) return `${diffDays} days validity`;
     const months = Math.round(diffDays / 30);
+
     return `${months} month${months > 1 ? "s" : ""} validity`;
   }, [product]);
 

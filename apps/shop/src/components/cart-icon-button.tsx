@@ -23,7 +23,7 @@ export function CartIconButton() {
     >
       <CartIcon className="size-5" />
 
-      <span className="bg-accent-foreground text-accent absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold">
+      <span className="bg-primary text-primary-foreground font-light absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full text-xs">
         {totalUniqueItems > 99 ? "99+" : totalUniqueItems}
       </span>
     </Button>

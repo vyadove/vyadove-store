@@ -43,7 +43,7 @@ const Layout = async ({
           <TypographyH1 className="!text-3xl font-bold text-balance text-primary">
             {product?.title}
           </TypographyH1>
-          <TypographyP className="font-light text-balance">
+          <TypographyP className="font-light text-balance text-muted-foreground">
             {product?.description}
           </TypographyP>
         </div>

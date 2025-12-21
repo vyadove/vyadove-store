@@ -15,3 +15,4 @@ package-lock.json
 yarn.lock
 /apps/cms/src/migrations_2/
 /pnpm-lock.yaml
+/apps/cms/src/migrations/

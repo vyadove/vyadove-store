@@ -165,8 +165,8 @@ export const generateMetadata = async (): Promise<Metadata> => {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const locale = await getLocale();
-  const messages = await getMessages();
+  // const locale = await getLocale();
+  // const messages = await getMessages();
 
   // Get detected currency from middleware (Vercel GeoIP)
   const headersList = await headers();
@@ -176,19 +176,17 @@ export default async function RootLayout({
     <html
       className={`h-full antialiased ${sofiaProSoft.variable} ${sofiaPro.variable}  `}
       // className={`h-full antialiased `}
-      lang={locale}
+      // lang={locale}
     >
       <body className="flex min-h-full flex-col">
         <Providers detectedCurrency={detectedCurrency}>
-          <IntlClientProvider locale={locale} messages={messages}>
-            <div
-              className="flex min-h-full flex-1 flex-col"
-              vaul-drawer-wrapper=""
-            >
-              {children}
-            </div>
-            <Toaster gutter={8} position="top-right" />
-          </IntlClientProvider>
+          <div
+            className="flex min-h-full flex-1 flex-col"
+            vaul-drawer-wrapper=""
+          >
+            {children}
+          </div>
+          <Toaster gutter={8} position="top-right" />
           <SpeedInsights />
           <Analytics />
         </Providers>

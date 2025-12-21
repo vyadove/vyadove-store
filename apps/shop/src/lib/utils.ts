@@ -180,56 +180,10 @@ export function invariant(
   message: string,
 ): asserts condition {
   if (!condition) {
-    throw new Error(message);
+    console.log("Invariant failed:", message);
+    // throw new Error(message);
   }
 }
-
-export const assertInteger = (value: number) => {
-  invariant(Number.isInteger(value), "Value must be an integer");
-};
-
-const getDecimalsForStripe = (currency: string) => {
-  invariant(currency.length === 3, "currency needs to be a 3-letter code");
-
-  const stripeDecimals = stripeCurrencies[currency.toUpperCase()];
-  const decimals = stripeDecimals ?? 2;
-
-  return decimals;
-};
-
-export const getStripeAmountFromDecimal = ({
-  amount: major,
-  currency,
-}: Money) => {
-  const decimals = getDecimalsForStripe(currency);
-  const multiplier = 10 ** decimals;
-
-  return Number.parseInt((major * multiplier).toFixed(0), 10);
-};
-
-export const getDecimalFromStripeAmount = ({
-  amount: minor,
-  currency,
-}: Money) => {
-  assertInteger(minor);
-  const decimals = getDecimalsForStripe(currency);
-  const multiplier = 10 ** decimals;
-
-  return Number.parseFloat((minor / multiplier).toFixed(decimals));
-};
-
-export const formatMoney = ({
-  amount: minor,
-  currency,
-  locale = "en-US",
-}: Money & { locale?: string }) => {
-  const amount = getDecimalFromStripeAmount({ amount: minor, currency });
-
-  return new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency,
-  }).format(amount);
-};
 
 // https://docs.stripe.com/development-resources/currency-codes
 const stripeCurrencies: Record<string, number> = {

@@ -42,10 +42,7 @@ const DeleteItemButton = ({
 
   return (
     <div
-      className={cn(
-        "relative flex items-center justify-between text-small-regular",
-        className,
-      )}
+      className={cn("relative flex items-center justify-between", className)}
     >
       <Button
         className="absolute right-0 hover:text-destructive hover:bg-destructive/10 cursor-pointer items-center"

@@ -54,7 +54,9 @@ const CheckoutFormUpdateSchema = z.object({
   paymentId: z.string().min(1, "Payment ID required"),
   shippingMethodString: z
     .string()
-    .regex(/^\d+:\d+$/, "Invalid shipping method format"),
+    .regex(/^\d+:\d+$/, "Invalid shipping method format")
+    .optional()
+    .or(z.literal("")),
   addresses: CheckoutAddressUpdateSchema,
 });
 
@@ -490,15 +492,18 @@ export async function updateCheckoutFormAction(
   });
 
   if (!parsed.success) {
-    throw new Error(`Invalid form data: ${parsed.error.message}`);
+    console.error("error message : ", parsed.error.message);
+    throw new Error(`Invalid form data`);
   }
   const validated = parsed.data;
 
   try {
     if (!existingCheckout) throw new Error("Checkout not found");
 
-    // Parse shippingMethodString to extract shippingId
-    const [shippingId] = validated.shippingMethodString.split(":");
+    // Parse shippingMethodString to extract shippingId (optional for eVoucher orders)
+    const shippingId = validated.shippingMethodString
+      ? validated.shippingMethodString.split(":")[0]
+      : null;
 
     // Update checkout with all form data - use paymentId directly
     const updatedCheckout = await payloadSdk.update({
@@ -508,7 +513,7 @@ export async function updateCheckoutFormAction(
         shippingAddress: validated.addresses.shippingAddress,
         billingAddress: validated.addresses.billingAddress,
         email: validated.addresses.email,
-        shippingMethod: Number(shippingId),
+        ...(shippingId && { shippingMethod: Number(shippingId) }),
         payment: Number(validated.paymentId),
       },
       depth: 2,

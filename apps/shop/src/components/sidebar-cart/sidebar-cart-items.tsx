@@ -78,7 +78,7 @@ const SidebarCartItems = ({
                       data-testid="product-link"
                       href={Routes.productLink(product.handle as string)}
                     >
-                      <TypographyP className="text-[15px] leading-tight line-clamp-2 hover:underline">
+                      <TypographyP className="text-[14px] leading-tight line-clamp-2 hover:underline">
                         {product.title}
                         {variantTitle && ` - ${variantTitle}`}
                       </TypographyP>
@@ -125,7 +125,7 @@ const SidebarCartItems = ({
                           size="icon-sm"
                           variant="outline"
                         >
-                          <MinusIcon className="size-4" />
+                          <MinusIcon className="size-3" />
                         </Button>
                         <TypographySmall className="flex w-10 items-center justify-center font-medium">
                           {item.quantity}
@@ -145,7 +145,7 @@ const SidebarCartItems = ({
                           size="icon-sm"
                           variant="outline"
                         >
-                          <PlusIcon className="size-4" />
+                          <PlusIcon className="size-3" />
                         </Button>
                       </div>
 

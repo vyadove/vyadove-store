@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { TypographyP } from "@ui/shadcn/typography";
 import { Check } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
@@ -66,18 +67,18 @@ export const StepperItem = ({
         </div>
 
         {/* Title */}
-        <div
+        <TypographyP
           className={cn(
-            "text-sm transition-opacity",
+            "text-sm transition-opacity font-light",
             isCurrent
-              ? "font-semibold text-primary"
+              ? "text-primary"
               : isCompleted
                 ? "text-muted-foreground"
                 : "text-muted-foreground",
           )}
         >
           {step.title}
-        </div>
+        </TypographyP>
       </div>
 
       {/* Line */}

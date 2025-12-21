@@ -73,16 +73,6 @@ export default async function Product({
     },
   });
 
-  const featuredCollections = await payloadSdk.find({
-    collection: "collections",
-    limit: 1,
-    where: {
-      handle: {
-        equals: "popular",
-      },
-    },
-  });
-
   const [targetProduct] = product.docs;
 
   if (!targetProduct) {

@@ -259,14 +259,14 @@ async function NavBarLinks() {
         {/* Gifts Menu */}
         <NavigationMenuItem>
           <NavMenuTrigger>
-            <div className="flex items-center gap-1">
+            <span className="flex items-center gap-1">
               <AnimateOnHoverText>
                 <div className="flex items-center gap-1">
                   <GiftIcon size={16} />
                   Gifts
                 </div>
               </AnimateOnHoverText>
-            </div>
+            </span>
           </NavMenuTrigger>
 
           <NavigationMenuContent className="!rounded-xl !p-0">
@@ -332,12 +332,9 @@ export const DesktopNav = (props: ComponentPropsWithoutRef<"div">) => {
         <Separator className="h-full" orientation="vertical" />
 
         <div className="flex items-center gap-1">
-          <CurrencySelector variant="compact" />
-
           <SearchSheet />
 
           <CartIconButton />
-          <UserNav />
         </div>
       </div>
     </div>

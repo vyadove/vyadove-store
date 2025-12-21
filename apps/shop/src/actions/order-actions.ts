@@ -81,13 +81,6 @@ export async function createOrderFromCheckoutAction(
       };
     }
 
-    if (!checkout.shippingMethod) {
-      return {
-        success: false,
-        error: "Shipping method is required",
-      };
-    }
-
     if (!checkout.payment) {
       return {
         success: false,

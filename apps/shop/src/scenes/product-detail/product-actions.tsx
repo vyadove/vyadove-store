@@ -25,7 +25,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
   const router = useRouter();
   const { selectedVariant, participants } = useProductDetailContext();
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (openCart = true) => {
     if (!selectedVariant?.id) {
       toast.error("Please select a variant");
 
@@ -45,6 +45,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
         product,
         unitPrice,
         participants,
+        openCart,
       );
 
       console.log("addItem response:", res);
@@ -65,7 +66,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
           className="flex-1 font-light"
           data-testid="add-product-button"
           disabled={isAdding || !selectedVariant}
-          onClick={handleAddToCart}
+          onClick={() => handleAddToCart()}
           size="lg"
         >
           {isAdding ? (
@@ -81,8 +82,8 @@ export default function ProductActions({ product }: ProductActionsProps) {
           className="flex-1 font-light"
           disabled={isAdding || !selectedVariant}
           onClick={async () => {
-            await handleAddToCart();
-            router.push(Routes.cart);
+            await handleAddToCart(false);
+            router.push(Routes.checkout);
           }}
           outlined
           size="lg"

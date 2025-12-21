@@ -62,6 +62,7 @@ interface CheckoutContextType {
     product?: Product,
     unitPrice?: number,
     participants?: number,
+    openCart?: boolean,
   ) => Promise<Checkout>;
   updateItemQuantity: (
     variantId: string,
@@ -73,11 +74,11 @@ interface CheckoutContextType {
   updateShipping: (shippingMethodId: number) => Promise<Checkout>;
   updatePayment: (paymentMethodId: number) => Promise<Checkout>;
   refechCheckout: () => Promise<void>;
-  updateCheckoutForm: (
-    providerId: string,
-    shippingMethodString: string,
-    addresses: CheckoutAddressUpdate,
-  ) => Promise<Checkout>;
+  updateCheckoutForm: (args: {
+    providerId: string;
+    shippingMethodString: string;
+    addresses: CheckoutAddressUpdate;
+  }) => Promise<Checkout>;
 }
 
 const CheckoutContext = createContext<CheckoutContextType | null>(null);
@@ -144,6 +145,7 @@ function optimisticAddItem(args: {
 
   if (!oldCheckout) {
     const itemTotal = unitPrice ? unitPrice * quantity * participants : 0;
+
     return {
       id: 0,
       sessionId: `temp-${Date.now()}`,
@@ -247,6 +249,7 @@ function optimisticUpdateItem(
     updatedItems = items.map((item) => {
       if (item.variantId === variantId) {
         const itemParticipants = item.participants || 1;
+
         return {
           ...item,
           quantity,
@@ -690,6 +693,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     product?: Product,
     unitPrice?: number,
     participants = 1,
+    openCart = true,
   ) => {
     const result = await addItemMutation.mutateAsync({
       variantId,
@@ -702,7 +706,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     });
 
     // Auto-open cart after successfully adding item
-    if (result?.id) {
+    if (result?.id && openCart) {
       openCartWithAutoClose();
     }
 
@@ -733,15 +737,11 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     return await updatePaymentMutation.mutateAsync(paymentMethodId);
   };
 
-  const updateCheckoutForm = async (
-    providerId: string,
-    shippingMethodString: string,
-    addresses: CheckoutAddressUpdate,
+  const updateCheckoutForm: CheckoutContextType["updateCheckoutForm"] = async (
+    args,
   ) => {
     return await updateFormMutation.mutateAsync({
-      providerId,
-      shippingMethodString,
-      addresses,
+      ...args,
     });
   };
 

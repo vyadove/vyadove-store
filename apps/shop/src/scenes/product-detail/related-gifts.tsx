@@ -11,10 +11,12 @@ export function RelatedGifts() {
   // Get the first category ID if available
   const categoryId = useMemo(() => {
     const categories = currentProduct?.category;
+
     if (!categories || !Array.isArray(categories) || categories.length === 0) {
       return null;
     }
     const firstCategory = categories[0];
+
     return typeof firstCategory === "object" ? firstCategory.id : firstCategory;
   }, [currentProduct?.category]);
 

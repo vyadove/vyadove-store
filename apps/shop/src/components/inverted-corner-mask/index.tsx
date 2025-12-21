@@ -46,6 +46,7 @@ function deepMergeCorners(
 
   for (const key of CORNER_KEYS) {
     const override = overrides[key];
+
     if (override) {
       result[key] = { ...defaults[key], ...override };
     } else {

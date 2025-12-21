@@ -7,7 +7,8 @@ export const Routes = {
   account: "/account",
   checkout: "/checkout",
   checkoutReview: "/checkout/review",
-  cart: "/cart",
+  /** @deprecated Use checkout instead */
+  cart: "/checkout",
   shop: "/shop",
   orderTrack: "/order/track",
   orderTrackById: (orderId: string) => `/order/track/${orderId}`,
