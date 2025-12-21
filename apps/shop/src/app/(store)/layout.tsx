@@ -3,6 +3,7 @@ import { Footer } from "@/ui/footer/footer";
 import { accountToWebsiteJsonLd, JsonLd } from "@/ui/json-ld";
 import { Nav } from "@ui/nav/nav";
 
+import SidebarCart from "@/components/sidebar-cart";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 // todo -> metadata needs to be fixed properly
@@ -39,6 +40,7 @@ export default async function StoreLayout({
         </main>
         <Footer />
       </TooltipProvider>
+      <SidebarCart />
       <JsonLd
         jsonLd={accountToWebsiteJsonLd({
           account: null,

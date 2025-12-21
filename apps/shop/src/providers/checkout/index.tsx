@@ -15,6 +15,7 @@ import { useCurrencyOptional } from "@/providers/currency";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Checkout, Product } from "@vyadove/types";
 
+import { useSidebarCartStore } from "@/components/sidebar-cart/sidebar-cart.store";
 import { toast } from "@/components/ui/hot-toast";
 
 import {
@@ -47,7 +48,6 @@ interface StoreCheckout extends Checkout {
 interface CheckoutContextType {
   checkout: StoreCheckout | null;
   items: EnrichedCheckoutItem[];
-  isCartOpen: boolean;
   isLoading: boolean;
   isUpdating: boolean;
   itemCount: number;
@@ -56,14 +56,12 @@ interface CheckoutContextType {
   cartTotal: number;
   total: number;
   isEmpty: boolean;
-  openCart: () => void;
-  closeCart: () => void;
-  toggleCart: (value?: boolean) => void;
   addItem: (
     variantId: string,
     quantity: number,
     product?: Product,
     unitPrice?: number,
+    participants?: number,
   ) => Promise<Checkout>;
   updateItemQuantity: (
     variantId: string,
@@ -131,6 +129,7 @@ function optimisticAddItem(args: {
   quantity: number;
   productId?: number;
   unitPrice?: number;
+  participants?: number;
   currency?: string;
 }): Checkout {
   const {
@@ -139,10 +138,12 @@ function optimisticAddItem(args: {
     quantity,
     productId,
     unitPrice,
+    participants = 1,
     currency = "USD",
   } = args;
 
   if (!oldCheckout) {
+    const itemTotal = unitPrice ? unitPrice * quantity * participants : 0;
     return {
       id: 0,
       sessionId: `temp-${Date.now()}`,
@@ -152,17 +153,18 @@ function optimisticAddItem(args: {
           product: productId || 0,
           quantity,
           unitPrice,
-          totalPrice: unitPrice ? unitPrice * quantity : 0,
+          participants,
+          totalPrice: itemTotal,
           isLoading: true,
         } as CheckoutLineItem,
       ],
       status: "incomplete",
       currency,
-      subtotal: unitPrice ? unitPrice * quantity : 0,
+      subtotal: itemTotal,
       shippingTotal: 0,
       taxTotal: 0,
       discountTotal: 0,
-      total: unitPrice ? unitPrice * quantity : 0,
+      total: itemTotal,
       updatedAt: new Date().toISOString(),
       createdAt: new Date().toISOString(),
     } as Checkout;
@@ -176,15 +178,18 @@ function optimisticAddItem(args: {
   let updatedItems: CheckoutLineItem[];
 
   if (existingItemIndex >= 0) {
-    // Update existing item
+    // Update existing item - preserve participants from existing item
     updatedItems = items.map((item, index) => {
       if (index === existingItemIndex) {
         const newQuantity = item.quantity + quantity;
+        const itemParticipants = item.participants || 1;
 
         return {
           ...item,
           quantity: newQuantity,
-          totalPrice: item.unitPrice ? item.unitPrice * newQuantity : 0,
+          totalPrice: item.unitPrice
+            ? item.unitPrice * newQuantity * itemParticipants
+            : 0,
           isLoading: true,
         };
       }
@@ -192,7 +197,7 @@ function optimisticAddItem(args: {
       return item;
     });
   } else {
-    // Add new item
+    // Add new item with participants
     updatedItems = [
       ...items,
       {
@@ -200,7 +205,8 @@ function optimisticAddItem(args: {
         product: productId || 0,
         quantity,
         unitPrice,
-        totalPrice: unitPrice ? unitPrice * quantity : 0,
+        participants,
+        totalPrice: unitPrice ? unitPrice * quantity * participants : 0,
         isLoading: true,
       },
     ];
@@ -237,13 +243,16 @@ function optimisticUpdateItem(
     // Remove item if quantity is 0
     updatedItems = items.filter((item) => item.variantId !== variantId);
   } else {
-    // Update quantity
+    // Update quantity - preserve participants
     updatedItems = items.map((item) => {
       if (item.variantId === variantId) {
+        const itemParticipants = item.participants || 1;
         return {
           ...item,
           quantity,
-          totalPrice: item.unitPrice ? item.unitPrice * quantity : 0,
+          totalPrice: item.unitPrice
+            ? item.unitPrice * quantity * itemParticipants
+            : 0,
           isLoading: true,
         };
       }
@@ -299,7 +308,9 @@ const CHECKOUT_SESSION_FLAG = "has-checkout-session";
 
 export function CheckoutProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const openCartWithAutoClose = useSidebarCartStore(
+    (s) => s.openCartWithAutoClose,
+  );
   const { status: authStatus } = useAuth();
   const prevAuthStatus = useRef<string | null>(null);
   const currencyContext = useCurrencyOptional();
@@ -382,11 +393,13 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
       quantity,
       productId,
       unitPrice,
+      participants,
     }: {
       variantId: string;
       quantity: number;
       productId?: number;
       unitPrice?: number;
+      participants?: number;
     }) =>
       addToCheckoutAction(
         {
@@ -394,11 +407,18 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
           quantity,
           productId,
           unitPrice,
+          participants,
         },
         checkout,
         selectedCurrency,
       ),
-    onMutate: async ({ variantId, quantity, productId, unitPrice }) => {
+    onMutate: async ({
+      variantId,
+      quantity,
+      productId,
+      unitPrice,
+      participants,
+    }) => {
       // Cancel outgoing refetches
       await queryClient.cancelQueries({ queryKey: CHECKOUT_QUERY_KEY });
 
@@ -414,6 +434,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
           quantity,
           productId,
           unitPrice,
+          participants,
           currency: selectedCurrency,
         }),
       );
@@ -650,7 +671,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
   const isEmpty = enrichedCheckout?.isEmpty ?? true;
 
   const isCartLoading =
-    isLoading || (shouldFetchCheckout.isInitial && isPending);
+    isLoading || (shouldFetchCheckout.isInitial === true && isPending);
 
   const isUpdating =
     addItemMutation.isPending ||
@@ -663,25 +684,29 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     updateFormMutation.isPending ||
     updateCurrencyMutation.isPending;
 
-  const openCart = () => setIsCartOpen(true);
-  const closeCart = () => setIsCartOpen(false);
-  const toggleCart = (value?: boolean) =>
-    setIsCartOpen((prev) => (value !== undefined ? value : !prev));
-
   const addItem = async (
     variantId: string,
     quantity = 1,
     product?: Product,
     unitPrice?: number,
+    participants = 1,
   ) => {
-    return await addItemMutation.mutateAsync({
+    const result = await addItemMutation.mutateAsync({
       variantId,
       quantity,
       productId: product?.id,
       unitPrice:
         unitPrice ||
         product?.variants?.find((v) => v.id === variantId)?.price?.amount,
+      participants,
     });
+
+    // Auto-open cart after successfully adding item
+    if (result?.id) {
+      openCartWithAutoClose();
+    }
+
+    return result;
   };
 
   const updateItemQuantity = async (variantId: string, quantity: number) => {
@@ -726,10 +751,9 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     return queryClient.invalidateQueries({ queryKey: CHECKOUT_QUERY_KEY });
   };
 
-  const value = {
+  const value: CheckoutContextType = {
     checkout: enrichedCheckout,
     items,
-    isCartOpen,
     isLoading: isCartLoading,
     isUpdating,
     itemCount,
@@ -738,9 +762,6 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     cartTotal,
     total,
     isEmpty,
-    openCart,
-    closeCart,
-    toggleCart,
     addItem,
     updateItemQuantity,
     removeItem,
@@ -750,7 +771,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
     updatePayment,
     updateCheckoutForm,
     refechCheckout,
-  } as CheckoutContextType;
+  };
 
   return (
     <CheckoutContext.Provider value={value}>

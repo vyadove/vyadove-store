@@ -41,6 +41,28 @@ const productTemplates: ProductTemplate[] = [
                     "Vegetarian, vegan, gluten-free, and allergy-friendly options available. Please notify us 48 hours in advance.",
             },
         ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Immerse yourself in an unforgettable {cuisine} dining experience. Our expert chefs craft each dish with precision and passion, using only the finest seasonal ingredients.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>{courses}-course tasting menu, wine pairings, amuse-bouche, chef interaction, commemorative menu card.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>Smart casual dress code. Please inform us of dietary restrictions 48 hours in advance. Children under 12 not recommended.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Present your voucher upon arrival. Experience typically lasts 2.5-3 hours. Reservations required, subject to availability.</p>",
+            },
+        ],
     },
 
     // Spa Days
@@ -72,6 +94,28 @@ const productTemplates: ProductTemplate[] = [
                     "Full spa access, sauna, steam room, relaxation lounge, healthy lunch, herbal teas, plush robes and slippers",
             },
         ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Escape the everyday with our {duration} spa retreat. Designed for complete relaxation and rejuvenation in a serene environment.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>{treatment} treatment, full spa access, sauna, steam room, relaxation lounge, healthy lunch, herbal teas, plush robes and slippers.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>Arrive 30 minutes early. Swimwear required for wet areas. Not suitable during pregnancy without medical clearance.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Present voucher at reception. Receive locker, robe, and slippers. Treatments scheduled at arrival.</p>",
+            },
+        ],
     },
 
     // Hot Air Balloon
@@ -98,6 +142,28 @@ const productTemplates: ProductTemplate[] = [
                 name: "Important Information",
                 valueTemplate:
                     "Weight limit 250 lbs per person. Not recommended for pregnant guests. Weather-dependent with free rescheduling.",
+            },
+        ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Drift peacefully above {location} at {time}. A magical airborne adventure with breathtaking views and unforgettable memories.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>{duration} flight, champagne toast, pre-flight refreshments, flight certificate, professional pilot, safety briefing.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>Max weight 250 lbs. Wear comfortable clothing and closed-toe shoes. Not suitable for pregnant guests. Age 6+.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Arrive at launch site 1 hour before {time}. Help with inflation optional. Flight duration weather-dependent.</p>",
             },
         ],
     },
@@ -139,6 +205,28 @@ const productTemplates: ProductTemplate[] = [
                     "3-hour class, maximum 12 participants, all ingredients provided, take-home recipes, complimentary wine",
             },
         ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Master the art of {cuisine} cooking with expert guidance. From knife skills to plating, learn professional techniques in a fun, interactive setting.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>3-hour hands-on class, all ingredients, apron, recipe cards, wine tasting, eat your creations.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>No experience required. Wear closed-toe shoes. Inform chef of allergies in advance. Age 14+.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Arrive 15 minutes early. Follow chef demonstrations, cook your dishes, enjoy meal together at the end.</p>",
+            },
+        ],
     },
 
     // Weekend Getaways
@@ -157,6 +245,7 @@ const productTemplates: ProductTemplate[] = [
         category: "Romantic Getaways",
         priceRange: [350, 800],
         pricingTier: "premium",
+        participants: { default: 2, min: 2, max: 2 },
         variantOptions: [
             {
                 option: "Room Type",
@@ -169,6 +258,28 @@ const productTemplates: ProductTemplate[] = [
                 name: "Included Amenities",
                 valueTemplate:
                     "Daily breakfast, WiFi, parking, access to fitness center and pool, late checkout available",
+            },
+        ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Escape to {location} for a romantic {duration} retreat. Stunning views, exceptional service, and unforgettable moments await.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>{duration} accommodation, daily breakfast, {amenity}, WiFi, parking, fitness center and pool access.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>Check-in 3pm, check-out 11am. Valid ID required. Pet-friendly rooms available upon request.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Present voucher at check-in. Request late checkout in advance. Concierge available for local recommendations.</p>",
             },
         ],
     },
@@ -206,6 +317,28 @@ const productTemplates: ProductTemplate[] = [
                     "6-hour tour with hotel pickup, designated driver, wine education, lunch pairing, must be 21+",
             },
         ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Journey through {location} wine country visiting {number} award-winning wineries. Expert-led tastings, vineyard tours, and gourmet experiences.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>Visits to {number} wineries, guided tastings, vineyard tours, gourmet lunch, transportation, bottle of wine to take home.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>Must be 21+ with valid ID. Comfortable walking shoes recommended. Designated driver provided.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Hotel pickup included. 6-hour experience with expert guide. All tastings and lunch included.</p>",
+            },
+        ],
     },
 
     // Massage
@@ -224,6 +357,7 @@ const productTemplates: ProductTemplate[] = [
         category: "Massage Therapy",
         priceRange: [70, 180],
         pricingTier: "basic",
+        participants: { default: 1, min: 1, max: 1 },
         variantOptions: [
             {
                 option: "Duration",
@@ -245,6 +379,28 @@ const productTemplates: ProductTemplate[] = [
                 name: "Massage Styles",
                 valueTemplate:
                     "Swedish relaxation, deep tissue therapy, hot stone, aromatherapy, sports massage, prenatal massage available",
+            },
+        ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Relax and rejuvenate with our {type} massage. Expert therapists customize each session to your needs for ultimate therapeutic benefit.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>{duration} customized massage, consultation, aromatherapy options, relaxation lounge access, herbal tea.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>Arrive 15 minutes early. Inform therapist of injuries or preferences. Not recommended within 24 hours of alcohol consumption.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Check in at reception. Complete brief consultation form. Therapist customizes session to your needs.</p>",
             },
         ],
     },
@@ -283,6 +439,28 @@ const productTemplates: ProductTemplate[] = [
                     "Up to 3 passengers, weight limit 600 lbs combined, photo ID required, weather-dependent, photos included",
             },
         ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Soar above {location} and witness breathtaking aerial views. A thrilling helicopter adventure with stunning photo opportunities.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>{duration} flight, professional pilot, landmark narration, photos, safety briefing, helipad access.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>Max 3 passengers, combined weight 600 lbs. Photo ID required. Not suitable for those with severe motion sickness.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Arrive 30 minutes early. Complete safety briefing. Board helicopter and enjoy spectacular views.</p>",
+            },
+        ],
     },
 
     // Birthday Celebrations
@@ -318,6 +496,28 @@ const productTemplates: ProductTemplate[] = [
                     "Private venue, custom menu planning, birthday cake, decorations, personalized music playlist, full service staff, cleanup",
             },
         ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Create unforgettable birthday memories at {location}. Everything is taken care of so you can focus on celebrating!</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>Private venue, custom menu, birthday cake, decorations, music, full service staff, complete cleanup.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>Book 2 weeks in advance. Dietary requirements accepted. Add-ons available: photographer, entertainment, theme packages.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Consult with event planner. Finalize menu and theme. Arrive to fully prepared venue. Enjoy seamless celebration.</p>",
+            },
+        ],
     },
 
     // Yoga & Meditation
@@ -347,6 +547,28 @@ const productTemplates: ProductTemplate[] = [
                 name: "Retreat Includes",
                 valueTemplate:
                     "Accommodation, daily yoga classes, guided meditation, healthy vegetarian meals, nature activities, yoga mat provided",
+            },
+        ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Reconnect with yourself at {location}. A transformative {duration} retreat combining yoga, meditation, and holistic wellness.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>Accommodation, daily yoga classes, guided meditation, healthy vegetarian meals, nature walks, yoga mat provided.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>All levels welcome. Bring comfortable clothing. Digital detox encouraged. Alcohol-free environment.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Check in, receive schedule. Morning and afternoon sessions. Free time for reflection and nature. All meals included.</p>",
             },
         ],
     },
@@ -387,6 +609,28 @@ const productTemplates: ProductTemplate[] = [
                     "3-hour session, professional instruction, hands-on practice, composition techniques, editing tips, coffee break, bring your camera",
             },
         ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Develop your {type} photography skills with expert guidance. Hands-on practice in real-world locations with professional feedback.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>3-hour workshop, professional instruction, location access, editing tips, coffee break, digital guide.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>Bring your own camera (DSLR/mirrorless recommended). All skill levels welcome. Wear comfortable shoes.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Meet at designated location. Brief intro and tips. Practice with instructor guidance. Review and feedback.</p>",
+            },
+        ],
     },
 
     // Brewery Tours
@@ -420,6 +664,28 @@ const productTemplates: ProductTemplate[] = [
                 name: "Tour Highlights",
                 valueTemplate:
                     "5-hour experience, 3 breweries, 12+ beer tastings, brewing education, lunch with pairings, transportation, souvenir glass",
+            },
+        ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Explore {location}'s craft beer scene with visits to {number} breweries. Tastings, behind-the-scenes tours, and expert guidance.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>Visits to {number} breweries, {tastings}+ beer tastings, brewing education, lunch, transportation, souvenir glass.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>Must be 21+ with valid ID. Wear comfortable shoes. Designated driver provided. Pace yourself!</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Pickup from central location. Visit breweries with expert guide. Enjoy tastings and lunch. Return transportation included.</p>",
             },
         ],
     },
@@ -460,6 +726,28 @@ const productTemplates: ProductTemplate[] = [
                     "All equipment provided, safety gear, life jacket, waterproof bag, instructor guidance, no experience necessary",
             },
         ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Enjoy {activity} at beautiful {location}. Professional instruction and all equipment included for an unforgettable water adventure.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>All equipment, safety gear, life jacket, waterproof bag, professional instruction, {duration} on the water.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>Swimming ability required. Wear swimwear and sunscreen. No experience necessary. Age 8+.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Meet at water sports center. Receive equipment and safety briefing. Enjoy {duration} session with instructor guidance.</p>",
+            },
+        ],
     },
 
     // Afternoon Tea
@@ -491,6 +779,28 @@ const productTemplates: ProductTemplate[] = [
                     "Finger sandwiches, freshly baked scones with cream and jam, French pastries, premium tea selection, champagne option available",
             },
         ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Indulge in a traditional afternoon tea at {location}. Elegant three-tier service with premium teas and freshly made treats.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>Three-tier stand with finger sandwiches, scones with clotted cream and jam, French pastries, {teas}+ tea varieties.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>Smart casual dress code. Dietary requirements accommodated with 48 hours notice. Duration approximately 2 hours.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Arrive at scheduled time. Select your tea. Enjoy leisurely service at your own pace. Refills available.</p>",
+            },
+        ],
     },
 
     // Zip Lining
@@ -520,6 +830,28 @@ const productTemplates: ProductTemplate[] = [
                 name: "Adventure Details",
                 valueTemplate:
                     "8 zip lines, 2 suspension bridges, safety training, all equipment, photos included, weight 70-250 lbs, age 10+",
+            },
+        ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Soar through the treetops on {number} thrilling zip lines at {location}. An adrenaline-pumping adventure with stunning views.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>{number} zip lines, 2 suspension bridges, all equipment, safety training, professional guides, photos.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>Weight 70-250 lbs. Age 10+. Closed-toe shoes required. Not suitable during pregnancy or with heart conditions.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Check in, gear up, complete safety training. Professional guides lead you through course. Photos captured throughout.</p>",
             },
         ],
     },
@@ -558,6 +890,28 @@ const productTemplates: ProductTemplate[] = [
                 name: "Class Information",
                 valueTemplate:
                     "2-3 hour class, all materials provided, expert instruction, beginner-friendly, take home your artwork, refreshments",
+            },
+        ],
+        additionalInfoTemplates: [
+            {
+                name: "About this experience",
+                valueTemplate:
+                    "<p>Unleash your creativity in this hands-on {art} class. Expert guidance for all skill levels in a relaxed, inspiring environment.</p>",
+            },
+            {
+                name: "What's included",
+                valueTemplate:
+                    "<p>All {art} materials, expert instruction, 2-3 hours of guided creation, take home your artwork, refreshments.</p>",
+            },
+            {
+                name: "Participant guidelines",
+                valueTemplate:
+                    "<p>No experience needed. Wear clothes you don't mind getting messy. BYO beverage welcome. Age 14+.</p>",
+            },
+            {
+                name: "How it works",
+                valueTemplate:
+                    "<p>Arrive, choose your subject, follow step-by-step instruction. Create at your own pace. Take home your masterpiece!</p>",
             },
         ],
     },
@@ -707,6 +1061,14 @@ export function generateProduct(
     // Get contextual images for this category
     const categoryImages = getCategoryImages(template.category);
 
+    // Generate additional info (4 required sections)
+    const additionalInfo = (template.additionalInfoTemplates || []).map(
+        (info) => ({
+            name: info.name,
+            value: fillTemplate(info.valueTemplate),
+        })
+    );
+
     // Generate variants
     const variants = [];
     for (let i = 0; i < prices.length; i++) {
@@ -717,6 +1079,13 @@ export function generateProduct(
 
         // Use category-specific image (cycle through available images)
         const imageUrl = categoryImages[i % categoryImages.length];
+
+        // Build participants config with defaults
+        const participants = {
+            default: template.participants?.default ?? 1,
+            min: template.participants?.min ?? 1,
+            max: template.participants?.max ?? 20,
+        };
 
         variants.push({
             vid: `var-${index}-${i}`,
@@ -731,6 +1100,8 @@ export function generateProduct(
             pricingTier: template.pricingTier,
             options: variantOptions,
             gallery: [],
+            participants,
+            additionalInfo,
         });
     }
 
@@ -739,6 +1110,16 @@ export function generateProduct(
         name: field.name,
         value: fillTemplate(field.valueTemplate),
     }));
+
+    // Generate validity (80% have expiration, 20% lifetime)
+    let validity: string | undefined;
+    if (Math.random() > 0.2) {
+        // Random expiration 3-24 months from now
+        const monthsAhead = randomInRange(3, 24);
+        const expirationDate = new Date();
+        expirationDate.setMonth(expirationDate.getMonth() + monthsAhead);
+        validity = expirationDate.toISOString().split("T")[0]; // YYYY-MM-DD
+    }
 
     return {
         pid: `prod-${Date.now()}-${index}`,
@@ -751,6 +1132,7 @@ export function generateProduct(
         handle: title.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
         variants,
         customFields,
+        validity,
     };
 }
 

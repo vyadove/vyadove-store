@@ -1,6 +1,5 @@
 import type { ComponentPropsWithoutRef } from "react";
 import React from "react";
-import { FiSearch } from "react-icons/fi";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -8,10 +7,9 @@ import Link from "next/link";
 // import { usePathname } from "next/navigation";
 import { Routes } from "@/store.routes";
 import { AnimateOnHoverText, NavMenuTrigger } from "@ui/nav/components";
+import GiftsMenuContent from "@ui/nav/gifts-menu-content";
 import { SearchSheet } from "@ui/nav/search-input";
 import { UserNav } from "@ui/nav/user-nav";
-import { Badge } from "@ui/shadcn/badge";
-import { Button } from "@ui/shadcn/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -21,7 +19,8 @@ import {
 import { Separator } from "@ui/shadcn/separator";
 import { TypographyMuted, TypographyP } from "@ui/shadcn/typography";
 import { VyaLink } from "@ui/vya-link";
-import type { Collection, Media, Product } from "@vyadove/types";
+import type { Category, Collection, Media, Product } from "@vyadove/types";
+import { GiftIcon } from "lucide-react";
 
 import { CartIconButton } from "@/components/cart-icon-button";
 import { CurrencySelector } from "@/components/currency-selector";
@@ -29,7 +28,6 @@ import VyaDoveLogo from "@/components/icons";
 
 import { cn } from "@/lib/utils";
 
-import { getVariantImage } from "@/utils/get-variant-image";
 import { convertToLocale } from "@/utils/money";
 import { payloadSdk } from "@/utils/payload-sdk";
 
@@ -84,10 +82,6 @@ const ShopMenuContent = ({ products }: { products: Product[] }) => {
               className="relative z-0 h-[20rem] w-[14rem] overflow-hidden rounded-xl"
               key={idx}
             >
-              <Badge className=" absolute top-2 right-2 z-10 border ">
-                50% OFF
-              </Badge>
-
               <div className="relative  size-full overflow-hidden rounded-xl">
                 <Image
                   alt="img"
@@ -155,6 +149,10 @@ const CollectionMenuContent = ({ cols }: { cols: Collection[] }) => {
   );
 };
 
+interface CategoryWithChildren extends Category {
+  children?: Category[];
+}
+
 async function NavBarLinks() {
   const pinnedProdCol = await payloadSdk.find({
     collection: "collections",
@@ -192,6 +190,59 @@ async function NavBarLinks() {
     })
     .then((res) => res.docs);
 
+  // Fetch top-level categories for Gifts menu
+  const topLevelCategories = await payloadSdk
+    .find({
+      collection: "category",
+      limit: 10,
+      sort: "title",
+      where: {
+        and: [
+          { visible: { equals: true } },
+          {
+            or: [{ parent: { exists: false } }, { parent: { equals: null } }],
+          },
+        ],
+      },
+    })
+    .then((res) => res.docs as Category[]);
+
+  // Fetch all subcategories
+  const subCategories = await payloadSdk
+    .find({
+      collection: "category",
+      limit: 100,
+      where: {
+        and: [{ visible: { equals: true } }, { parent: { exists: true } }],
+      },
+    })
+    .then((res) => res.docs as Category[]);
+
+  // Build category tree with children
+  const categoriesWithChildren: CategoryWithChildren[] = topLevelCategories.map(
+    (cat) => ({
+      ...cat,
+      children: subCategories.filter((sub) => {
+        const parentId =
+          typeof sub.parent === "number" ? sub.parent : sub.parent?.id;
+
+        return parentId === cat.id;
+      }),
+    }),
+  );
+
+  // Fetch pinned collections for Gifts menu sidebar
+  const pinnedCollections = await payloadSdk
+    .find({
+      collection: "collections",
+      limit: 2,
+      where: {
+        visible: { equals: true },
+      },
+      sort: "-createdAt",
+    })
+    .then((res) => res.docs);
+
   return (
     <NavigationMenu className="hidden md:block " viewport={false}>
       <NavigationMenuList className="flex items-center">
@@ -202,6 +253,28 @@ async function NavBarLinks() {
 
           <NavigationMenuContent className="!rounded-xl">
             <ShopMenuContent products={products.docs || []} />
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        {/* Gifts Menu */}
+        <NavigationMenuItem>
+          <NavMenuTrigger>
+            <div className="flex items-center gap-1">
+              <AnimateOnHoverText>
+                <div className="flex items-center gap-1">
+                  <GiftIcon size={16} />
+                  Gifts
+                </div>
+              </AnimateOnHoverText>
+            </div>
+          </NavMenuTrigger>
+
+          <NavigationMenuContent className="!rounded-xl !p-0">
+            <GiftsMenuContent
+              categories={categoriesWithChildren}
+              pinnedCollections={pinnedCollections}
+              pinnedProducts={products.docs || []}
+            />
           </NavigationMenuContent>
         </NavigationMenuItem>
 

@@ -6,6 +6,7 @@ import { OverviewComponent as OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from "@payloadcms/plugin-seo/client";
 import { default as default_e49979b57f52dbb3fe02cec65aa4998b } from "@/collections/Products/fields/ImageCell";
 import { default as default_e6d90b7e8a2b1ec7d65484e86c9a3409 } from "@/fields/RichTextEditor/components/Tiptap";
+import { AdditionalInfoRowLabel as AdditionalInfoRowLabel_a528b1c8085fabba13dfb14388fc7e75 } from "@/collections/Products/components/AdditionalInfoRowLabel";
 import { default as default_3c59176b2ff1d26ac22ac2944241cb35 } from "@/collections/Products/fields/OptionRowLabel";
 import { default as default_f22cadbcf95d70613e3cffb6affc278d } from "@/collections/Products/fields/VariantRowLabel";
 import { FolderTableCell as FolderTableCell_ab83ff7e88da8d3530831f296ec4756a } from "@payloadcms/ui/rsc";
@@ -68,6 +69,8 @@ export const importMap = {
         default_e49979b57f52dbb3fe02cec65aa4998b,
     "@/fields/RichTextEditor/components/Tiptap#default":
         default_e6d90b7e8a2b1ec7d65484e86c9a3409,
+    "@/collections/Products/components/AdditionalInfoRowLabel#AdditionalInfoRowLabel":
+        AdditionalInfoRowLabel_a528b1c8085fabba13dfb14388fc7e75,
     "@/collections/Products/fields/OptionRowLabel#default":
         default_3c59176b2ff1d26ac22ac2944241cb35,
     "@/collections/Products/fields/VariantRowLabel#default":

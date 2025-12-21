@@ -41,6 +41,9 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+import CheckoutLoading from "./checkout-loading";
+import EmptyCheckout from "./empty-checkout";
+
 interface PaymentMethod {
   details?: string;
   paymentId: number;
@@ -398,25 +401,12 @@ const CheckoutNew = () => {
   };
 
   if (checkoutLoading) {
-    return (
-      <div className="mt-10 mb-36 flex h-full min-h-[80vh] flex-1 items-center justify-center">
-        <TypographyP>Loading checkout...</TypographyP>
-      </div>
-    );
+    return <CheckoutLoading />;
   }
 
   if (!checkout || !checkout.items || checkout.items.length === 0) {
-    return (
-      <div className="flex h-full min-h-[80vh] flex-1 flex-col items-center justify-center gap-4">
-        <TypographyH2>Your checkout is empty</TypographyH2>
-        <Button onClick={() => router.push(Routes.shop)}>
-          Continue Shopping
-        </Button>
-      </div>
-    );
+    return <EmptyCheckout />;
   }
-
-  console.log("is dirty main", form.formState.isDirty);
 
   return (
     <div className="mt-10 mb-36 h-full min-h-[80vh] flex-1">

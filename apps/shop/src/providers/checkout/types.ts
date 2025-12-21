@@ -62,6 +62,7 @@ export interface CheckoutLineItem {
   quantity: number;
   unitPrice?: number;
   totalPrice?: number;
+  participants?: number;
   isLoading?: boolean; // Indicates if this item is currently syncing with backend
 }
 
@@ -83,6 +84,7 @@ export interface CheckoutItemInput {
   quantity: number;
   productId?: number;
   unitPrice?: number;
+  participants?: number;
 }
 
 /**

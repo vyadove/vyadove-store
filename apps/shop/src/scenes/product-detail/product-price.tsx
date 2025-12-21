@@ -1,8 +1,7 @@
 "use client";
 
 import { useProductDetailContext } from "@/scenes/product-detail/index";
-import { Badge } from "@ui/shadcn/badge";
-import { TypographyH3, TypographyH4 } from "@ui/shadcn/typography";
+import { TypographyH3 } from "@ui/shadcn/typography";
 import type { Product } from "@vyadove/types";
 
 import { usePrice } from "@/components/price";
@@ -19,16 +18,7 @@ export default function ProductPrice({ variant }: ProductPriceProps) {
     return null;
   }
 
-  const {
-    price: { amount },
-    originalPrice,
-  } = selectedVariant;
-  const price = amount;
-
-  const isOnSale = originalPrice && originalPrice > price;
-  const percentageDiff = isOnSale
-    ? Math.round(((originalPrice - price) / originalPrice) * 100)
-    : 0;
+  const price = selectedVariant.price?.amount ?? 0;
 
   return (
     <div className="flex items-center gap-3">
@@ -39,22 +29,6 @@ export default function ProductPrice({ variant }: ProductPriceProps) {
       >
         {format(price)}
       </TypographyH3>
-
-      {isOnSale && (
-        <>
-          <TypographyH4
-            className="font-normal text-gray-400 line-through"
-            data-testid="original-product-price"
-            data-value={originalPrice}
-          >
-            {format(originalPrice)}
-          </TypographyH4>
-
-          <Badge className="" variant="secondary">
-            -{percentageDiff}%
-          </Badge>
-        </>
-      )}
     </div>
   );
 }

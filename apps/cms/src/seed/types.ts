@@ -17,6 +17,13 @@ export interface SeedCategory {
     subcategories?: SeedSubcategory[];
 }
 
+// Participants configuration
+export interface ParticipantsConfig {
+    default: number;
+    min: number;
+    max: number;
+}
+
 // Product variant for seeding (without id)
 export interface SeedVariant {
     vid: string;
@@ -34,6 +41,13 @@ export interface SeedVariant {
         value: string;
     }>;
     gallery: number[];
+    // Participants configuration
+    participants: ParticipantsConfig;
+    // Additional info sections (4 required)
+    additionalInfo: Array<{
+        name: string;
+        value: string;
+    }>;
 }
 
 // Product seed data (without id - used for creation)
@@ -51,6 +65,8 @@ export interface SeedProduct {
         name: string;
         value: string;
     }>;
+    // Validity date (undefined = lifetime)
+    validity?: string;
 }
 
 // Product template for generator
@@ -65,6 +81,13 @@ export interface ProductTemplate {
         values: string[];
     }>;
     customFields: Array<{
+        name: string;
+        valueTemplate: string;
+    }>;
+    // Participants configuration (optional - defaults to { default: 1, min: 1, max: 20 })
+    participants?: Partial<ParticipantsConfig>;
+    // Additional info templates
+    additionalInfoTemplates?: Array<{
         name: string;
         valueTemplate: string;
     }>;

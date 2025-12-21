@@ -15,6 +15,7 @@ const CheckoutItemInputSchema = z.object({
   variantId: z.string().min(1, "Variant ID required"),
   quantity: z.number().int().min(1, "Quantity must be at least 1"),
   unitPrice: z.number().min(0).optional(),
+  participants: z.number().int().min(1).max(100).optional(),
 });
 
 const VariantIdSchema = z.string().min(1, "Variant ID required");
@@ -99,23 +100,30 @@ async function createCheckoutAction(
   currency: string = "USD",
 ): Promise<Checkout> {
   try {
+    const participants = item.participants || 1;
+    const totalPrice = item.unitPrice
+      ? item.unitPrice * participants * item.quantity
+      : 0;
+
     const checkout = await payloadSdk.create({
       collection: "checkout",
       data: {
         sessionId: `temp-${Date.now()}`,
+        // Type assertion needed until Payload types are regenerated with participants field
         items: [
           {
             product: item.productId as number,
             variantId: item.variantId,
             quantity: item.quantity,
+            participants,
             unitPrice: item.unitPrice,
-            totalPrice: item.unitPrice ? item.unitPrice * item.quantity : 0,
+            totalPrice,
           },
-        ],
+        ] as unknown as Checkout["items"],
         status: "incomplete",
         currency,
-        subtotal: item.unitPrice ? item.unitPrice * item.quantity : 0,
-        total: item.unitPrice ? item.unitPrice * item.quantity : 0,
+        subtotal: totalPrice,
+        total: totalPrice,
       },
       depth: 2,
     });
@@ -171,31 +179,37 @@ export async function addToCheckoutAction(
     let updatedItems: CheckoutLineItem[];
 
     if (existingItemIndex >= 0) {
-      // Update existing item
+      // Update existing item - increment quantity, keep participants
       updatedItems = existingItems.map((item, index) => {
         if (index === existingItemIndex) {
           const newQuantity = item.quantity + validatedInput.quantity;
+          const participants = (item as any).participants || 1;
 
           return {
             ...item,
             quantity: newQuantity,
-            totalPrice: item.unitPrice ? item.unitPrice * newQuantity : 0,
+            totalPrice: item.unitPrice
+              ? item.unitPrice * participants * newQuantity
+              : 0,
           };
         }
 
         return item;
       });
     } else {
-      // Add new item
+      // Add new item with participants
+      const participants = validatedInput.participants || 1;
+
       updatedItems = [
         ...existingItems,
         {
           product: validatedInput.productId || 0,
           variantId: validatedInput.variantId,
           quantity: validatedInput.quantity,
+          participants,
           unitPrice: validatedInput.unitPrice,
           totalPrice: validatedInput.unitPrice
-            ? validatedInput.unitPrice * validatedInput.quantity
+            ? validatedInput.unitPrice * participants * validatedInput.quantity
             : 0,
         },
       ];
@@ -240,11 +254,13 @@ export async function updateCheckoutItemAction(
     // Update quantity or filter out if quantity is 0
     let updatedItems = existingItems.map((item) => {
       if (item.variantId === validatedInput.variantId) {
+        const participants = (item as any).participants || 1;
+
         return {
           ...item,
           quantity: validatedInput.quantity,
           totalPrice: item.unitPrice
-            ? item.unitPrice * validatedInput.quantity
+            ? item.unitPrice * participants * validatedInput.quantity
             : 0,
         };
       }

@@ -79,31 +79,30 @@ export const seedProducts = async (
                     mediaCache.set(product.category, mediaIds);
                 }
 
-                const productData: RequiredDataFromCollectionSlug<"products"> =
-                    {
-                        pid: product.pid,
-                        title: product.title,
-                        currency:
-                            product.currency as RequiredDataFromCollectionSlug<"products">["currency"],
-                        visible: product.visible,
-                        salesChannels: ["all"],
-                        description: product.description,
-                        handle: product.handle,
-                        variants: product.variants.map((v) => ({
-                            ...v,
-                            pricingTier: v.pricingTier as
-                                | "basic"
-                                | "premium"
-                                | "luxury",
-                            price: {
-                                amount: v.price.amount,
-                                currency: v.price.currency as "USD",
-                            },
-                        })),
-                        customFields: product.customFields,
-                        gallery: mediaIds,
-                        category: categoryId ? [categoryId] : undefined,
-                    };
+                // Type assertion needed until types are regenerated with new fields
+                const productData = {
+                    pid: product.pid,
+                    title: product.title,
+                    currency: product.currency,
+                    visible: product.visible,
+                    salesChannels: ["all"],
+                    description: product.description,
+                    handle: product.handle,
+                    validity: product.validity,
+                    variants: product.variants.map((v) => ({
+                        ...v,
+                        pricingTier: v.pricingTier,
+                        price: {
+                            amount: v.price.amount,
+                            currency: v.price.currency,
+                        },
+                        participants: v.participants,
+                        additionalInfo: v.additionalInfo,
+                    })),
+                    customFields: product.customFields,
+                    gallery: mediaIds,
+                    category: categoryId ? [categoryId] : undefined,
+                } as RequiredDataFromCollectionSlug<"products">;
 
                 await payload.create({
                     collection: "products",

@@ -369,11 +369,15 @@ export interface Checkout {
               variantId: string;
               quantity: number;
               /**
-               * Price per unit at time of adding to checkout
+               * Number of participants for this experience
+               */
+              participants?: number | null;
+              /**
+               * Price per participant at time of adding to checkout
                */
               unitPrice?: number | null;
               /**
-               * Unit price × quantity
+               * Unit price × participants × quantity
                */
               totalPrice?: number | null;
               id?: string | null;
@@ -494,6 +498,7 @@ export interface Product {
     id: number;
     pid?: string | null;
     title: string;
+    visible?: boolean | null;
     /**
      * Base currency for product pricing
      */
@@ -680,13 +685,16 @@ export interface Product {
               | "ZWG"
           )
         | null;
-    visible?: boolean | null;
     /**
      * Choose where this product should be available to customers.
      */
     salesChannels?: ("all" | "onlineStore" | "pos" | "mobileApp")[] | null;
     source?: "manual" | null;
     description: string;
+    /**
+     * Expiration date for this gift experience. Leave empty for lifetime validity.
+     */
+    validity?: string | null;
     gallery: (number | Media)[];
     collections?: (number | Collection)[] | null;
     category?: (number | Category)[] | null;
@@ -694,6 +702,8 @@ export interface Product {
     variants: {
         vid?: string | null;
         sku?: string | null;
+        description?: string | null;
+        available?: boolean | null;
         imageUrl?: string | null;
         gallery?: (number | Media)[] | null;
         price: {
@@ -883,24 +893,24 @@ export interface Product {
                 | null;
         };
         /**
-         * this field is deprecated, use price.amount instead
-         */
-        originalPrice?: number | null;
-        available?: boolean | null;
-        /**
          * Price tier for this variant.
          */
         pricingTier: "basic" | "premium" | "luxury";
         /**
-         * Add additional product variant info such as care instructions, materials, or sizing notes.
+         * Configure participant count for this experience
          */
-        additionalInfo?:
-            | {
-                  name: string;
-                  value: string;
-                  id?: string | null;
-              }[]
-            | null;
+        participants: {
+            /**
+             * Initial participant count shown to customers
+             */
+            default: number;
+            /**
+             * Set custom min/max limits
+             */
+            customizeRange?: boolean | null;
+            min?: number | null;
+            max?: number | null;
+        };
         locations?:
             | {
                   /**
@@ -908,11 +918,19 @@ export interface Product {
                    * @maxItems 2
                    */
                   coordinates?: [number, number] | null;
-                  map_url?: string | null;
+                  map_url: string;
                   address?: string | null;
                   id?: string | null;
               }[]
             | null;
+        /**
+         * Experience info sections. First 4 are required: About this experience, What's included, Participant guidelines, How it works.
+         */
+        additionalInfo: {
+            name: string;
+            value: string;
+            id?: string | null;
+        }[];
         options?:
             | {
                   option: string;
@@ -925,11 +943,13 @@ export interface Product {
     /**
      * Add additional product info such as care instructions, materials, or sizing notes.
      */
-    customFields: {
-        name: string;
-        value: string;
-        id?: string | null;
-    }[];
+    customFields?:
+        | {
+              name: string;
+              value: string;
+              id?: string | null;
+          }[]
+        | null;
     meta?: {
         title?: string | null;
         description?: string | null;
@@ -2036,11 +2056,12 @@ export interface CategorySelect<T extends boolean = true> {
 export interface ProductsSelect<T extends boolean = true> {
     pid?: T;
     title?: T;
-    currency?: T;
     visible?: T;
+    currency?: T;
     salesChannels?: T;
     source?: T;
     description?: T;
+    validity?: T;
     gallery?: T;
     collections?: T;
     category?: T;
@@ -2050,6 +2071,8 @@ export interface ProductsSelect<T extends boolean = true> {
         | {
               vid?: T;
               sku?: T;
+              description?: T;
+              available?: T;
               imageUrl?: T;
               gallery?: T;
               price?:
@@ -2058,15 +2081,14 @@ export interface ProductsSelect<T extends boolean = true> {
                         amount?: T;
                         currency?: T;
                     };
-              originalPrice?: T;
-              available?: T;
               pricingTier?: T;
-              additionalInfo?:
+              participants?:
                   | T
                   | {
-                        name?: T;
-                        value?: T;
-                        id?: T;
+                        default?: T;
+                        customizeRange?: T;
+                        min?: T;
+                        max?: T;
                     };
               locations?:
                   | T
@@ -2074,6 +2096,13 @@ export interface ProductsSelect<T extends boolean = true> {
                         coordinates?: T;
                         map_url?: T;
                         address?: T;
+                        id?: T;
+                    };
+              additionalInfo?:
+                  | T
+                  | {
+                        name?: T;
+                        value?: T;
                         id?: T;
                     };
               options?:
@@ -2230,6 +2259,7 @@ export interface CheckoutSelect<T extends boolean = true> {
               product?: T;
               variantId?: T;
               quantity?: T;
+              participants?: T;
               unitPrice?: T;
               totalPrice?: T;
               id?: T;

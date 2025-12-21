@@ -23,7 +23,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
   const [isAdding, setIsAdding] = useState(false);
   const { addItem } = useCheckout();
   const router = useRouter();
-  const { selectedVariant } = useProductDetailContext();
+  const { selectedVariant, participants } = useProductDetailContext();
 
   const handleAddToCart = async () => {
     if (!selectedVariant?.id) {
@@ -35,7 +35,17 @@ export default function ProductActions({ product }: ProductActionsProps) {
     setIsAdding(true);
 
     try {
-      const res = await addItem(selectedVariant.id, 1, product);
+      // Calculate total price based on participants
+      const unitPrice = selectedVariant.price?.amount || 0;
+      const totalPrice = unitPrice * participants;
+
+      const res = await addItem(
+        selectedVariant.id,
+        1, // quantity = 1 (participants stored separately)
+        product,
+        unitPrice,
+        participants,
+      );
 
       console.log("addItem response:", res);
 
@@ -52,7 +62,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
     <div className="flex flex-col gap-y-2">
       <div className="flex items-center gap-2">
         <Button
-          className="flex-1"
+          className="flex-1 font-light"
           data-testid="add-product-button"
           disabled={isAdding || !selectedVariant}
           onClick={handleAddToCart}
@@ -68,7 +78,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
         </Button>
 
         <Button
-          className="flex-1"
+          className="flex-1 font-light"
           disabled={isAdding || !selectedVariant}
           onClick={async () => {
             await handleAddToCart();

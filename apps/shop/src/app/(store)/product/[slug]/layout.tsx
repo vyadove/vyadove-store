@@ -1,5 +1,10 @@
 import React from "react";
 
+import AppHeroScaffold from "@ui/nav/app-hero-scaffold";
+import { TypographyH1, TypographyP } from "@ui/shadcn/typography";
+
+import { cn } from "@/lib/utils";
+
 import { payloadSdk } from "@/utils/payload-sdk";
 
 const Layout = async ({
@@ -28,27 +33,21 @@ const Layout = async ({
 
   return (
     <div>
-      {/*<AppHeroScaffold>
+      <AppHeroScaffold>
         <div
           className={cn(
             "mx-auto flex h-full w-full flex-col items-start",
             "gap-3 px-8 py-36 pb-20 lg:px-16 lg:pt-26 lg:pb-16 ",
           )}
         >
-          <Badge className="bg-accent-foreground text-accent rounded-full p-4 py-1">
-            <TypographyP className="text-accent text-[1rem] font-light">
-              Shop
-            </TypographyP>
-          </Badge>
-
-          <TypographyH1 className="!text-5l font-medium text-balance capitalize">
+          <TypographyH1 className="!text-3xl font-bold text-balance text-primary">
             {product?.title}
           </TypographyH1>
-          <TypographyLead className="font-light text-balance">
+          <TypographyP className="font-light text-balance">
             {product?.description}
-          </TypographyLead>
+          </TypographyP>
         </div>
-      </AppHeroScaffold>*/}
+      </AppHeroScaffold>
 
       {children}
     </div>

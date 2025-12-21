@@ -103,18 +103,35 @@ export const Checkouts: CollectionConfig = {
                             min: 1,
                         },
                         {
+                            name: "participants",
+                            type: "number",
+                            defaultValue: 1,
+                            min: 1,
+                            max: 100,
+                            admin: {
+                                description:
+                                    "Number of participants for this experience",
+                            },
+                        },
+                    ],
+                },
+                {
+                    type: "row",
+                    fields: [
+                        {
                             name: "unitPrice",
                             type: "number",
                             admin: {
                                 description:
-                                    "Price per unit at time of adding to checkout",
+                                    "Price per participant at time of adding to checkout",
                             },
                         },
                         {
                             name: "totalPrice",
                             type: "number",
                             admin: {
-                                description: "Unit price × quantity",
+                                description:
+                                    "Unit price × participants × quantity",
                             },
                         },
                     ],

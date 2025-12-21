@@ -1,55 +1,59 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { IoClose } from "react-icons/io5";
 
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-
 import { useCheckout } from "@/providers/checkout";
-import { Routes } from "@/store.routes";
-import { Badge } from "@ui/shadcn/badge";
 import { Button } from "@ui/shadcn/button";
-import { ButtonGroup } from "@ui/shadcn/button-group";
-import { Spinner } from "@ui/shadcn/spinner";
-import {
-  TypographyH3,
-  TypographyMuted,
-  TypographyP,
-} from "@ui/shadcn/typography";
-import { MinusIcon, PlusIcon } from "lucide-react";
 import { Drawer } from "vaul";
 
-import DeleteItemButton from "@/components/delete-item-button";
+import CartIcon from "@/components/icons/cart-icon";
 
-import { convertToLocale } from "@/utils/money";
+import SidebarCartEmpty from "./sidebar-cart-empty";
+import SidebarCartItems from "./sidebar-cart-items";
+import { useSidebarCartStore } from "./sidebar-cart.store";
+
+const AUTO_CLOSE_DELAY = 5000; // 5 seconds
 
 function SidebarCart() {
-  const {
-    toggleCart,
-    isCartOpen,
-    cartTotal,
-    items,
-    totalItems,
-    totalUniqueItems,
-    updateItemQuantity,
-    openCart,
-    closeCart,
-  } = useCheckout();
+  const { cartTotal, items, totalUniqueItems, updateItemQuantity } =
+    useCheckout();
 
-  const [activeTimer, setActiveTimer] = useState<NodeJS.Timeout | undefined>(
-    undefined,
-  );
+  const {
+    isCartOpen,
+    shouldAutoClose,
+    toggleCart,
+    closeCart,
+    cancelAutoClose,
+  } = useSidebarCartStore();
+
   const [isMounted, setIsMounted] = useState(false);
-  const pathname = usePathname();
-  const itemRef = useRef<number>(totalItems || 0);
+  const autoCloseTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const hasItems = items && items.length > 0;
+
+  // Clear auto-close timer
+  const clearAutoCloseTimer = useCallback(() => {
+    if (autoCloseTimerRef.current) {
+      clearTimeout(autoCloseTimerRef.current);
+      autoCloseTimerRef.current = null;
+    }
+  }, []);
+
+  // Handle user interaction - cancel auto-close
+  const handleUserInteraction = useCallback(() => {
+    if (shouldAutoClose) {
+      clearAutoCloseTimer();
+      cancelAutoClose();
+    }
+  }, [shouldAutoClose, clearAutoCloseTimer, cancelAutoClose]);
 
   const modifyQuantity = async (
     variantId: string,
     currentQuantity: number,
     delta: number,
   ) => {
+    handleUserInteraction(); // User is interacting, cancel auto-close
     await updateItemQuantity(variantId, currentQuantity + delta);
   };
 
@@ -57,43 +61,17 @@ function SidebarCart() {
     setIsMounted(true);
   }, []);
 
-  // Clean up the timer when the component unmounts
+  // Auto-close timer effect
   useEffect(() => {
-    return () => {
-      if (activeTimer) {
-        clearTimeout(activeTimer);
-      }
-    };
-  }, [activeTimer]);
-
-  // Auto-open cart when items change
-  useEffect(() => {
-    // Don't auto-open if already open or on cart/checkout pages
-    if (
-      isCartOpen ||
-      pathname.includes("/cart") ||
-      pathname.includes("/checkout")
-    ) {
-      return;
+    if (isCartOpen && shouldAutoClose) {
+      clearAutoCloseTimer();
+      autoCloseTimerRef.current = setTimeout(() => {
+        closeCart();
+      }, AUTO_CLOSE_DELAY);
     }
 
-    const timedOpen = () => {
-      openCart();
-
-      const timer = setTimeout(closeCart, 5000);
-
-      setActiveTimer(timer);
-    };
-
-    const currentItems = itemRef.current;
-
-    itemRef.current = totalItems;
-
-    // Only open if items increased (not decreased or stayed same)
-    if (totalItems > 0 && currentItems < totalItems) {
-      timedOpen();
-    }
-  }, [totalItems, pathname, isCartOpen, openCart, closeCart]);
+    return () => clearAutoCloseTimer();
+  }, [isCartOpen, shouldAutoClose, closeCart, clearAutoCloseTimer]);
 
   // hide sidebar when esc pressed
   useEffect(() => {
@@ -116,227 +94,57 @@ function SidebarCart() {
           onClick={() => toggleCart(false)}
         />
         <Drawer.Content
-          className="fixed top-3 right-3 bottom-3 z-95 flex w-lg outline-none "
+          className="fixed top-0 right-1 bottom-0 z-95 flex w-lg outline-none"
           style={
             { "--initial-transform": "calc(100% + 8px)" } as React.CSSProperties
           }
         >
           <div
-            className="flex h-full w-full grow flex-col overflow-hidden rounded-[16px] bg-zinc-50"
-            onClick={() => {
-              if (activeTimer) {
-                clearTimeout(activeTimer);
-              }
-            }}
+            className="flex h-full w-full grow flex-col overflow-hidden rounded-b-2xl bg-white"
+            onClick={handleUserInteraction}
+            onMouseMove={handleUserInteraction}
           >
             <div className="mx-auto flex h-full w-full flex-col">
-              {/* --- HEADER --- */}
-              <div className="flex items-center gap-2 border-b p-5 ">
-                <TypographyH3 className="font-semibold">
-                  Your Basket
-                </TypographyH3>
+              {/* Header - Dark themed with gradient and rounded bottom */}
+              <div className="from-primary/95 to-primary flex items-center gap-3 rounded-b-3xl bg-gradient-to-b px-5 py-9">
+                {/* Cart icon in rounded container */}
+                <div className="bg-primary-foreground/15 flex size-10 items-center justify-center rounded-lg">
+                  <CartIcon className="fill-primary-foreground size-5" />
+                </div>
 
-                <Badge className="">
-                  {isMounted ? `${totalUniqueItems}` : "0"}
-                </Badge>
+                {/* Title */}
+                <h3 className="text-primary-foreground text-lg font-semibold tracking-tight">
+                  Shopping Cart
+                </h3>
 
+                {/* Item count badge */}
+                <span className="bg-primary-foreground/20 text-primary-foreground flex size-7 items-center justify-center rounded-full text-sm font-medium">
+                  {isMounted ? totalUniqueItems : 0}
+                </span>
+
+                {/* Close button */}
                 <Button
-                  className="ml-auto aspect-square"
+                  className="text-primary-foreground hover:bg-primary-foreground/15 ml-auto aspect-square border-0 bg-transparent"
                   onClick={closeCart}
-                  size="icon-lg"
-                  variant="outline"
+                  size="icon"
+                  variant="ghost"
                 >
-                  <IoClose />
+                  <IoClose className="size-5" />
                 </Button>
               </div>
 
-              <div className="grid w-full place-items-center p-4 pt-6">
-                {items?.length ? (
-                  <div className="flex w-full flex-col gap-4">
-                    {items?.map((item) => {
-                      const { product } = item;
-
-                      if (!product) return null;
-
-                      return (
-                        <div
-                          className="flex gap-x-4 "
-                          data-testid="cart-item"
-                          key={item.variantId}
-                        >
-                          <Link
-                            className=""
-                            href={Routes.productLink(product.handle as string)}
-                          >
-                            <div className="relative flex size-[70px] items-start">
-                              <Image
-                                alt={product.title || "Product image"}
-                                className="w-full rounded-xl object-cover"
-                                fill
-                                src={product.gallery?.[0]?.url || ""}
-                              />
-                            </div>
-                          </Link>
-
-                          <div className="flex flex-1 flex-col justify-between">
-                            <div className="flex flex-1 flex-col">
-                              <div className="flex items-start justify-between">
-                                <div className="mr-4 flex w-[180px]_ flex-col">
-                                  <TypographyP className="overflow-hidden text-ellipsis line-clamp-2">
-                                    <Link
-                                      data-testid="product-link"
-                                      href={Routes.productLink(
-                                        product.handle as string,
-                                      )}
-                                    >
-                                      {product.title}
-                                    </Link>
-                                  </TypographyP>
-                                </div>
-                                <div className="flex">
-                                  <TypographyMuted
-                                    className=""
-                                    data-testid="product-price"
-                                  >
-                                    {convertToLocale({
-                                      amount: item.totalPrice || 0,
-                                    })}
-                                  </TypographyMuted>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className="flex w-full items-center justify-between">
-                              <ButtonGroup
-                                aria-label="Media controls"
-                                className="h-fit"
-                              >
-                                <Button
-                                  className="cursor-pointer"
-                                  disabled={(item.quantity as number) >= 10}
-                                  onClick={() => {
-                                    if (item.variantId) {
-                                      modifyQuantity(
-                                        item.variantId,
-                                        item.quantity,
-                                        1,
-                                      );
-                                    }
-                                  }}
-                                  size="icon-sm"
-                                  variant="outline"
-                                >
-                                  <PlusIcon />
-                                </Button>
-                                <Button
-                                  className="pointer-events-none"
-                                  size="icon-sm"
-                                  variant="outline"
-                                >
-                                  {item.quantity}
-                                </Button>
-                                <Button
-                                  className="cursor-pointer"
-                                  disabled={(item.quantity as number) <= 1}
-                                  onClick={() => {
-                                    if (item.variantId) {
-                                      modifyQuantity(
-                                        item.variantId,
-                                        item.quantity,
-                                        -1,
-                                      );
-                                    }
-                                  }}
-                                  size="icon-sm"
-                                  variant="outline"
-                                >
-                                  <MinusIcon />
-                                </Button>
-                              </ButtonGroup>
-
-                              {item?.isLoading ? (
-                                <Spinner className="" />
-                              ) : (
-                                <DeleteItemButton
-                                  className="mt-1"
-                                  data-testid="cart-item-remove-button"
-                                  variantId={item.variantId}
-                                />
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div>
-                    <div className="flex flex-col items-center justify-center gap-y-4 py-16">
-                      <div className="text-small-regular flex h-6 w-6 items-center justify-center rounded-full bg-gray-900 text-white">
-                        <span>0</span>
-                      </div>
-                      <span>Your shopping bag is empty.</span>
-                      <div>
-                        <Link href={Routes.shop}>
-                          <>
-                            <span className="sr-only">
-                              Go to all products page
-                            </span>
-                            <Button onClick={closeCart}>
-                              Explore products
-                            </Button>
-                          </>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* SUBTOTAL CALCULATION --- */}
-              <div className="mt-auto flex flex-col gap-10 border-t p-4 py-6">
-                <div className="flex items-center justify-between">
-                  <TypographyP className="text-lg">
-                    Subtotal ({totalUniqueItems} Item
-                    {totalUniqueItems > 1 ? "s" : ""})
-                  </TypographyP>
-
-                  <TypographyP
-                    className="text-lg font-bold"
-                    data-testid="cart-subtotal"
-                    data-value={cartTotal}
-                  >
-                    {convertToLocale({
-                      amount: cartTotal,
-                    })}
-                  </TypographyP>
-                </div>
-
-                <div className="flex w-full items-center gap-2">
-                  <Link className="flex-1" href={Routes.cart} passHref>
-                    <Button
-                      className="w-full "
-                      data-testid="go-to-cart-button"
-                      onClick={closeCart}
-                      size="lg"
-                      variant="secondary"
-                    >
-                      View cart ({totalUniqueItems})
-                    </Button>
-                  </Link>
-
-                  <Link className="flex-1" href={Routes.checkout} passHref>
-                    <Button
-                      className="w-full "
-                      data-testid="go-to-cart-button"
-                      onClick={closeCart}
-                      size="lg"
-                    >
-                      Checkout
-                    </Button>
-                  </Link>
-                </div>
-              </div>
+              {/* Content */}
+              {hasItems ? (
+                <SidebarCartItems
+                  cartTotal={cartTotal}
+                  items={items}
+                  onClose={closeCart}
+                  onQuantityChange={modifyQuantity}
+                  totalUniqueItems={totalUniqueItems}
+                />
+              ) : (
+                <SidebarCartEmpty onClose={closeCart} />
+              )}
             </div>
           </div>
         </Drawer.Content>

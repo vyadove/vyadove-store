@@ -51,7 +51,14 @@
             "Bash(pnpm --filter ./apps/shop run lint)",
             "Bash(npx eslint:*)",
             "Bash(npx next lint:*)",
-            "Bash(pnpm --filter ./apps/shop tsc:*)"
+            "Bash(pnpm --filter ./apps/shop tsc:*)",
+            "Skill(frontend-design)",
+            "Bash(pnpm --filter ./apps/cms generate:types:*)",
+            "Bash(pnpm --filter @vyadove/types build:*)",
+            "Bash(npx payload generate:types:*)",
+            "Bash(powershell -Command:*)",
+            "mcp__playwright__browser_evaluate",
+            "Bash(pnpm migrate:create:*)"
         ],
         "deny": [],
         "ask": []

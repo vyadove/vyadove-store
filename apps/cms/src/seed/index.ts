@@ -140,10 +140,23 @@ export const seed = async () => {
                 })
             );
 
+            // Add default participants and additionalInfo to each variant
+            const variantsWithDefaults = product.variants.map((v) => ({
+                ...v,
+                participants: { default: 1, min: 1, max: 20 },
+                additionalInfo: [
+                    { name: "About this experience", value: "" },
+                    { name: "What's included", value: "" },
+                    { name: "Participant guidelines", value: "" },
+                    { name: "How it works", value: "" },
+                ],
+            }));
+
             const productResult = await payload.create({
                 collection: "products",
                 data: {
                     ...product,
+                    variants: variantsWithDefaults,
                     collections: [productCollectionIds[index]],
                     gallery: [placeholderMedia.id], // Required field
                     customFields: transformedCustomFields,

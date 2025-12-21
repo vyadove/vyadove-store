@@ -1,11 +1,7 @@
 import React from "react";
 
 import AppHeroScaffold from "@ui/nav/app-hero-scaffold";
-import {
-  TypographyH1,
-  TypographyH2,
-  TypographyLead,
-} from "@ui/shadcn/typography";
+import { TypographyH2, TypographyLead } from "@ui/shadcn/typography";
 
 const Layout = async ({ children }: React.PropsWithChildren) => {
   return (

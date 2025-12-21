@@ -6,7 +6,6 @@ export default function PreviewPrice({
 }: {
   price: {
     currency?: string | null;
-    originalPrice?: any;
     price?: any;
     calculated_price?: any;
     price_type?: string;

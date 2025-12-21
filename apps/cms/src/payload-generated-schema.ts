@@ -1469,6 +1469,31 @@ export const products_sales_channels = pgTable(
     })
 );
 
+export const products_variants_locations = pgTable(
+    "products_variants_locations",
+    {
+        _order: integer("_order").notNull(),
+        _parentID: varchar("_parent_id").notNull(),
+        id: varchar("id").primaryKey(),
+        coordinates: geometryColumn("coordinates"),
+        map_url: varchar("map_url").notNull(),
+        address: varchar("address"),
+    },
+    (columns) => ({
+        _orderIdx: index("products_variants_locations_order_idx").on(
+            columns._order
+        ),
+        _parentIDIdx: index("products_variants_locations_parent_id_idx").on(
+            columns._parentID
+        ),
+        _parentIDFk: foreignKey({
+            columns: [columns["_parentID"]],
+            foreignColumns: [products_variants.id],
+            name: "products_variants_locations_parent_id_fk",
+        }).onDelete("cascade"),
+    })
+);
+
 export const products_variants_additional_info = pgTable(
     "products_variants_additional_info",
     {
@@ -1489,31 +1514,6 @@ export const products_variants_additional_info = pgTable(
             columns: [columns["_parentID"]],
             foreignColumns: [products_variants.id],
             name: "products_variants_additional_info_parent_id_fk",
-        }).onDelete("cascade"),
-    })
-);
-
-export const products_variants_locations = pgTable(
-    "products_variants_locations",
-    {
-        _order: integer("_order").notNull(),
-        _parentID: varchar("_parent_id").notNull(),
-        id: varchar("id").primaryKey(),
-        coordinates: geometryColumn("coordinates"),
-        map_url: varchar("map_url"),
-        address: varchar("address"),
-    },
-    (columns) => ({
-        _orderIdx: index("products_variants_locations_order_idx").on(
-            columns._order
-        ),
-        _parentIDIdx: index("products_variants_locations_parent_id_idx").on(
-            columns._parentID
-        ),
-        _parentIDFk: foreignKey({
-            columns: [columns["_parentID"]],
-            foreignColumns: [products_variants.id],
-            name: "products_variants_locations_parent_id_fk",
         }).onDelete("cascade"),
     })
 );
@@ -1550,17 +1550,22 @@ export const products_variants = pgTable(
         id: varchar("id").primaryKey(),
         vid: varchar("vid"),
         sku: varchar("sku"),
+        description: varchar("description"),
+        available: boolean("available").default(true),
         imageUrl: varchar("image_url"),
         price_amount: numeric("price_amount").notNull().default("0"),
         price_currency:
             enum_products_variants_price_currency("price_currency").default(
                 "USD"
             ),
-        originalPrice: numeric("original_price"),
-        available: boolean("available").default(true),
         pricingTier: enum_products_variants_pricing_tier("pricing_tier")
             .notNull()
             .default("basic"),
+        participants_default: numeric("participants_default")
+            .notNull()
+            .default("1"),
+        participants_min: numeric("participants_min").default("1"),
+        participants_max: numeric("participants_max").default("20"),
     },
     (columns) => ({
         _orderIdx: index("products_variants_order_idx").on(columns._order),
@@ -1603,10 +1608,15 @@ export const products = pgTable(
         id: serial("id").primaryKey(),
         pid: varchar("pid"),
         title: varchar("title").notNull(),
-        currency: enum_products_currency("currency").default("USD"),
         visible: boolean("visible").default(true),
+        currency: enum_products_currency("currency").default("USD"),
         source: enum_products_source("source").default("manual"),
         description: varchar("description").notNull(),
+        validity: timestamp("validity", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
         handle: varchar("handle"),
         meta_title: varchar("meta_title"),
         meta_description: varchar("meta_description"),
@@ -2069,6 +2079,7 @@ export const checkout_items = pgTable(
             }),
         variantId: varchar("variant_id").notNull(),
         quantity: numeric("quantity").notNull().default("1"),
+        participants: numeric("participants").default("1"),
         unitPrice: numeric("unit_price"),
         totalPrice: numeric("total_price"),
     },
@@ -4360,16 +4371,6 @@ export const relations_products_sales_channels = relations(
         }),
     })
 );
-export const relations_products_variants_additional_info = relations(
-    products_variants_additional_info,
-    ({ one }) => ({
-        _parentID: one(products_variants, {
-            fields: [products_variants_additional_info._parentID],
-            references: [products_variants.id],
-            relationName: "additionalInfo",
-        }),
-    })
-);
 export const relations_products_variants_locations = relations(
     products_variants_locations,
     ({ one }) => ({
@@ -4377,6 +4378,16 @@ export const relations_products_variants_locations = relations(
             fields: [products_variants_locations._parentID],
             references: [products_variants.id],
             relationName: "locations",
+        }),
+    })
+);
+export const relations_products_variants_additional_info = relations(
+    products_variants_additional_info,
+    ({ one }) => ({
+        _parentID: one(products_variants, {
+            fields: [products_variants_additional_info._parentID],
+            references: [products_variants.id],
+            relationName: "additionalInfo",
         }),
     })
 );
@@ -4398,11 +4409,11 @@ export const relations_products_variants = relations(
             references: [products.id],
             relationName: "variants",
         }),
-        additionalInfo: many(products_variants_additional_info, {
-            relationName: "additionalInfo",
-        }),
         locations: many(products_variants_locations, {
             relationName: "locations",
+        }),
+        additionalInfo: many(products_variants_additional_info, {
+            relationName: "additionalInfo",
         }),
         options: many(products_variants_options, {
             relationName: "options",
@@ -5351,8 +5362,8 @@ type DatabaseSchema = {
     collections: typeof collections;
     category: typeof category;
     products_sales_channels: typeof products_sales_channels;
-    products_variants_additional_info: typeof products_variants_additional_info;
     products_variants_locations: typeof products_variants_locations;
+    products_variants_additional_info: typeof products_variants_additional_info;
     products_variants_options: typeof products_variants_options;
     products_variants: typeof products_variants;
     products_custom_fields: typeof products_custom_fields;
@@ -5433,8 +5444,8 @@ type DatabaseSchema = {
     relations_collections: typeof relations_collections;
     relations_category: typeof relations_category;
     relations_products_sales_channels: typeof relations_products_sales_channels;
-    relations_products_variants_additional_info: typeof relations_products_variants_additional_info;
     relations_products_variants_locations: typeof relations_products_variants_locations;
+    relations_products_variants_additional_info: typeof relations_products_variants_additional_info;
     relations_products_variants_options: typeof relations_products_variants_options;
     relations_products_variants: typeof relations_products_variants;
     relations_products_custom_fields: typeof relations_products_custom_fields;

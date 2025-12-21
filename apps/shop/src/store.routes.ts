@@ -13,5 +13,6 @@ export const Routes = {
   orderTrackById: (orderId: string) => `/order/track/${orderId}`,
   productLink: (handle: string) => `/product/${handle}`,
   categoryLink: (slug: string) => `/category/${slug}`,
+  collectionLink: (handle: string) => `/collection/${handle}`,
   termsAndConditions: "/terms-and-conditions",
 };

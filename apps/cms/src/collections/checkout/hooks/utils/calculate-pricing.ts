@@ -18,6 +18,7 @@ export interface CheckoutPricing {
         variantId: string;
         product: number | Product;
         quantity: number;
+        participants: number;
         unitPrice: number;
         totalPrice: number;
     }>;
@@ -139,15 +140,18 @@ export async function calculateCheckoutPricing(
         ? await fetchProductPrices(payload, items)
         : new Map();
 
-    // Calculate per-item pricing
+    // Calculate per-item pricing (including participants)
     const pricedItems = items.map((item) => {
         const unitPrice = calculateUnitPrice(item, priceMap);
-        const totalPrice = unitPrice * item.quantity;
+        const participants =
+            (item as { participants?: number }).participants || 1;
+        const totalPrice = unitPrice * item.quantity * participants;
 
         return {
             variantId: item.variantId,
             product: item.product,
             quantity: item.quantity,
+            participants,
             unitPrice,
             totalPrice,
         };

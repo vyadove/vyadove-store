@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useCheckout } from "@/providers/checkout";
 import { Button } from "@ui/shadcn/button";
 import { Spinner } from "@ui/shadcn/spinner";
-import { Trash } from "lucide-react";
+import { Trash, Trash2 } from "lucide-react";
 
 import { toast } from "@/components/ui/hot-toast";
 
@@ -43,17 +43,21 @@ const DeleteItemButton = ({
   return (
     <div
       className={cn(
-        "flex items-center justify-between text-small-regular",
+        "relative flex items-center justify-between text-small-regular",
         className,
       )}
     >
       <Button
-        className="hover:text-destructive hover:bg-destructive/10 cursor-pointer items-center"
+        className="absolute right-0 hover:text-destructive hover:bg-destructive/10 cursor-pointer items-center"
         onClick={() => handleDelete(variantId)}
         size="icon-sm"
-        variant="secondary"
+        variant="ghost"
       >
-        {isDeleting ? <Spinner className="animate-spin" /> : <Trash size={2} />}
+        {isDeleting ? (
+          <Spinner className="animate-spin absolute" />
+        ) : (
+          <Trash2 className="" />
+        )}
 
         {children && <span>{children}</span>}
       </Button>

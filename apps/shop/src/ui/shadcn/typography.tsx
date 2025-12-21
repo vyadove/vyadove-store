@@ -88,7 +88,7 @@ export function TypographyH6(props: React.ComponentProps<"h4">) {
 
 export function TypographyP(props: React.ComponentProps<"p">) {
   return (
-    <p className={cn("leading-6 text-black", props.className)}>
+    <p className={cn("leading-6 text-black font-light", props.className)}>
       {props.children}
     </p>
   );

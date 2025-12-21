@@ -2,21 +2,21 @@
 
 import React, { useEffect, useState } from "react";
 
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import ExperienceSelector from "@/scenes/product-detail/experience-selector";
+import PricingSection from "@/scenes/product-detail/pricing-section";
 import ProductActions from "@/scenes/product-detail/product-actions";
+import ProductAdditionalInfo from "@/scenes/product-detail/product-additional-info";
 import ProductGallery from "@/scenes/product-detail/product-gallery";
-import ProductInfo from "@/scenes/product-detail/product-info";
-import ProductPrice from "@/scenes/product-detail/product-price";
+import { ProductMetadata } from "@/scenes/product-detail/product-metadata";
+import { ProductReviews } from "@/scenes/product-detail/product-reviews";
 import { RelatedGifts } from "@/scenes/product-detail/related-gifts";
-import VariantSelector from "@/scenes/product-detail/variant-selector";
 import useNavStore from "@ui/nav/nav.store";
 import {
   TypographyH2,
   TypographyH3,
   TypographyLead,
-  TypographyMuted,
   TypographyP,
 } from "@ui/shadcn/typography";
 import type { Product } from "@vyadove/types";
@@ -28,7 +28,6 @@ import { useRecentlyViewed } from "@/lib/use-recently-viewed";
 
 type Props = {
   product: Product;
-  relatedGifts: Product[];
 };
 
 // create a product detail context to manage selected options
@@ -36,20 +35,39 @@ const ProductDetailContext = React.createContext<{
   product: Product;
   selectedVariant?: Product["variants"][number];
   setSelectedVariant: (id: string) => void;
+  participants: number;
+  setParticipants: (count: number) => void;
 }>({} as any);
 
 export const useProductDetailContext = () =>
   React.useContext(ProductDetailContext);
 
-const ProductDetail: React.FC<Props> = ({ product, relatedGifts }) => {
+const ProductDetail: React.FC<Props> = ({ product }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const { setDefaultValue } = useNavStore();
   const { addItem: trackRecentlyViewed } = useRecentlyViewed();
   const [selectedVariant, setSelectedVariant] = useState<
     Product["variants"][number]
   >(product.variants[0] as any);
+
+  // Participants state - use default from variant.participants
+  const getInitialParticipants = (
+    variant: Product["variants"][number] | undefined,
+  ) => {
+    if (!variant) return 1;
+
+    return (variant as any).participants?.default ?? 1;
+  };
+
+  const [participants, setParticipants] = useState(() =>
+    getInitialParticipants(product.variants[0]),
+  );
+
+  // Reset participants when variant changes
+  useEffect(() => {
+    setParticipants(getInitialParticipants(selectedVariant));
+  }, [selectedVariant?.id]);
 
   const setSelectedVariantFromId = (id: string) => {
     const variant = product.variants.find((v) => v.id === id);
@@ -64,38 +82,10 @@ const ProductDetail: React.FC<Props> = ({ product, relatedGifts }) => {
     setSelectedVariant(variant);
   };
 
-  useEffect(() => {
-    setDefaultValue(true);
-
-    return () => {
-      setDefaultValue(undefined);
-    };
-  }, []);
-
   // Track recently viewed product
   useEffect(() => {
     trackRecentlyViewed(product);
   }, [product.id]);
-
-  /* useEffect(() => {
-    if (selectedVariant) {
-      return;
-    }
-
-    setSelectedVariant(product.variants[0]);
-  }, [selectedVariant]);*/
-
-  /*  useEffect(() => {
-    const variantId = searchParams.get("variantId");
-
-    if (!variantId) return;
-
-    const variant = product.variants.find((v) => v.id === variantId);
-
-    if (variant && variant.id !== selectedVariant?.id) {
-      setSelectedVariant(variant);
-    }
-  }, [searchParams, product.variants]);*/
 
   // Sync State → URL (only if user changes variant)
   useEffect(() => {
@@ -115,48 +105,54 @@ const ProductDetail: React.FC<Props> = ({ product, relatedGifts }) => {
         product,
         selectedVariant,
         setSelectedVariant: setSelectedVariantFromId,
+        participants,
+        setParticipants,
       }}
     >
-      <div className="mt-24">
-        <div className="ml-2">
+      <div className="mt-6 container mx-auto sm:px-6">
+        <div className="mb-6">
           <AppBreadcrumb />
         </div>
 
-        <div className="relative mt-6 flex w-full flex-col gap-6 sm:flex-row">
-          <ProductGallery />
+        <div className="relative mt-6 flex w-full flex-col gap-10 lg:flex-row">
+          {/* Left Column: Gallery */}
+          <div className="w-full lg:w-3/5">
+            <ProductGallery />
+          </div>
 
-          <div className="relative mt-2 flex w-full max-w-2xl flex-1 flex-col gap-8">
-            <div className="flex flex-col gap-3">
-              <TypographyMuted className="" data-testid="product-sku">
-                {selectedVariant?.sku || "SKU: N/A"}
-              </TypographyMuted>
+          {/* Right Column: Pricing & Options */}
+          <div className="w-full lg:w-2/5 flex flex-col gap-8">
+            {/* Header Section in Right Column */}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-4">
+                <ProductReviews className="mb-2" />
+              </div>
 
-              <TypographyH2
-                className="line-clamp-2"
+              <TypographyH3
+                className="font-medium tracking-tight line-clamp-3"
                 data-testid="product-title"
               >
                 {product.title}
-              </TypographyH2>
+              </TypographyH3>
 
-              <ProductPrice />
-
-              <TypographyP
-                className="text-muted-foreground line-clamp-6"
-                data-testid="product-description"
-              >
+              <TypographyP className="text-muted-foreground line-clamp-5">
                 {product.description}
               </TypographyP>
+
+              <ProductMetadata className="mt-2" />
             </div>
 
+            <PricingSection />
+
+            {/* Actions */}
             <ProductActions product={product} />
 
-            <VariantSelector variants={product.variants} />
-
-            <ProductInfo />
+            <ExperienceSelector />
           </div>
         </div>
 
-        <RelatedGifts products={relatedGifts} />
+        {/* Additional Info Section */}
+        <ProductAdditionalInfo />
       </div>
     </ProductDetailContext>
   );

@@ -11,8 +11,6 @@ import type {
 } from "./currency";
 import { getCurrencySymbol } from "./currency";
 
-console.log("CacheTags --- :  , ", CacheTags);
-
 export type StoreSettings = {
   name: string;
   /** Base currency code (from CMS StoreSettings) */

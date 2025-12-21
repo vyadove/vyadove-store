@@ -83,24 +83,11 @@ export default async function Product({
     },
   });
 
-  const relatedGifts = await payloadSdk.find({
-    collection: "products",
-    // limit: 3,
-    sort: "createdAt",
-    where: {
-      collections: {
-        equals: featuredCollections?.docs[0]?.id,
-      },
-    },
-  });
-
   const [targetProduct] = product.docs;
 
   if (!targetProduct) {
     notFound();
   }
 
-  return (
-    <ProductDetail product={targetProduct} relatedGifts={relatedGifts.docs} />
-  );
+  return <ProductDetail product={targetProduct} />;
 }

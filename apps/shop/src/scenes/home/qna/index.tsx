@@ -81,19 +81,22 @@ export const QnaAccordion = () => {
               // "from-[rgba(243,224,214,1)] from-20%  to-[#2A4A3A]/30 bg-[length:140%_100%] ",
               "",
             )}
-            cornerContent={
-              <div
-                className={cn(
-                  "flex items-center justify-center gap-4 rounded-full p-2",
-                  " group-data-[state=open]:rotate-180 ease-in-out duration-250",
-                )}
-              >
-                <ChevronDown className="text-xl sm:text-2xl" />
-              </div>
-            }
             cornersRadius={15}
             invertedCorners={{
-              tr: { inverted: true, corners: [15, 15, 15] },
+              tr: {
+                inverted: true,
+                corners: [15, 15, 15],
+                content: (
+                  <div
+                    className={cn(
+                      "flex items-center justify-center gap-4 rounded-full p-2",
+                      " group-data-[state=open]:rotate-180 ease-in-out duration-250",
+                    )}
+                  >
+                    <ChevronDown className="text-xl sm:text-2xl" />
+                  </div>
+                ),
+              },
             }}
             key={idx}
           >

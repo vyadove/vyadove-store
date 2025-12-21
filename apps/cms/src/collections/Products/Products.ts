@@ -56,15 +56,6 @@ export const Products: CollectionConfig = {
             required: true,
         },
         {
-            name: "currency",
-            type: "select",
-            defaultValue: "USD",
-            admin: {
-                description: "Base currency for product pricing",
-            },
-            options: allCurrencyOptions,
-        },
-        {
             name: "visible",
             type: "checkbox",
             admin: {
@@ -72,6 +63,16 @@ export const Products: CollectionConfig = {
             },
             defaultValue: true,
             label: "Visibility",
+        },
+        {
+            name: "currency",
+            type: "select",
+            defaultValue: "USD",
+            admin: {
+                position: "sidebar",
+                description: "Base currency for product pricing",
+            },
+            options: allCurrencyOptions,
         },
         {
             name: "salesChannels",
@@ -112,6 +113,20 @@ export const Products: CollectionConfig = {
             name: "description",
             type: "textarea",
             required: true,
+        },
+        {
+            name: "validity",
+            type: "date",
+            admin: {
+                position: "sidebar",
+                description:
+                    "Expiration date for this gift experience. Leave empty for lifetime validity.",
+                date: {
+                    pickerAppearance: "dayOnly",
+                    displayFormat: "MMM d, yyyy",
+                },
+            },
+            label: "Validity / Expiration",
         },
 
         {
@@ -169,10 +184,34 @@ export const Products: CollectionConfig = {
                 {
                     name: "sku",
                     type: "text",
+                    hidden: true,
                     defaultValue: () => {
                         return `SKU-${crypto.randomUUID().slice(0, 8)}`;
                     },
                     label: "SKU",
+                },
+                {
+                    type: "row",
+                    fields: [
+                        {
+                            name: "description",
+                            type: "text",
+                            label: "Description",
+                        },
+                        {
+                            name: "available",
+                            label: "Available",
+                            type: "checkbox",
+                            defaultValue: true,
+                            admin: {
+                                style: {
+                                    maxWidth: "20%",
+                                    alignSelf: "center",
+                                    justifySelf: "center",
+                                },
+                            },
+                        },
+                    ],
                 },
                 {
                     name: "imageUrl",
@@ -199,46 +238,26 @@ export const Products: CollectionConfig = {
                     type: "group",
                     fields: [
                         {
-                            name: "amount",
-                            type: "number",
-                            required: true,
-                            defaultValue: 0,
-                            min: 0,
-                        },
-                        {
-                            name: "currency",
-                            type: "select",
-                            defaultValue: "USD",
-                            options: allCurrencyOptions,
+                            type: "row",
+                            fields: [
+                                {
+                                    name: "amount",
+                                    type: "number",
+                                    required: true,
+                                    defaultValue: 0,
+                                    min: 0,
+                                },
+                                {
+                                    name: "currency",
+                                    type: "select",
+                                    defaultValue: "USD",
+                                    options: allCurrencyOptions,
+                                },
+                            ],
                         },
                     ],
                 },
 
-                {
-                    type: "row",
-                    fields: [
-                        /*{
-                            name: "price",
-                            type: "number",
-                            required: true,
-                        },*/
-                        {
-                            name: "originalPrice",
-                            type: "number",
-                            admin: {
-                                readOnly: true,
-                                description:
-                                    "this field is deprecated, use price.amount instead",
-                            },
-                        },
-                        {
-                            name: "available",
-                            label: "Available",
-                            type: "checkbox",
-                            defaultValue: true,
-                        },
-                    ],
-                },
                 {
                     name: "pricingTier",
                     type: "select",
@@ -262,27 +281,105 @@ export const Products: CollectionConfig = {
                 },
 
                 {
-                    name: "additionalInfo",
-                    type: "array",
-                    // minRows: 1,
-                    maxRows: 10,
-                    // required: true,
+                    name: "participants",
+                    type: "group",
+                    label: "Participants",
                     admin: {
                         description:
-                            "Add additional product variant info such as care instructions, materials, or sizing notes.",
-                        // position: "sidebar",
+                            "Configure participant count for this experience",
                     },
                     fields: [
                         {
-                            name: "name",
-                            type: "text",
+                            name: "default",
+                            type: "number",
+                            defaultValue: 1,
+                            min: 1,
+                            max: 100,
                             required: true,
+                            label: "Default Participants",
+                            admin: {
+                                description:
+                                    "Initial participant count shown to customers",
+                            },
                         },
-                        RichTextEditor({
-                            name: "value",
-                            label: "Rich Text",
-                            required: true,
-                        }),
+                        {
+                            name: "customizeRange",
+                            type: "checkbox",
+                            defaultValue: false,
+                            virtual: true,
+                            label: "Customize range",
+                            admin: {
+                                description: "Set custom min/max limits",
+                            },
+                        },
+                        {
+                            type: "row",
+                            admin: {
+                                // Show if checkbox checked OR if min/max have non-default values
+                                condition: (_, siblingData) =>
+                                    siblingData?.customizeRange ||
+                                    (siblingData?.min !== undefined &&
+                                        siblingData.min !== 1) ||
+                                    (siblingData?.max !== undefined &&
+                                        siblingData.max !== 20),
+                            },
+                            fields: [
+                                {
+                                    name: "min",
+                                    type: "number",
+                                    defaultValue: 1,
+                                    min: 1,
+                                    max: 100,
+                                    label: "Min",
+                                    admin: { width: "50%" },
+                                    validate: (
+                                        value: number | undefined | null,
+                                        {
+                                            siblingData,
+                                        }: {
+                                            siblingData: Record<
+                                                string,
+                                                unknown
+                                            >;
+                                        }
+                                    ) => {
+                                        const max =
+                                            (siblingData?.max as number) ?? 20;
+                                        if (value && value > max) {
+                                            return "Min must be less than or equal to max";
+                                        }
+                                        return true;
+                                    },
+                                },
+                                {
+                                    name: "max",
+                                    type: "number",
+                                    defaultValue: 20,
+                                    min: 1,
+                                    max: 100,
+                                    label: "Max",
+                                    admin: { width: "50%" },
+                                    validate: (
+                                        value: number | undefined | null,
+                                        {
+                                            siblingData,
+                                        }: {
+                                            siblingData: Record<
+                                                string,
+                                                unknown
+                                            >;
+                                        }
+                                    ) => {
+                                        const min =
+                                            (siblingData?.min as number) ?? 1;
+                                        if (value && value < min) {
+                                            return "Max must be greater than or equal to min";
+                                        }
+                                        return true;
+                                    },
+                                },
+                            ],
+                        },
                     ],
                 },
 
@@ -295,17 +392,58 @@ export const Products: CollectionConfig = {
                             name: "coordinates",
                             type: "point",
                             label: "Coordinates",
+                            hidden: true,
                         },
                         {
                             name: "map_url",
                             label: "Map URL",
                             type: "text",
+                            required: true,
                         },
                         {
                             name: "address",
                             label: "Address",
                             type: "text",
                         },
+                    ],
+                },
+
+                {
+                    name: "additionalInfo",
+                    type: "array",
+                    required: true,
+                    minRows: 4,
+                    maxRows: 10,
+                    labels: {
+                        singular: "Info Section",
+                        plural: "Info Sections",
+                    },
+                    admin: {
+                        initCollapsed: true,
+                        description:
+                            "Experience info sections. First 4 are required: About this experience, What's included, Participant guidelines, How it works.",
+                        components: {
+                            RowLabel:
+                                "@/collections/Products/components/AdditionalInfoRowLabel#AdditionalInfoRowLabel",
+                        },
+                    },
+                    defaultValue: [
+                        { name: "About this experience", value: "" },
+                        { name: "What's included", value: "" },
+                        { name: "Participant guidelines", value: "" },
+                        { name: "How it works", value: "" },
+                    ],
+                    fields: [
+                        {
+                            name: "name",
+                            type: "text",
+                            required: true,
+                        },
+                        RichTextEditor({
+                            name: "value",
+                            label: "Content",
+                            required: true,
+                        }),
                     ],
                 },
 
@@ -347,9 +485,7 @@ export const Products: CollectionConfig = {
         {
             name: "customFields",
             type: "array",
-            minRows: 1,
             maxRows: 10,
-            required: true,
             admin: {
                 description:
                     "Add additional product info such as care instructions, materials, or sizing notes.",
