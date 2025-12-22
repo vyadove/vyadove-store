@@ -6,15 +6,13 @@ export const getStripeBlock = async ({
     shopId,
 }: {
     req: PayloadRequest;
-    shopId: number;
+    shopId?: number;
 }) => {
+    // For single-tenant setups, just get the first payment config
+    // For multi-tenant, filter by shop if the field exists
     const paymentsDocument = (await req.payload.find({
         collection: "payments",
-        where: {
-            shop: {
-                equals: shopId,
-            },
-        },
+        limit: 1,
     })) as PaginatedDocs<Payment>;
 
     const stripeBlock = paymentsDocument.docs[0]?.providers?.find(

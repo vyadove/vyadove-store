@@ -922,14 +922,15 @@ const CheckoutNew = () => {
                                   {...field}
                                 />
                               </FormControl>
-                              <div className="flex justify-end">
+                              <div className="flex justify-between">
+                                <FormMessage />
+
                                 <span
-                                  className={`text-xs ${giftMessageText.length >= 300 ? "text-destructive" : "text-muted-foreground"}`}
+                                  className={`ml-auto text-xs ${giftMessageText.length >= 300 ? "text-destructive" : "text-muted-foreground"}`}
                                 >
                                   {giftMessageText.length}/300
                                 </span>
                               </div>
-                              <FormMessage />
                             </FormItem>
                           )}
                         />

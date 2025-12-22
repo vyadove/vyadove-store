@@ -64,7 +64,8 @@ export const paymentCanceled: PaymentCanceledHandler = async ({
             // Send failure email with a retry link if checkout exists
             if (checkoutId) {
                 const shopUrl =
-                    process.env.NEXT_PUBLIC_SHOP_URL || "http://localhost:3020";
+                    process.env.NEXT_PUBLIC_STOREFRONT_URL ||
+                    "http://localhost:3020";
                 const retryUrl = `${shopUrl}/checkout?retry=${checkoutId}`;
                 await sendPaymentFailedEmail(
                     payload,

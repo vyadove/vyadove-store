@@ -2,6 +2,10 @@
 import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
+
+
+
+
 export const env = createEnv({
   server: {
     // Can be provided via env or parameters to Commerce Kit, thus optional
@@ -19,7 +23,7 @@ export const env = createEnv({
     // Can be provided via env or parameters to Commerce Kit, thus optional
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
     NEXT_PUBLIC_SERVER_URL: z.string().url().optional(),
-
+    NEXT_PUBLIC_SHOP_URL: z.string().url(),
     NEXT_PUBLIC_UMAMI_WEBSITE_ID: z.string().optional(),
 
     NEXT_PUBLIC_NEWSLETTER_ENDPOINT: z.string().optional(),
@@ -34,6 +38,7 @@ export const env = createEnv({
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
+    NEXT_PUBLIC_SHOP_URL: process.env.NEXT_PUBLIC_SHOP_URL,
     NEXT_PUBLIC_UMAMI_WEBSITE_ID: process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID,
     NEXT_PUBLIC_NEWSLETTER_ENDPOINT:
       process.env.NEXT_PUBLIC_NEWSLETTER_ENDPOINT,
@@ -44,7 +49,13 @@ export const env = createEnv({
   },
 });
 
-if (!process.env.NEXT_PUBLIC_SHOP_URL || !process.env.NEXT_PUBLIC_SERVER_URL) {
+if (
+  !process.env.NEXT_PUBLIC_SERVER_URL
+) {
+  throw new Error("Missing NEXT_PUBLIC_SERVER_URL variable!");
+}
+
+if (!process.env?.NEXT_PUBLIC_SHOP_URL) {
   throw new Error("Missing NEXT_PUBLIC_SHOP_URL variable!");
 }
 

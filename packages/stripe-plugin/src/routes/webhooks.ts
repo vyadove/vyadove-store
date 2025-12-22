@@ -17,7 +17,16 @@ export const stripeWebhooks = async (args: {
 }): Promise<any> => {
     const { config, pluginConfig, req } = args;
     let returnStatus = 200;
-    const shopId = getTenantFromCookie(req.headers);
+
+    // Try to get shopId from: 1) query param, 2) cookie, 3) env default, 4) fallback to 1
+    const url = new URL(req.url || "", "http://localhost");
+    const queryShopId = url.searchParams.get("shopId");
+    const cookieShopId = getTenantFromCookie(req.headers);
+    const defaultShopId = process.env.DEFAULT_SHOP_ID ? parseInt(process.env.DEFAULT_SHOP_ID) : 1;
+
+    const shopId = queryShopId ? parseInt(queryShopId) : (cookieShopId || defaultShopId);
+
+    console.log('shopId : ', shopId);
 
     if (!shopId) {
         return Response.json(
@@ -42,11 +51,7 @@ export const stripeWebhooks = async (args: {
 
     if (stripeWebhooksEndpointSecret) {
         const stripe = new Stripe(stripeSecretKey as string, {
-            apiVersion: "2022-08-01",
-            appInfo: {
-                name: "ShopNex Stripe Plugin",
-                url: "https://shopnex.ai",
-            },
+            apiVersion: "2025-12-15.clover",
         });
 
         const body = await req.text?.();

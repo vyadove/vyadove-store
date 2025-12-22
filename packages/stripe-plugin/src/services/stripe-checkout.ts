@@ -24,7 +24,8 @@ export async function stripeCheckout({
     currency = "usd",
 }: StripeCheckoutProps) {
     const shopUrl =
-        req.payload.config?.custom?.shopUrl || process.env.NEXT_PUBLIC_SHOP_URL;
+        req.payload.config?.custom?.shopUrl ||
+        process.env.NEXT_PUBLIC_STOREFRONT_URL;
 
     const order = await req.payload.create({
         collection: "orders",

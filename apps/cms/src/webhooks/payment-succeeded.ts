@@ -17,6 +17,8 @@ export const paymentSucceeded: PaymentSucceededHandler = async ({
     const customerEmail =
         paymentIntent.receipt_email || paymentIntent.metadata?.email;
 
+    console.log('payment intent --  : ', paymentIntent);
+
     payload.logger.info(
         `🔔 Received Stripe Event: ${event.id}, Order ID: ${orderId}`
     );

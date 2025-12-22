@@ -285,7 +285,7 @@ export const createStripeSession: CollectionAfterChangeHook<Order> = async ({
 
         // Create Stripe session
         const shopUrl =
-            process.env.NEXT_PUBLIC_SHOP_URL || "http://localhost:3020";
+            process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3020";
         const session = await createCheckoutSession({
             lineItems,
             orderId: doc.orderId,

@@ -59,7 +59,7 @@ export const createStripeSession: CollectionAfterChangeHook<Order> = async ({
         );
 
         const shopUrl =
-            process.env.NEXT_PUBLIC_SHOP_URL || "http://localhost:3020";
+            process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3020";
 
         // Create Stripe checkout session with idempotency key
         const session = await createCheckoutSession({
