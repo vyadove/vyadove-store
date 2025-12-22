@@ -1320,6 +1320,10 @@ export const orders = pgTable(
         metadata: jsonb("metadata"),
         shippingAddress: jsonb("shipping_address"),
         billingAddress: jsonb("billing_address"),
+        giftMessage_enabled: boolean("gift_message_enabled").default(false),
+        giftMessage_recipientName: varchar("gift_message_recipient_name"),
+        giftMessage_senderName: varchar("gift_message_sender_name"),
+        giftMessage_message: varchar("gift_message_message"),
         updatedAt: timestamp("updated_at", {
             mode: "string",
             withTimezone: true,
@@ -2131,6 +2135,10 @@ export const checkout = pgTable(
         }),
         customerNote: varchar("customer_note"),
         email: varchar("email"),
+        giftMessage_enabled: boolean("gift_message_enabled").default(false),
+        giftMessage_recipientName: varchar("gift_message_recipient_name"),
+        giftMessage_senderName: varchar("gift_message_sender_name"),
+        giftMessage_message: varchar("gift_message_message"),
         status: enum_checkout_status("status").notNull().default("incomplete"),
         completedAt: timestamp("completed_at", {
             mode: "string",
