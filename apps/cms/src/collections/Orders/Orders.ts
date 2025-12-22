@@ -280,6 +280,53 @@ export const Orders: CollectionConfig = {
                 }),
             ],
         },
+        // --- Gift Message ---
+        {
+            name: "giftMessage",
+            type: "group",
+            admin: {
+                description: "Personal message included with gift delivery",
+            },
+            fields: [
+                {
+                    name: "enabled",
+                    type: "checkbox",
+                    defaultValue: false,
+                    admin: {
+                        description: "Personal message included",
+                    },
+                },
+                {
+                    type: "row",
+                    fields: [
+                        {
+                            name: "recipientName",
+                            type: "text",
+                            maxLength: 100,
+                            admin: {
+                                description: "To (appears in greeting)",
+                            },
+                        },
+                        {
+                            name: "senderName",
+                            type: "text",
+                            maxLength: 100,
+                            admin: {
+                                description: "From (sender name)",
+                            },
+                        },
+                    ],
+                },
+                {
+                    name: "message",
+                    type: "textarea",
+                    maxLength: 300,
+                    admin: {
+                        description: "Personal message (max 300 chars)",
+                    },
+                },
+            ],
+        },
         OrderTimeline,
     ],
     hooks: {

@@ -13,1687 +13,1664 @@
  * via the `definition` "supportedTimezones".
  */
 export type SupportedTimezones =
-    | "Pacific/Midway"
-    | "Pacific/Niue"
-    | "Pacific/Honolulu"
-    | "Pacific/Rarotonga"
-    | "America/Anchorage"
-    | "Pacific/Gambier"
-    | "America/Los_Angeles"
-    | "America/Tijuana"
-    | "America/Denver"
-    | "America/Phoenix"
-    | "America/Chicago"
-    | "America/Guatemala"
-    | "America/New_York"
-    | "America/Bogota"
-    | "America/Caracas"
-    | "America/Santiago"
-    | "America/Buenos_Aires"
-    | "America/Sao_Paulo"
-    | "Atlantic/South_Georgia"
-    | "Atlantic/Azores"
-    | "Atlantic/Cape_Verde"
-    | "Europe/London"
-    | "Europe/Berlin"
-    | "Africa/Lagos"
-    | "Europe/Athens"
-    | "Africa/Cairo"
-    | "Europe/Moscow"
-    | "Asia/Riyadh"
-    | "Asia/Dubai"
-    | "Asia/Baku"
-    | "Asia/Karachi"
-    | "Asia/Tashkent"
-    | "Asia/Calcutta"
-    | "Asia/Dhaka"
-    | "Asia/Almaty"
-    | "Asia/Jakarta"
-    | "Asia/Bangkok"
-    | "Asia/Shanghai"
-    | "Asia/Singapore"
-    | "Asia/Tokyo"
-    | "Asia/Seoul"
-    | "Australia/Brisbane"
-    | "Australia/Sydney"
-    | "Pacific/Guam"
-    | "Pacific/Noumea"
-    | "Pacific/Auckland"
-    | "Pacific/Fiji";
+  | 'Pacific/Midway'
+  | 'Pacific/Niue'
+  | 'Pacific/Honolulu'
+  | 'Pacific/Rarotonga'
+  | 'America/Anchorage'
+  | 'Pacific/Gambier'
+  | 'America/Los_Angeles'
+  | 'America/Tijuana'
+  | 'America/Denver'
+  | 'America/Phoenix'
+  | 'America/Chicago'
+  | 'America/Guatemala'
+  | 'America/New_York'
+  | 'America/Bogota'
+  | 'America/Caracas'
+  | 'America/Santiago'
+  | 'America/Buenos_Aires'
+  | 'America/Sao_Paulo'
+  | 'Atlantic/South_Georgia'
+  | 'Atlantic/Azores'
+  | 'Atlantic/Cape_Verde'
+  | 'Europe/London'
+  | 'Europe/Berlin'
+  | 'Africa/Lagos'
+  | 'Europe/Athens'
+  | 'Africa/Cairo'
+  | 'Europe/Moscow'
+  | 'Asia/Riyadh'
+  | 'Asia/Dubai'
+  | 'Asia/Baku'
+  | 'Asia/Karachi'
+  | 'Asia/Tashkent'
+  | 'Asia/Calcutta'
+  | 'Asia/Dhaka'
+  | 'Asia/Almaty'
+  | 'Asia/Jakarta'
+  | 'Asia/Bangkok'
+  | 'Asia/Shanghai'
+  | 'Asia/Singapore'
+  | 'Asia/Tokyo'
+  | 'Asia/Seoul'
+  | 'Australia/Brisbane'
+  | 'Australia/Sydney'
+  | 'Pacific/Guam'
+  | 'Pacific/Noumea'
+  | 'Pacific/Auckland'
+  | 'Pacific/Fiji';
 
 export interface Config {
-    auth: {
-        users: UserAuthOperations;
-    };
-    blocks: {};
+  auth: {
+    users: UserAuthOperations;
+  };
+  blocks: {};
+  collections: {
+    orders: Order;
+    collections: Collection;
+    category: Category;
+    products: Product;
+    users: User;
+    campaigns: Campaign;
+    media: Media;
+    policies: Policy;
+    'gift-cards': GiftCard;
+    themes: Theme;
+    checkout: Checkout;
+    'hero-page': HeroPage;
+    'footer-page': FooterPage;
+    'privacy-policy-page': PrivacyPolicyPage;
+    'terms-and-conditions-page': TermsAndConditionsPage;
+    'support-page': SupportPage;
+    pages: Page;
+    plugins: Plugin;
+    payments: Payment;
+    locations: Location;
+    shipping: Shipping;
+    forms: Form;
+    'form-submissions': FormSubmission;
+    exports: Export;
+    'email-templates': EmailTemplate;
+    search: Search;
+    'payload-jobs': PayloadJob;
+    'payload-folders': FolderInterface;
+    'payload-locked-documents': PayloadLockedDocument;
+    'payload-preferences': PayloadPreference;
+    'payload-migrations': PayloadMigration;
+  };
+  collectionsJoins: {
     collections: {
-        orders: Order;
-        collections: Collection;
-        category: Category;
-        products: Product;
-        users: User;
-        campaigns: Campaign;
-        media: Media;
-        policies: Policy;
-        "gift-cards": GiftCard;
-        themes: Theme;
-        checkout: Checkout;
-        "hero-page": HeroPage;
-        "footer-page": FooterPage;
-        "privacy-policy-page": PrivacyPolicyPage;
-        "terms-and-conditions-page": TermsAndConditionsPage;
-        "support-page": SupportPage;
-        pages: Page;
-        plugins: Plugin;
-        payments: Payment;
-        locations: Location;
-        shipping: Shipping;
-        forms: Form;
-        "form-submissions": FormSubmission;
-        exports: Export;
-        "email-templates": EmailTemplate;
-        search: Search;
-        "payload-jobs": PayloadJob;
-        "payload-folders": FolderInterface;
-        "payload-locked-documents": PayloadLockedDocument;
-        "payload-preferences": PayloadPreference;
-        "payload-migrations": PayloadMigration;
+      products: 'products';
     };
-    collectionsJoins: {
-        collections: {
-            products: "products";
-        };
-        category: {
-            products: "products";
-            subcategories: "category";
-        };
-        checkout: {
-            order: "orders";
-        };
-        "payload-folders": {
-            documentsAndFolders: "payload-folders" | "media";
-        };
+    category: {
+      products: 'products';
+      subcategories: 'category';
     };
-    collectionsSelect: {
-        orders: OrdersSelect<false> | OrdersSelect<true>;
-        collections: CollectionsSelect<false> | CollectionsSelect<true>;
-        category: CategorySelect<false> | CategorySelect<true>;
-        products: ProductsSelect<false> | ProductsSelect<true>;
-        users: UsersSelect<false> | UsersSelect<true>;
-        campaigns: CampaignsSelect<false> | CampaignsSelect<true>;
-        media: MediaSelect<false> | MediaSelect<true>;
-        policies: PoliciesSelect<false> | PoliciesSelect<true>;
-        "gift-cards": GiftCardsSelect<false> | GiftCardsSelect<true>;
-        themes: ThemesSelect<false> | ThemesSelect<true>;
-        checkout: CheckoutSelect<false> | CheckoutSelect<true>;
-        "hero-page": HeroPageSelect<false> | HeroPageSelect<true>;
-        "footer-page": FooterPageSelect<false> | FooterPageSelect<true>;
-        "privacy-policy-page":
-            | PrivacyPolicyPageSelect<false>
-            | PrivacyPolicyPageSelect<true>;
-        "terms-and-conditions-page":
-            | TermsAndConditionsPageSelect<false>
-            | TermsAndConditionsPageSelect<true>;
-        "support-page": SupportPageSelect<false> | SupportPageSelect<true>;
-        pages: PagesSelect<false> | PagesSelect<true>;
-        plugins: PluginsSelect<false> | PluginsSelect<true>;
-        payments: PaymentsSelect<false> | PaymentsSelect<true>;
-        locations: LocationsSelect<false> | LocationsSelect<true>;
-        shipping: ShippingSelect<false> | ShippingSelect<true>;
-        forms: FormsSelect<false> | FormsSelect<true>;
-        "form-submissions":
-            | FormSubmissionsSelect<false>
-            | FormSubmissionsSelect<true>;
-        exports: ExportsSelect<false> | ExportsSelect<true>;
-        "email-templates":
-            | EmailTemplatesSelect<false>
-            | EmailTemplatesSelect<true>;
-        search: SearchSelect<false> | SearchSelect<true>;
-        "payload-jobs": PayloadJobsSelect<false> | PayloadJobsSelect<true>;
-        "payload-folders":
-            | PayloadFoldersSelect<false>
-            | PayloadFoldersSelect<true>;
-        "payload-locked-documents":
-            | PayloadLockedDocumentsSelect<false>
-            | PayloadLockedDocumentsSelect<true>;
-        "payload-preferences":
-            | PayloadPreferencesSelect<false>
-            | PayloadPreferencesSelect<true>;
-        "payload-migrations":
-            | PayloadMigrationsSelect<false>
-            | PayloadMigrationsSelect<true>;
+    checkout: {
+      order: 'orders';
     };
-    db: {
-        defaultIDType: number;
+    'payload-folders': {
+      documentsAndFolders: 'payload-folders' | 'media';
     };
-    globals: {
-        "store-settings": StoreSetting;
-        "main-menu": MainMenu;
+  };
+  collectionsSelect: {
+    orders: OrdersSelect<false> | OrdersSelect<true>;
+    collections: CollectionsSelect<false> | CollectionsSelect<true>;
+    category: CategorySelect<false> | CategorySelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
+    campaigns: CampaignsSelect<false> | CampaignsSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
+    policies: PoliciesSelect<false> | PoliciesSelect<true>;
+    'gift-cards': GiftCardsSelect<false> | GiftCardsSelect<true>;
+    themes: ThemesSelect<false> | ThemesSelect<true>;
+    checkout: CheckoutSelect<false> | CheckoutSelect<true>;
+    'hero-page': HeroPageSelect<false> | HeroPageSelect<true>;
+    'footer-page': FooterPageSelect<false> | FooterPageSelect<true>;
+    'privacy-policy-page': PrivacyPolicyPageSelect<false> | PrivacyPolicyPageSelect<true>;
+    'terms-and-conditions-page': TermsAndConditionsPageSelect<false> | TermsAndConditionsPageSelect<true>;
+    'support-page': SupportPageSelect<false> | SupportPageSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    plugins: PluginsSelect<false> | PluginsSelect<true>;
+    payments: PaymentsSelect<false> | PaymentsSelect<true>;
+    locations: LocationsSelect<false> | LocationsSelect<true>;
+    shipping: ShippingSelect<false> | ShippingSelect<true>;
+    forms: FormsSelect<false> | FormsSelect<true>;
+    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
+    exports: ExportsSelect<false> | ExportsSelect<true>;
+    'email-templates': EmailTemplatesSelect<false> | EmailTemplatesSelect<true>;
+    search: SearchSelect<false> | SearchSelect<true>;
+    'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
+    'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
+    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
+    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
+    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
+  };
+  db: {
+    defaultIDType: number;
+  };
+  globals: {
+    'store-settings': StoreSetting;
+    'main-menu': MainMenu;
+  };
+  globalsSelect: {
+    'store-settings': StoreSettingsSelect<false> | StoreSettingsSelect<true>;
+    'main-menu': MainMenuSelect<false> | MainMenuSelect<true>;
+  };
+  locale: null;
+  user: User & {
+    collection: 'users';
+  };
+  jobs: {
+    tasks: {
+      createCollectionExport: TaskCreateCollectionExport;
+      inline: {
+        input: unknown;
+        output: unknown;
+      };
     };
-    globalsSelect: {
-        "store-settings":
-            | StoreSettingsSelect<false>
-            | StoreSettingsSelect<true>;
-        "main-menu": MainMenuSelect<false> | MainMenuSelect<true>;
-    };
-    locale: null;
-    user: User & {
-        collection: "users";
-    };
-    jobs: {
-        tasks: {
-            createCollectionExport: TaskCreateCollectionExport;
-            inline: {
-                input: unknown;
-                output: unknown;
-            };
-        };
-        workflows: unknown;
-    };
+    workflows: unknown;
+  };
 }
 export interface UserAuthOperations {
-    forgotPassword: {
-        email: string;
-        password: string;
-    };
-    login: {
-        email: string;
-        password: string;
-    };
-    registerFirstUser: {
-        email: string;
-        password: string;
-    };
-    unlock: {
-        email: string;
-        password: string;
-    };
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "orders".
  */
 export interface Order {
-    id: number;
-    orderId: string;
-    totalAmount: number;
-    user?: (number | null) | User;
-    /**
-     * Reference to the checkout that created this order
-     */
-    checkout: number | Checkout;
-    source?: "manual" | null;
-    /**
-     * Base currency used for pricing
-     */
-    currency: string;
-    /**
-     * Currency customer actually paid in (Stripe Adaptive Pricing)
-     */
-    presentmentCurrency?: string | null;
-    /**
-     * Amount in presentment currency
-     */
-    presentmentAmount?: number | null;
-    paymentStatus:
-        | "pending"
-        | "awaiting_payment"
-        | "paid"
-        | "failed"
-        | "expired"
-        | "refunded";
-    orderStatus:
-        | "pending"
-        | "processing"
-        | "shipped"
-        | "failed"
-        | "delivered"
-        | "canceled";
-    payment?: (number | null) | Payment;
-    shipping?: (number | null) | Shipping;
-    paymentIntentId?: string | null;
-    sessionId?: string | null;
-    /**
-     * Stripe Checkout Session ID
-     */
-    stripeSessionId?: string | null;
-    /**
-     * Stripe Checkout Session URL
-     */
-    sessionUrl?: string | null;
-    paymentMethod?: string | null;
-    receiptUrl?: string | null;
-    metadata?: {
-        paymentType?: string;
-        checkoutId?: number;
-        [k: string]: unknown;
+  id: number;
+  orderId: string;
+  totalAmount: number;
+  user?: (number | null) | User;
+  /**
+   * Reference to the checkout that created this order
+   */
+  checkout: number | Checkout;
+  source?: 'manual' | null;
+  /**
+   * Base currency used for pricing
+   */
+  currency: string;
+  /**
+   * Currency customer actually paid in (Stripe Adaptive Pricing)
+   */
+  presentmentCurrency?: string | null;
+  /**
+   * Amount in presentment currency
+   */
+  presentmentAmount?: number | null;
+  paymentStatus: 'pending' | 'awaiting_payment' | 'paid' | 'failed' | 'expired' | 'refunded';
+  orderStatus: 'pending' | 'processing' | 'shipped' | 'failed' | 'delivered' | 'canceled';
+  payment?: (number | null) | Payment;
+  shipping?: (number | null) | Shipping;
+  paymentIntentId?: string | null;
+  sessionId?: string | null;
+  /**
+   * Stripe Checkout Session ID
+   */
+  stripeSessionId?: string | null;
+  /**
+   * Stripe Checkout Session URL
+   */
+  sessionUrl?: string | null;
+  paymentMethod?: string | null;
+  receiptUrl?: string | null;
+  metadata?: {
+    paymentType?: string;
+    checkoutId?: number;
+    [k: string]: unknown;
+  };
+  shippingAddress?: {
+    name?: string;
+    address?: {
+      city?: string;
+      country?: string;
+      line1?: string;
+      line2?: string;
+      postal_code?: string;
+      state?: string;
+      street?: string;
+      [k: string]: unknown;
     };
-    shippingAddress?: {
-        name?: string;
-        address?: {
-            city?: string;
-            country?: string;
-            line1?: string;
-            line2?: string;
-            postal_code?: string;
-            state?: string;
-            street?: string;
-            [k: string]: unknown;
-        };
-        phone?: string;
-        [k: string]: unknown;
+    phone?: string;
+    [k: string]: unknown;
+  };
+  billingAddress?: {
+    name?: string;
+    address?: {
+      city?: string;
+      country?: string;
+      line1?: string;
+      line2?: string;
+      postal_code?: string;
+      state?: string;
+      [k: string]: unknown;
     };
-    billingAddress?: {
-        name?: string;
-        address?: {
-            city?: string;
-            country?: string;
-            line1?: string;
-            line2?: string;
-            postal_code?: string;
-            state?: string;
-            [k: string]: unknown;
-        };
-        email?: string;
-        phone?: string;
-        [k: string]: unknown;
-    };
+    email?: string;
+    phone?: string;
+    [k: string]: unknown;
+  };
+  /**
+   * Personal message included with gift delivery
+   */
+  giftMessage?: {
     /**
-     * Track important order events (e.g. status changes, payments, shipments, notes).
+     * Personal message included
      */
-    timeline?:
-        | {
-              title: string;
-              date: string;
-              type:
-                  | "note"
-                  | "order_created"
-                  | "order_paid"
-                  | "order_cancelled"
-                  | "refund_issued"
-                  | "fulfillment_started"
-                  | "shipped"
-                  | "delivered"
-                  | "return_requested"
-                  | "return_completed"
-                  | "other";
-              createdBy?: (number | null) | User;
-              details?: string | null;
-              id?: string | null;
-          }[]
-        | null;
-    updatedAt: string;
-    createdAt: string;
+    enabled?: boolean | null;
+    /**
+     * To (appears in greeting)
+     */
+    recipientName?: string | null;
+    /**
+     * From (sender name)
+     */
+    senderName?: string | null;
+    /**
+     * Personal message (max 300 chars)
+     */
+    message?: string | null;
+  };
+  /**
+   * Track important order events (e.g. status changes, payments, shipments, notes).
+   */
+  timeline?:
+    | {
+        title: string;
+        date: string;
+        type:
+          | 'note'
+          | 'order_created'
+          | 'order_paid'
+          | 'order_cancelled'
+          | 'refund_issued'
+          | 'fulfillment_started'
+          | 'shipped'
+          | 'delivered'
+          | 'return_requested'
+          | 'return_completed'
+          | 'other';
+        createdBy?: (number | null) | User;
+        details?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
-    id: number;
-    firstName?: string | null;
-    lastName?: string | null;
-    roles?: ("admin" | "customer")[] | null;
-    updatedAt: string;
-    createdAt: string;
-    email: string;
-    resetPasswordToken?: string | null;
-    resetPasswordExpiration?: string | null;
-    salt?: string | null;
-    hash?: string | null;
-    loginAttempts?: number | null;
-    lockUntil?: string | null;
-    sessions?:
-        | {
-              id: string;
-              createdAt?: string | null;
-              expiresAt: string;
-          }[]
-        | null;
-    password?: string | null;
+  id: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  roles?: ('admin' | 'customer')[] | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "checkout".
  */
 export interface Checkout {
-    id: number;
-    sessionId: string;
+  id: number;
+  sessionId: string;
+  /**
+   * Linked user account if authenticated
+   */
+  customer?: (number | null) | User;
+  items?:
+    | {
+        product: number | Product;
+        variantId: string;
+        quantity: number;
+        /**
+         * Number of participants for this experience
+         */
+        participants?: number | null;
+        /**
+         * Price per participant at time of adding to checkout
+         */
+        unitPrice?: number | null;
+        /**
+         * Unit price × participants × quantity
+         */
+        totalPrice?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  shippingAddress?: {
+    firstName?: string;
+    lastName?: string;
+    company?: string;
+    streetAddress1?: string;
+    streetAddress2?: string;
+    city?: string;
+    postalCode?: string;
+    state?: string;
+    country?: string;
+    phone?: string;
+    [k: string]: unknown;
+  };
+  billingAddress?: {
+    firstName?: string;
+    lastName?: string;
+    company?: string;
+    streetAddress1?: string;
+    streetAddress2?: string;
+    city?: string;
+    postalCode?: string;
+    state?: string;
+    country?: string;
+    phone?: string;
+    [k: string]: unknown;
+  };
+  /**
+   * Selected shipping method
+   */
+  shippingMethod?: (number | null) | Shipping;
+  /**
+   * Selected payment method
+   */
+  payment?: (number | null) | Payment;
+  /**
+   * Stripe payment intent ID
+   */
+  paymentIntentId?: string | null;
+  currency: string;
+  /**
+   * Sum of all line item totals
+   */
+  subtotal?: number | null;
+  /**
+   * Shipping cost
+   */
+  shippingTotal?: number | null;
+  /**
+   * Total tax amount
+   */
+  taxTotal?: number | null;
+  /**
+   * Total discount applied
+   */
+  discountTotal?: number | null;
+  /**
+   * Grand total (subtotal + shipping + tax - discount)
+   */
+  total: number;
+  /**
+   * Applied coupon/voucher code
+   */
+  voucherCode?: string | null;
+  /**
+   * Applied gift card
+   */
+  giftCard?: (number | null) | GiftCard;
+  /**
+   * Optional note from customer
+   */
+  customerNote?: string | null;
+  /**
+   * Contact email for order confirmation
+   */
+  email?: string | null;
+  /**
+   * Personal message to include with gift delivery
+   */
+  giftMessage?: {
     /**
-     * Linked user account if authenticated
+     * Include personal message
      */
-    customer?: (number | null) | User;
-    items?:
-        | {
-              product: number | Product;
-              variantId: string;
-              quantity: number;
-              /**
-               * Number of participants for this experience
-               */
-              participants?: number | null;
-              /**
-               * Price per participant at time of adding to checkout
-               */
-              unitPrice?: number | null;
-              /**
-               * Unit price × participants × quantity
-               */
-              totalPrice?: number | null;
-              id?: string | null;
-          }[]
-        | null;
-    shippingAddress?: {
-        firstName?: string;
-        lastName?: string;
-        company?: string;
-        streetAddress1?: string;
-        streetAddress2?: string;
-        city?: string;
-        postalCode?: string;
-        state?: string;
-        country?: string;
-        phone?: string;
+    enabled?: boolean | null;
+    /**
+     * To (appears in greeting)
+     */
+    recipientName?: string | null;
+    /**
+     * From (sender name)
+     */
+    senderName?: string | null;
+    /**
+     * Personal message (max 300 chars)
+     */
+    message?: string | null;
+  };
+  status: 'incomplete' | 'complete' | 'expired' | 'cancelled';
+  /**
+   * When checkout was completed and converted to order
+   */
+  completedAt?: string | null;
+  /**
+   * When this checkout session becomes invalid (typically 30 days)
+   */
+  expiresAt?: string | null;
+  /**
+   * Created order when checkout is completed
+   */
+  order?: {
+    docs?: (number | Order)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Additional custom data
+   */
+  metadata?:
+    | {
         [k: string]: unknown;
-    };
-    billingAddress?: {
-        firstName?: string;
-        lastName?: string;
-        company?: string;
-        streetAddress1?: string;
-        streetAddress2?: string;
-        city?: string;
-        postalCode?: string;
-        state?: string;
-        country?: string;
-        phone?: string;
-        [k: string]: unknown;
-    };
-    /**
-     * Selected shipping method
-     */
-    shippingMethod?: (number | null) | Shipping;
-    /**
-     * Selected payment method
-     */
-    payment?: (number | null) | Payment;
-    /**
-     * Stripe payment intent ID
-     */
-    paymentIntentId?: string | null;
-    currency: string;
-    /**
-     * Sum of all line item totals
-     */
-    subtotal?: number | null;
-    /**
-     * Shipping cost
-     */
-    shippingTotal?: number | null;
-    /**
-     * Total tax amount
-     */
-    taxTotal?: number | null;
-    /**
-     * Total discount applied
-     */
-    discountTotal?: number | null;
-    /**
-     * Grand total (subtotal + shipping + tax - discount)
-     */
-    total: number;
-    /**
-     * Applied coupon/voucher code
-     */
-    voucherCode?: string | null;
-    /**
-     * Applied gift card
-     */
-    giftCard?: (number | null) | GiftCard;
-    /**
-     * Optional note from customer
-     */
-    customerNote?: string | null;
-    /**
-     * Contact email for order confirmation
-     */
-    email?: string | null;
-    status: "incomplete" | "complete" | "expired" | "cancelled";
-    /**
-     * When checkout was completed and converted to order
-     */
-    completedAt?: string | null;
-    /**
-     * When this checkout session becomes invalid (typically 30 days)
-     */
-    expiresAt?: string | null;
-    /**
-     * Created order when checkout is completed
-     */
-    order?: {
-        docs?: (number | Order)[];
-        hasNextPage?: boolean;
-        totalDocs?: number;
-    };
-    /**
-     * Additional custom data
-     */
-    metadata?:
-        | {
-              [k: string]: unknown;
-          }
-        | unknown[]
-        | string
-        | number
-        | boolean
-        | null;
-    updatedAt: string;
-    createdAt: string;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
 export interface Product {
-    id: number;
-    pid?: string | null;
-    title: string;
-    visible?: boolean | null;
-    /**
-     * Base currency for product pricing
-     */
-    currency?:
+  id: number;
+  pid?: string | null;
+  title: string;
+  visible?: boolean | null;
+  /**
+   * Base currency for product pricing
+   */
+  currency?:
+    | (
+        | 'AED'
+        | 'AFN'
+        | 'ALL'
+        | 'AMD'
+        | 'ANG'
+        | 'AOA'
+        | 'ARS'
+        | 'AUD'
+        | 'AWG'
+        | 'AZN'
+        | 'BAM'
+        | 'BBD'
+        | 'BDT'
+        | 'BGN'
+        | 'BHD'
+        | 'BIF'
+        | 'BMD'
+        | 'BND'
+        | 'BOB'
+        | 'BOV'
+        | 'BRL'
+        | 'BSD'
+        | 'BTN'
+        | 'BWP'
+        | 'BYN'
+        | 'BZD'
+        | 'CAD'
+        | 'CDF'
+        | 'CHE'
+        | 'CHF'
+        | 'CHW'
+        | 'CLF'
+        | 'CLP'
+        | 'CNY'
+        | 'COP'
+        | 'COU'
+        | 'CRC'
+        | 'CUC'
+        | 'CUP'
+        | 'CVE'
+        | 'CZK'
+        | 'DJF'
+        | 'DKK'
+        | 'DOP'
+        | 'DZD'
+        | 'EGP'
+        | 'ERN'
+        | 'ETB'
+        | 'EUR'
+        | 'FJD'
+        | 'FKP'
+        | 'GBP'
+        | 'GEL'
+        | 'GHS'
+        | 'GIP'
+        | 'GMD'
+        | 'GNF'
+        | 'GTQ'
+        | 'GYD'
+        | 'HKD'
+        | 'HNL'
+        | 'HTG'
+        | 'HUF'
+        | 'IDR'
+        | 'ILS'
+        | 'INR'
+        | 'IQD'
+        | 'IRR'
+        | 'ISK'
+        | 'JMD'
+        | 'JOD'
+        | 'JPY'
+        | 'KES'
+        | 'KGS'
+        | 'KHR'
+        | 'KMF'
+        | 'KPW'
+        | 'KRW'
+        | 'KWD'
+        | 'KYD'
+        | 'KZT'
+        | 'LAK'
+        | 'LBP'
+        | 'LKR'
+        | 'LRD'
+        | 'LSL'
+        | 'LYD'
+        | 'MAD'
+        | 'MDL'
+        | 'MGA'
+        | 'MKD'
+        | 'MMK'
+        | 'MNT'
+        | 'MOP'
+        | 'MRU'
+        | 'MUR'
+        | 'MVR'
+        | 'MWK'
+        | 'MXN'
+        | 'MXV'
+        | 'MYR'
+        | 'MZN'
+        | 'NAD'
+        | 'NGN'
+        | 'NIO'
+        | 'NOK'
+        | 'NPR'
+        | 'NZD'
+        | 'OMR'
+        | 'PAB'
+        | 'PEN'
+        | 'PGK'
+        | 'PHP'
+        | 'PKR'
+        | 'PLN'
+        | 'PYG'
+        | 'QAR'
+        | 'RON'
+        | 'RSD'
+        | 'RUB'
+        | 'RWF'
+        | 'SAR'
+        | 'SBD'
+        | 'SCR'
+        | 'SDG'
+        | 'SEK'
+        | 'SGD'
+        | 'SHP'
+        | 'SLE'
+        | 'SOS'
+        | 'SRD'
+        | 'SSP'
+        | 'STN'
+        | 'SVC'
+        | 'SYP'
+        | 'SZL'
+        | 'THB'
+        | 'TJS'
+        | 'TMT'
+        | 'TND'
+        | 'TOP'
+        | 'TRY'
+        | 'TTD'
+        | 'TWD'
+        | 'TZS'
+        | 'UAH'
+        | 'UGX'
+        | 'USD'
+        | 'USN'
+        | 'UYI'
+        | 'UYU'
+        | 'UYW'
+        | 'UZS'
+        | 'VED'
+        | 'VES'
+        | 'VND'
+        | 'VUV'
+        | 'WST'
+        | 'XAF'
+        | 'XAG'
+        | 'XAU'
+        | 'XBA'
+        | 'XBB'
+        | 'XBC'
+        | 'XBD'
+        | 'XCD'
+        | 'XDR'
+        | 'XOF'
+        | 'XPD'
+        | 'XPF'
+        | 'XPT'
+        | 'XSU'
+        | 'XTS'
+        | 'XUA'
+        | 'XXX'
+        | 'YER'
+        | 'ZAR'
+        | 'ZMW'
+        | 'ZWG'
+      )
+    | null;
+  /**
+   * Choose where this product should be available to customers.
+   */
+  salesChannels?: ('all' | 'onlineStore' | 'pos' | 'mobileApp')[] | null;
+  source?: 'manual' | null;
+  description: string;
+  /**
+   * Expiration date for this gift experience. Leave empty for lifetime validity.
+   */
+  validity?: string | null;
+  gallery: (number | Media)[];
+  collections?: (number | Collection)[] | null;
+  category?: (number | Category)[] | null;
+  handle?: string | null;
+  variants: {
+    vid?: string | null;
+    sku?: string | null;
+    description?: string | null;
+    available?: boolean | null;
+    imageUrl?: string | null;
+    gallery?: (number | Media)[] | null;
+    price: {
+      amount: number;
+      currency?:
         | (
-              | "AED"
-              | "AFN"
-              | "ALL"
-              | "AMD"
-              | "ANG"
-              | "AOA"
-              | "ARS"
-              | "AUD"
-              | "AWG"
-              | "AZN"
-              | "BAM"
-              | "BBD"
-              | "BDT"
-              | "BGN"
-              | "BHD"
-              | "BIF"
-              | "BMD"
-              | "BND"
-              | "BOB"
-              | "BOV"
-              | "BRL"
-              | "BSD"
-              | "BTN"
-              | "BWP"
-              | "BYN"
-              | "BZD"
-              | "CAD"
-              | "CDF"
-              | "CHE"
-              | "CHF"
-              | "CHW"
-              | "CLF"
-              | "CLP"
-              | "CNY"
-              | "COP"
-              | "COU"
-              | "CRC"
-              | "CUC"
-              | "CUP"
-              | "CVE"
-              | "CZK"
-              | "DJF"
-              | "DKK"
-              | "DOP"
-              | "DZD"
-              | "EGP"
-              | "ERN"
-              | "ETB"
-              | "EUR"
-              | "FJD"
-              | "FKP"
-              | "GBP"
-              | "GEL"
-              | "GHS"
-              | "GIP"
-              | "GMD"
-              | "GNF"
-              | "GTQ"
-              | "GYD"
-              | "HKD"
-              | "HNL"
-              | "HTG"
-              | "HUF"
-              | "IDR"
-              | "ILS"
-              | "INR"
-              | "IQD"
-              | "IRR"
-              | "ISK"
-              | "JMD"
-              | "JOD"
-              | "JPY"
-              | "KES"
-              | "KGS"
-              | "KHR"
-              | "KMF"
-              | "KPW"
-              | "KRW"
-              | "KWD"
-              | "KYD"
-              | "KZT"
-              | "LAK"
-              | "LBP"
-              | "LKR"
-              | "LRD"
-              | "LSL"
-              | "LYD"
-              | "MAD"
-              | "MDL"
-              | "MGA"
-              | "MKD"
-              | "MMK"
-              | "MNT"
-              | "MOP"
-              | "MRU"
-              | "MUR"
-              | "MVR"
-              | "MWK"
-              | "MXN"
-              | "MXV"
-              | "MYR"
-              | "MZN"
-              | "NAD"
-              | "NGN"
-              | "NIO"
-              | "NOK"
-              | "NPR"
-              | "NZD"
-              | "OMR"
-              | "PAB"
-              | "PEN"
-              | "PGK"
-              | "PHP"
-              | "PKR"
-              | "PLN"
-              | "PYG"
-              | "QAR"
-              | "RON"
-              | "RSD"
-              | "RUB"
-              | "RWF"
-              | "SAR"
-              | "SBD"
-              | "SCR"
-              | "SDG"
-              | "SEK"
-              | "SGD"
-              | "SHP"
-              | "SLE"
-              | "SOS"
-              | "SRD"
-              | "SSP"
-              | "STN"
-              | "SVC"
-              | "SYP"
-              | "SZL"
-              | "THB"
-              | "TJS"
-              | "TMT"
-              | "TND"
-              | "TOP"
-              | "TRY"
-              | "TTD"
-              | "TWD"
-              | "TZS"
-              | "UAH"
-              | "UGX"
-              | "USD"
-              | "USN"
-              | "UYI"
-              | "UYU"
-              | "UYW"
-              | "UZS"
-              | "VED"
-              | "VES"
-              | "VND"
-              | "VUV"
-              | "WST"
-              | "XAF"
-              | "XAG"
-              | "XAU"
-              | "XBA"
-              | "XBB"
-              | "XBC"
-              | "XBD"
-              | "XCD"
-              | "XDR"
-              | "XOF"
-              | "XPD"
-              | "XPF"
-              | "XPT"
-              | "XSU"
-              | "XTS"
-              | "XUA"
-              | "XXX"
-              | "YER"
-              | "ZAR"
-              | "ZMW"
-              | "ZWG"
+            | 'AED'
+            | 'AFN'
+            | 'ALL'
+            | 'AMD'
+            | 'ANG'
+            | 'AOA'
+            | 'ARS'
+            | 'AUD'
+            | 'AWG'
+            | 'AZN'
+            | 'BAM'
+            | 'BBD'
+            | 'BDT'
+            | 'BGN'
+            | 'BHD'
+            | 'BIF'
+            | 'BMD'
+            | 'BND'
+            | 'BOB'
+            | 'BOV'
+            | 'BRL'
+            | 'BSD'
+            | 'BTN'
+            | 'BWP'
+            | 'BYN'
+            | 'BZD'
+            | 'CAD'
+            | 'CDF'
+            | 'CHE'
+            | 'CHF'
+            | 'CHW'
+            | 'CLF'
+            | 'CLP'
+            | 'CNY'
+            | 'COP'
+            | 'COU'
+            | 'CRC'
+            | 'CUC'
+            | 'CUP'
+            | 'CVE'
+            | 'CZK'
+            | 'DJF'
+            | 'DKK'
+            | 'DOP'
+            | 'DZD'
+            | 'EGP'
+            | 'ERN'
+            | 'ETB'
+            | 'EUR'
+            | 'FJD'
+            | 'FKP'
+            | 'GBP'
+            | 'GEL'
+            | 'GHS'
+            | 'GIP'
+            | 'GMD'
+            | 'GNF'
+            | 'GTQ'
+            | 'GYD'
+            | 'HKD'
+            | 'HNL'
+            | 'HTG'
+            | 'HUF'
+            | 'IDR'
+            | 'ILS'
+            | 'INR'
+            | 'IQD'
+            | 'IRR'
+            | 'ISK'
+            | 'JMD'
+            | 'JOD'
+            | 'JPY'
+            | 'KES'
+            | 'KGS'
+            | 'KHR'
+            | 'KMF'
+            | 'KPW'
+            | 'KRW'
+            | 'KWD'
+            | 'KYD'
+            | 'KZT'
+            | 'LAK'
+            | 'LBP'
+            | 'LKR'
+            | 'LRD'
+            | 'LSL'
+            | 'LYD'
+            | 'MAD'
+            | 'MDL'
+            | 'MGA'
+            | 'MKD'
+            | 'MMK'
+            | 'MNT'
+            | 'MOP'
+            | 'MRU'
+            | 'MUR'
+            | 'MVR'
+            | 'MWK'
+            | 'MXN'
+            | 'MXV'
+            | 'MYR'
+            | 'MZN'
+            | 'NAD'
+            | 'NGN'
+            | 'NIO'
+            | 'NOK'
+            | 'NPR'
+            | 'NZD'
+            | 'OMR'
+            | 'PAB'
+            | 'PEN'
+            | 'PGK'
+            | 'PHP'
+            | 'PKR'
+            | 'PLN'
+            | 'PYG'
+            | 'QAR'
+            | 'RON'
+            | 'RSD'
+            | 'RUB'
+            | 'RWF'
+            | 'SAR'
+            | 'SBD'
+            | 'SCR'
+            | 'SDG'
+            | 'SEK'
+            | 'SGD'
+            | 'SHP'
+            | 'SLE'
+            | 'SOS'
+            | 'SRD'
+            | 'SSP'
+            | 'STN'
+            | 'SVC'
+            | 'SYP'
+            | 'SZL'
+            | 'THB'
+            | 'TJS'
+            | 'TMT'
+            | 'TND'
+            | 'TOP'
+            | 'TRY'
+            | 'TTD'
+            | 'TWD'
+            | 'TZS'
+            | 'UAH'
+            | 'UGX'
+            | 'USD'
+            | 'USN'
+            | 'UYI'
+            | 'UYU'
+            | 'UYW'
+            | 'UZS'
+            | 'VED'
+            | 'VES'
+            | 'VND'
+            | 'VUV'
+            | 'WST'
+            | 'XAF'
+            | 'XAG'
+            | 'XAU'
+            | 'XBA'
+            | 'XBB'
+            | 'XBC'
+            | 'XBD'
+            | 'XCD'
+            | 'XDR'
+            | 'XOF'
+            | 'XPD'
+            | 'XPF'
+            | 'XPT'
+            | 'XSU'
+            | 'XTS'
+            | 'XUA'
+            | 'XXX'
+            | 'YER'
+            | 'ZAR'
+            | 'ZMW'
+            | 'ZWG'
           )
         | null;
-    /**
-     * Choose where this product should be available to customers.
-     */
-    salesChannels?: ("all" | "onlineStore" | "pos" | "mobileApp")[] | null;
-    source?: "manual" | null;
-    description: string;
-    /**
-     * Expiration date for this gift experience. Leave empty for lifetime validity.
-     */
-    validity?: string | null;
-    gallery: (number | Media)[];
-    collections?: (number | Collection)[] | null;
-    category?: (number | Category)[] | null;
-    handle?: string | null;
-    variants: {
-        vid?: string | null;
-        sku?: string | null;
-        description?: string | null;
-        available?: boolean | null;
-        imageUrl?: string | null;
-        gallery?: (number | Media)[] | null;
-        price: {
-            amount: number;
-            currency?:
-                | (
-                      | "AED"
-                      | "AFN"
-                      | "ALL"
-                      | "AMD"
-                      | "ANG"
-                      | "AOA"
-                      | "ARS"
-                      | "AUD"
-                      | "AWG"
-                      | "AZN"
-                      | "BAM"
-                      | "BBD"
-                      | "BDT"
-                      | "BGN"
-                      | "BHD"
-                      | "BIF"
-                      | "BMD"
-                      | "BND"
-                      | "BOB"
-                      | "BOV"
-                      | "BRL"
-                      | "BSD"
-                      | "BTN"
-                      | "BWP"
-                      | "BYN"
-                      | "BZD"
-                      | "CAD"
-                      | "CDF"
-                      | "CHE"
-                      | "CHF"
-                      | "CHW"
-                      | "CLF"
-                      | "CLP"
-                      | "CNY"
-                      | "COP"
-                      | "COU"
-                      | "CRC"
-                      | "CUC"
-                      | "CUP"
-                      | "CVE"
-                      | "CZK"
-                      | "DJF"
-                      | "DKK"
-                      | "DOP"
-                      | "DZD"
-                      | "EGP"
-                      | "ERN"
-                      | "ETB"
-                      | "EUR"
-                      | "FJD"
-                      | "FKP"
-                      | "GBP"
-                      | "GEL"
-                      | "GHS"
-                      | "GIP"
-                      | "GMD"
-                      | "GNF"
-                      | "GTQ"
-                      | "GYD"
-                      | "HKD"
-                      | "HNL"
-                      | "HTG"
-                      | "HUF"
-                      | "IDR"
-                      | "ILS"
-                      | "INR"
-                      | "IQD"
-                      | "IRR"
-                      | "ISK"
-                      | "JMD"
-                      | "JOD"
-                      | "JPY"
-                      | "KES"
-                      | "KGS"
-                      | "KHR"
-                      | "KMF"
-                      | "KPW"
-                      | "KRW"
-                      | "KWD"
-                      | "KYD"
-                      | "KZT"
-                      | "LAK"
-                      | "LBP"
-                      | "LKR"
-                      | "LRD"
-                      | "LSL"
-                      | "LYD"
-                      | "MAD"
-                      | "MDL"
-                      | "MGA"
-                      | "MKD"
-                      | "MMK"
-                      | "MNT"
-                      | "MOP"
-                      | "MRU"
-                      | "MUR"
-                      | "MVR"
-                      | "MWK"
-                      | "MXN"
-                      | "MXV"
-                      | "MYR"
-                      | "MZN"
-                      | "NAD"
-                      | "NGN"
-                      | "NIO"
-                      | "NOK"
-                      | "NPR"
-                      | "NZD"
-                      | "OMR"
-                      | "PAB"
-                      | "PEN"
-                      | "PGK"
-                      | "PHP"
-                      | "PKR"
-                      | "PLN"
-                      | "PYG"
-                      | "QAR"
-                      | "RON"
-                      | "RSD"
-                      | "RUB"
-                      | "RWF"
-                      | "SAR"
-                      | "SBD"
-                      | "SCR"
-                      | "SDG"
-                      | "SEK"
-                      | "SGD"
-                      | "SHP"
-                      | "SLE"
-                      | "SOS"
-                      | "SRD"
-                      | "SSP"
-                      | "STN"
-                      | "SVC"
-                      | "SYP"
-                      | "SZL"
-                      | "THB"
-                      | "TJS"
-                      | "TMT"
-                      | "TND"
-                      | "TOP"
-                      | "TRY"
-                      | "TTD"
-                      | "TWD"
-                      | "TZS"
-                      | "UAH"
-                      | "UGX"
-                      | "USD"
-                      | "USN"
-                      | "UYI"
-                      | "UYU"
-                      | "UYW"
-                      | "UZS"
-                      | "VED"
-                      | "VES"
-                      | "VND"
-                      | "VUV"
-                      | "WST"
-                      | "XAF"
-                      | "XAG"
-                      | "XAU"
-                      | "XBA"
-                      | "XBB"
-                      | "XBC"
-                      | "XBD"
-                      | "XCD"
-                      | "XDR"
-                      | "XOF"
-                      | "XPD"
-                      | "XPF"
-                      | "XPT"
-                      | "XSU"
-                      | "XTS"
-                      | "XUA"
-                      | "XXX"
-                      | "YER"
-                      | "ZAR"
-                      | "ZMW"
-                      | "ZWG"
-                  )
-                | null;
-        };
-        /**
-         * Price tier for this variant.
-         */
-        pricingTier: "basic" | "premium" | "luxury";
-        /**
-         * Configure participant count for this experience
-         */
-        participants: {
-            /**
-             * Initial participant count shown to customers
-             */
-            default: number;
-            /**
-             * Set custom min/max limits
-             */
-            customizeRange?: boolean | null;
-            min?: number | null;
-            max?: number | null;
-        };
-        locations?:
-            | {
-                  /**
-                   * @minItems 2
-                   * @maxItems 2
-                   */
-                  coordinates?: [number, number] | null;
-                  map_url: string;
-                  address?: string | null;
-                  id?: string | null;
-              }[]
-            | null;
-        /**
-         * Experience info sections. First 4 are required: About this experience, What's included, Participant guidelines, How it works.
-         */
-        additionalInfo: {
-            name: string;
-            value: string;
-            id?: string | null;
-        }[];
-        options?:
-            | {
-                  option: string;
-                  value: string;
-                  id?: string | null;
-              }[]
-            | null;
-        id?: string | null;
-    }[];
-    /**
-     * Add additional product info such as care instructions, materials, or sizing notes.
-     */
-    customFields?:
-        | {
-              name: string;
-              value: string;
-              id?: string | null;
-          }[]
-        | null;
-    meta?: {
-        title?: string | null;
-        description?: string | null;
     };
-    updatedAt: string;
-    createdAt: string;
+    /**
+     * Price tier for this variant.
+     */
+    pricingTier: 'basic' | 'premium' | 'luxury';
+    /**
+     * Configure participant count for this experience
+     */
+    participants: {
+      /**
+       * Initial participant count shown to customers
+       */
+      default: number;
+      /**
+       * Set custom min/max limits
+       */
+      customizeRange?: boolean | null;
+      min?: number | null;
+      max?: number | null;
+    };
+    locations?:
+      | {
+          /**
+           * @minItems 2
+           * @maxItems 2
+           */
+          coordinates?: [number, number] | null;
+          map_url: string;
+          address?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Experience info sections. First 4 are required: About this experience, What's included, Participant guidelines, How it works.
+     */
+    additionalInfo: {
+      name: string;
+      value: string;
+      id?: string | null;
+    }[];
+    options?:
+      | {
+          option: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  /**
+   * Add additional product info such as care instructions, materials, or sizing notes.
+   */
+  customFields?:
+    | {
+        name: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-    id: number;
-    alt?: string | null;
-    folder?: (number | null) | FolderInterface;
-    updatedAt: string;
-    createdAt: string;
-    url?: string | null;
-    thumbnailURL?: string | null;
-    filename?: string | null;
-    mimeType?: string | null;
-    filesize?: number | null;
-    width?: number | null;
-    height?: number | null;
-    focalX?: number | null;
-    focalY?: number | null;
+  id: number;
+  alt?: string | null;
+  folder?: (number | null) | FolderInterface;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-folders".
  */
 export interface FolderInterface {
-    id: number;
-    name: string;
-    folder?: (number | null) | FolderInterface;
-    documentsAndFolders?: {
-        docs?: (
-            | {
-                  relationTo?: "payload-folders";
-                  value: number | FolderInterface;
-              }
-            | {
-                  relationTo?: "media";
-                  value: number | Media;
-              }
-        )[];
-        hasNextPage?: boolean;
-        totalDocs?: number;
-    };
-    folderType?: "media"[] | null;
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  name: string;
+  folder?: (number | null) | FolderInterface;
+  documentsAndFolders?: {
+    docs?: (
+      | {
+          relationTo?: 'payload-folders';
+          value: number | FolderInterface;
+        }
+      | {
+          relationTo?: 'media';
+          value: number | Media;
+        }
+    )[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  folderType?: 'media'[] | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections".
  */
 export interface Collection {
-    id: number;
-    title: string;
-    description: string;
-    visible?: boolean | null;
-    thumbnail?: (number | null) | Media;
-    imageUrl?: string | null;
-    handle?: string | null;
-    products?: {
-        docs?: (number | Product)[];
-        hasNextPage?: boolean;
-        totalDocs?: number;
-    };
-    meta?: {
-        title?: string | null;
-        description?: string | null;
-    };
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  title: string;
+  description: string;
+  visible?: boolean | null;
+  thumbnail?: (number | null) | Media;
+  imageUrl?: string | null;
+  handle?: string | null;
+  products?: {
+    docs?: (number | Product)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "category".
  */
 export interface Category {
-    id: number;
-    title: string;
+  id: number;
+  title: string;
+  description?: string | null;
+  visible?: boolean | null;
+  thumbnail?: (number | null) | Media;
+  /**
+   * Leave empty for top-level categories.
+   */
+  parent?: (number | null) | Category;
+  handle?: string | null;
+  /**
+   * Automatically calculated product count
+   */
+  numProducts?: number | null;
+  /**
+   * Automatically calculated subcategory count
+   */
+  numSubcategories?: number | null;
+  products?: {
+    docs?: (number | Product)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * These are the subcategories under this category.
+   */
+  subcategories?: {
+    docs?: (number | Category)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  meta?: {
+    title?: string | null;
     description?: string | null;
-    visible?: boolean | null;
-    thumbnail?: (number | null) | Media;
-    /**
-     * Leave empty for top-level categories.
-     */
-    parent?: (number | null) | Category;
-    handle?: string | null;
-    /**
-     * Automatically calculated product count
-     */
-    numProducts?: number | null;
-    /**
-     * Automatically calculated subcategory count
-     */
-    numSubcategories?: number | null;
-    products?: {
-        docs?: (number | Product)[];
-        hasNextPage?: boolean;
-        totalDocs?: number;
-    };
-    /**
-     * These are the subcategories under this category.
-     */
-    subcategories?: {
-        docs?: (number | Category)[];
-        hasNextPage?: boolean;
-        totalDocs?: number;
-    };
-    meta?: {
-        title?: string | null;
-        description?: string | null;
-    };
-    updatedAt: string;
-    createdAt: string;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "shipping".
  */
 export interface Shipping {
-    id: number;
-    name: string;
-    enabled?: boolean | null;
-    location?: (number | null) | Location;
-    /**
-     * Select a shipping provider
-     */
-    shippingProvider?:
-        | {
-              baseRate: number;
-              /**
-               * If set, shipping is free for orders above this amount.
-               */
-              freeShippingMinOrder?: number | null;
-              /**
-               * Example: '3-5 business days'
-               */
-              estimatedDeliveryDays?: string | null;
-              /**
-               * Visible to customers if needed.
-               */
-              notes?: string | null;
-              id?: string | null;
-              blockName?: string | null;
-              blockType: "custom-shipping";
-          }[]
-        | null;
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  name: string;
+  enabled?: boolean | null;
+  location?: (number | null) | Location;
+  /**
+   * Select a shipping provider
+   */
+  shippingProvider?:
+    | {
+        baseRate: number;
+        /**
+         * If set, shipping is free for orders above this amount.
+         */
+        freeShippingMinOrder?: number | null;
+        /**
+         * Example: '3-5 business days'
+         */
+        estimatedDeliveryDays?: string | null;
+        /**
+         * Visible to customers if needed.
+         */
+        notes?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'custom-shipping';
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "locations".
  */
 export interface Location {
-    id: number;
-    name: string;
-    address: string;
-    /**
-     * @minItems 2
-     * @maxItems 2
-     */
-    coordinates?: [number, number] | null;
-    contactPhone?: string | null;
-    /**
-     * e.g., Mon-Fri: 9am - 6pm
-     */
-    hours?: string | null;
-    enabled?: boolean | null;
-    isPickupLocation?: boolean | null;
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  name: string;
+  address: string;
+  /**
+   * @minItems 2
+   * @maxItems 2
+   */
+  coordinates?: [number, number] | null;
+  contactPhone?: string | null;
+  /**
+   * e.g., Mon-Fri: 9am - 6pm
+   */
+  hours?: string | null;
+  enabled?: boolean | null;
+  isPickupLocation?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payments".
  */
 export interface Payment {
-    id: number;
-    name: string;
-    enabled?: boolean | null;
-    providers?:
-        | (
+  id: number;
+  name: string;
+  enabled?: boolean | null;
+  providers?:
+    | (
+        | {
+            methodType: 'cod' | 'bankTransfer' | 'inStore' | 'other';
+            /**
+             * Shown to customers at checkout.
+             */
+            instructions: string;
+            details?:
               | {
-                    methodType: "cod" | "bankTransfer" | "inStore" | "other";
-                    /**
-                     * Shown to customers at checkout.
-                     */
-                    instructions: string;
-                    details?:
-                        | {
-                              label: string;
-                              value: string;
-                              id?: string | null;
-                          }[]
-                        | null;
-                    id?: string | null;
-                    blockName?: string | null;
-                    blockType: "manual";
-                }
-              | {
-                    providerName: string;
-                    testMode?: boolean | null;
-                    methodType?: ("card" | "ach" | "auto") | null;
-                    stripeSecretKey: string;
-                    stripeWebhooksEndpointSecret: string;
-                    publishableKey: string;
-                    id?: string | null;
-                    blockName?: string | null;
-                    blockType: "stripe";
-                }
-          )[]
-        | null;
-    updatedAt: string;
-    createdAt: string;
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'manual';
+          }
+        | {
+            providerName: string;
+            testMode?: boolean | null;
+            methodType?: ('card' | 'ach' | 'auto') | null;
+            stripeSecretKey: string;
+            stripeWebhooksEndpointSecret: string;
+            publishableKey: string;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'stripe';
+          }
+      )[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "gift-cards".
  */
 export interface GiftCard {
-    id: number;
-    code: string;
-    value: number;
-    customer?: (number | null) | User;
-    /**
-     * Date gift card will expire
-     */
-    expiryDate?: string | null;
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  code: string;
+  value: number;
+  customer?: (number | null) | User;
+  /**
+   * Date gift card will expire
+   */
+  expiryDate?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "campaigns".
  */
 export interface Campaign {
-    id: number;
-    name: string;
-    type: "email" | "sms";
-    status?: ("draft" | "scheduled" | "sent" | "paused") | null;
-    subject?: string | null;
-    emailTemplate?: (number | null) | EmailTemplate;
-    profile?: {
-        from?: string | null;
-        replyTo?: string | null;
-    };
-    /**
-     * Optional variables for template rendering. Here admin keys that you can use: name, picture, user, issuerName, scope, sub.
-     */
-    templateData?:
-        | {
-              [k: string]: unknown;
-          }
-        | unknown[]
-        | string
-        | number
-        | boolean
-        | null;
-    /**
-     * Select the users who will receive this campaign.
-     */
-    recipients?: (number | User)[] | null;
-    metrics?: {
-        sent?: number | null;
-        opened?: number | null;
-        clicked?: number | null;
-    };
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  name: string;
+  type: 'email' | 'sms';
+  status?: ('draft' | 'scheduled' | 'sent' | 'paused') | null;
+  subject?: string | null;
+  emailTemplate?: (number | null) | EmailTemplate;
+  profile?: {
+    from?: string | null;
+    replyTo?: string | null;
+  };
+  /**
+   * Optional variables for template rendering. Here admin keys that you can use: name, picture, user, issuerName, scope, sub.
+   */
+  templateData?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Select the users who will receive this campaign.
+   */
+  recipients?: (number | User)[] | null;
+  metrics?: {
+    sent?: number | null;
+    opened?: number | null;
+    clicked?: number | null;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "email-templates".
  */
 export interface EmailTemplate {
-    id: number;
-    name?: string | null;
-    html?: string | null;
-    json?:
-        | {
-              [k: string]: unknown;
-          }
-        | unknown[]
-        | string
-        | number
-        | boolean
-        | null;
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  name?: string | null;
+  html?: string | null;
+  json?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "policies".
  */
 export interface Policy {
-    id: number;
-    title: string;
-    description?: string | null;
-    handle?: string | null;
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  title: string;
+  description?: string | null;
+  handle?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "themes".
  */
 export interface Theme {
-    id: number;
-    title?: string | null;
-    editorMode: {
-        /**
-         * Optional: Link to your live storefront. Press enter to add multiple values
-         */
-        storefrontUrls?: string[] | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: "custom-storefront-block";
-    }[];
+  id: number;
+  title?: string | null;
+  editorMode: {
     /**
-     * Explore top-rated free themes loved by store owners—designed to help you launch quickly and look great.
+     * Optional: Link to your live storefront. Press enter to add multiple values
      */
-    customStorefrontThemes?: {};
-    updatedAt: string;
-    createdAt: string;
+    storefrontUrls?: string[] | null;
+    id?: string | null;
+    blockName?: string | null;
+    blockType: 'custom-storefront-block';
+  }[];
+  /**
+   * Explore top-rated free themes loved by store owners—designed to help you launch quickly and look great.
+   */
+  customStorefrontThemes?: {};
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero-page".
  */
 export interface HeroPage {
-    id: number;
-    type: (
-        | {
-              title: string;
-              subtitle?: string | null;
-              subtitle2?: string | null;
-              ctaButtonText?: string | null;
-              ctaButtonLink?: string | null;
-              backgroundImage?: (number | null) | Media;
-              id?: string | null;
-              blockName?: string | null;
-              blockType: "hero";
-          }
-        | {
-              title: string;
-              subtitle?: string | null;
-              featuredProducts?: (number | Media)[] | null;
-              backgroundImage?: (number | null) | Media;
-              id?: string | null;
-              blockName?: string | null;
-              blockType: "carousel";
-          }
-    )[];
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  type: (
+    | {
+        title: string;
+        subtitle?: string | null;
+        subtitle2?: string | null;
+        ctaButtonText?: string | null;
+        ctaButtonLink?: string | null;
+        backgroundImage?: (number | null) | Media;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'hero';
+      }
+    | {
+        title: string;
+        subtitle?: string | null;
+        featuredProducts?: (number | Media)[] | null;
+        backgroundImage?: (number | null) | Media;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'carousel';
+      }
+  )[];
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footer-page".
  */
 export interface FooterPage {
-    id: number;
-    type?:
-        | {
-              copyright: {
-                  root: {
-                      type: string;
-                      children: {
-                          type: string;
-                          version: number;
-                          [k: string]: unknown;
-                      }[];
-                      direction: ("ltr" | "rtl") | null;
-                      format:
-                          | "left"
-                          | "start"
-                          | "center"
-                          | "right"
-                          | "end"
-                          | "justify"
-                          | "";
-                      indent: number;
-                      version: number;
-                  };
-                  [k: string]: unknown;
-              };
-              id?: string | null;
-              blockName?: string | null;
-              blockType: "basic-footer";
-          }[]
-        | null;
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  type?:
+    | {
+        copyright: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'basic-footer';
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "privacy-policy-page".
  */
 export interface PrivacyPolicyPage {
-    id: number;
-    title: string;
-    description?: string | null;
-    handle?: string | null;
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  title: string;
+  description?: string | null;
+  handle?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "terms-and-conditions-page".
  */
 export interface TermsAndConditionsPage {
-    id: number;
-    title: string;
-    description?: string | null;
-    handle?: string | null;
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  title: string;
+  description?: string | null;
+  handle?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "support-page".
  */
 export interface SupportPage {
-    id: number;
-    title: string;
-    description?: string | null;
-    handle?: string | null;
-    name: string;
-    email: string;
-    message: string;
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  title: string;
+  description?: string | null;
+  handle?: string | null;
+  name: string;
+  email: string;
+  message: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
  */
 export interface Page {
-    id: number;
-    title: string;
+  id: number;
+  title: string;
+  form: number | Form;
+  layout: {
     form: number | Form;
-    layout: {
-        form: number | Form;
-        enableIntro?: boolean | null;
-        introContent?: {
-            root: {
-                type: string;
-                children: {
-                    type: string;
-                    version: number;
-                    [k: string]: unknown;
-                }[];
-                direction: ("ltr" | "rtl") | null;
-                format:
-                    | "left"
-                    | "start"
-                    | "center"
-                    | "right"
-                    | "end"
-                    | "justify"
-                    | "";
-                indent: number;
-                version: number;
-            };
-            [k: string]: unknown;
-        } | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: "formBlock";
-    }[];
-    slug?: string | null;
-    updatedAt: string;
-    createdAt: string;
-    _status?: ("draft" | "published") | null;
+    enableIntro?: boolean | null;
+    introContent?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    id?: string | null;
+    blockName?: string | null;
+    blockType: 'formBlock';
+  }[];
+  slug?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "forms".
  */
 export interface Form {
-    id: number;
-    title: string;
-    fields?:
-        | (
+  id: number;
+  title: string;
+  fields?:
+    | (
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            defaultValue?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'checkbox';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'country';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'email';
+          }
+        | {
+            message?: {
+              root: {
+                type: string;
+                children: {
+                  type: string;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'message';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'number';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            placeholder?: string | null;
+            options?:
               | {
-                    name: string;
-                    label?: string | null;
-                    width?: number | null;
-                    required?: boolean | null;
-                    defaultValue?: boolean | null;
-                    id?: string | null;
-                    blockName?: string | null;
-                    blockType: "checkbox";
-                }
-              | {
-                    name: string;
-                    label?: string | null;
-                    width?: number | null;
-                    required?: boolean | null;
-                    id?: string | null;
-                    blockName?: string | null;
-                    blockType: "country";
-                }
-              | {
-                    name: string;
-                    label?: string | null;
-                    width?: number | null;
-                    required?: boolean | null;
-                    id?: string | null;
-                    blockName?: string | null;
-                    blockType: "email";
-                }
-              | {
-                    message?: {
-                        root: {
-                            type: string;
-                            children: {
-                                type: string;
-                                version: number;
-                                [k: string]: unknown;
-                            }[];
-                            direction: ("ltr" | "rtl") | null;
-                            format:
-                                | "left"
-                                | "start"
-                                | "center"
-                                | "right"
-                                | "end"
-                                | "justify"
-                                | "";
-                            indent: number;
-                            version: number;
-                        };
-                        [k: string]: unknown;
-                    } | null;
-                    id?: string | null;
-                    blockName?: string | null;
-                    blockType: "message";
-                }
-              | {
-                    name: string;
-                    label?: string | null;
-                    width?: number | null;
-                    defaultValue?: number | null;
-                    required?: boolean | null;
-                    id?: string | null;
-                    blockName?: string | null;
-                    blockType: "number";
-                }
-              | {
-                    name: string;
-                    label?: string | null;
-                    width?: number | null;
-                    defaultValue?: string | null;
-                    placeholder?: string | null;
-                    options?:
-                        | {
-                              label: string;
-                              value: string;
-                              id?: string | null;
-                          }[]
-                        | null;
-                    required?: boolean | null;
-                    id?: string | null;
-                    blockName?: string | null;
-                    blockType: "select";
-                }
-              | {
-                    name: string;
-                    label?: string | null;
-                    width?: number | null;
-                    required?: boolean | null;
-                    id?: string | null;
-                    blockName?: string | null;
-                    blockType: "state";
-                }
-              | {
-                    name: string;
-                    label?: string | null;
-                    width?: number | null;
-                    defaultValue?: string | null;
-                    required?: boolean | null;
-                    id?: string | null;
-                    blockName?: string | null;
-                    blockType: "text";
-                }
-              | {
-                    name: string;
-                    label?: string | null;
-                    width?: number | null;
-                    defaultValue?: string | null;
-                    required?: boolean | null;
-                    id?: string | null;
-                    blockName?: string | null;
-                    blockType: "textarea";
-                }
-          )[]
-        | null;
-    submitButtonLabel?: string | null;
-    /**
-     * Choose whether to display an on-page message or redirect to a different page after they submit the form.
-     */
-    confirmationType?: ("message" | "redirect") | null;
-    confirmationMessage?: {
-        root: {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'select';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'state';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'text';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'textarea';
+          }
+      )[]
+    | null;
+  submitButtonLabel?: string | null;
+  /**
+   * Choose whether to display an on-page message or redirect to a different page after they submit the form.
+   */
+  confirmationType?: ('message' | 'redirect') | null;
+  confirmationMessage?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  redirect?: {
+    url: string;
+  };
+  /**
+   * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
+   */
+  emails?:
+    | {
+        emailTo?: string | null;
+        cc?: string | null;
+        bcc?: string | null;
+        replyTo?: string | null;
+        emailFrom?: string | null;
+        subject: string;
+        /**
+         * Enter the message that should be sent in this email.
+         */
+        message?: {
+          root: {
             type: string;
             children: {
-                type: string;
-                version: number;
-                [k: string]: unknown;
+              type: string;
+              version: number;
+              [k: string]: unknown;
             }[];
-            direction: ("ltr" | "rtl") | null;
-            format:
-                | "left"
-                | "start"
-                | "center"
-                | "right"
-                | "end"
-                | "justify"
-                | "";
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
             indent: number;
             version: number;
-        };
-        [k: string]: unknown;
-    } | null;
-    redirect?: {
-        url: string;
-    };
-    /**
-     * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
-     */
-    emails?:
-        | {
-              emailTo?: string | null;
-              cc?: string | null;
-              bcc?: string | null;
-              replyTo?: string | null;
-              emailFrom?: string | null;
-              subject: string;
-              /**
-               * Enter the message that should be sent in this email.
-               */
-              message?: {
-                  root: {
-                      type: string;
-                      children: {
-                          type: string;
-                          version: number;
-                          [k: string]: unknown;
-                      }[];
-                      direction: ("ltr" | "rtl") | null;
-                      format:
-                          | "left"
-                          | "start"
-                          | "center"
-                          | "right"
-                          | "end"
-                          | "justify"
-                          | "";
-                      indent: number;
-                      version: number;
-                  };
-                  [k: string]: unknown;
-              } | null;
-              id?: string | null;
-          }[]
-        | null;
-    updatedAt: string;
-    createdAt: string;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "plugins".
  */
 export interface Plugin {
-    id: number;
-    name?: string | null;
-    description?: string | null;
-    enabled?: boolean | null;
-    pluginId?: string | null;
-    svgIcon?: string | null;
-    category?: string | null;
-    author?: string | null;
-    license?: string | null;
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  name?: string | null;
+  description?: string | null;
+  enabled?: boolean | null;
+  pluginId?: string | null;
+  svgIcon?: string | null;
+  category?: string | null;
+  author?: string | null;
+  license?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
-    id: number;
-    form: number | Form;
-    submissionData?:
-        | {
-              field: string;
-              value: string;
-              id?: string | null;
-          }[]
-        | null;
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  form: number | Form;
+  submissionData?:
+    | {
+        field: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "exports".
  */
 export interface Export {
-    id: number;
-    name?: string | null;
-    format: "csv" | "json";
-    limit?: number | null;
-    sort?: string | null;
-    drafts?: ("yes" | "no") | null;
-    selectionToUse?: ("currentSelection" | "currentFilters" | "all") | null;
-    fields?: string[] | null;
-    collectionSlug: string;
-    where?:
-        | {
-              [k: string]: unknown;
-          }
-        | unknown[]
-        | string
-        | number
-        | boolean
-        | null;
-    updatedAt: string;
-    createdAt: string;
-    url?: string | null;
-    thumbnailURL?: string | null;
-    filename?: string | null;
-    mimeType?: string | null;
-    filesize?: number | null;
-    width?: number | null;
-    height?: number | null;
-    focalX?: number | null;
-    focalY?: number | null;
+  id: number;
+  name?: string | null;
+  format: 'csv' | 'json';
+  limit?: number | null;
+  sort?: string | null;
+  drafts?: ('yes' | 'no') | null;
+  selectionToUse?: ('currentSelection' | 'currentFilters' | 'all') | null;
+  fields?: string[] | null;
+  collectionSlug: string;
+  where?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This is a collection of automatically created search results. These results are used by the global site search and will be updated automatically as documents in the CMS are created or updated.
@@ -1702,2068 +1679,2078 @@ export interface Export {
  * via the `definition` "search".
  */
 export interface Search {
-    id: number;
-    title?: string | null;
-    priority?: number | null;
-    doc: {
-        relationTo: "products";
-        value: number | Product;
-    };
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  title?: string | null;
+  priority?: number | null;
+  doc: {
+    relationTo: 'products';
+    value: number | Product;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
-    id: number;
-    /**
-     * Input data provided to the job
-     */
-    input?:
-        | {
+  id: number;
+  /**
+   * Input data provided to the job
+   */
+  input?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  taskStatus?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  completedAt?: string | null;
+  totalTried?: number | null;
+  /**
+   * If hasError is true this job will not be retried
+   */
+  hasError?: boolean | null;
+  /**
+   * If hasError is true, this is the error that caused it
+   */
+  error?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Task execution log
+   */
+  log?:
+    | {
+        executedAt: string;
+        completedAt: string;
+        taskSlug: 'inline' | 'createCollectionExport';
+        taskID: string;
+        input?:
+          | {
               [k: string]: unknown;
-          }
-        | unknown[]
-        | string
-        | number
-        | boolean
-        | null;
-    taskStatus?:
-        | {
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        output?:
+          | {
               [k: string]: unknown;
-          }
-        | unknown[]
-        | string
-        | number
-        | boolean
-        | null;
-    completedAt?: string | null;
-    totalTried?: number | null;
-    /**
-     * If hasError is true this job will not be retried
-     */
-    hasError?: boolean | null;
-    /**
-     * If hasError is true, this is the error that caused it
-     */
-    error?:
-        | {
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        state: 'failed' | 'succeeded';
+        error?:
+          | {
               [k: string]: unknown;
-          }
-        | unknown[]
-        | string
-        | number
-        | boolean
-        | null;
-    /**
-     * Task execution log
-     */
-    log?:
-        | {
-              executedAt: string;
-              completedAt: string;
-              taskSlug: "inline" | "createCollectionExport";
-              taskID: string;
-              input?:
-                  | {
-                        [k: string]: unknown;
-                    }
-                  | unknown[]
-                  | string
-                  | number
-                  | boolean
-                  | null;
-              output?:
-                  | {
-                        [k: string]: unknown;
-                    }
-                  | unknown[]
-                  | string
-                  | number
-                  | boolean
-                  | null;
-              state: "failed" | "succeeded";
-              error?:
-                  | {
-                        [k: string]: unknown;
-                    }
-                  | unknown[]
-                  | string
-                  | number
-                  | boolean
-                  | null;
-              id?: string | null;
-          }[]
-        | null;
-    taskSlug?: ("inline" | "createCollectionExport") | null;
-    queue?: string | null;
-    waitUntil?: string | null;
-    processing?: boolean | null;
-    updatedAt: string;
-    createdAt: string;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  taskSlug?: ('inline' | 'createCollectionExport') | null;
+  queue?: string | null;
+  waitUntil?: string | null;
+  processing?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-    id: number;
-    document?:
-        | ({
-              relationTo: "orders";
-              value: number | Order;
-          } | null)
-        | ({
-              relationTo: "collections";
-              value: number | Collection;
-          } | null)
-        | ({
-              relationTo: "category";
-              value: number | Category;
-          } | null)
-        | ({
-              relationTo: "products";
-              value: number | Product;
-          } | null)
-        | ({
-              relationTo: "users";
-              value: number | User;
-          } | null)
-        | ({
-              relationTo: "campaigns";
-              value: number | Campaign;
-          } | null)
-        | ({
-              relationTo: "media";
-              value: number | Media;
-          } | null)
-        | ({
-              relationTo: "policies";
-              value: number | Policy;
-          } | null)
-        | ({
-              relationTo: "gift-cards";
-              value: number | GiftCard;
-          } | null)
-        | ({
-              relationTo: "themes";
-              value: number | Theme;
-          } | null)
-        | ({
-              relationTo: "checkout";
-              value: number | Checkout;
-          } | null)
-        | ({
-              relationTo: "hero-page";
-              value: number | HeroPage;
-          } | null)
-        | ({
-              relationTo: "footer-page";
-              value: number | FooterPage;
-          } | null)
-        | ({
-              relationTo: "privacy-policy-page";
-              value: number | PrivacyPolicyPage;
-          } | null)
-        | ({
-              relationTo: "terms-and-conditions-page";
-              value: number | TermsAndConditionsPage;
-          } | null)
-        | ({
-              relationTo: "support-page";
-              value: number | SupportPage;
-          } | null)
-        | ({
-              relationTo: "pages";
-              value: number | Page;
-          } | null)
-        | ({
-              relationTo: "plugins";
-              value: number | Plugin;
-          } | null)
-        | ({
-              relationTo: "payments";
-              value: number | Payment;
-          } | null)
-        | ({
-              relationTo: "locations";
-              value: number | Location;
-          } | null)
-        | ({
-              relationTo: "shipping";
-              value: number | Shipping;
-          } | null)
-        | ({
-              relationTo: "forms";
-              value: number | Form;
-          } | null)
-        | ({
-              relationTo: "form-submissions";
-              value: number | FormSubmission;
-          } | null)
-        | ({
-              relationTo: "exports";
-              value: number | Export;
-          } | null)
-        | ({
-              relationTo: "email-templates";
-              value: number | EmailTemplate;
-          } | null)
-        | ({
-              relationTo: "search";
-              value: number | Search;
-          } | null)
-        | ({
-              relationTo: "payload-jobs";
-              value: number | PayloadJob;
-          } | null)
-        | ({
-              relationTo: "payload-folders";
-              value: number | FolderInterface;
-          } | null);
-    globalSlug?: string | null;
-    user: {
-        relationTo: "users";
+  id: number;
+  document?:
+    | ({
+        relationTo: 'orders';
+        value: number | Order;
+      } | null)
+    | ({
+        relationTo: 'collections';
+        value: number | Collection;
+      } | null)
+    | ({
+        relationTo: 'category';
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'users';
         value: number | User;
-    };
-    updatedAt: string;
-    createdAt: string;
+      } | null)
+    | ({
+        relationTo: 'campaigns';
+        value: number | Campaign;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'policies';
+        value: number | Policy;
+      } | null)
+    | ({
+        relationTo: 'gift-cards';
+        value: number | GiftCard;
+      } | null)
+    | ({
+        relationTo: 'themes';
+        value: number | Theme;
+      } | null)
+    | ({
+        relationTo: 'checkout';
+        value: number | Checkout;
+      } | null)
+    | ({
+        relationTo: 'hero-page';
+        value: number | HeroPage;
+      } | null)
+    | ({
+        relationTo: 'footer-page';
+        value: number | FooterPage;
+      } | null)
+    | ({
+        relationTo: 'privacy-policy-page';
+        value: number | PrivacyPolicyPage;
+      } | null)
+    | ({
+        relationTo: 'terms-and-conditions-page';
+        value: number | TermsAndConditionsPage;
+      } | null)
+    | ({
+        relationTo: 'support-page';
+        value: number | SupportPage;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'plugins';
+        value: number | Plugin;
+      } | null)
+    | ({
+        relationTo: 'payments';
+        value: number | Payment;
+      } | null)
+    | ({
+        relationTo: 'locations';
+        value: number | Location;
+      } | null)
+    | ({
+        relationTo: 'shipping';
+        value: number | Shipping;
+      } | null)
+    | ({
+        relationTo: 'forms';
+        value: number | Form;
+      } | null)
+    | ({
+        relationTo: 'form-submissions';
+        value: number | FormSubmission;
+      } | null)
+    | ({
+        relationTo: 'exports';
+        value: number | Export;
+      } | null)
+    | ({
+        relationTo: 'email-templates';
+        value: number | EmailTemplate;
+      } | null)
+    | ({
+        relationTo: 'search';
+        value: number | Search;
+      } | null)
+    | ({
+        relationTo: 'payload-jobs';
+        value: number | PayloadJob;
+      } | null)
+    | ({
+        relationTo: 'payload-folders';
+        value: number | FolderInterface;
+      } | null);
+  globalSlug?: string | null;
+  user: {
+    relationTo: 'users';
+    value: number | User;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-    id: number;
-    user: {
-        relationTo: "users";
-        value: number | User;
-    };
-    key?: string | null;
-    value?:
-        | {
-              [k: string]: unknown;
-          }
-        | unknown[]
-        | string
-        | number
-        | boolean
-        | null;
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  user: {
+    relationTo: 'users';
+    value: number | User;
+  };
+  key?: string | null;
+  value?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-    id: number;
-    name?: string | null;
-    batch?: number | null;
-    updatedAt: string;
-    createdAt: string;
+  id: number;
+  name?: string | null;
+  batch?: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "orders_select".
  */
 export interface OrdersSelect<T extends boolean = true> {
-    orderId?: T;
-    totalAmount?: T;
-    user?: T;
-    checkout?: T;
-    source?: T;
-    currency?: T;
-    presentmentCurrency?: T;
-    presentmentAmount?: T;
-    paymentStatus?: T;
-    orderStatus?: T;
-    payment?: T;
-    shipping?: T;
-    paymentIntentId?: T;
-    sessionId?: T;
-    stripeSessionId?: T;
-    sessionUrl?: T;
-    paymentMethod?: T;
-    receiptUrl?: T;
-    metadata?: T;
-    shippingAddress?: T;
-    billingAddress?: T;
-    timeline?:
-        | T
-        | {
-              title?: T;
-              date?: T;
-              type?: T;
-              createdBy?: T;
-              details?: T;
-              id?: T;
-          };
-    updatedAt?: T;
-    createdAt?: T;
+  orderId?: T;
+  totalAmount?: T;
+  user?: T;
+  checkout?: T;
+  source?: T;
+  currency?: T;
+  presentmentCurrency?: T;
+  presentmentAmount?: T;
+  paymentStatus?: T;
+  orderStatus?: T;
+  payment?: T;
+  shipping?: T;
+  paymentIntentId?: T;
+  sessionId?: T;
+  stripeSessionId?: T;
+  sessionUrl?: T;
+  paymentMethod?: T;
+  receiptUrl?: T;
+  metadata?: T;
+  shippingAddress?: T;
+  billingAddress?: T;
+  giftMessage?:
+    | T
+    | {
+        enabled?: T;
+        recipientName?: T;
+        senderName?: T;
+        message?: T;
+      };
+  timeline?:
+    | T
+    | {
+        title?: T;
+        date?: T;
+        type?: T;
+        createdBy?: T;
+        details?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_select".
  */
 export interface CollectionsSelect<T extends boolean = true> {
-    title?: T;
-    description?: T;
-    visible?: T;
-    thumbnail?: T;
-    imageUrl?: T;
-    handle?: T;
-    products?: T;
-    meta?:
-        | T
-        | {
-              title?: T;
-              description?: T;
-          };
-    updatedAt?: T;
-    createdAt?: T;
+  title?: T;
+  description?: T;
+  visible?: T;
+  thumbnail?: T;
+  imageUrl?: T;
+  handle?: T;
+  products?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "category_select".
  */
 export interface CategorySelect<T extends boolean = true> {
-    title?: T;
-    description?: T;
-    visible?: T;
-    thumbnail?: T;
-    parent?: T;
-    handle?: T;
-    numProducts?: T;
-    numSubcategories?: T;
-    products?: T;
-    subcategories?: T;
-    meta?:
-        | T
-        | {
-              title?: T;
-              description?: T;
-          };
-    updatedAt?: T;
-    createdAt?: T;
+  title?: T;
+  description?: T;
+  visible?: T;
+  thumbnail?: T;
+  parent?: T;
+  handle?: T;
+  numProducts?: T;
+  numSubcategories?: T;
+  products?: T;
+  subcategories?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products_select".
  */
 export interface ProductsSelect<T extends boolean = true> {
-    pid?: T;
-    title?: T;
-    visible?: T;
-    currency?: T;
-    salesChannels?: T;
-    source?: T;
-    description?: T;
-    validity?: T;
-    gallery?: T;
-    collections?: T;
-    category?: T;
-    handle?: T;
-    variants?:
-        | T
-        | {
-              vid?: T;
-              sku?: T;
-              description?: T;
-              available?: T;
-              imageUrl?: T;
-              gallery?: T;
-              price?:
-                  | T
-                  | {
-                        amount?: T;
-                        currency?: T;
-                    };
-              pricingTier?: T;
-              participants?:
-                  | T
-                  | {
-                        default?: T;
-                        customizeRange?: T;
-                        min?: T;
-                        max?: T;
-                    };
-              locations?:
-                  | T
-                  | {
-                        coordinates?: T;
-                        map_url?: T;
-                        address?: T;
-                        id?: T;
-                    };
-              additionalInfo?:
-                  | T
-                  | {
-                        name?: T;
-                        value?: T;
-                        id?: T;
-                    };
-              options?:
-                  | T
-                  | {
-                        option?: T;
-                        value?: T;
-                        id?: T;
-                    };
+  pid?: T;
+  title?: T;
+  visible?: T;
+  currency?: T;
+  salesChannels?: T;
+  source?: T;
+  description?: T;
+  validity?: T;
+  gallery?: T;
+  collections?: T;
+  category?: T;
+  handle?: T;
+  variants?:
+    | T
+    | {
+        vid?: T;
+        sku?: T;
+        description?: T;
+        available?: T;
+        imageUrl?: T;
+        gallery?: T;
+        price?:
+          | T
+          | {
+              amount?: T;
+              currency?: T;
+            };
+        pricingTier?: T;
+        participants?:
+          | T
+          | {
+              default?: T;
+              customizeRange?: T;
+              min?: T;
+              max?: T;
+            };
+        locations?:
+          | T
+          | {
+              coordinates?: T;
+              map_url?: T;
+              address?: T;
               id?: T;
-          };
-    customFields?:
-        | T
-        | {
+            };
+        additionalInfo?:
+          | T
+          | {
               name?: T;
               value?: T;
               id?: T;
-          };
-    meta?:
-        | T
-        | {
-              title?: T;
-              description?: T;
-          };
-    updatedAt?: T;
-    createdAt?: T;
+            };
+        options?:
+          | T
+          | {
+              option?: T;
+              value?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  customFields?:
+    | T
+    | {
+        name?: T;
+        value?: T;
+        id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-    firstName?: T;
-    lastName?: T;
-    roles?: T;
-    updatedAt?: T;
-    createdAt?: T;
-    email?: T;
-    resetPasswordToken?: T;
-    resetPasswordExpiration?: T;
-    salt?: T;
-    hash?: T;
-    loginAttempts?: T;
-    lockUntil?: T;
-    sessions?:
-        | T
-        | {
-              id?: T;
-              createdAt?: T;
-              expiresAt?: T;
-          };
+  firstName?: T;
+  lastName?: T;
+  roles?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "campaigns_select".
  */
 export interface CampaignsSelect<T extends boolean = true> {
-    name?: T;
-    type?: T;
-    status?: T;
-    subject?: T;
-    emailTemplate?: T;
-    profile?:
-        | T
-        | {
-              from?: T;
-              replyTo?: T;
-          };
-    templateData?: T;
-    recipients?: T;
-    metrics?:
-        | T
-        | {
-              sent?: T;
-              opened?: T;
-              clicked?: T;
-          };
-    updatedAt?: T;
-    createdAt?: T;
+  name?: T;
+  type?: T;
+  status?: T;
+  subject?: T;
+  emailTemplate?: T;
+  profile?:
+    | T
+    | {
+        from?: T;
+        replyTo?: T;
+      };
+  templateData?: T;
+  recipients?: T;
+  metrics?:
+    | T
+    | {
+        sent?: T;
+        opened?: T;
+        clicked?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
-    alt?: T;
-    folder?: T;
-    updatedAt?: T;
-    createdAt?: T;
-    url?: T;
-    thumbnailURL?: T;
-    filename?: T;
-    mimeType?: T;
-    filesize?: T;
-    width?: T;
-    height?: T;
-    focalX?: T;
-    focalY?: T;
+  alt?: T;
+  folder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "policies_select".
  */
 export interface PoliciesSelect<T extends boolean = true> {
-    title?: T;
-    description?: T;
-    handle?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  title?: T;
+  description?: T;
+  handle?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "gift-cards_select".
  */
 export interface GiftCardsSelect<T extends boolean = true> {
-    code?: T;
-    value?: T;
-    customer?: T;
-    expiryDate?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  code?: T;
+  value?: T;
+  customer?: T;
+  expiryDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "themes_select".
  */
 export interface ThemesSelect<T extends boolean = true> {
-    title?: T;
-    editorMode?:
-        | T
-        | {
-              "custom-storefront-block"?:
-                  | T
-                  | {
-                        storefrontUrls?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-          };
-    customStorefrontThemes?: T | {};
-    updatedAt?: T;
-    createdAt?: T;
+  title?: T;
+  editorMode?:
+    | T
+    | {
+        'custom-storefront-block'?:
+          | T
+          | {
+              storefrontUrls?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  customStorefrontThemes?: T | {};
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "checkout_select".
  */
 export interface CheckoutSelect<T extends boolean = true> {
-    sessionId?: T;
-    customer?: T;
-    items?:
-        | T
-        | {
-              product?: T;
-              variantId?: T;
-              quantity?: T;
-              participants?: T;
-              unitPrice?: T;
-              totalPrice?: T;
-              id?: T;
-          };
-    shippingAddress?: T;
-    billingAddress?: T;
-    shippingMethod?: T;
-    payment?: T;
-    paymentIntentId?: T;
-    currency?: T;
-    subtotal?: T;
-    shippingTotal?: T;
-    taxTotal?: T;
-    discountTotal?: T;
-    total?: T;
-    voucherCode?: T;
-    giftCard?: T;
-    customerNote?: T;
-    email?: T;
-    status?: T;
-    completedAt?: T;
-    expiresAt?: T;
-    order?: T;
-    metadata?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  sessionId?: T;
+  customer?: T;
+  items?:
+    | T
+    | {
+        product?: T;
+        variantId?: T;
+        quantity?: T;
+        participants?: T;
+        unitPrice?: T;
+        totalPrice?: T;
+        id?: T;
+      };
+  shippingAddress?: T;
+  billingAddress?: T;
+  shippingMethod?: T;
+  payment?: T;
+  paymentIntentId?: T;
+  currency?: T;
+  subtotal?: T;
+  shippingTotal?: T;
+  taxTotal?: T;
+  discountTotal?: T;
+  total?: T;
+  voucherCode?: T;
+  giftCard?: T;
+  customerNote?: T;
+  email?: T;
+  giftMessage?:
+    | T
+    | {
+        enabled?: T;
+        recipientName?: T;
+        senderName?: T;
+        message?: T;
+      };
+  status?: T;
+  completedAt?: T;
+  expiresAt?: T;
+  order?: T;
+  metadata?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero-page_select".
  */
 export interface HeroPageSelect<T extends boolean = true> {
-    type?:
-        | T
-        | {
-              hero?:
-                  | T
-                  | {
-                        title?: T;
-                        subtitle?: T;
-                        subtitle2?: T;
-                        ctaButtonText?: T;
-                        ctaButtonLink?: T;
-                        backgroundImage?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-              carousel?:
-                  | T
-                  | {
-                        title?: T;
-                        subtitle?: T;
-                        featuredProducts?: T;
-                        backgroundImage?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-          };
-    updatedAt?: T;
-    createdAt?: T;
+  type?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              subtitle2?: T;
+              ctaButtonText?: T;
+              ctaButtonLink?: T;
+              backgroundImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+        carousel?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              featuredProducts?: T;
+              backgroundImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footer-page_select".
  */
 export interface FooterPageSelect<T extends boolean = true> {
-    type?:
-        | T
-        | {
-              "basic-footer"?:
-                  | T
-                  | {
-                        copyright?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-          };
-    updatedAt?: T;
-    createdAt?: T;
+  type?:
+    | T
+    | {
+        'basic-footer'?:
+          | T
+          | {
+              copyright?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "privacy-policy-page_select".
  */
 export interface PrivacyPolicyPageSelect<T extends boolean = true> {
-    title?: T;
-    description?: T;
-    handle?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  title?: T;
+  description?: T;
+  handle?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "terms-and-conditions-page_select".
  */
 export interface TermsAndConditionsPageSelect<T extends boolean = true> {
-    title?: T;
-    description?: T;
-    handle?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  title?: T;
+  description?: T;
+  handle?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "support-page_select".
  */
 export interface SupportPageSelect<T extends boolean = true> {
-    title?: T;
-    description?: T;
-    handle?: T;
-    name?: T;
-    email?: T;
-    message?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  title?: T;
+  description?: T;
+  handle?: T;
+  name?: T;
+  email?: T;
+  message?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
-    title?: T;
-    form?: T;
-    layout?:
-        | T
-        | {
-              formBlock?:
-                  | T
-                  | {
-                        form?: T;
-                        enableIntro?: T;
-                        introContent?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-          };
-    slug?: T;
-    updatedAt?: T;
-    createdAt?: T;
-    _status?: T;
+  title?: T;
+  form?: T;
+  layout?:
+    | T
+    | {
+        formBlock?:
+          | T
+          | {
+              form?: T;
+              enableIntro?: T;
+              introContent?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "plugins_select".
  */
 export interface PluginsSelect<T extends boolean = true> {
-    name?: T;
-    description?: T;
-    enabled?: T;
-    pluginId?: T;
-    svgIcon?: T;
-    category?: T;
-    author?: T;
-    license?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  name?: T;
+  description?: T;
+  enabled?: T;
+  pluginId?: T;
+  svgIcon?: T;
+  category?: T;
+  author?: T;
+  license?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payments_select".
  */
 export interface PaymentsSelect<T extends boolean = true> {
-    name?: T;
-    enabled?: T;
-    providers?:
-        | T
-        | {
-              manual?:
-                  | T
-                  | {
-                        methodType?: T;
-                        instructions?: T;
-                        details?:
-                            | T
-                            | {
-                                  label?: T;
-                                  value?: T;
-                                  id?: T;
-                              };
-                        id?: T;
-                        blockName?: T;
-                    };
-              stripe?:
-                  | T
-                  | {
-                        providerName?: T;
-                        testMode?: T;
-                        methodType?: T;
-                        stripeSecretKey?: T;
-                        stripeWebhooksEndpointSecret?: T;
-                        publishableKey?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-          };
-    updatedAt?: T;
-    createdAt?: T;
+  name?: T;
+  enabled?: T;
+  providers?:
+    | T
+    | {
+        manual?:
+          | T
+          | {
+              methodType?: T;
+              instructions?: T;
+              details?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        stripe?:
+          | T
+          | {
+              providerName?: T;
+              testMode?: T;
+              methodType?: T;
+              stripeSecretKey?: T;
+              stripeWebhooksEndpointSecret?: T;
+              publishableKey?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "locations_select".
  */
 export interface LocationsSelect<T extends boolean = true> {
-    name?: T;
-    address?: T;
-    coordinates?: T;
-    contactPhone?: T;
-    hours?: T;
-    enabled?: T;
-    isPickupLocation?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  name?: T;
+  address?: T;
+  coordinates?: T;
+  contactPhone?: T;
+  hours?: T;
+  enabled?: T;
+  isPickupLocation?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "shipping_select".
  */
 export interface ShippingSelect<T extends boolean = true> {
-    name?: T;
-    enabled?: T;
-    location?: T;
-    shippingProvider?:
-        | T
-        | {
-              "custom-shipping"?:
-                  | T
-                  | {
-                        baseRate?: T;
-                        freeShippingMinOrder?: T;
-                        estimatedDeliveryDays?: T;
-                        notes?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-          };
-    updatedAt?: T;
-    createdAt?: T;
+  name?: T;
+  enabled?: T;
+  location?: T;
+  shippingProvider?:
+    | T
+    | {
+        'custom-shipping'?:
+          | T
+          | {
+              baseRate?: T;
+              freeShippingMinOrder?: T;
+              estimatedDeliveryDays?: T;
+              notes?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "forms_select".
  */
 export interface FormsSelect<T extends boolean = true> {
-    title?: T;
-    fields?:
-        | T
-        | {
-              checkbox?:
-                  | T
-                  | {
-                        name?: T;
-                        label?: T;
-                        width?: T;
-                        required?: T;
-                        defaultValue?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-              country?:
-                  | T
-                  | {
-                        name?: T;
-                        label?: T;
-                        width?: T;
-                        required?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-              email?:
-                  | T
-                  | {
-                        name?: T;
-                        label?: T;
-                        width?: T;
-                        required?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-              message?:
-                  | T
-                  | {
-                        message?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-              number?:
-                  | T
-                  | {
-                        name?: T;
-                        label?: T;
-                        width?: T;
-                        defaultValue?: T;
-                        required?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-              select?:
-                  | T
-                  | {
-                        name?: T;
-                        label?: T;
-                        width?: T;
-                        defaultValue?: T;
-                        placeholder?: T;
-                        options?:
-                            | T
-                            | {
-                                  label?: T;
-                                  value?: T;
-                                  id?: T;
-                              };
-                        required?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-              state?:
-                  | T
-                  | {
-                        name?: T;
-                        label?: T;
-                        width?: T;
-                        required?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-              text?:
-                  | T
-                  | {
-                        name?: T;
-                        label?: T;
-                        width?: T;
-                        defaultValue?: T;
-                        required?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-              textarea?:
-                  | T
-                  | {
-                        name?: T;
-                        label?: T;
-                        width?: T;
-                        defaultValue?: T;
-                        required?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-          };
-    submitButtonLabel?: T;
-    confirmationType?: T;
-    confirmationMessage?: T;
-    redirect?:
-        | T
-        | {
-              url?: T;
-          };
-    emails?:
-        | T
-        | {
-              emailTo?: T;
-              cc?: T;
-              bcc?: T;
-              replyTo?: T;
-              emailFrom?: T;
-              subject?: T;
+  title?: T;
+  fields?:
+    | T
+    | {
+        checkbox?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              defaultValue?: T;
+              id?: T;
+              blockName?: T;
+            };
+        country?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        email?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        message?:
+          | T
+          | {
               message?: T;
               id?: T;
-          };
-    updatedAt?: T;
-    createdAt?: T;
+              blockName?: T;
+            };
+        number?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        select?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              placeholder?: T;
+              options?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        state?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        text?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        textarea?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  submitButtonLabel?: T;
+  confirmationType?: T;
+  confirmationMessage?: T;
+  redirect?:
+    | T
+    | {
+        url?: T;
+      };
+  emails?:
+    | T
+    | {
+        emailTo?: T;
+        cc?: T;
+        bcc?: T;
+        replyTo?: T;
+        emailFrom?: T;
+        subject?: T;
+        message?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions_select".
  */
 export interface FormSubmissionsSelect<T extends boolean = true> {
-    form?: T;
-    submissionData?:
-        | T
-        | {
-              field?: T;
-              value?: T;
-              id?: T;
-          };
-    updatedAt?: T;
-    createdAt?: T;
+  form?: T;
+  submissionData?:
+    | T
+    | {
+        field?: T;
+        value?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "exports_select".
  */
 export interface ExportsSelect<T extends boolean = true> {
-    name?: T;
-    format?: T;
-    limit?: T;
-    sort?: T;
-    drafts?: T;
-    selectionToUse?: T;
-    fields?: T;
-    collectionSlug?: T;
-    where?: T;
-    updatedAt?: T;
-    createdAt?: T;
-    url?: T;
-    thumbnailURL?: T;
-    filename?: T;
-    mimeType?: T;
-    filesize?: T;
-    width?: T;
-    height?: T;
-    focalX?: T;
-    focalY?: T;
+  name?: T;
+  format?: T;
+  limit?: T;
+  sort?: T;
+  drafts?: T;
+  selectionToUse?: T;
+  fields?: T;
+  collectionSlug?: T;
+  where?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "email-templates_select".
  */
 export interface EmailTemplatesSelect<T extends boolean = true> {
-    name?: T;
-    html?: T;
-    json?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  name?: T;
+  html?: T;
+  json?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "search_select".
  */
 export interface SearchSelect<T extends boolean = true> {
-    title?: T;
-    priority?: T;
-    doc?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  title?: T;
+  priority?: T;
+  doc?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs_select".
  */
 export interface PayloadJobsSelect<T extends boolean = true> {
-    input?: T;
-    taskStatus?: T;
-    completedAt?: T;
-    totalTried?: T;
-    hasError?: T;
-    error?: T;
-    log?:
-        | T
-        | {
-              executedAt?: T;
-              completedAt?: T;
-              taskSlug?: T;
-              taskID?: T;
-              input?: T;
-              output?: T;
-              state?: T;
-              error?: T;
-              id?: T;
-          };
-    taskSlug?: T;
-    queue?: T;
-    waitUntil?: T;
-    processing?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  input?: T;
+  taskStatus?: T;
+  completedAt?: T;
+  totalTried?: T;
+  hasError?: T;
+  error?: T;
+  log?:
+    | T
+    | {
+        executedAt?: T;
+        completedAt?: T;
+        taskSlug?: T;
+        taskID?: T;
+        input?: T;
+        output?: T;
+        state?: T;
+        error?: T;
+        id?: T;
+      };
+  taskSlug?: T;
+  queue?: T;
+  waitUntil?: T;
+  processing?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-folders_select".
  */
 export interface PayloadFoldersSelect<T extends boolean = true> {
-    name?: T;
-    folder?: T;
-    documentsAndFolders?: T;
-    folderType?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  name?: T;
+  folder?: T;
+  documentsAndFolders?: T;
+  folderType?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
-    document?: T;
-    globalSlug?: T;
-    user?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  document?: T;
+  globalSlug?: T;
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences_select".
  */
 export interface PayloadPreferencesSelect<T extends boolean = true> {
-    user?: T;
-    key?: T;
-    value?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  user?: T;
+  key?: T;
+  value?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations_select".
  */
 export interface PayloadMigrationsSelect<T extends boolean = true> {
-    name?: T;
-    batch?: T;
-    updatedAt?: T;
-    createdAt?: T;
+  name?: T;
+  batch?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "store-settings".
  */
 export interface StoreSetting {
-    id: number;
-    name?: string | null;
+  id: number;
+  name?: string | null;
+  /**
+   * Primary currency for product pricing
+   */
+  baseCurrency?:
+    | (
+        | 'AED'
+        | 'AFN'
+        | 'ALL'
+        | 'AMD'
+        | 'ANG'
+        | 'AOA'
+        | 'ARS'
+        | 'AUD'
+        | 'AWG'
+        | 'AZN'
+        | 'BAM'
+        | 'BBD'
+        | 'BDT'
+        | 'BGN'
+        | 'BHD'
+        | 'BIF'
+        | 'BMD'
+        | 'BND'
+        | 'BOB'
+        | 'BOV'
+        | 'BRL'
+        | 'BSD'
+        | 'BTN'
+        | 'BWP'
+        | 'BYN'
+        | 'BZD'
+        | 'CAD'
+        | 'CDF'
+        | 'CHE'
+        | 'CHF'
+        | 'CHW'
+        | 'CLF'
+        | 'CLP'
+        | 'CNY'
+        | 'COP'
+        | 'COU'
+        | 'CRC'
+        | 'CUC'
+        | 'CUP'
+        | 'CVE'
+        | 'CZK'
+        | 'DJF'
+        | 'DKK'
+        | 'DOP'
+        | 'DZD'
+        | 'EGP'
+        | 'ERN'
+        | 'ETB'
+        | 'EUR'
+        | 'FJD'
+        | 'FKP'
+        | 'GBP'
+        | 'GEL'
+        | 'GHS'
+        | 'GIP'
+        | 'GMD'
+        | 'GNF'
+        | 'GTQ'
+        | 'GYD'
+        | 'HKD'
+        | 'HNL'
+        | 'HTG'
+        | 'HUF'
+        | 'IDR'
+        | 'ILS'
+        | 'INR'
+        | 'IQD'
+        | 'IRR'
+        | 'ISK'
+        | 'JMD'
+        | 'JOD'
+        | 'JPY'
+        | 'KES'
+        | 'KGS'
+        | 'KHR'
+        | 'KMF'
+        | 'KPW'
+        | 'KRW'
+        | 'KWD'
+        | 'KYD'
+        | 'KZT'
+        | 'LAK'
+        | 'LBP'
+        | 'LKR'
+        | 'LRD'
+        | 'LSL'
+        | 'LYD'
+        | 'MAD'
+        | 'MDL'
+        | 'MGA'
+        | 'MKD'
+        | 'MMK'
+        | 'MNT'
+        | 'MOP'
+        | 'MRU'
+        | 'MUR'
+        | 'MVR'
+        | 'MWK'
+        | 'MXN'
+        | 'MXV'
+        | 'MYR'
+        | 'MZN'
+        | 'NAD'
+        | 'NGN'
+        | 'NIO'
+        | 'NOK'
+        | 'NPR'
+        | 'NZD'
+        | 'OMR'
+        | 'PAB'
+        | 'PEN'
+        | 'PGK'
+        | 'PHP'
+        | 'PKR'
+        | 'PLN'
+        | 'PYG'
+        | 'QAR'
+        | 'RON'
+        | 'RSD'
+        | 'RUB'
+        | 'RWF'
+        | 'SAR'
+        | 'SBD'
+        | 'SCR'
+        | 'SDG'
+        | 'SEK'
+        | 'SGD'
+        | 'SHP'
+        | 'SLE'
+        | 'SOS'
+        | 'SRD'
+        | 'SSP'
+        | 'STN'
+        | 'SVC'
+        | 'SYP'
+        | 'SZL'
+        | 'THB'
+        | 'TJS'
+        | 'TMT'
+        | 'TND'
+        | 'TOP'
+        | 'TRY'
+        | 'TTD'
+        | 'TWD'
+        | 'TZS'
+        | 'UAH'
+        | 'UGX'
+        | 'USD'
+        | 'USN'
+        | 'UYI'
+        | 'UYU'
+        | 'UYW'
+        | 'UZS'
+        | 'VED'
+        | 'VES'
+        | 'VND'
+        | 'VUV'
+        | 'WST'
+        | 'XAF'
+        | 'XAG'
+        | 'XAU'
+        | 'XBA'
+        | 'XBB'
+        | 'XBC'
+        | 'XBD'
+        | 'XCD'
+        | 'XDR'
+        | 'XOF'
+        | 'XPD'
+        | 'XPF'
+        | 'XPT'
+        | 'XSU'
+        | 'XTS'
+        | 'XUA'
+        | 'XXX'
+        | 'YER'
+        | 'ZAR'
+        | 'ZMW'
+        | 'ZWG'
+      )
+    | null;
+  /**
+   * Currencies available for customers to select (from ISO 4217)
+   */
+  supportedCurrencies?:
+    | (
+        | 'AED'
+        | 'AFN'
+        | 'ALL'
+        | 'AMD'
+        | 'ANG'
+        | 'AOA'
+        | 'ARS'
+        | 'AUD'
+        | 'AWG'
+        | 'AZN'
+        | 'BAM'
+        | 'BBD'
+        | 'BDT'
+        | 'BGN'
+        | 'BHD'
+        | 'BIF'
+        | 'BMD'
+        | 'BND'
+        | 'BOB'
+        | 'BOV'
+        | 'BRL'
+        | 'BSD'
+        | 'BTN'
+        | 'BWP'
+        | 'BYN'
+        | 'BZD'
+        | 'CAD'
+        | 'CDF'
+        | 'CHE'
+        | 'CHF'
+        | 'CHW'
+        | 'CLF'
+        | 'CLP'
+        | 'CNY'
+        | 'COP'
+        | 'COU'
+        | 'CRC'
+        | 'CUC'
+        | 'CUP'
+        | 'CVE'
+        | 'CZK'
+        | 'DJF'
+        | 'DKK'
+        | 'DOP'
+        | 'DZD'
+        | 'EGP'
+        | 'ERN'
+        | 'ETB'
+        | 'EUR'
+        | 'FJD'
+        | 'FKP'
+        | 'GBP'
+        | 'GEL'
+        | 'GHS'
+        | 'GIP'
+        | 'GMD'
+        | 'GNF'
+        | 'GTQ'
+        | 'GYD'
+        | 'HKD'
+        | 'HNL'
+        | 'HTG'
+        | 'HUF'
+        | 'IDR'
+        | 'ILS'
+        | 'INR'
+        | 'IQD'
+        | 'IRR'
+        | 'ISK'
+        | 'JMD'
+        | 'JOD'
+        | 'JPY'
+        | 'KES'
+        | 'KGS'
+        | 'KHR'
+        | 'KMF'
+        | 'KPW'
+        | 'KRW'
+        | 'KWD'
+        | 'KYD'
+        | 'KZT'
+        | 'LAK'
+        | 'LBP'
+        | 'LKR'
+        | 'LRD'
+        | 'LSL'
+        | 'LYD'
+        | 'MAD'
+        | 'MDL'
+        | 'MGA'
+        | 'MKD'
+        | 'MMK'
+        | 'MNT'
+        | 'MOP'
+        | 'MRU'
+        | 'MUR'
+        | 'MVR'
+        | 'MWK'
+        | 'MXN'
+        | 'MXV'
+        | 'MYR'
+        | 'MZN'
+        | 'NAD'
+        | 'NGN'
+        | 'NIO'
+        | 'NOK'
+        | 'NPR'
+        | 'NZD'
+        | 'OMR'
+        | 'PAB'
+        | 'PEN'
+        | 'PGK'
+        | 'PHP'
+        | 'PKR'
+        | 'PLN'
+        | 'PYG'
+        | 'QAR'
+        | 'RON'
+        | 'RSD'
+        | 'RUB'
+        | 'RWF'
+        | 'SAR'
+        | 'SBD'
+        | 'SCR'
+        | 'SDG'
+        | 'SEK'
+        | 'SGD'
+        | 'SHP'
+        | 'SLE'
+        | 'SOS'
+        | 'SRD'
+        | 'SSP'
+        | 'STN'
+        | 'SVC'
+        | 'SYP'
+        | 'SZL'
+        | 'THB'
+        | 'TJS'
+        | 'TMT'
+        | 'TND'
+        | 'TOP'
+        | 'TRY'
+        | 'TTD'
+        | 'TWD'
+        | 'TZS'
+        | 'UAH'
+        | 'UGX'
+        | 'USD'
+        | 'USN'
+        | 'UYI'
+        | 'UYU'
+        | 'UYW'
+        | 'UZS'
+        | 'VED'
+        | 'VES'
+        | 'VND'
+        | 'VUV'
+        | 'WST'
+        | 'XAF'
+        | 'XAG'
+        | 'XAU'
+        | 'XBA'
+        | 'XBB'
+        | 'XBC'
+        | 'XBD'
+        | 'XCD'
+        | 'XDR'
+        | 'XOF'
+        | 'XPD'
+        | 'XPF'
+        | 'XPT'
+        | 'XSU'
+        | 'XTS'
+        | 'XUA'
+        | 'XXX'
+        | 'YER'
+        | 'ZAR'
+        | 'ZMW'
+        | 'ZWG'
+      )[]
+    | null;
+  exchangeRateSource?: ('api' | 'manual') | null;
+  /**
+   * Override API rates with fixed values. Use currency codes from supported currencies.
+   */
+  exchangeRateOverrides?:
+    | {
+        /**
+         * Source currency code
+         */
+        fromCurrency: string;
+        /**
+         * Target currency code
+         */
+        toCurrency: string;
+        /**
+         * e.g., 0.92 for USD→EUR
+         */
+        rate: number;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Applied to all currencies unless overridden below
+   */
+  defaultRoundingRule?: ('charm' | 'clean' | 'none') | null;
+  /**
+   * Override default rounding for specific currencies
+   */
+  priceRoundingRules?:
+    | {
+        currency:
+          | 'AED'
+          | 'AFN'
+          | 'ALL'
+          | 'AMD'
+          | 'ANG'
+          | 'AOA'
+          | 'ARS'
+          | 'AUD'
+          | 'AWG'
+          | 'AZN'
+          | 'BAM'
+          | 'BBD'
+          | 'BDT'
+          | 'BGN'
+          | 'BHD'
+          | 'BIF'
+          | 'BMD'
+          | 'BND'
+          | 'BOB'
+          | 'BOV'
+          | 'BRL'
+          | 'BSD'
+          | 'BTN'
+          | 'BWP'
+          | 'BYN'
+          | 'BZD'
+          | 'CAD'
+          | 'CDF'
+          | 'CHE'
+          | 'CHF'
+          | 'CHW'
+          | 'CLF'
+          | 'CLP'
+          | 'CNY'
+          | 'COP'
+          | 'COU'
+          | 'CRC'
+          | 'CUC'
+          | 'CUP'
+          | 'CVE'
+          | 'CZK'
+          | 'DJF'
+          | 'DKK'
+          | 'DOP'
+          | 'DZD'
+          | 'EGP'
+          | 'ERN'
+          | 'ETB'
+          | 'EUR'
+          | 'FJD'
+          | 'FKP'
+          | 'GBP'
+          | 'GEL'
+          | 'GHS'
+          | 'GIP'
+          | 'GMD'
+          | 'GNF'
+          | 'GTQ'
+          | 'GYD'
+          | 'HKD'
+          | 'HNL'
+          | 'HTG'
+          | 'HUF'
+          | 'IDR'
+          | 'ILS'
+          | 'INR'
+          | 'IQD'
+          | 'IRR'
+          | 'ISK'
+          | 'JMD'
+          | 'JOD'
+          | 'JPY'
+          | 'KES'
+          | 'KGS'
+          | 'KHR'
+          | 'KMF'
+          | 'KPW'
+          | 'KRW'
+          | 'KWD'
+          | 'KYD'
+          | 'KZT'
+          | 'LAK'
+          | 'LBP'
+          | 'LKR'
+          | 'LRD'
+          | 'LSL'
+          | 'LYD'
+          | 'MAD'
+          | 'MDL'
+          | 'MGA'
+          | 'MKD'
+          | 'MMK'
+          | 'MNT'
+          | 'MOP'
+          | 'MRU'
+          | 'MUR'
+          | 'MVR'
+          | 'MWK'
+          | 'MXN'
+          | 'MXV'
+          | 'MYR'
+          | 'MZN'
+          | 'NAD'
+          | 'NGN'
+          | 'NIO'
+          | 'NOK'
+          | 'NPR'
+          | 'NZD'
+          | 'OMR'
+          | 'PAB'
+          | 'PEN'
+          | 'PGK'
+          | 'PHP'
+          | 'PKR'
+          | 'PLN'
+          | 'PYG'
+          | 'QAR'
+          | 'RON'
+          | 'RSD'
+          | 'RUB'
+          | 'RWF'
+          | 'SAR'
+          | 'SBD'
+          | 'SCR'
+          | 'SDG'
+          | 'SEK'
+          | 'SGD'
+          | 'SHP'
+          | 'SLE'
+          | 'SOS'
+          | 'SRD'
+          | 'SSP'
+          | 'STN'
+          | 'SVC'
+          | 'SYP'
+          | 'SZL'
+          | 'THB'
+          | 'TJS'
+          | 'TMT'
+          | 'TND'
+          | 'TOP'
+          | 'TRY'
+          | 'TTD'
+          | 'TWD'
+          | 'TZS'
+          | 'UAH'
+          | 'UGX'
+          | 'USD'
+          | 'USN'
+          | 'UYI'
+          | 'UYU'
+          | 'UYW'
+          | 'UZS'
+          | 'VED'
+          | 'VES'
+          | 'VND'
+          | 'VUV'
+          | 'WST'
+          | 'XAF'
+          | 'XAG'
+          | 'XAU'
+          | 'XBA'
+          | 'XBB'
+          | 'XBC'
+          | 'XBD'
+          | 'XCD'
+          | 'XDR'
+          | 'XOF'
+          | 'XPD'
+          | 'XPF'
+          | 'XPT'
+          | 'XSU'
+          | 'XTS'
+          | 'XUA'
+          | 'XXX'
+          | 'YER'
+          | 'ZAR'
+          | 'ZMW'
+          | 'ZWG';
+        rule: 'charm' | 'clean' | 'none';
+        id?: string | null;
+      }[]
+    | null;
+  currency?:
+    | (
+        | 'AED'
+        | 'AFN'
+        | 'ALL'
+        | 'AMD'
+        | 'ANG'
+        | 'AOA'
+        | 'ARS'
+        | 'AUD'
+        | 'AWG'
+        | 'AZN'
+        | 'BAM'
+        | 'BBD'
+        | 'BDT'
+        | 'BGN'
+        | 'BHD'
+        | 'BIF'
+        | 'BMD'
+        | 'BND'
+        | 'BOB'
+        | 'BOV'
+        | 'BRL'
+        | 'BSD'
+        | 'BTN'
+        | 'BWP'
+        | 'BYN'
+        | 'BZD'
+        | 'CAD'
+        | 'CDF'
+        | 'CHE'
+        | 'CHF'
+        | 'CHW'
+        | 'CLF'
+        | 'CLP'
+        | 'CNY'
+        | 'COP'
+        | 'COU'
+        | 'CRC'
+        | 'CUC'
+        | 'CUP'
+        | 'CVE'
+        | 'CZK'
+        | 'DJF'
+        | 'DKK'
+        | 'DOP'
+        | 'DZD'
+        | 'EGP'
+        | 'ERN'
+        | 'ETB'
+        | 'EUR'
+        | 'FJD'
+        | 'FKP'
+        | 'GBP'
+        | 'GEL'
+        | 'GHS'
+        | 'GIP'
+        | 'GMD'
+        | 'GNF'
+        | 'GTQ'
+        | 'GYD'
+        | 'HKD'
+        | 'HNL'
+        | 'HTG'
+        | 'HUF'
+        | 'IDR'
+        | 'ILS'
+        | 'INR'
+        | 'IQD'
+        | 'IRR'
+        | 'ISK'
+        | 'JMD'
+        | 'JOD'
+        | 'JPY'
+        | 'KES'
+        | 'KGS'
+        | 'KHR'
+        | 'KMF'
+        | 'KPW'
+        | 'KRW'
+        | 'KWD'
+        | 'KYD'
+        | 'KZT'
+        | 'LAK'
+        | 'LBP'
+        | 'LKR'
+        | 'LRD'
+        | 'LSL'
+        | 'LYD'
+        | 'MAD'
+        | 'MDL'
+        | 'MGA'
+        | 'MKD'
+        | 'MMK'
+        | 'MNT'
+        | 'MOP'
+        | 'MRU'
+        | 'MUR'
+        | 'MVR'
+        | 'MWK'
+        | 'MXN'
+        | 'MXV'
+        | 'MYR'
+        | 'MZN'
+        | 'NAD'
+        | 'NGN'
+        | 'NIO'
+        | 'NOK'
+        | 'NPR'
+        | 'NZD'
+        | 'OMR'
+        | 'PAB'
+        | 'PEN'
+        | 'PGK'
+        | 'PHP'
+        | 'PKR'
+        | 'PLN'
+        | 'PYG'
+        | 'QAR'
+        | 'RON'
+        | 'RSD'
+        | 'RUB'
+        | 'RWF'
+        | 'SAR'
+        | 'SBD'
+        | 'SCR'
+        | 'SDG'
+        | 'SEK'
+        | 'SGD'
+        | 'SHP'
+        | 'SLE'
+        | 'SOS'
+        | 'SRD'
+        | 'SSP'
+        | 'STN'
+        | 'SVC'
+        | 'SYP'
+        | 'SZL'
+        | 'THB'
+        | 'TJS'
+        | 'TMT'
+        | 'TND'
+        | 'TOP'
+        | 'TRY'
+        | 'TTD'
+        | 'TWD'
+        | 'TZS'
+        | 'UAH'
+        | 'UGX'
+        | 'USD'
+        | 'USN'
+        | 'UYI'
+        | 'UYU'
+        | 'UYW'
+        | 'UZS'
+        | 'VED'
+        | 'VES'
+        | 'VND'
+        | 'VUV'
+        | 'WST'
+        | 'XAF'
+        | 'XAG'
+        | 'XAU'
+        | 'XBA'
+        | 'XBB'
+        | 'XBC'
+        | 'XBD'
+        | 'XCD'
+        | 'XDR'
+        | 'XOF'
+        | 'XPD'
+        | 'XPF'
+        | 'XPT'
+        | 'XSU'
+        | 'XTS'
+        | 'XUA'
+        | 'XXX'
+        | 'YER'
+        | 'ZAR'
+        | 'ZMW'
+        | 'ZWG'
+      )
+    | null;
+  emailBranding?: {
     /**
-     * Primary currency for product pricing
+     * Logo displayed in email header
      */
-    baseCurrency?:
-        | (
-              | "AED"
-              | "AFN"
-              | "ALL"
-              | "AMD"
-              | "ANG"
-              | "AOA"
-              | "ARS"
-              | "AUD"
-              | "AWG"
-              | "AZN"
-              | "BAM"
-              | "BBD"
-              | "BDT"
-              | "BGN"
-              | "BHD"
-              | "BIF"
-              | "BMD"
-              | "BND"
-              | "BOB"
-              | "BOV"
-              | "BRL"
-              | "BSD"
-              | "BTN"
-              | "BWP"
-              | "BYN"
-              | "BZD"
-              | "CAD"
-              | "CDF"
-              | "CHE"
-              | "CHF"
-              | "CHW"
-              | "CLF"
-              | "CLP"
-              | "CNY"
-              | "COP"
-              | "COU"
-              | "CRC"
-              | "CUC"
-              | "CUP"
-              | "CVE"
-              | "CZK"
-              | "DJF"
-              | "DKK"
-              | "DOP"
-              | "DZD"
-              | "EGP"
-              | "ERN"
-              | "ETB"
-              | "EUR"
-              | "FJD"
-              | "FKP"
-              | "GBP"
-              | "GEL"
-              | "GHS"
-              | "GIP"
-              | "GMD"
-              | "GNF"
-              | "GTQ"
-              | "GYD"
-              | "HKD"
-              | "HNL"
-              | "HTG"
-              | "HUF"
-              | "IDR"
-              | "ILS"
-              | "INR"
-              | "IQD"
-              | "IRR"
-              | "ISK"
-              | "JMD"
-              | "JOD"
-              | "JPY"
-              | "KES"
-              | "KGS"
-              | "KHR"
-              | "KMF"
-              | "KPW"
-              | "KRW"
-              | "KWD"
-              | "KYD"
-              | "KZT"
-              | "LAK"
-              | "LBP"
-              | "LKR"
-              | "LRD"
-              | "LSL"
-              | "LYD"
-              | "MAD"
-              | "MDL"
-              | "MGA"
-              | "MKD"
-              | "MMK"
-              | "MNT"
-              | "MOP"
-              | "MRU"
-              | "MUR"
-              | "MVR"
-              | "MWK"
-              | "MXN"
-              | "MXV"
-              | "MYR"
-              | "MZN"
-              | "NAD"
-              | "NGN"
-              | "NIO"
-              | "NOK"
-              | "NPR"
-              | "NZD"
-              | "OMR"
-              | "PAB"
-              | "PEN"
-              | "PGK"
-              | "PHP"
-              | "PKR"
-              | "PLN"
-              | "PYG"
-              | "QAR"
-              | "RON"
-              | "RSD"
-              | "RUB"
-              | "RWF"
-              | "SAR"
-              | "SBD"
-              | "SCR"
-              | "SDG"
-              | "SEK"
-              | "SGD"
-              | "SHP"
-              | "SLE"
-              | "SOS"
-              | "SRD"
-              | "SSP"
-              | "STN"
-              | "SVC"
-              | "SYP"
-              | "SZL"
-              | "THB"
-              | "TJS"
-              | "TMT"
-              | "TND"
-              | "TOP"
-              | "TRY"
-              | "TTD"
-              | "TWD"
-              | "TZS"
-              | "UAH"
-              | "UGX"
-              | "USD"
-              | "USN"
-              | "UYI"
-              | "UYU"
-              | "UYW"
-              | "UZS"
-              | "VED"
-              | "VES"
-              | "VND"
-              | "VUV"
-              | "WST"
-              | "XAF"
-              | "XAG"
-              | "XAU"
-              | "XBA"
-              | "XBB"
-              | "XBC"
-              | "XBD"
-              | "XCD"
-              | "XDR"
-              | "XOF"
-              | "XPD"
-              | "XPF"
-              | "XPT"
-              | "XSU"
-              | "XTS"
-              | "XUA"
-              | "XXX"
-              | "YER"
-              | "ZAR"
-              | "ZMW"
-              | "ZWG"
-          )
-        | null;
+    logo?: (number | null) | Media;
     /**
-     * Currencies available for customers to select (from ISO 4217)
+     * Primary brand color (hex)
      */
-    supportedCurrencies?:
-        | (
-              | "AED"
-              | "AFN"
-              | "ALL"
-              | "AMD"
-              | "ANG"
-              | "AOA"
-              | "ARS"
-              | "AUD"
-              | "AWG"
-              | "AZN"
-              | "BAM"
-              | "BBD"
-              | "BDT"
-              | "BGN"
-              | "BHD"
-              | "BIF"
-              | "BMD"
-              | "BND"
-              | "BOB"
-              | "BOV"
-              | "BRL"
-              | "BSD"
-              | "BTN"
-              | "BWP"
-              | "BYN"
-              | "BZD"
-              | "CAD"
-              | "CDF"
-              | "CHE"
-              | "CHF"
-              | "CHW"
-              | "CLF"
-              | "CLP"
-              | "CNY"
-              | "COP"
-              | "COU"
-              | "CRC"
-              | "CUC"
-              | "CUP"
-              | "CVE"
-              | "CZK"
-              | "DJF"
-              | "DKK"
-              | "DOP"
-              | "DZD"
-              | "EGP"
-              | "ERN"
-              | "ETB"
-              | "EUR"
-              | "FJD"
-              | "FKP"
-              | "GBP"
-              | "GEL"
-              | "GHS"
-              | "GIP"
-              | "GMD"
-              | "GNF"
-              | "GTQ"
-              | "GYD"
-              | "HKD"
-              | "HNL"
-              | "HTG"
-              | "HUF"
-              | "IDR"
-              | "ILS"
-              | "INR"
-              | "IQD"
-              | "IRR"
-              | "ISK"
-              | "JMD"
-              | "JOD"
-              | "JPY"
-              | "KES"
-              | "KGS"
-              | "KHR"
-              | "KMF"
-              | "KPW"
-              | "KRW"
-              | "KWD"
-              | "KYD"
-              | "KZT"
-              | "LAK"
-              | "LBP"
-              | "LKR"
-              | "LRD"
-              | "LSL"
-              | "LYD"
-              | "MAD"
-              | "MDL"
-              | "MGA"
-              | "MKD"
-              | "MMK"
-              | "MNT"
-              | "MOP"
-              | "MRU"
-              | "MUR"
-              | "MVR"
-              | "MWK"
-              | "MXN"
-              | "MXV"
-              | "MYR"
-              | "MZN"
-              | "NAD"
-              | "NGN"
-              | "NIO"
-              | "NOK"
-              | "NPR"
-              | "NZD"
-              | "OMR"
-              | "PAB"
-              | "PEN"
-              | "PGK"
-              | "PHP"
-              | "PKR"
-              | "PLN"
-              | "PYG"
-              | "QAR"
-              | "RON"
-              | "RSD"
-              | "RUB"
-              | "RWF"
-              | "SAR"
-              | "SBD"
-              | "SCR"
-              | "SDG"
-              | "SEK"
-              | "SGD"
-              | "SHP"
-              | "SLE"
-              | "SOS"
-              | "SRD"
-              | "SSP"
-              | "STN"
-              | "SVC"
-              | "SYP"
-              | "SZL"
-              | "THB"
-              | "TJS"
-              | "TMT"
-              | "TND"
-              | "TOP"
-              | "TRY"
-              | "TTD"
-              | "TWD"
-              | "TZS"
-              | "UAH"
-              | "UGX"
-              | "USD"
-              | "USN"
-              | "UYI"
-              | "UYU"
-              | "UYW"
-              | "UZS"
-              | "VED"
-              | "VES"
-              | "VND"
-              | "VUV"
-              | "WST"
-              | "XAF"
-              | "XAG"
-              | "XAU"
-              | "XBA"
-              | "XBB"
-              | "XBC"
-              | "XBD"
-              | "XCD"
-              | "XDR"
-              | "XOF"
-              | "XPD"
-              | "XPF"
-              | "XPT"
-              | "XSU"
-              | "XTS"
-              | "XUA"
-              | "XXX"
-              | "YER"
-              | "ZAR"
-              | "ZMW"
-              | "ZWG"
-          )[]
-        | null;
-    exchangeRateSource?: ("api" | "manual") | null;
+    primaryColor?: string | null;
     /**
-     * Override API rates with fixed values. Use currency codes from supported currencies.
+     * Accent/secondary color (hex)
      */
-    exchangeRateOverrides?:
-        | {
-              /**
-               * Source currency code
-               */
-              fromCurrency: string;
-              /**
-               * Target currency code
-               */
-              toCurrency: string;
-              /**
-               * e.g., 0.92 for USD→EUR
-               */
-              rate: number;
-              id?: string | null;
-          }[]
-        | null;
+    accentColor?: string | null;
     /**
-     * Applied to all currencies unless overridden below
+     * Footer text (supports {{current_year}})
      */
-    defaultRoundingRule?: ("charm" | "clean" | "none") | null;
+    footerText?: string | null;
     /**
-     * Override default rounding for specific currencies
+     * Business address for email footer
      */
-    priceRoundingRules?:
-        | {
-              currency:
-                  | "AED"
-                  | "AFN"
-                  | "ALL"
-                  | "AMD"
-                  | "ANG"
-                  | "AOA"
-                  | "ARS"
-                  | "AUD"
-                  | "AWG"
-                  | "AZN"
-                  | "BAM"
-                  | "BBD"
-                  | "BDT"
-                  | "BGN"
-                  | "BHD"
-                  | "BIF"
-                  | "BMD"
-                  | "BND"
-                  | "BOB"
-                  | "BOV"
-                  | "BRL"
-                  | "BSD"
-                  | "BTN"
-                  | "BWP"
-                  | "BYN"
-                  | "BZD"
-                  | "CAD"
-                  | "CDF"
-                  | "CHE"
-                  | "CHF"
-                  | "CHW"
-                  | "CLF"
-                  | "CLP"
-                  | "CNY"
-                  | "COP"
-                  | "COU"
-                  | "CRC"
-                  | "CUC"
-                  | "CUP"
-                  | "CVE"
-                  | "CZK"
-                  | "DJF"
-                  | "DKK"
-                  | "DOP"
-                  | "DZD"
-                  | "EGP"
-                  | "ERN"
-                  | "ETB"
-                  | "EUR"
-                  | "FJD"
-                  | "FKP"
-                  | "GBP"
-                  | "GEL"
-                  | "GHS"
-                  | "GIP"
-                  | "GMD"
-                  | "GNF"
-                  | "GTQ"
-                  | "GYD"
-                  | "HKD"
-                  | "HNL"
-                  | "HTG"
-                  | "HUF"
-                  | "IDR"
-                  | "ILS"
-                  | "INR"
-                  | "IQD"
-                  | "IRR"
-                  | "ISK"
-                  | "JMD"
-                  | "JOD"
-                  | "JPY"
-                  | "KES"
-                  | "KGS"
-                  | "KHR"
-                  | "KMF"
-                  | "KPW"
-                  | "KRW"
-                  | "KWD"
-                  | "KYD"
-                  | "KZT"
-                  | "LAK"
-                  | "LBP"
-                  | "LKR"
-                  | "LRD"
-                  | "LSL"
-                  | "LYD"
-                  | "MAD"
-                  | "MDL"
-                  | "MGA"
-                  | "MKD"
-                  | "MMK"
-                  | "MNT"
-                  | "MOP"
-                  | "MRU"
-                  | "MUR"
-                  | "MVR"
-                  | "MWK"
-                  | "MXN"
-                  | "MXV"
-                  | "MYR"
-                  | "MZN"
-                  | "NAD"
-                  | "NGN"
-                  | "NIO"
-                  | "NOK"
-                  | "NPR"
-                  | "NZD"
-                  | "OMR"
-                  | "PAB"
-                  | "PEN"
-                  | "PGK"
-                  | "PHP"
-                  | "PKR"
-                  | "PLN"
-                  | "PYG"
-                  | "QAR"
-                  | "RON"
-                  | "RSD"
-                  | "RUB"
-                  | "RWF"
-                  | "SAR"
-                  | "SBD"
-                  | "SCR"
-                  | "SDG"
-                  | "SEK"
-                  | "SGD"
-                  | "SHP"
-                  | "SLE"
-                  | "SOS"
-                  | "SRD"
-                  | "SSP"
-                  | "STN"
-                  | "SVC"
-                  | "SYP"
-                  | "SZL"
-                  | "THB"
-                  | "TJS"
-                  | "TMT"
-                  | "TND"
-                  | "TOP"
-                  | "TRY"
-                  | "TTD"
-                  | "TWD"
-                  | "TZS"
-                  | "UAH"
-                  | "UGX"
-                  | "USD"
-                  | "USN"
-                  | "UYI"
-                  | "UYU"
-                  | "UYW"
-                  | "UZS"
-                  | "VED"
-                  | "VES"
-                  | "VND"
-                  | "VUV"
-                  | "WST"
-                  | "XAF"
-                  | "XAG"
-                  | "XAU"
-                  | "XBA"
-                  | "XBB"
-                  | "XBC"
-                  | "XBD"
-                  | "XCD"
-                  | "XDR"
-                  | "XOF"
-                  | "XPD"
-                  | "XPF"
-                  | "XPT"
-                  | "XSU"
-                  | "XTS"
-                  | "XUA"
-                  | "XXX"
-                  | "YER"
-                  | "ZAR"
-                  | "ZMW"
-                  | "ZWG";
-              rule: "charm" | "clean" | "none";
-              id?: string | null;
-          }[]
-        | null;
-    currency?:
-        | (
-              | "AED"
-              | "AFN"
-              | "ALL"
-              | "AMD"
-              | "ANG"
-              | "AOA"
-              | "ARS"
-              | "AUD"
-              | "AWG"
-              | "AZN"
-              | "BAM"
-              | "BBD"
-              | "BDT"
-              | "BGN"
-              | "BHD"
-              | "BIF"
-              | "BMD"
-              | "BND"
-              | "BOB"
-              | "BOV"
-              | "BRL"
-              | "BSD"
-              | "BTN"
-              | "BWP"
-              | "BYN"
-              | "BZD"
-              | "CAD"
-              | "CDF"
-              | "CHE"
-              | "CHF"
-              | "CHW"
-              | "CLF"
-              | "CLP"
-              | "CNY"
-              | "COP"
-              | "COU"
-              | "CRC"
-              | "CUC"
-              | "CUP"
-              | "CVE"
-              | "CZK"
-              | "DJF"
-              | "DKK"
-              | "DOP"
-              | "DZD"
-              | "EGP"
-              | "ERN"
-              | "ETB"
-              | "EUR"
-              | "FJD"
-              | "FKP"
-              | "GBP"
-              | "GEL"
-              | "GHS"
-              | "GIP"
-              | "GMD"
-              | "GNF"
-              | "GTQ"
-              | "GYD"
-              | "HKD"
-              | "HNL"
-              | "HTG"
-              | "HUF"
-              | "IDR"
-              | "ILS"
-              | "INR"
-              | "IQD"
-              | "IRR"
-              | "ISK"
-              | "JMD"
-              | "JOD"
-              | "JPY"
-              | "KES"
-              | "KGS"
-              | "KHR"
-              | "KMF"
-              | "KPW"
-              | "KRW"
-              | "KWD"
-              | "KYD"
-              | "KZT"
-              | "LAK"
-              | "LBP"
-              | "LKR"
-              | "LRD"
-              | "LSL"
-              | "LYD"
-              | "MAD"
-              | "MDL"
-              | "MGA"
-              | "MKD"
-              | "MMK"
-              | "MNT"
-              | "MOP"
-              | "MRU"
-              | "MUR"
-              | "MVR"
-              | "MWK"
-              | "MXN"
-              | "MXV"
-              | "MYR"
-              | "MZN"
-              | "NAD"
-              | "NGN"
-              | "NIO"
-              | "NOK"
-              | "NPR"
-              | "NZD"
-              | "OMR"
-              | "PAB"
-              | "PEN"
-              | "PGK"
-              | "PHP"
-              | "PKR"
-              | "PLN"
-              | "PYG"
-              | "QAR"
-              | "RON"
-              | "RSD"
-              | "RUB"
-              | "RWF"
-              | "SAR"
-              | "SBD"
-              | "SCR"
-              | "SDG"
-              | "SEK"
-              | "SGD"
-              | "SHP"
-              | "SLE"
-              | "SOS"
-              | "SRD"
-              | "SSP"
-              | "STN"
-              | "SVC"
-              | "SYP"
-              | "SZL"
-              | "THB"
-              | "TJS"
-              | "TMT"
-              | "TND"
-              | "TOP"
-              | "TRY"
-              | "TTD"
-              | "TWD"
-              | "TZS"
-              | "UAH"
-              | "UGX"
-              | "USD"
-              | "USN"
-              | "UYI"
-              | "UYU"
-              | "UYW"
-              | "UZS"
-              | "VED"
-              | "VES"
-              | "VND"
-              | "VUV"
-              | "WST"
-              | "XAF"
-              | "XAG"
-              | "XAU"
-              | "XBA"
-              | "XBB"
-              | "XBC"
-              | "XBD"
-              | "XCD"
-              | "XDR"
-              | "XOF"
-              | "XPD"
-              | "XPF"
-              | "XPT"
-              | "XSU"
-              | "XTS"
-              | "XUA"
-              | "XXX"
-              | "YER"
-              | "ZAR"
-              | "ZMW"
-              | "ZWG"
-          )
-        | null;
-    emailBranding?: {
-        /**
-         * Logo displayed in email header
-         */
-        logo?: (number | null) | Media;
-        /**
-         * Primary brand color (hex)
-         */
-        primaryColor?: string | null;
-        /**
-         * Accent/secondary color (hex)
-         */
-        accentColor?: string | null;
-        /**
-         * Footer text (supports {{current_year}})
-         */
-        footerText?: string | null;
-        /**
-         * Business address for email footer
-         */
-        address?: string | null;
-        socialLinks?: {
-            facebook?: string | null;
-            instagram?: string | null;
-            twitter?: string | null;
-            linkedin?: string | null;
-        };
-        /**
-         * Unsubscribe page URL
-         */
-        unsubscribeUrl?: string | null;
+    address?: string | null;
+    socialLinks?: {
+      facebook?: string | null;
+      instagram?: string | null;
+      twitter?: string | null;
+      linkedin?: string | null;
     };
-    updatedAt?: string | null;
-    createdAt?: string | null;
+    /**
+     * Unsubscribe page URL
+     */
+    unsubscribeUrl?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "main-menu".
  */
 export interface MainMenu {
-    id: number;
-    layout: {
-        form: number | Form;
-        enableIntro?: boolean | null;
-        introContent?: {
-            root: {
-                type: string;
-                children: {
-                    type: string;
-                    version: number;
-                    [k: string]: unknown;
-                }[];
-                direction: ("ltr" | "rtl") | null;
-                format:
-                    | "left"
-                    | "start"
-                    | "center"
-                    | "right"
-                    | "end"
-                    | "justify"
-                    | "";
-                indent: number;
-                version: number;
-            };
-            [k: string]: unknown;
-        } | null;
+  id: number;
+  layout: {
+    form: number | Form;
+    enableIntro?: boolean | null;
+    introContent?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    id?: string | null;
+    blockName?: string | null;
+    blockType: 'formBlock';
+  }[];
+  'form-submissions'?: (number | null) | FormSubmission;
+  navItems?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: {
+            relationTo: 'pages';
+            value: number | Page;
+          } | null;
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'primary' | 'secondary') | null;
+        };
         id?: string | null;
-        blockName?: string | null;
-        blockType: "formBlock";
-    }[];
-    "form-submissions"?: (number | null) | FormSubmission;
-    navItems?:
-        | {
-              link: {
-                  type?: ("reference" | "custom") | null;
-                  newTab?: boolean | null;
-                  reference?: {
-                      relationTo: "pages";
-                      value: number | Page;
-                  } | null;
-                  url?: string | null;
-                  label: string;
-                  /**
-                   * Choose how the link should be rendered.
-                   */
-                  appearance?: ("default" | "primary" | "secondary") | null;
-              };
-              id?: string | null;
-          }[]
-        | null;
-    updatedAt?: string | null;
-    createdAt?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "store-settings_select".
  */
 export interface StoreSettingsSelect<T extends boolean = true> {
-    name?: T;
-    baseCurrency?: T;
-    supportedCurrencies?: T;
-    exchangeRateSource?: T;
-    exchangeRateOverrides?:
-        | T
-        | {
-              fromCurrency?: T;
-              toCurrency?: T;
-              rate?: T;
-              id?: T;
-          };
-    defaultRoundingRule?: T;
-    priceRoundingRules?:
-        | T
-        | {
-              currency?: T;
-              rule?: T;
-              id?: T;
-          };
-    currency?: T;
-    emailBranding?:
-        | T
-        | {
-              logo?: T;
-              primaryColor?: T;
-              accentColor?: T;
-              footerText?: T;
-              address?: T;
-              socialLinks?:
-                  | T
-                  | {
-                        facebook?: T;
-                        instagram?: T;
-                        twitter?: T;
-                        linkedin?: T;
-                    };
-              unsubscribeUrl?: T;
-          };
-    updatedAt?: T;
-    createdAt?: T;
-    globalType?: T;
+  name?: T;
+  baseCurrency?: T;
+  supportedCurrencies?: T;
+  exchangeRateSource?: T;
+  exchangeRateOverrides?:
+    | T
+    | {
+        fromCurrency?: T;
+        toCurrency?: T;
+        rate?: T;
+        id?: T;
+      };
+  defaultRoundingRule?: T;
+  priceRoundingRules?:
+    | T
+    | {
+        currency?: T;
+        rule?: T;
+        id?: T;
+      };
+  currency?: T;
+  emailBranding?:
+    | T
+    | {
+        logo?: T;
+        primaryColor?: T;
+        accentColor?: T;
+        footerText?: T;
+        address?: T;
+        socialLinks?:
+          | T
+          | {
+              facebook?: T;
+              instagram?: T;
+              twitter?: T;
+              linkedin?: T;
+            };
+        unsubscribeUrl?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "main-menu_select".
  */
 export interface MainMenuSelect<T extends boolean = true> {
-    layout?:
-        | T
-        | {
-              formBlock?:
-                  | T
-                  | {
-                        form?: T;
-                        enableIntro?: T;
-                        introContent?: T;
-                        id?: T;
-                        blockName?: T;
-                    };
-          };
-    "form-submissions"?: T;
-    navItems?:
-        | T
-        | {
-              link?:
-                  | T
-                  | {
-                        type?: T;
-                        newTab?: T;
-                        reference?: T;
-                        url?: T;
-                        label?: T;
-                        appearance?: T;
-                    };
+  layout?:
+    | T
+    | {
+        formBlock?:
+          | T
+          | {
+              form?: T;
+              enableIntro?: T;
+              introContent?: T;
               id?: T;
-          };
-    updatedAt?: T;
-    createdAt?: T;
-    globalType?: T;
+              blockName?: T;
+            };
+      };
+  'form-submissions'?: T;
+  navItems?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TaskCreateCollectionExport".
  */
 export interface TaskCreateCollectionExport {
-    input: {
-        name?: string | null;
-        format: "csv" | "json";
-        limit?: number | null;
-        sort?: string | null;
-        drafts?: ("yes" | "no") | null;
-        selectionToUse?: ("currentSelection" | "currentFilters" | "all") | null;
-        fields?: string[] | null;
-        collectionSlug: string;
-        where?:
-            | {
-                  [k: string]: unknown;
-              }
-            | unknown[]
-            | string
-            | number
-            | boolean
-            | null;
-        user?: string | null;
-        userCollection?: string | null;
-        exportsCollection?: string | null;
-    };
-    output: {
-        success?: boolean | null;
-    };
+  input: {
+    name?: string | null;
+    format: 'csv' | 'json';
+    limit?: number | null;
+    sort?: string | null;
+    drafts?: ('yes' | 'no') | null;
+    selectionToUse?: ('currentSelection' | 'currentFilters' | 'all') | null;
+    fields?: string[] | null;
+    collectionSlug: string;
+    where?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+    user?: string | null;
+    userCollection?: string | null;
+    exportsCollection?: string | null;
+  };
+  output: {
+    success?: boolean | null;
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "auth".
  */
 export interface Auth {
-    [k: string]: unknown;
+  [k: string]: unknown;
 }
 
-declare module "payload" {
-    export interface GeneratedTypes extends Config {}
+
+declare module 'payload' {
+  export interface GeneratedTypes extends Config {}
 }

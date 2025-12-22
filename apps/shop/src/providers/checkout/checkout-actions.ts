@@ -50,6 +50,13 @@ const CheckoutAddressUpdateSchema = z.object({
   email: z.string().email("Invalid email").optional(),
 });
 
+const GiftMessageSchema = z.object({
+  enabled: z.boolean().optional(),
+  recipientName: z.string().max(100).optional(),
+  senderName: z.string().max(100).optional(),
+  message: z.string().max(300).optional(),
+});
+
 const CheckoutFormUpdateSchema = z.object({
   paymentId: z.string().min(1, "Payment ID required"),
   shippingMethodString: z
@@ -58,6 +65,7 @@ const CheckoutFormUpdateSchema = z.object({
     .optional()
     .or(z.literal("")),
   addresses: CheckoutAddressUpdateSchema,
+  giftMessage: GiftMessageSchema.optional(),
 });
 
 // Inferred types from Zod schemas
@@ -476,19 +484,21 @@ export async function updateCheckoutCurrencyAction(
 }
 
 /**
- * Unified checkout form update - updates addresses, shipping, and payment in one call
+ * Unified checkout form update - updates addresses, shipping, payment, and gift message in one call
  */
 export async function updateCheckoutFormAction(
   paymentId: CheckoutFormUpdate["paymentId"],
   shippingMethodString: CheckoutFormUpdate["shippingMethodString"],
   addresses: CheckoutFormUpdate["addresses"],
   existingCheckout: Checkout,
+  giftMessage?: CheckoutFormUpdate["giftMessage"],
 ): Promise<Checkout> {
   // Validate inputs
   const parsed = CheckoutFormUpdateSchema.safeParse({
     paymentId,
     shippingMethodString,
     addresses,
+    giftMessage,
   });
 
   if (!parsed.success) {
@@ -515,6 +525,7 @@ export async function updateCheckoutFormAction(
         email: validated.addresses.email,
         ...(shippingId && { shippingMethod: Number(shippingId) }),
         payment: Number(validated.paymentId),
+        ...(validated.giftMessage && { giftMessage: validated.giftMessage }),
       },
       depth: 2,
     });

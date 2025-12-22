@@ -3,55 +3,45 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
+
+
 import { useRouter } from "next/navigation";
+
+
 
 import { createOrderFromCheckoutAction } from "@/actions/order-actions";
 import { useCheckout } from "@/providers/checkout";
-import {
-  GiftBoxComingSoon,
-  StripePaymentPlaceholder,
-} from "@/scenes/checkout/components";
+import { GiftBoxComingSoon, StripePaymentPlaceholder } from "@/scenes/checkout/components";
 import { OrderSummary } from "@/scenes/checkout/order-summary";
 import { Stepper } from "@/scenes/checkout/stepper";
 import { usePayloadFindQuery } from "@/scenes/shop/use-payload-find-query";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/ui/shadcn/input-group";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/ui/shadcn/input-group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TypographyH4, TypographyH5, TypographyP } from "@ui/shadcn/typography";
 import type { Payment } from "@vyadove/types";
-import {
-  ArrowRight,
-  CheckCircle,
-  ChevronLeft,
-  CreditCard,
-  Gift,
-  Mail,
-  Package,
-  Phone,
-  Send,
-  User,
-} from "lucide-react";
+import { ArrowRight, CheckCircle, ChevronLeft, CreditCard, Gift, Info, Mail, MessageSquare, Package, Phone, Send, User } from "lucide-react";
 import { z } from "zod";
 
+
+
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { toast } from "@/components/ui/hot-toast";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
+
 
 import CheckoutLoading from "./checkout-loading";
 import { CheckoutReviewStep } from "./checkout-review-step";
 import EmptyCheckout from "./empty-checkout";
+
+
+
+
 
 const minCharErrorString = "Too short, min 2 characters";
 const maxCharErrorString = "Too long, max 20 characters";
@@ -70,15 +60,21 @@ const steps = [
 const formSchema = z
   .object({
     firstName: z
-      .string()
+      .string({ error: "First name is required" })
       .min(2, minCharErrorString)
       .max(20, maxCharErrorString),
-    lastName: z.string().min(2, minCharErrorString).max(20, maxCharErrorString),
-    email: z.string().email(),
+    lastName: z
+      .string({ error: "Last name is required" })
+      .min(2, minCharErrorString)
+      .max(20, maxCharErrorString),
+    email: z
+      .string({ error: "Email is required" })
+      .min(1, "Email is required")
+      .email("Please enter a valid email"),
     phone: z
-      .string()
-      .min(8, "Too short, min 8 characters")
-      .max(15, "Too long, max 15 characters"),
+      .string({ error: "Phone number is required" })
+      .min(8, "Phone must be at least 8 digits")
+      .max(15, "Phone must be at most 15 digits"),
 
     // recipient type
     recipientType: z.enum(["me", "recipient"]),
@@ -86,11 +82,26 @@ const formSchema = z
     // recipient fields (validated conditionally)
     recipientFirstName: z.string().optional(),
     recipientLastName: z.string().optional(),
-    recipientEmail: z.string().email().optional().or(z.literal("")),
+    recipientEmail: z
+      .string()
+      .email("Please enter a valid email")
+      .optional()
+      .or(z.literal("")),
     recipientPhone: z.string().optional(),
 
+    // gift message
+    giftMessageEnabled: z.boolean(),
+    giftRecipientName: z.string().max(100, "Name too long").optional(),
+    giftSenderName: z.string().max(100, "Name too long").optional(),
+    giftMessage: z
+      .string()
+      .max(300, "Message too long (max 300 chars)")
+      .optional(),
+
     // payment & shipping
-    paymentMethod: z.string(),
+    paymentMethod: z
+      .string({ error: "Please select a payment method" })
+      .min(1, "Please select a payment method"),
     shippingMethod: z.string().optional(),
   })
   .superRefine((data, ctx) => {
@@ -116,6 +127,17 @@ const formSchema = z
           code: z.ZodIssueCode.custom,
           message: "Recipient email is required",
           path: ["recipientEmail"],
+        });
+      }
+    }
+
+    // Validate gift message when enabled
+    if (data.giftMessageEnabled) {
+      if (!data.giftMessage || data.giftMessage.trim().length === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Please enter a personal message",
+          path: ["giftMessage"],
         });
       }
     }
@@ -152,12 +174,28 @@ const CheckoutNew = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
       recipientType: "recipient",
+      recipientFirstName: "",
+      recipientLastName: "",
+      recipientEmail: "",
+      recipientPhone: "",
+      giftMessageEnabled: false,
+      giftRecipientName: "",
+      giftSenderName: "",
+      giftMessage: "",
+      paymentMethod: "",
+      shippingMethod: "",
     },
   });
 
   const selectedPaymentMethod = form.watch("paymentMethod");
   const recipientType = form.watch("recipientType");
+  const giftMessageEnabled = form.watch("giftMessageEnabled");
+  const giftMessageText = form.watch("giftMessage") || "";
 
   // Fill out shipping address if available
   useEffect(() => {
@@ -170,8 +208,7 @@ const CheckoutNew = () => {
       recipientPhone: addr.phone ?? "",
       recipientFirstName: addr.firstName ?? "",
       recipientLastName: addr.lastName ?? "",
-      recipientEmail:
-        (addr as { email?: string }).email || checkout.email || "",
+      recipientEmail: (addr as { email?: string }).email || "",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkout?.shippingAddress]);
@@ -191,6 +228,35 @@ const CheckoutNew = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkout?.billingAddress]);
+
+  // Pre-fill gift message from existing checkout
+  useEffect(() => {
+    if (!checkout?.giftMessage || checkoutLoading) return;
+
+    const gm = checkout.giftMessage as {
+      enabled?: boolean;
+      recipientName?: string;
+      senderName?: string;
+      message?: string;
+    };
+
+    if (gm.enabled !== undefined) {
+      form.setValue("giftMessageEnabled", gm.enabled);
+    }
+
+    if (gm.recipientName) {
+      form.setValue("giftRecipientName", gm.recipientName);
+    }
+
+    if (gm.senderName) {
+      form.setValue("giftSenderName", gm.senderName);
+    }
+
+    if (gm.message) {
+      form.setValue("giftMessage", gm.message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checkout?.giftMessage]);
 
   // Payment methods
   useEffect(() => {
@@ -220,6 +286,36 @@ const CheckoutNew = () => {
       toast.dismissAll();
     };
   }, []);
+
+  // Auto-fill gift message names when enabled
+  useEffect(() => {
+    if (!giftMessageEnabled) return;
+
+    const currentRecipientName = form.getValues("giftRecipientName");
+    const currentSenderName = form.getValues("giftSenderName");
+
+    // Auto-fill "To" from recipient or buyer name
+    if (!currentRecipientName) {
+      const toName =
+        recipientType === "recipient"
+          ? form.getValues("recipientFirstName")
+          : form.getValues("firstName");
+
+      if (toName) {
+        form.setValue("giftRecipientName", toName);
+      }
+    }
+
+    // Auto-fill "From" from buyer name
+    if (!currentSenderName) {
+      const fromName = form.getValues("firstName");
+
+      if (fromName) {
+        form.setValue("giftSenderName", fromName);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [giftMessageEnabled]);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
@@ -292,6 +388,12 @@ const CheckoutNew = () => {
               email: data.email,
             },
             email: data.email,
+          },
+          giftMessage: {
+            enabled: data.giftMessageEnabled,
+            recipientName: data.giftRecipientName || "",
+            senderName: data.giftSenderName || "",
+            message: data.giftMessage || "",
           },
         });
 
@@ -715,6 +817,124 @@ const CheckoutNew = () => {
                         </div>
                       )}
                     </div>
+                  </div>
+
+                  {/* Personal Message */}
+                  <div className="bg-white rounded-2xl shadow-sm border border-border p-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <FormField
+                          control={form.control}
+                          name="giftMessageEnabled"
+                          render={({ field }) => (
+                            <FormItem className="flex items-center gap-3">
+                              <FormControl>
+                                <Switch
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                />
+                              </FormControl>
+                              <div className="flex items-center gap-2">
+                                <FormLabel className="font-semibold text-foreground cursor-pointer mb-0">
+                                  Add a personal message (FREE)
+                                </FormLabel>
+                                <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <Info className="w-4 h-4 text-muted-foreground cursor-help" />
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                      <p className="max-w-xs">
+                                        Include a personal message with your gift
+                                        that will appear in the delivery email
+                                      </p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+
+                    {giftMessageEnabled && (
+                      <div className="mt-6 space-y-4 p-4 bg-muted/30 rounded-xl">
+                        <div className="grid grid-cols-2 gap-4">
+                          <FormField
+                            control={form.control}
+                            name="giftRecipientName"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>To (will appear in greeting):</FormLabel>
+                                <FormControl>
+                                  <InputGroup>
+                                    <InputGroupAddon>
+                                      <User className="size-4" />
+                                    </InputGroupAddon>
+                                    <InputGroupInput
+                                      maxLength={100}
+                                      placeholder="Recipient's name"
+                                      {...field}
+                                    />
+                                  </InputGroup>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name="giftSenderName"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>From:</FormLabel>
+                                <FormControl>
+                                  <InputGroup>
+                                    <InputGroupAddon>
+                                      <User className="size-4" />
+                                    </InputGroupAddon>
+                                    <InputGroupInput
+                                      maxLength={100}
+                                      placeholder="Your name"
+                                      {...field}
+                                    />
+                                  </InputGroup>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+
+                        <FormField
+                          control={form.control}
+                          name="giftMessage"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Message:</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  className="min-h-[100px] resize-y"
+                                  maxLength={300}
+                                  placeholder="I would like to gift you an opportunity to choose this year's gift yourself..."
+                                  {...field}
+                                />
+                              </FormControl>
+                              <div className="flex justify-end">
+                                <span
+                                  className={`text-xs ${giftMessageText.length >= 300 ? "text-destructive" : "text-muted-foreground"}`}
+                                >
+                                  {giftMessageText.length}/300
+                                </span>
+                              </div>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    )}
                   </div>
 
                   {/* PAYMENT */}

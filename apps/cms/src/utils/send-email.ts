@@ -6,7 +6,8 @@ export type EmailType =
     | "order_cancellation"
     | "payment_failed"
     | "order_shipped"
-    | "order_delivered";
+    | "order_delivered"
+    | "gift_delivery";
 
 interface EmailBranding {
     storeName: string;
@@ -18,11 +19,25 @@ interface EmailBranding {
     supportEmail: string;
 }
 
+interface GiftMessageData {
+    enabled?: boolean | null;
+    recipientName?: string | null;
+    senderName?: string | null;
+    message?: string | null;
+}
+
+interface EmailData extends Record<string, string | GiftMessageData | undefined> {
+    orderId?: string;
+    retryUrl?: string;
+    trackingUrl?: string;
+    giftMessage?: GiftMessageData;
+}
+
 interface SendEmailParams {
     payload: Payload;
     to: string;
     type: EmailType;
-    data: Record<string, string>;
+    data: EmailData;
 }
 
 /**
@@ -123,7 +138,7 @@ interface EmailTemplate {
 }
 
 type TemplateGenerator = (
-    data: Record<string, string>,
+    data: EmailData,
     branding: EmailBranding
 ) => EmailTemplate;
 
@@ -143,6 +158,17 @@ const EMAIL_TEMPLATES: Record<EmailType, TemplateGenerator> = {
                     <strong>Order ID:</strong> ${data.orderId}
                 </p>
             </div>
+            ${
+                data.giftMessage?.enabled
+                    ? `
+            <div style="background-color: #f9f9f9; padding: 16px; border-left: 4px solid ${branding.primaryColor}; margin: 24px 0; border-radius: 0 4px 4px 0;">
+                <p style="font-size: 13px; color: #666; margin: 0 0 8px 0; font-weight: 500;">
+                    To: ${data.giftMessage.recipientName || ""} &nbsp;|&nbsp; From: ${data.giftMessage.senderName || ""}
+                </p>
+                <p style="font-size: 14px; color: #333; margin: 0; white-space: pre-wrap; line-height: 1.5;">${data.giftMessage.message || ""}</p>
+            </div>`
+                    : ""
+            }
         `,
     }),
 
@@ -215,6 +241,32 @@ const EMAIL_TEMPLATES: Record<EmailType, TemplateGenerator> = {
             </p>
             <p style="color: #555; font-size: 16px; line-height: 1.5; margin: 0;">
                 We hope you love your purchase! If you have any questions or concerns, please don't hesitate to reach out.
+            </p>
+        `,
+    }),
+
+    gift_delivery: (data, branding) => ({
+        subject: `You've received a gift from ${data.giftMessage?.senderName || "someone special"}!`,
+        content: `
+            <h1 style="color: #333; margin: 0 0 16px 0; font-size: 24px;">
+                ${data.giftMessage?.recipientName ? `Dear ${data.giftMessage.recipientName},` : "Hello!"}
+            </h1>
+            <p style="color: #555; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0;">
+                You've received a thoughtful gift from <strong>${data.giftMessage?.senderName || "someone special"}</strong>!
+            </p>
+            ${
+                data.giftMessage?.message
+                    ? `
+            <div style="background-color: #f9f9f9; padding: 20px; border-left: 4px solid ${branding.primaryColor}; margin: 24px 0; border-radius: 0 4px 4px 0;">
+                <p style="font-size: 13px; color: #666; margin: 0 0 12px 0; font-weight: 500;">
+                    A personal message from ${data.giftMessage.senderName || "your gift sender"}:
+                </p>
+                <p style="font-size: 15px; color: #333; margin: 0; white-space: pre-wrap; line-height: 1.6; font-style: italic;">"${data.giftMessage.message}"</p>
+            </div>`
+                    : ""
+            }
+            <p style="color: #555; font-size: 16px; line-height: 1.5; margin: 24px 0 0 0;">
+                Check your inbox for more details about your gift. If you have any questions, feel free to reach out to us.
             </p>
         `,
     }),

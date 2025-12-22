@@ -115,6 +115,7 @@ export const syncFromCheckout: CollectionBeforeChangeHook<Order> = async ({
     data.currency = checkout.currency || data.currency || "usd";
     data.shippingAddress = checkout.shippingAddress || data.shippingAddress;
     data.billingAddress = checkout.billingAddress || data.billingAddress;
+    data.giftMessage = checkout.giftMessage || data.giftMessage;
 
     data.payment =
         typeof checkout.payment === "object"

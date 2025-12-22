@@ -78,6 +78,12 @@ interface CheckoutContextType {
     providerId: string;
     shippingMethodString: string;
     addresses: CheckoutAddressUpdate;
+    giftMessage?: {
+      enabled?: boolean;
+      recipientName?: string;
+      senderName?: string;
+      message?: string;
+    };
   }) => Promise<Checkout>;
 }
 
@@ -606,16 +612,24 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
       providerId,
       shippingMethodString,
       addresses,
+      giftMessage,
     }: {
       providerId: string;
       shippingMethodString: string;
       addresses: CheckoutAddressUpdate;
+      giftMessage?: {
+        enabled?: boolean;
+        recipientName?: string;
+        senderName?: string;
+        message?: string;
+      };
     }) =>
       updateCheckoutFormAction(
         providerId,
         shippingMethodString,
         addresses,
         checkout!,
+        giftMessage,
       ),
     onSuccess: (data) => {
       queryClient.setQueryData(CHECKOUT_QUERY_KEY, data);

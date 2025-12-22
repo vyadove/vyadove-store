@@ -65,7 +65,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
         <Button
           className="flex-1 font-light"
           data-testid="add-product-button"
-          disabled={isAdding || !selectedVariant}
+          disabled={isAdding || !selectedVariant || selectedVariant.available === false}
           onClick={() => handleAddToCart()}
           size="lg"
         >
@@ -75,12 +75,12 @@ export default function ProductActions({ product }: ProductActionsProps) {
             <CartIcon className="size-5 fill-white" />
           )}
 
-          {!selectedVariant?.available ? "Not available" : "Add to cart"}
+          {selectedVariant?.available === false ? "Not available" : "Add to cart"}
         </Button>
 
         <Button
           className="flex-1 font-light"
-          disabled={isAdding || !selectedVariant}
+          disabled={isAdding || !selectedVariant || selectedVariant.available === false}
           onClick={async () => {
             await handleAddToCart(false);
             router.push(Routes.checkout);

@@ -1,20 +1,67 @@
 import type { Payload } from "payload";
+import type { Order } from "@vyadove/types";
 import { sendEmail } from "@/utils";
 
+interface OrderWithGiftInfo {
+    giftMessage?: Order["giftMessage"];
+    shippingAddress?: Order["shippingAddress"];
+}
+
 /**
- * Send order confirmation email
+ * Fetch order data needed for emails
+ */
+async function fetchOrderForEmail(
+    payload: Payload,
+    orderId: string
+): Promise<OrderWithGiftInfo | null> {
+    try {
+        const orders = await payload.find({
+            collection: "orders",
+            where: { orderId: { equals: orderId } },
+            limit: 1,
+        });
+        return orders.docs[0] || null;
+    } catch (err) {
+        console.error("Failed to fetch order:", err);
+        return null;
+    }
+}
+
+/**
+ * Send order confirmation email to buyer
+ * Also sends gift delivery email to recipient if gift message is enabled
  */
 export const sendOrderConfirmationEmail = async (
     payload: Payload,
     email: string,
     orderId: string
 ): Promise<void> => {
+    const order = await fetchOrderForEmail(payload, orderId);
+
+    // Send confirmation to buyer
     await sendEmail({
         payload,
         to: email,
         type: "order_confirmation",
-        data: { orderId },
+        data: { orderId, giftMessage: order?.giftMessage },
     });
+
+    // Send gift delivery email to recipient if enabled and different email
+    if (order?.giftMessage?.enabled && order?.shippingAddress) {
+        const recipientEmail =
+            typeof order.shippingAddress === "object"
+                ? (order.shippingAddress as { email?: string })?.email
+                : undefined;
+
+        if (recipientEmail && recipientEmail !== email) {
+            await sendEmail({
+                payload,
+                to: recipientEmail,
+                type: "gift_delivery",
+                data: { orderId, giftMessage: order.giftMessage },
+            });
+        }
+    }
 };
 
 /**
