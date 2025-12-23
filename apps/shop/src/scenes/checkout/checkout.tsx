@@ -230,13 +230,16 @@ const CheckoutNew = () => {
     if (!currentValues.recipientPhone && addr.phone) {
       updates.recipientPhone = addr.phone;
     }
+
     if (!currentValues.recipientFirstName && addr.firstName) {
       updates.recipientFirstName = addr.firstName;
     }
+
     if (!currentValues.recipientLastName && addr.lastName) {
       updates.recipientLastName = addr.lastName;
     }
     const addrEmail = (addr as { email?: string }).email;
+
     if (!currentValues.recipientEmail && addrEmail) {
       updates.recipientEmail = addrEmail;
     }
@@ -260,13 +263,16 @@ const CheckoutNew = () => {
     if (!currentValues.firstName && addr.firstName) {
       updates.firstName = addr.firstName;
     }
+
     if (!currentValues.lastName && addr.lastName) {
       updates.lastName = addr.lastName;
     }
     const addrEmail = (addr as { email?: string }).email || checkout.email;
+
     if (!currentValues.email && addrEmail) {
       updates.email = addrEmail;
     }
+
     if (!currentValues.phone && addr.phone) {
       updates.phone = addr.phone;
     }
@@ -294,12 +300,15 @@ const CheckoutNew = () => {
     if (gm.enabled !== undefined && !currentValues.giftMessageEnabled) {
       form.setValue("giftMessageEnabled", gm.enabled);
     }
+
     if (gm.recipientName && !currentValues.giftRecipientName) {
       form.setValue("giftRecipientName", gm.recipientName);
     }
+
     if (gm.senderName && !currentValues.giftSenderName) {
       form.setValue("giftSenderName", gm.senderName);
     }
+
     if (gm.message && !currentValues.giftMessage) {
       form.setValue("giftMessage", gm.message);
     }
