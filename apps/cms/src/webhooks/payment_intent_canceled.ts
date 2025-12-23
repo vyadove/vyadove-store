@@ -7,11 +7,13 @@ import {
 /**
  * This webhook will run whenever a payment intent is canceled
  */
-export const paymentCanceled: PaymentCanceledHandler = async ({
+export const payment_intent_canceled: PaymentCanceledHandler = async ({
     event,
     payload,
 }) => {
     const paymentIntent = event.data.object;
+
+    console.log("payment_intent_canceled -----  : ", paymentIntent);
 
     // Extract relevant details
     const orderId = paymentIntent.metadata?.orderId;

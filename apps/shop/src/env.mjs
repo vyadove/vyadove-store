@@ -2,10 +2,6 @@
 import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
-
-
-
-
 export const env = createEnv({
   server: {
     // Can be provided via env or parameters to Commerce Kit, thus optional
@@ -22,7 +18,7 @@ export const env = createEnv({
   client: {
     // Can be provided via env or parameters to Commerce Kit, thus optional
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
-    NEXT_PUBLIC_SERVER_URL: z.string().url().optional(),
+    NEXT_PUBLIC_SERVER_URL: z.string().url(),
     NEXT_PUBLIC_SHOP_URL: z.string().url(),
     NEXT_PUBLIC_UMAMI_WEBSITE_ID: z.string().optional(),
 
@@ -49,17 +45,5 @@ export const env = createEnv({
   },
 });
 
-if (
-  !process.env.NEXT_PUBLIC_SERVER_URL
-) {
-  throw new Error("Missing NEXT_PUBLIC_SERVER_URL variable!");
-}
-
-if (!process.env?.NEXT_PUBLIC_SHOP_URL) {
-  throw new Error("Missing NEXT_PUBLIC_SHOP_URL variable!");
-}
-
-// force type inference to string
-const _publicUrl = process.env.NEXT_PUBLIC_SHOP_URL;
-
-export { _publicUrl as publicUrl };
+// Export publicUrl from env object (already validated by createEnv)
+export const publicUrl = env.NEXT_PUBLIC_SHOP_URL ?? "http://localhost:3020";

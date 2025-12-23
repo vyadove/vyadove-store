@@ -22,11 +22,15 @@ export const stripeWebhooks = async (args: {
     const url = new URL(req.url || "", "http://localhost");
     const queryShopId = url.searchParams.get("shopId");
     const cookieShopId = getTenantFromCookie(req.headers);
-    const defaultShopId = process.env.DEFAULT_SHOP_ID ? parseInt(process.env.DEFAULT_SHOP_ID) : 1;
+    const defaultShopId = process.env.DEFAULT_SHOP_ID
+        ? parseInt(process.env.DEFAULT_SHOP_ID)
+        : 1;
 
-    const shopId = queryShopId ? parseInt(queryShopId) : (cookieShopId || defaultShopId);
+    const shopId = queryShopId
+        ? parseInt(queryShopId)
+        : cookieShopId || defaultShopId;
 
-    console.log('shopId : ', shopId);
+    console.log("shopId : ", shopId);
 
     if (!shopId) {
         return Response.json(

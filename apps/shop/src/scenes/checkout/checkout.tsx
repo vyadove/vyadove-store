@@ -3,45 +3,65 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-
-
 import { useRouter } from "next/navigation";
-
-
 
 import { createOrderFromCheckoutAction } from "@/actions/order-actions";
 import { useCheckout } from "@/providers/checkout";
-import { GiftBoxComingSoon, StripePaymentPlaceholder } from "@/scenes/checkout/components";
+import {
+  GiftBoxComingSoon,
+  StripePaymentPlaceholder,
+} from "@/scenes/checkout/components";
 import { OrderSummary } from "@/scenes/checkout/order-summary";
 import { Stepper } from "@/scenes/checkout/stepper";
 import { usePayloadFindQuery } from "@/scenes/shop/use-payload-find-query";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/ui/shadcn/input-group";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/ui/shadcn/input-group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TypographyH4, TypographyH5, TypographyP } from "@ui/shadcn/typography";
 import type { Payment } from "@vyadove/types";
-import { ArrowRight, CheckCircle, ChevronLeft, CreditCard, Gift, Info, Mail, MessageSquare, Package, Phone, Send, User } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle,
+  ChevronLeft,
+  CreditCard,
+  Gift,
+  Info,
+  Mail,
+  MessageSquare,
+  Package,
+  Phone,
+  Send,
+  User,
+} from "lucide-react";
 import { z } from "zod";
 
-
-
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { toast } from "@/components/ui/hot-toast";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 import CheckoutLoading from "./checkout-loading";
 import { CheckoutReviewStep } from "./checkout-review-step";
 import EmptyCheckout from "./empty-checkout";
-
-
-
-
 
 const minCharErrorString = "Too short, min 2 characters";
 const maxCharErrorString = "Too long, max 20 characters";
@@ -197,39 +217,67 @@ const CheckoutNew = () => {
   const giftMessageEnabled = form.watch("giftMessageEnabled");
   const giftMessageText = form.watch("giftMessage") || "";
 
-  // Fill out shipping address if available
+  // Fill out shipping address if available (only if fields are empty)
   useEffect(() => {
     if (!checkout?.shippingAddress || checkoutLoading) return;
 
     const addr = checkout.shippingAddress;
+    const currentValues = form.getValues();
 
-    form.reset({
-      ...form.getValues(),
-      recipientPhone: addr.phone ?? "",
-      recipientFirstName: addr.firstName ?? "",
-      recipientLastName: addr.lastName ?? "",
-      recipientEmail: (addr as { email?: string }).email || "",
-    });
+    // Only set values if the field is currently empty (don't overwrite user input)
+    const updates: Partial<typeof currentValues> = {};
+
+    if (!currentValues.recipientPhone && addr.phone) {
+      updates.recipientPhone = addr.phone;
+    }
+    if (!currentValues.recipientFirstName && addr.firstName) {
+      updates.recipientFirstName = addr.firstName;
+    }
+    if (!currentValues.recipientLastName && addr.lastName) {
+      updates.recipientLastName = addr.lastName;
+    }
+    const addrEmail = (addr as { email?: string }).email;
+    if (!currentValues.recipientEmail && addrEmail) {
+      updates.recipientEmail = addrEmail;
+    }
+
+    if (Object.keys(updates).length > 0) {
+      form.reset({ ...currentValues, ...updates });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkout?.shippingAddress]);
 
-  // Fill out billing address if available
+  // Fill out billing address if available (only if fields are empty)
   useEffect(() => {
     if (!checkout?.billingAddress || checkoutLoading) return;
 
     const addr = checkout.billingAddress;
+    const currentValues = form.getValues();
 
-    form.reset({
-      ...form.getValues(),
-      firstName: addr.firstName ?? "",
-      lastName: addr.lastName ?? "",
-      email: (addr as { email?: string }).email || checkout.email || "",
-      phone: addr.phone ?? "",
-    });
+    // Only set values if the field is currently empty (don't overwrite user input)
+    const updates: Partial<typeof currentValues> = {};
+
+    if (!currentValues.firstName && addr.firstName) {
+      updates.firstName = addr.firstName;
+    }
+    if (!currentValues.lastName && addr.lastName) {
+      updates.lastName = addr.lastName;
+    }
+    const addrEmail = (addr as { email?: string }).email || checkout.email;
+    if (!currentValues.email && addrEmail) {
+      updates.email = addrEmail;
+    }
+    if (!currentValues.phone && addr.phone) {
+      updates.phone = addr.phone;
+    }
+
+    if (Object.keys(updates).length > 0) {
+      form.reset({ ...currentValues, ...updates });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkout?.billingAddress]);
 
-  // Pre-fill gift message from existing checkout
+  // Pre-fill gift message from existing checkout (only if fields are empty)
   useEffect(() => {
     if (!checkout?.giftMessage || checkoutLoading) return;
 
@@ -240,19 +288,19 @@ const CheckoutNew = () => {
       message?: string;
     };
 
-    if (gm.enabled !== undefined) {
+    const currentValues = form.getValues();
+
+    // Only set values if the field is currently empty (don't overwrite user input)
+    if (gm.enabled !== undefined && !currentValues.giftMessageEnabled) {
       form.setValue("giftMessageEnabled", gm.enabled);
     }
-
-    if (gm.recipientName) {
+    if (gm.recipientName && !currentValues.giftRecipientName) {
       form.setValue("giftRecipientName", gm.recipientName);
     }
-
-    if (gm.senderName) {
+    if (gm.senderName && !currentValues.giftSenderName) {
       form.setValue("giftSenderName", gm.senderName);
     }
-
-    if (gm.message) {
+    if (gm.message && !currentValues.giftMessage) {
       form.setValue("giftMessage", gm.message);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -845,8 +893,9 @@ const CheckoutNew = () => {
                                     </TooltipTrigger>
                                     <TooltipContent>
                                       <p className="max-w-xs">
-                                        Include a personal message with your gift
-                                        that will appear in the delivery email
+                                        Include a personal message with your
+                                        gift that will appear in the delivery
+                                        email
                                       </p>
                                     </TooltipContent>
                                   </Tooltip>
@@ -866,7 +915,9 @@ const CheckoutNew = () => {
                             name="giftRecipientName"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>To (will appear in greeting):</FormLabel>
+                                <FormLabel>
+                                  To (will appear in greeting):
+                                </FormLabel>
                                 <FormControl>
                                   <InputGroup>
                                     <InputGroupAddon>

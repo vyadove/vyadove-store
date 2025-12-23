@@ -5,15 +5,18 @@ import { sendOrderConfirmationEmail } from "./payment-handlers";
  * This webhook runs when a Stripe Checkout Session is completed
  * Used for hosted checkout page flows
  */
-export const checkoutSessionCompleted: CheckoutSessionCompletedHandler =
+export const checkout_session_completed: CheckoutSessionCompletedHandler =
     async ({ event, payload }) => {
         const { logger } = payload;
-        const session = event.data.object;
+        const paymentIntent = event.data.object;
+
+        console.log("checkout_session_completed -----  : ", paymentIntent);
 
         // Extract orderId from session metadata
-        const orderId = session.metadata?.orderId;
+        const orderId = paymentIntent.metadata?.orderId;
         const customerEmail =
-            session.customer_details?.email || session.metadata?.email;
+            paymentIntent.customer_details?.email ||
+            paymentIntent.metadata?.email;
 
         logger.info(
             `🔔 Received checkout.session.completed: ${event.id}, Order ID: ${orderId}`
@@ -42,7 +45,7 @@ export const checkoutSessionCompleted: CheckoutSessionCompletedHandler =
             // Idempotency check: Skip if already paid with same stripeSessionId
             if (
                 existingOrder.paymentStatus === "paid" &&
-                existingOrder.stripeSessionId === session.id
+                existingOrder.stripeSessionId === paymentIntent.id
             ) {
                 logger.info(
                     `⏭️ Order ${orderId} already marked as paid, skipping duplicate webhook`
@@ -54,9 +57,9 @@ export const checkoutSessionCompleted: CheckoutSessionCompletedHandler =
             const result = await payload.update({
                 collection: "orders",
                 data: {
-                    orderStatus: "processing",
+                    orderStatus: "shipped",
                     paymentStatus: "paid",
-                    paymentIntentId: session.payment_intent as string,
+                    paymentIntentId: paymentIntent.payment_intent as string,
                     updatedAt: new Date().toISOString(),
                 },
                 where: {

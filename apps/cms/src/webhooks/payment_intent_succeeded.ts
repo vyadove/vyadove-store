@@ -5,19 +5,21 @@ import Stripe from "stripe";
 /**
  * This webhook will run whenever a payment intent is successfully paid to create an order in Payload
  */
-export const paymentSucceeded: PaymentSucceededHandler = async ({
+export const payment_intent_succeeded: PaymentSucceededHandler = async ({
     event,
     payload,
 }) => {
     const { logger } = payload;
     const paymentIntent = event.data.object;
 
+    console.log("payment_intent_succeeded -----  : ", paymentIntent);
+
     // Extract relevant details
     const orderId = paymentIntent.metadata?.orderId;
     const customerEmail =
         paymentIntent.receipt_email || paymentIntent.metadata?.email;
 
-    console.log('payment intent --  : ', paymentIntent);
+    console.log("payment intent --  : ", paymentIntent);
 
     payload.logger.info(
         `🔔 Received Stripe Event: ${event.id}, Order ID: ${orderId}`
@@ -54,7 +56,7 @@ export const paymentSucceeded: PaymentSucceededHandler = async ({
             return;
         }
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-            apiVersion: "2025-02-24.acacia" as any,
+            apiVersion: "2025-12-15.clover",
         });
         const charges = await stripe.charges.list({
             payment_intent: paymentIntent.id,

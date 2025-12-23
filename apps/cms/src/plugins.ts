@@ -1,17 +1,13 @@
 import type { Plugin } from "payload";
-
-import { cjPlugin } from "@shopnex/cj-plugin";
 import { importExportPlugin } from "@shopnex/import-export-plugin";
 import { stripePlugin } from "@vyadove/stripe-plugin";
-import { builderIoPlugin } from "@shopnex/builder-io-plugin";
 import { formBuilderPlugin } from "@payloadcms/plugin-form-builder";
 
 import { adminPluginAccess, admins } from "./access/roles";
 import {
-    checkoutCompleted,
-    checkoutSessionCompleted,
-    paymentCanceled,
-    paymentSucceeded,
+    checkout_session_completed,
+    payment_intent_canceled,
+    payment_intent_succeeded,
 } from "./webhooks";
 import { quickActionsPlugin } from "@shopnex/quick-actions-plugin";
 import { easyEmailPlugin } from "@shopnex/easy-email-plugin";
@@ -38,10 +34,10 @@ export const plugins: Plugin[] = [
         stripeWebhooksEndpointSecret:
             process.env.STRIPE_WEBHOOKS_SIGNING_SECRET,
         webhooks: {
-            "checkout.session.completed": checkoutSessionCompleted,
+            "checkout.session.completed": checkout_session_completed,
             // "checkout.session.completed": checkoutCompleted,
-            "payment_intent.canceled": paymentCanceled,
-            "payment_intent.succeeded": paymentSucceeded,
+            "payment_intent.canceled": payment_intent_canceled,
+            "payment_intent.succeeded": payment_intent_succeeded,
         },
     }),
     importExportPlugin({

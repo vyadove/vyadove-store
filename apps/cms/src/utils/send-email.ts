@@ -26,7 +26,8 @@ interface GiftMessageData {
     message?: string | null;
 }
 
-interface EmailData extends Record<string, string | GiftMessageData | undefined> {
+interface EmailData
+    extends Record<string, string | GiftMessageData | undefined> {
     orderId?: string;
     retryUrl?: string;
     trackingUrl?: string;
